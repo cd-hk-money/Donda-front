@@ -1,6 +1,5 @@
 <template>
   <v-card
-    @click="test"
     elevation="1"
     rounded="xl"
     class="mx-auto" 
