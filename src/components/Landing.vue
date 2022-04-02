@@ -52,27 +52,25 @@
           <side-nav />
           <v-col>
             <v-sheet
-              min-height="80vh"
-              rounded="lg"
+              max-height="50vh"
+              rounded="lg"              
             >
              <v-carousel
-                cycle
-                height="400"
+                cycle                
                 hide-delimiter-background
                 show-arrows-on-hover
+                height="400"
               >
-                <v-carousel-item
+                <v-carousel-item                  
                   v-for="(slide, i) in slides"
                   :key="i"
-                >                  
+                >                                                                                
                   <v-sheet
                     :color="colors[i]"
-                    height="100%"
+                    height="70vh"
                   >
-                    <v-row
-                      class="fill-height"
-                      align="center"
-                      justify="center"
+                    <v-col
+                      cols="12"
                     >
                       <v-sparkline
                         :value="sparkValues"
@@ -87,16 +85,15 @@
                         :auto-line-width="autoLineWidth"
                         auto-draw
                       ></v-sparkline>
-                    </v-row>
+                    </v-col>
                   </v-sheet>
                 </v-carousel-item>
-              </v-carousel>
-
-            </v-sheet>
-          </v-col>
+             </v-carousel>
+            </v-sheet>    
+          </v-col>       
           <v-col cols="2">
             <v-sheet      
-              min-height="80vh"
+              min-height="30vh"
               v-if="loaded"         
               rounded="lg">
               <v-list                 
@@ -120,6 +117,7 @@
                 <v-divider class="my-2"></v-divider>
                 
               </v-list>              
+              
             </v-sheet>            
             <v-progress-circular
               v-else
@@ -127,7 +125,7 @@
               color="primary"
              ></v-progress-circular>
           </v-col>          
-        </v-row>
+        </v-row >
       </v-container>
     </v-main>
   </v-app>
@@ -261,13 +259,16 @@ export default class Landing extends Vue {
       })
     })
   }
-
 }
   
-
 </script>
 <style>
   .market {
     position: relative;
+  }
+  .market-name {
+    font-weight: bold;
+    color: white;
+    font-size: 30px;
   }
 </style>

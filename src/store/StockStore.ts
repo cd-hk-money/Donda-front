@@ -87,6 +87,11 @@ export default class StockStore extends VuexModule {
     })
   }
 
+  @Mutation
+  public uptateTitle(payload: string): void {
+    this.title = payload
+  }
+
   @Action
   public async searchContents () {
     console.log(this.title)
@@ -116,9 +121,9 @@ export default class StockStore extends VuexModule {
       const res = await axios.get(`/today`, HEADER)
       this.context.commit('updateStocks', res.data.data)
       this.context.commit('updateLoaded', true)
-
     } catch(e) {
       console.log(e)
     }
   }  
+  
 }
