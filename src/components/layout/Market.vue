@@ -94,17 +94,20 @@ export default class Market extends Vue {
     {
       market: 'KOPSI',
       close: '2233',
-      trans: '23112'
+      trans: '23112',
+      code: '002222'
     },
     {
-      market: 'nyse',
+      market: 'NYSE',
       close: '265442',
-      trans: '221223'
+      trans: '221223',
+      code: '001111'
     },
     {
-      market: 'codma',
+      market: 'CODMA',
       close: '2254',
-      trans: '2322454'
+      trans: '2322454',
+      code: '009999'
     }
   ]
 
