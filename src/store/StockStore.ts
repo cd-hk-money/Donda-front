@@ -1,7 +1,7 @@
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators'
-import { StockSimpleModel, StockDetailModel } from '@/models/stock'
+import { StockSimpleModel, StockDetailModel, StockPriceModel } from '@/models/stock'
+import { updateStateModel } from '@/models/payload'
 import axios from 'axios'
-
 const HEADER = {
   headers: {
     'Content-Type': 'text/plain;charset=utf-8'
@@ -26,6 +26,8 @@ export default class StockStore extends VuexModule {
 
   public subscribe!: StockSimpleModel[]   // 구독 여부
 
+  public sparkValues!: Array<number>
+
   // getters
   get nameMappingCode(): StockSimpleModel[] {
     return this.stocks
@@ -35,6 +37,15 @@ export default class StockStore extends VuexModule {
     return this.stocks.map(stock => stock.title)
   }
 
+  @Mutation
+  public setTitle(title: string): void {
+    this.title = title
+  }
+
+  @Mutation
+  public setSparkValues(values: Array<number>): void {
+    this.sparkValues = values
+  }
   @Mutation
   public updateStocks(stocks: any) {
     this.stocks = stocks.map((stock: Array<number | string | boolean>) => {
@@ -65,16 +76,34 @@ export default class StockStore extends VuexModule {
   public updateLoading(payload: boolean): void {
     this.loading = payload
   }
+  
+  @Mutation
+  public updateState(arg: any): void {
+    const state = Object.keys(arg)
+    const payload = Object.values(arg)
+    console.log(state, payload)
+    Object.keys(payload).forEach(key => {
+      
+    })
+  }
 
   @Action
-  public async searchContents (payload: string) {
-    console.log(payload)
+  public async searchContents () {
+    console.log(this.title)
     try {
       this.context.commit('updateLoading', true)
-      const root = parseInt(payload) ? 'findByCode' : 'findByName'
-      const res = await axios.get(`/${root}/${payload}/30`, HEADER)
+
+      const root: string = parseInt(this.title) ? 'findByCode' : 'findByName'    
+      const res = await axios.get(`/${root}/${this.title}/30`, HEADER)
+
       this.context.commit('updateLoading', false)
-      console.log(this.allStock)
+    
+      const result = Object.values(res.data).map((value: any) => Object.values(value)[3])
+      result.pop()
+  
+      this.context.commit('updateState', {
+        sparkValues: result,
+      })
     } catch(e) {
       console.log(e)
     }

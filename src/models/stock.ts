@@ -18,3 +18,12 @@ export interface StockDetailModel {
   higiestYears: string        // 52주 최고
   lowestYears: string         // 52주 최저  
 }
+
+export interface StockPriceModel {
+  Change: number
+  Close: number
+  High: number
+  Low: number
+  Open: number
+  Volume: number
+}

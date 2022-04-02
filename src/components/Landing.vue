@@ -75,7 +75,7 @@
                       justify="center"
                     >
                       <v-sparkline
-                        :value="value"
+                        :value="sparkValues"
                         :gradient="gradient"
                         :smooth="radius || false"
                         :padding="padding"
@@ -106,10 +106,8 @@
                   :key="stock.code"                  
                   link
                 >
-                  <v-list-item-content
-                    @click="searchStock" 
-                  >                                        
-                    <v-list-item-title>
+                  <v-list-item-content>                                        
+                    <v-list-item-title v-on:click.self="searchStock" >
                       {{ stock.title }} 
                     </v-list-item-title> 
                     <v-list-item-subtitle>
@@ -172,7 +170,6 @@ export default class Landing extends Vue {
   private padding: number = 8
   private lineCap: string = 'round'
   private gradient = gradients[5]
-  private value: Array<number>= [0, 2, 5, 9, 5, 10, 3, 5, 0, 0, 1, 8, 2, 9, 0]
   private gradientDirection: string = 'top'
   private gradients = gradients
   private fill: boolean = false
@@ -208,30 +205,43 @@ export default class Landing extends Vue {
   @StockStoreModule.State('loaded')
   private loaded!: boolean
 
+  @StockStoreModule.State('sparkValues')
+  private sparkValues!: Array<number>
+
   @StockStoreModule.State('title')
   private title!: string
-
+  
   @StockStoreModule.State('stocks')
   private stocks!: StockSimpleModel[]
+
+  @StockStoreModule.Mutation('setTitle')
+  // eslint-disable-next-line no-unused-vars
+  private readonly setTitle!: (title: string) => void
+
+  @StockStoreModule.Mutation('setSparkValues')
+  // eslint-disable-next-line no-unused-vars
+  private readonly setSparkValues!: (values: Array<number>) => void
 
   @StockStoreModule.Action('todayMarket')
   private readonly todayMarket!: () => void
 
   @StockStoreModule.Action('searchContents')
   // eslint-disable-next-line no-unused-vars
-  private readonly searchContents!: (payload: string) => void
+  private readonly searchContents!: () => void
  
   @StockStoreModule.Getter('searchTable')
   private readonly searchTable!: Array<string>
 
-  private searchStock(arg: any) {
-    if(typeof arg.target.innerHTML === 'string') 
-      this.searchContents(arg.target.innerHTML)
+  
+  private searchStock(arg: any) {    
+    this.setTitle(arg.target.innerText)
+    this.searchContents()
   }
 
   // created
   created(): void {
     this.todayMarket()
+    this.setSparkValues([0, 2, 5, 9, 5, 10, 3, 5, 0, 0, 1, 8, 2, 9, 0])
   }
 
   // watch
