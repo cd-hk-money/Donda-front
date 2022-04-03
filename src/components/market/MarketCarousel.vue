@@ -2,14 +2,13 @@
   <v-carousel
     cycle
     hide-delimiter-background
-    show-arrows-on-hover
+    show-arrows-on-hover         
   >
-    <v-carousel-item
-      
+    <v-carousel-item      
       v-for="(slide, i) in slides"
       :key="i"
     >
-      <v-sheet
+      <v-sheet        
         :color="colors[i]"
         height="100%"
       >
@@ -17,7 +16,7 @@
           height="50%"
         >          
         </v-row>
-        <v-row
+        <v-row          
           class="fill-height"        
           align="center"
           justify="center"

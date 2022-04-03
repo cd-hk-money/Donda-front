@@ -1,8 +1,8 @@
 <template>
   <v-app-bar
-  app
-  color="white"
-  flat
+    app
+    color="white"
+    flat
   >
     <v-avatar
       :color="$vuetify.breakpoint.smAndDown ? 'grey darken-1' : 'transparent'"
@@ -10,9 +10,10 @@
     ></v-avatar>
 
     <v-tabs
+      fixed-tabs
       centered
+      center-active
       class="ml-n9"
-      color="grey darken-1"
     >
       <v-tab
         v-for="link in links"

@@ -1,7 +1,7 @@
 <template>
   <v-hover
     v-slot="{ hover }"
-    open-delay="10"
+    open-delay="30"
   >
     <v-card
       class="pa-2"

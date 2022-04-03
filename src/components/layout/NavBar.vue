@@ -36,8 +36,10 @@ import { Component, Vue } from 'vue-property-decorator'
 @Component
 export default class NavBar extends Vue {
   private items = [
-    { title: 'Home', icon: 'mdi-view-dashboard' },
-    { title: 'About', icon: 'mdi-forum' },
+    { title: '관심종목 그룹1', icon: 'mdi-view-dashboard' },
+    { title: '관심종목 그룹2', icon: 'mdi-forum' },
+    { title: '관심종목 그룹3', icon: 'mdi-view-dashboard' },
+    { title: '관심종목 그룹4', icon: 'mdi-forum' },
   ]
 }
 
