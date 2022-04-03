@@ -8,14 +8,17 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component,  Mixins } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
+
 import { StockSimpleModel } from '@/models/stock'
+
+import TopListMixin from '@/mixins/TopListMixin.vue'
 
 const StockStoreModule = namespace('StockStore')
 
 @Component
-export default class Change extends Vue {
+export default class Change extends Mixins(TopListMixin) {
   @StockStoreModule.State('loaded')
   private loaded!: boolean
 
