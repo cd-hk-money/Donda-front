@@ -1,6 +1,5 @@
 <template>
   <v-card
-    class="fill-height"      
     elevation="12"
     width="256"
     rounded="xl"

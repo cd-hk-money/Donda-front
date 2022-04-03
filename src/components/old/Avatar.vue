@@ -51,7 +51,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { BarUser } from '../models/user'
+import { BarUser } from '../../models/user'
 
 @Component
 export default class Avatar extends Vue {

@@ -1,26 +1,27 @@
 <template>
-  <v-app>
+  <v-app id="inspire">
     <v-main>
-      <v2 />
+      <app-bar />
+      <router-view />        
     </v-main>
   </v-app>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-// import Landing from './components/Landing.vue'
-import V2 from './components/V2Component.vue'
+import AppBar from '@/components/layout/AppBar.vue'
 
 export default Vue.extend({
   name: 'App',
 
   components: {
-    // Landing
-    V2
+    AppBar
   },
 
   data: () => ({
-    //
+
   }),
+
 });
 </script>
+

@@ -43,7 +43,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator'
 
 // components
-import MarketChart from './MarketChart.vue'
+import MarketChart from '@/components/market/MarketChart.vue'
 
 // models
 import { MarketDescModel } from '../../models/market'

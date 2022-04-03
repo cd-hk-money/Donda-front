@@ -1,8 +1,6 @@
 <template>
   <v-app id="inspire">
 
-    <app-bar />
-    <!-- main  -->
     <v-main class="grey lighten-1">              
       <v-container>
         <v-row >
@@ -10,21 +8,14 @@
             cols="12"
             sm="2"            
           >                    
-            <navbar />
+            <nav-bar />
           </v-col>          
           <!-- 메인 컨텐츠 영역 -->
           <v-col                      
             cols="12"
             sm="8"
           >       
-            <v-sheet
-              class="grey lighten-3"
-              min-height="80vh"
-              rounded="xl"
-            >       
-              <market />                
-              <recommend />
-            </v-sheet>                     
+                  
           </v-col>        
           <v-col
             cols="12"
@@ -39,20 +30,14 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import Market from './layout/Market.vue'
-import AppBar from './layout/AppBar.vue'
-import Navbar from './layout/NavBar.vue'
-import Recommend from './layout/Recommend.vue'
+import NavBar from '@/components/layout/NavBar.vue'
 
 @Component({
   components: {
-    AppBar,
-    Navbar,
-    Market,
-    Recommend
+    NavBar
   }
 })
-export default class V2Component extends Vue {
+export default class Trans extends Vue {
   
 }
 </script>

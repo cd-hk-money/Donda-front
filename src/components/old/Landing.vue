@@ -135,7 +135,7 @@
 
 import { StockSimpleModel } from '@/models/stock';
 import { Component, Vue, Watch } from 'vue-property-decorator';
-import { BarUser } from '../models/user'
+import { BarUser } from '../../models/user'
 import { namespace } from 'vuex-class'
 import TopList from './TopList.vue'
 import Avatar from './Avatar.vue'
