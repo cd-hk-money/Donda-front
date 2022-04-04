@@ -1,20 +1,33 @@
 <template>
-  <v-card
+  <v-card    
+    dark
     elevation="0"
     rounded="xl"
     class="mx-auto" 
     :color="color"
   >
     <v-card-text>      
-      <span class="text-h3 text--primary font-weight-bold">
-        {{ desc.market }} 
-      </span>
-      <span class="text-h5 ">
-        {{ desc.code }}
-      </span>
-      <p class="text-h5 font-weight-light">
-        <!-- {{ desc.close }} , {{ desc.trans }}% -->
-      </p>
+      <v-row>
+        <v-col cols="12" sm="4">
+          <span class="text-h3 font-weight-bold">
+            {{ desc.market }} 
+          </span>
+          <span class="text-h5 ">
+            0000{{ desc.code }}
+          </span>                
+        </v-col>
+        <v-col cols="12" sm="7">          
+        </v-col>
+        <v-col cols="12" sm="1">                    
+          <v-btn 
+            class="ma-2"
+            outlined
+            depressed
+          >
+            자세히
+          </v-btn>
+        </v-col>
+      </v-row>
     </v-card-text>    
   </v-card>
 </template>
@@ -37,7 +50,7 @@ export default class MarketDesc extends Vue {
       }
     }
   }) private desc!: MarketDescModel
-  @Prop() private color!: string
+  @Prop({ default: 'white'}) private color!: string
   @Prop({ default:'코드'}) private code!: string
 
   private reveal: boolean = false

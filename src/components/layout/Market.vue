@@ -8,10 +8,9 @@
     <v-col
       cols="12"
       sm="10"                  
-    >
-      <v-card>            
-      </v-card>
+    >      
       <v-carousel
+        class="market-carousel"        
         cycle
         hide-delimiter-background
         show-arrows-on-hover
@@ -85,9 +84,9 @@ const StockStoreModule = namespace('StockStore')
 })
 export default class Market extends Vue {
     private colors: Array<string> = [
-    'grey lighten-2',
-    'grey lighten-2',
-    'grey lighten-2',    
+    'grey darken-3',
+    'grey darken-3',
+    'grey darken-3',    
   ]
 
   private slides: MarketDescModel[] = [
@@ -116,3 +115,9 @@ export default class Market extends Vue {
 }
 
 </script>
+
+<style>
+ .market-carousel {
+   margin-top: 30px;
+ }
+</style>

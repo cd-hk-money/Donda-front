@@ -1,14 +1,13 @@
 <template>
   <v-app id="inspire">
 
-    <v-main class="grey lighten-1">              
+    <v-main class="grey darken-4">              
       <v-container>
         <v-row >
           <v-col            
             cols="12"
             sm="2"            
           >                    
-            <navbar />
           </v-col>          
           <!-- 메인 컨텐츠 영역 -->
           <v-col                      
@@ -16,11 +15,11 @@
             sm="8"
           >       
             <v-sheet
-              class="grey lighten-3"
+              class="grey darken-2"
               min-height="80vh"
               rounded="xl"
             >       
-              <market />                
+              <market />                                
               <recommend />
             </v-sheet>                     
           </v-col>        
@@ -50,9 +49,6 @@ import Recommend from './layout/Recommend.vue'
     Recommend
   }
 })
-export default class Home extends Vue {
-  created () {
-    
-  }
+export default class Home extends Vue {  
 }
 </script>

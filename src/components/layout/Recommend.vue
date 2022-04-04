@@ -9,13 +9,23 @@
       cols="12"
       sm="10"                  
     >       
+      <v-card 
+        elevation="0"
+        class="grey darken-2"
+        dark
+      >
+        
+        <v-card-title class="text-h5 font-weight-bold">       
+          오늘의 추천 종목   
+        </v-card-title>
+      </v-card>      
       <v-row>
         <v-col  
           v-for="i in 3"
           :key="i"
           cols="12"
           sm="4"
-        >
+        >          
           <recommend-content />
         </v-col>
       </v-row>         
@@ -30,7 +40,7 @@
 
 <script lang="ts">
 
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue, Prop } from 'vue-property-decorator'
 import RecommendContent from '@/components/recommend/RecommentContent.vue'
 
 @Component({
@@ -39,7 +49,7 @@ import RecommendContent from '@/components/recommend/RecommentContent.vue'
   }
 })
 export default class Recommend extends Vue {
-
+  @Prop({default: 'white'}) color!: boolean
 }
 
 </script>

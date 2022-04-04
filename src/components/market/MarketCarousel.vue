@@ -2,11 +2,11 @@
   <v-carousel
     cycle
     hide-delimiter-background
-    show-arrows-on-hover         
+    show-arrows-on-hover             
   >
     <v-carousel-item      
       v-for="(slide, i) in slides"
-      :key="i"
+      :key="i"      
     >
       <v-sheet        
         :color="colors[i]"
@@ -30,7 +30,7 @@
             cols="12"
             sm="12"
           >
-            <market-chart color="grey" />
+            <market-chart color="white" />
           </v-col>
         </v-row>
       </v-sheet>

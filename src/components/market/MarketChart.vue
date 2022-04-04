@@ -1,6 +1,7 @@
 <template>
   <div>
     <v-sparkline
+      dark
       :color="color"
       :value="value"    
       :smooth="radius || false"
@@ -11,8 +12,12 @@
       :fill="fill"
       :type="type"
       :auto-line-width="autoLineWidth"    
-      auto-draw
-    ></v-sparkline>  
+      auto-draw        
+    >
+      <!-- <template v-slot:label="item">
+        {{ item.value }}
+      </template>        -->
+    </v-sparkline>  
     <!-- <Bar
       :chart-options="chartOptions"
       :chart-data="chartData"
@@ -59,7 +64,7 @@ export default class MarketChart extends Vue {
   // }
 
   // sparkLine
-  private width: number = 2
+  private width: number = 1.5
   private radius: number = 10
   private padding: number = 8
   private lineCap: string = "round"

@@ -1,7 +1,7 @@
 <template>
   <v-app-bar
     app
-    color="white"
+    color="grey darken-3"
     flat
   >
     <v-avatar
@@ -14,6 +14,7 @@
       centered
       center-active
       class="ml-n9"
+      dark
     >
       <v-tab
         v-for="link in links"
