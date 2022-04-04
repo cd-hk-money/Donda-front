@@ -15,7 +15,7 @@
           >       
             <v-sheet
               class="grey darken-2"
-              min-height="80vh"
+              min-height="910px"
               rounded="xl"
             >            
               <trans-list /> 

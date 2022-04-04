@@ -13,8 +13,7 @@
         elevation="0"
         class="grey darken-2"
         dark
-      >
-        
+      >        
         <v-card-title class="text-h5 font-weight-bold">       
           오늘의 추천 종목   
         </v-card-title>
@@ -41,6 +40,8 @@
 <script lang="ts">
 
 import { Component, Vue, Prop } from 'vue-property-decorator'
+
+// components
 import RecommendContent from '@/components/recommend/RecommentContent.vue'
 
 @Component({

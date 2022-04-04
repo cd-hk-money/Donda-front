@@ -35,6 +35,8 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
+
+// models
 import { RouteModel } from '@/models/app'
 
 @Component
