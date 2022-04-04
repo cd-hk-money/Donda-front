@@ -32,8 +32,6 @@
                 >
                   mdi-star-outline
                 </v-icon>
-
-
               </v-list-item-action>
           </v-list-item>
 
@@ -44,6 +42,17 @@
         </template>
       </v-list-item-group>
     </v-list>
+    <v-divider></v-divider>
+      <v-container
+        fluid
+        class="text-center"
+      >
+        <v-btn>
+          <v-icon>
+            mdi-arrow-down
+          </v-icon>
+        </v-btn>
+      </v-container>
   </v-card>
 </template>
 
@@ -112,6 +121,6 @@ export default class TransList extends Vue {
 
 <style scoped>
 .ranking-content {
-  height: 91px;
+  height: 82px;
 }
 </style>
