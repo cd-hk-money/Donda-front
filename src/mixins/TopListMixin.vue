@@ -14,5 +14,8 @@ export default class TopListMixin extends Vue {
   @StockStoreModule.State('stocks')
   public stock!: StockSimpleModel[]
 
+  @StockStoreModule.Action('todayMarket')
+  public readonly todayMarket!: () => void
+
 }
 </script>

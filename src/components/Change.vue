@@ -54,9 +54,6 @@ export default class Change extends Mixins(TopListMixin) {
   @StockStoreModule.State('loaded')
   private loaded!: boolean
 
-  @StockStoreModule.Action('todayMarket')
-  private todayMarket!: () => void
-
   private created () {
     console.log('todayMarket()')
   }

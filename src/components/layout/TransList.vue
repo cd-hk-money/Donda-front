@@ -1,30 +1,35 @@
 <template>
-  <v-card
+  <v-card    
     dark  
   >
-    <v-list             
+    <v-list                   
       two-line>
       <v-list-item-group        
         v-model="selected"
-        multiple        
       >
         <template v-for="(item, index) in items">            
           <v-list-item  
             class="ranking-content"
-             :key="item.code">
-            
-              <v-list-item-avatar>
-                <p class="text-h5 font-weight-bold">{{ index + 1 }}</p>
-              </v-list-item-avatar>            
-              <v-list-item-content>                
-                <v-list-item-title v-text="item.title"></v-list-item-title>
-                <v-list-item-subtitle                  
-                  v-text="item.code"
-                ></v-list-item-subtitle>
-
-                
-              </v-list-item-content>
-
+            @click="clickList"
+             :key="item.code"
+          >
+                <v-list-item-avatar>
+                  <p class="text-h4 font-weight-bold">{{ index + 1 }}</p>
+                </v-list-item-avatar>            
+                <v-list-item-content>                
+                  <v-list-item-title 
+                    class="text-h5"
+                    v-text="item.title"></v-list-item-title>
+                  <v-list-item-subtitle                  
+                    v-text="item.code"
+                  ></v-list-item-subtitle>                
+                </v-list-item-content>                          
+                <v-col cols="12" sm="2">
+                  <p>종가 ...</p> <p></p>
+                </v-col>
+                <v-col cols="12" sm="2">
+                  <p>변동률 ...</p>
+                </v-col>
               <v-list-item-action>                
 
                 <v-icon                  
@@ -47,7 +52,8 @@
         fluid
         class="text-center"
       >
-        <v-btn>
+        <v-btn @click="moreTran"          
+          >
           <v-icon>
             mdi-arrow-down
           </v-icon>
@@ -57,13 +63,21 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue, Watch } from 'vue-property-decorator'
+import { namespace } from 'vuex-class'
 
 import { StockSimpleModel } from '@/models/stock'
 
+
+const StockStoreModule = namespace('StockStore')
+
 @Component 
 export default class TransList extends Vue {
-  private selected: Array<any> = []
+
+  @StockStoreModule.State('stock')
+  private stock!: Array<StockSimpleModel>
+
+  private selected: number = 0
   private items: Array<StockSimpleModel> = [
     {
       title: '샘송전자',
@@ -116,6 +130,59 @@ export default class TransList extends Vue {
       stock: 999
     },
   ]
+  
+  @Watch('selected', {immediate: true, deep: true})
+  public selectedItem(): void {   
+    if(!this.selected) return
+
+    this.$router.push(`/detail/${this.items[this.selected].code}`)
+    
+  }
+
+  // 더보기 
+  private moreTran(): void {
+
+    // 목록을 더 불러온다.
+    this.items.push(
+      {
+        title: '샘숭전자',
+        code: '004453',
+        stock: 999
+      },
+      {
+        title: '샘숭전자',
+        code: '004453',
+        stock: 999
+      },
+      {
+        title: '샘숭전자',
+        code: '004453',
+        stock: 999
+      },
+      {
+        title: '샘숭전자',
+        code: '004453',
+        stock: 999
+      },
+      {
+        title: '샘숭전자',
+        code: '004453',
+        stock: 999
+      },
+    )
+
+    setTimeout(() => {
+      window.scrollTo(0, document.body.scrollHeight)
+    }, 500)    
+  }    
+
+  @StockStoreModule.Action('searchContents')
+  // eslint-disable-next-line no-unused-vars
+  private readonly searchContents!:(code: string) => Promise<any>
+
+  private clickList(e: PointerEvent): void {
+    e.target
+  }
 }
 </script>
 

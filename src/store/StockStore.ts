@@ -14,6 +14,7 @@ export default class StockStore extends VuexModule {
 
   // state
   public title: string = ''               // Search 컴포넌트 title 
+  public code: string = ''
 
   public loading: boolean = false
   public loaded: boolean = false
@@ -35,6 +36,16 @@ export default class StockStore extends VuexModule {
 
   get searchTable(): Array<string> {
     return this.stocks.map(stock => stock.title)
+  }
+
+  @Mutation
+  public setCode(newCode: string): void {
+    this.code = newCode
+  }
+
+  @Mutation
+  public setString(payload: string, newString: string): void {
+    
   }
 
   @Mutation
@@ -93,13 +104,12 @@ export default class StockStore extends VuexModule {
   }
 
   @Action
-  public async searchContents () {
-    console.log(this.title)
+  public async searchContents (code: string): Promise<any> {
     try {
       this.context.commit('updateLoading', true)
 
       const root: string = parseInt(this.title) ? 'findByCode' : 'findByName'    
-      const res = await axios.get(`/${root}/${this.title}/30`, HEADER)
+      const res = await axios.get(`/${root}/${code}/30`, HEADER)
 
       this.context.commit('updateLoading', false)
     

@@ -224,7 +224,6 @@ export default class Landing extends Vue {
   private readonly todayMarket!: () => void
 
   @StockStoreModule.Action('searchContents')
-  // eslint-disable-next-line no-unused-vars
   private readonly searchContents!: () => void
  
   @StockStoreModule.Getter('searchTable')
