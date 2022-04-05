@@ -63,7 +63,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator'
+import { Component, Vue, Watch, Emit } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 
 import { StockSimpleModel } from '@/models/stock'
@@ -76,6 +76,14 @@ export default class TransList extends Vue {
 
   @StockStoreModule.State('stock')
   private stock!: Array<StockSimpleModel>
+
+  @StockStoreModule.Mutation('setCode')
+  // eslint-disable-next-line no-unused-vars
+  private setCode!:(code: string) => void
+
+  @StockStoreModule.Mutation('setTitle')
+  // eslint-disable-next-line no-unused-vars
+  private setTitle!:(code: string) => void
 
   private selected: number = 0
   private items: Array<StockSimpleModel> = [
@@ -132,10 +140,16 @@ export default class TransList extends Vue {
   ]
   
   @Watch('selected', {immediate: true, deep: true})
-  public selectedItem(): void {   
+  public selectedItem(): void {       
     if(!this.selected) return
 
-    this.$router.push(`/detail/${this.items[this.selected].code}`)
+    const code = this.items[this.selected].code
+    const title = this.items[this.selected].title
+    
+    this.emitClickList()
+    this.setCode(code)
+    this.setTitle(title)
+    this.$router.push(`/detail/${code}`)
     
   }
 
@@ -182,6 +196,11 @@ export default class TransList extends Vue {
 
   private clickList(e: PointerEvent): void {
     e.target
+  }
+
+  @Emit()
+  emitClickList(): number {    
+    return this.selected
   }
 }
 </script>

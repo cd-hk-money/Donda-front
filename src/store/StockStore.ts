@@ -42,16 +42,17 @@ export default class StockStore extends VuexModule {
   public setCode(newCode: string): void {
     this.code = newCode
   }
-
+  
+  @Mutation
+  public setTitle(title: string): void {
+    this.title = title
+  }
+  
   @Mutation
   public setString(payload: string, newString: string): void {
     
   }
 
-  @Mutation
-  public setTitle(title: string): void {
-    this.title = title
-  }
 
   @Mutation
   public setSparkValues(values: Array<number>): void {

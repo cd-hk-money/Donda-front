@@ -33,19 +33,23 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue,  } from 'vue-property-decorator'
 import NavBar from '@/components/layout/NavBar.vue'
 import TransList from '@/components/layout/TransList.vue'
 
 @Component({
   components: {
     NavBar,
-    TransList
+    TransList,
   }
 })
 export default class Trans extends Vue {
   private created (): void {
     console.log('Trans Page')
+  }
+
+  clickList(newVal: any): void {
+    console.log(newVal)
   }
 }
 </script>

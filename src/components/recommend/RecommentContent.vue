@@ -29,7 +29,7 @@
       </v-card-title>
 
       <v-card-subtitle>
-        {{ subTitle }}
+        {{ code }}
       </v-card-subtitle>
 
     </v-card>
@@ -38,18 +38,31 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
+import { namespace } from 'vuex-class'
+
+const StockStoreModule = namespace('StockStore')
 
 
 @Component
 export default class RecommendConent extends Vue {
 
   @Prop({ default: '기업이름'}) title!: string
-  @Prop({ default: '000000'}) subTitle!: string
+  @Prop({ default: '000000'}) code!: string
+
+  @StockStoreModule.Mutation('setCode')
+  // eslint-disable-next-line no-unused-vars
+  private setCode!: (code: string) => void
+
+  @StockStoreModule.Mutation('setTitle')
+  // eslint-disable-next-line no-unused-vars
+  private setTitle!: (title: string) => void
 
   private show: boolean = false
 
   private cardClick(): void {
-    console.log(this.subTitle)
+    this.setCode(this.code)
+    this.setTitle(this.title)
+    this.$router.push(`/detail/${this.code}`)
   }
 }
 </script>
