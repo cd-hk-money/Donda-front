@@ -13,7 +13,7 @@ const HEADER = {
 export default class StockStore extends VuexModule {
 
   // state
-  public title: string = ''               // Search 컴포넌트 title 
+  public title: string = ''               
   public code: string = ''
 
   public loading: boolean = false

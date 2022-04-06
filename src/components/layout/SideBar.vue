@@ -5,7 +5,7 @@
     left
     absolute
     bottom    
-    floating      
+    floating       
   >
     <v-list>
       <div class="pa-2">
@@ -31,21 +31,47 @@
     <v-list
       nav
       dense
+      v-for="(interest, index) in interetGroups"
+      :key="index"
     >
       <v-list-item link>
         <v-list-item-icon>
-          <v-icon>mdi-star</v-icon>
-        </v-list-item-icon>
-        <v-list-item-title>관심종목 그룹 1</v-list-item-title>
-      </v-list-item>
-      <v-list-item link>
-        <v-list-item-icon>
-          <v-icon>mdi-star</v-icon>
-        </v-list-item-icon>
-        <v-list-item-title>관심종목 그룹 2</v-list-item-title>
-      </v-list-item>      
+          <v-icon>{{ interest.icon }}</v-icon>
+        </v-list-item-icon>          
+        <v-list-item-title>{{ interest.title }}</v-list-item-title>
+          <v-btn icon>
+            <v-icon>mdi-square-edit-outline</v-icon>
+          </v-btn>
+      </v-list-item>     
+      
     </v-list>  
 
+    <v-divider></v-divider>
+    <v-list>
+      <div  
+        v-if="!inputMode"
+        class="pa-2">
+        <v-btn 
+          v-if="!inputMode"
+          class="pa-2"
+          @click="inputMode=true"
+          icon>
+          <v-icon>mdi-plus</v-icon>
+        </v-btn>
+      </div>   
+      <v-text-field        
+        filled
+        dense            
+        flat
+        v-else
+        rounded
+        autofocus    
+        v-model="groupTitle"  
+        ref="groupInput"
+        @blur="inputModeBlur"    
+        @keypress.enter="addInterestGroup"  
+      ></v-text-field>
+    </v-list>
       <template v-slot:append>             
         <div class="pa-2">
           <v-btn 
@@ -66,6 +92,7 @@ import { Component, Vue, Watch } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 
 // models
+import { InterestGroupModel } from '@/models/interest'
 
 const StockStoreModule = namespace('StockStore')
 
@@ -86,8 +113,39 @@ export default class SideBar extends Vue {
   // eslint-disable-next-line no-unused-vars
   private setTitle!: (title: string) => void
 
+  // 검색창 
   private search: any = null
+
+  // 자동완성 항목
   private items: Array<string> = []
+
+  private inputMode: boolean = false
+
+  private groupTitle: string = ''
+
+  // 관심종목 그룹
+  private interetGroups: Array<InterestGroupModel> = [
+    {
+      title: '관심종목 그룹1',
+      icon: "mdi-star",
+      listItem: []
+    },
+    {
+      title: '관심종목 그룹2',
+      icon: "mdi-star",
+      listItem: []
+    },
+    {
+      title: '관심종목 그룹1',
+      icon: "mdi-star",
+      listItem: []
+    },
+    {
+      title: '관심종목 그룹2',
+      icon: "mdi-star",
+      listItem: []
+    },
+  ]
 
   @Watch("search")
   public watchSearch(val: any) {
@@ -104,10 +162,6 @@ export default class SideBar extends Vue {
       })
     })
   }
-  
-  created() {
-    this.requestTodayMarket()
-  }
 
   private push(): void {
     this.setCode('000000')
@@ -115,5 +169,26 @@ export default class SideBar extends Vue {
     this.$router.push(`/detail/${this.search}`)
   }
 
+  private revealTextArea(): void {
+    this.inputMode = true
+  }
+  
+  private addInterestGroup(): void {
+    this.interetGroups.push({
+      title: this.groupTitle,
+      icon: 'mdi-star',
+      listItem: []
+    })
+    this.groupTitle = ''
+  }
+  
+  private inputModeBlur(): void {
+    this.inputMode = false
+    this.groupTitle = ''
+  }
+
+  created() {
+    this.requestTodayMarket()
+  }
 }
 </script>

@@ -6,7 +6,8 @@ export interface InterestGroupsModel {
 }
 
 export interface InterestGroupModel {
-  listName: String
+  title: string,
+  icon: string,
   listItem: InterestModel[]
 }
 
