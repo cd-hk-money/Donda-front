@@ -5,29 +5,25 @@
     left
     absolute
     bottom    
-    floating  
+    floating      
   >
     <v-list>
-      <v-list> 
-        
-      </v-list>
-      <v-autocomplete      
-        cless="mx-4"
-        dense            
-        flat
-        rounded
-        solo-inverted
-        cache-items   
-        ref="autoinput"
-        v-model="searchTable"            
-        :items="items"
-        :search-input.sync="search"
-        hide-no-data
-        hide-details        
-        @keypress.enter="push(search)"
-      >
-
-      </v-autocomplete>
+      <div class="pa-2">
+        <v-autocomplete      
+          dense            
+          flat
+          rounded
+          solo-inverted
+          cache-items   
+          ref="autoinput"
+          v-model="searchTable"            
+          :items="items"
+          :search-input.sync="search"
+          hide-no-data
+          hide-details        
+          @keypress.enter="push(search)"
+        ></v-autocomplete>
+      </div>  
     </v-list>
 
     <v-divider></v-divider>
@@ -47,9 +43,9 @@
           <v-icon>mdi-star</v-icon>
         </v-list-item-icon>
         <v-list-item-title>관심종목 그룹 2</v-list-item-title>
-      </v-list-item>
-      
-    </v-list>    
+      </v-list-item>      
+    </v-list>  
+
       <template v-slot:append>             
         <div class="pa-2">
           <v-btn 
@@ -61,6 +57,7 @@
           </v-btn>
         </div>            
       </template>
+
   </v-navigation-drawer>
 </template>
 

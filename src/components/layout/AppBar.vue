@@ -2,19 +2,14 @@
   <v-app-bar
     app
     color="grey darken-3"
-    flat
     temporary
+    dark
   >    
-    <v-avatar
-      :color="$vuetify.breakpoint.smAndDown ? 'grey darken-1' : 'transparent'"
-      size="32"
-    > </v-avatar>
     <v-tabs
       fixed-tabs
       centered
       center-active
       class="ml-n9"
-      dark
     >
       <v-tab
         v-for="link in links"
@@ -28,7 +23,7 @@
     <v-avatar
       class="hidden-sm-and-down"
       color="grey darken-1 shrink"
-      size="32"
+      size="20"
     ></v-avatar>
   </v-app-bar>
 </template>
@@ -38,7 +33,6 @@ import { Component, Vue } from 'vue-property-decorator'
 
 // models
 import { RouteModel } from '@/models/app'
-
 
 @Component
 export default class AppBar extends Vue {
@@ -61,6 +55,5 @@ export default class AppBar extends Vue {
   private push(link: RouteModel): void {
     this.$router.push(link.route)
   }
-  
 }
 </script>

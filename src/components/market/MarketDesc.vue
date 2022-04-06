@@ -18,14 +18,52 @@
         </v-col>
         <v-col cols="12" sm="7">          
         </v-col>
-        <v-col cols="12" sm="1">                    
-          <v-btn 
+        <v-col cols="12" sm="1">     
+          <!-- <v-btn 
             class="ma-2"
             outlined
             depressed
+            @click="clickDetail"
           >
             자세히
-          </v-btn>
+          </v-btn> -->
+            <div class="text-center">
+            <v-dialog              
+              v-model="dialog"
+              width="1200"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  outlined
+                  class="ma-2"
+                  dark
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  자세히
+                </v-btn>
+              </template>
+
+              <v-card rounded="xl">
+                <v-card-title>
+                  {{desc.market}}
+                </v-card-title>
+
+                <v-card-text>
+                  <v-sheet
+                    class="grey lighten-2"
+                    min-height="500"
+                    rounded="xl"
+                  >
+                   
+                  </v-sheet>
+                </v-card-text>
+
+                <v-divider></v-divider>
+
+              </v-card>
+            </v-dialog>
+          </div>
         </v-col>
       </v-row>
     </v-card-text>    
@@ -36,7 +74,7 @@
 import { Component, Vue, Prop }  from 'vue-property-decorator'
 
 // models
-import { MarketDescModel } from '../../models/market'
+import { MarketDescModel } from '@/models/market'
 
 @Component
 export default class MarketDesc extends Vue {
@@ -54,9 +92,12 @@ export default class MarketDesc extends Vue {
   @Prop({ default:'코드'}) private code!: string
 
   private reveal: boolean = false
-  
-}
+  private dialog: boolean = false
 
+  private clickDetail (): void {
+    
+  }  
+}
 </script>
 
 <style scoped>

@@ -6,14 +6,15 @@
         sm="2"            
       >         
         <side-bar />           
-      </v-col>                              
+      </v-col>    
+
       <v-col                      
         cols="12"
         sm="8"
       >       
         <v-sheet
           class="grey darken-2"
-          min-height="910px"
+          min-height="800px"
           rounded="xl"
         >            
           <trans-list /> 
@@ -30,7 +31,6 @@
 
 <script lang="ts">
 import { Component,  Mixins } from 'vue-property-decorator'
-import NavBar from '@/components/layout/NavBar.vue'
 import SideBar from '@/components/layout/SideBar.vue'
 import TransList from '@/components/layout/TransList.vue'
 import { namespace } from 'vuex-class'
@@ -43,7 +43,6 @@ const StockStoreModule = namespace('StockStore')
 
 @Component({
   components: {
-    NavBar,
     TransList,
     SideBar
   }

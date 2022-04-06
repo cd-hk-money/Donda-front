@@ -40,7 +40,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 import MarketChart from '@/components/market/MarketChart.vue'
 
 // models
-import { MarketDescModel } from '../../models/market'
+import { MarketDescModel } from '@/models/market'
 
 
 @Component({
@@ -52,7 +52,6 @@ export default class MarketCarousel extends Vue {
 
   @Prop() private color!: Array<string>
   @Prop() private slides!: Array<MarketDescModel>
-
 }
 
 

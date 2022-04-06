@@ -207,6 +207,6 @@ export default class TransList extends Vue {
 
 <style scoped>
 .ranking-content {
-  height: 82px;
+  height: 73px;
 }
 </style>

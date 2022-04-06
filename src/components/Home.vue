@@ -7,7 +7,7 @@
       >        
         <side-bar />             
       </v-col>          
-      <!-- 메인 컨텐츠 영역 -->
+      
       <v-col   
         class="main-content"
         cols="12"
@@ -17,7 +17,6 @@
           class="grey darken-2"
           min-height="800px"
           rounded="xl"      
-          absolute
         >       
           <market />                                
           <recommend />
@@ -34,22 +33,20 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import Market from './layout/Market.vue'
-import AppBar from './layout/AppBar.vue'
-import Navbar from './layout/NavBar.vue'
-import SideBar from './layout/SideBar.vue'
-import Recommend from './layout/Recommend.vue'
+
+import SideBar from '@/components/layout/SideBar.vue'
+import Market from '@/components/layout/Market.vue'
+import Recommend from '@/components/layout/Recommend.vue'
 
 @Component({
   components: {
-    AppBar,
-    Navbar,
     SideBar,
     Market,
     Recommend
   }
 })
 export default class Home extends Vue {  
+
 }
 </script>
 

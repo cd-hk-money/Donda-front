@@ -6,7 +6,8 @@
         sm="2"            
       >                    
       </v-col>                
-        <side-bar />               
+        <side-bar />
+
       <v-col                      
         cols="12"
         sm="8"
@@ -32,7 +33,6 @@
 import { Component, Vue } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 
-import NavBar from '@/components/layout/NavBar.vue'
 import SideBar from '@/components/layout/SideBar.vue'
 import TransList from '@/components/layout/TransList.vue'
 import StockDetail from '@/components/layout/StockDetail.vue'
@@ -43,7 +43,6 @@ const StockStoreModule = namespace('StockStore')
 
 @Component({
   components: {
-    NavBar,
     TransList,
     StockDetail,
     SideBar
