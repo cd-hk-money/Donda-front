@@ -9,13 +9,8 @@
       :key="i"      
     >
       <v-sheet        
-        :color="colors[i]"
-        height="100%"
-      >
-        <v-row          
-          height="50%"
-        >          
-        </v-row>
+        :color="colors[i]"        
+      >        
         <v-row          
           class="fill-height"        
           align="center"

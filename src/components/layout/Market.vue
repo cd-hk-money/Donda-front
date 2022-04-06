@@ -10,6 +10,7 @@
       sm="10"                  
     >      
       <v-carousel
+        height="400px"
         class="market-carousel"        
         cycle
         hide-delimiter-background
@@ -23,11 +24,6 @@
             :color="colors[i]"
             height="100%"
           >                
-            <v-row          
-              height="50%"
-            >          
-              
-            </v-row>
             <v-row
               class="fill-height"        
               align="center"
@@ -50,14 +46,14 @@
               </v-col>
             </v-row>
           </v-sheet>
-        </v-carousel-item>      
+        </v-carousel-item>              
       </v-carousel>                  
     </v-col>
     <v-col
       cols="12"
       sm="1"
     >                
-    </v-col>        
+    </v-col>            
   </v-row>                
 </template>
 
@@ -118,6 +114,6 @@ export default class Market extends Vue {
 
 <style>
  .market-carousel {
-   margin-top: 30px;
+   
  }
 </style>

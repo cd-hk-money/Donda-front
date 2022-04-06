@@ -3,12 +3,12 @@
     app
     color="grey darken-3"
     flat
-  >
+    temporary
+  >    
     <v-avatar
       :color="$vuetify.breakpoint.smAndDown ? 'grey darken-1' : 'transparent'"
       size="32"
-    ></v-avatar>
-
+    > </v-avatar>
     <v-tabs
       fixed-tabs
       centered
@@ -39,24 +39,28 @@ import { Component, Vue } from 'vue-property-decorator'
 // models
 import { RouteModel } from '@/models/app'
 
+
 @Component
 export default class AppBar extends Vue {
+
   private links: Array<RouteModel> = [
-      {
-        title: '오늘의 주식 시장',
-        route: '/'
-      },
-      {
-        title: '변동률 TOP 10',
-        route: '/trans'
-      },
-      {
-        title: '거래대금 TOP 10',
-        route: '/change'
-      }
-    ]
+    {
+      title: '오늘의 주식 시장',
+      route: '/'
+    },
+    {
+      title: '변동률 TOP 10',
+      route: '/trans'
+    },
+    {
+      title: '거래대금 TOP 10',
+      route: '/change'
+    }
+  ]
+
   private push(link: RouteModel): void {
     this.$router.push(link.route)
   }
+  
 }
 </script>

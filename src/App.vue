@@ -1,7 +1,7 @@
 <template>
-  <v-app id="inspire">
-    <v-main>
-      <app-bar />
+  <v-app id="inspire">      
+    <app-bar />
+    <v-main class="grey darken-4"> 
       <router-view />        
     </v-main>
   </v-app>
@@ -15,7 +15,7 @@ export default Vue.extend({
   name: 'App',
 
   components: {
-    AppBar
+    AppBar,
   },
 
   data: () => ({

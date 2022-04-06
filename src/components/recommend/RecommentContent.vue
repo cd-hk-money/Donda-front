@@ -7,8 +7,8 @@
       dark
       class="pa-2"
       :class="{'on-hover': hover}"
-      max-width="344"
-      min-height="300"
+      max-width="230"
+      min-height="240"
       rounded="xl"
       :elevation="hover ? 16 : 2"
       @click="cardClick"

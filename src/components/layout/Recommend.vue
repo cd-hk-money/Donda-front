@@ -9,21 +9,22 @@
       cols="12"
       sm="10"                  
     >       
+      <p 
+        class="text-h5 font-weight-bold "
+        style="color:white;"           
+      >오늘의 추천 종목</p>
       <v-card 
         elevation="0"
         class="grey darken-2"
         dark
-      >        
-        <v-card-title class="text-h5 font-weight-bold">       
-          오늘의 추천 종목   
-        </v-card-title>
+      >                
       </v-card>      
       <v-row>
         <v-col  
-          v-for="i in 3"
+          v-for="i in 4"
           :key="i"
           cols="12"
-          sm="4"
+          sm="3"
         >          
           <recommend-content />
         </v-col>

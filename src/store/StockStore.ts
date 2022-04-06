@@ -23,19 +23,16 @@ export default class StockStore extends VuexModule {
 
   public stocks!: StockSimpleModel[]     // 상장된 모든 종목        
   public stock!: StockDetailModel | null   // 검색한 종목 하나에 대한 주가 정보
+  public searchTable!: Array<string>
   public allStock!: any
 
   public subscribe!: StockSimpleModel[]   // 구독 여부
 
   public sparkValues!: Array<number>
-
+  
   // getters
   get nameMappingCode(): StockSimpleModel[] {
     return this.stocks
-  }
-
-  get searchTable(): Array<string> {
-    return this.stocks.map(stock => stock.title)
   }
 
   @Mutation
@@ -49,15 +46,10 @@ export default class StockStore extends VuexModule {
   }
   
   @Mutation
-  public setString(payload: string, newString: string): void {
-    
+  public setSearchTable(): void {
+    this.searchTable = this.stocks.map(stock => stock.title)
   }
 
-
-  @Mutation
-  public setSparkValues(values: Array<number>): void {
-    this.sparkValues = values
-  }
   @Mutation
   public updateStocks(stocks: any) {
     this.stocks = stocks.map((stock: Array<number | string | boolean>) => {
@@ -127,11 +119,12 @@ export default class StockStore extends VuexModule {
 
   @Action
   public async todayMarket(): Promise<void> {
-    try {
+    try {      
       this.context.commit('updateLoaded', false)
       const res = await axios.get(`/today`, HEADER)
       this.context.commit('updateStocks', res.data.data)
       this.context.commit('updateLoaded', true)
+      this.context.commit('setSearchTable')   
     } catch(e) {
       console.log(e)
     }
