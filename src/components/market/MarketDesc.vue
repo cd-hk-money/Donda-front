@@ -30,7 +30,7 @@
             <div class="text-center">
             <v-dialog              
               v-model="dialog"
-              width="1200"
+              width="1100"
             >
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
@@ -52,7 +52,7 @@
                 <v-card-text>
                   <v-sheet
                     class="grey lighten-2"
-                    min-height="500"
+                    min-height="660"
                     rounded="xl"
                   >
                    

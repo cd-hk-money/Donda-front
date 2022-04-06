@@ -99,7 +99,7 @@ export default class Market extends Vue {
       code: '1'
     },
     {
-      market: 'CODMA',
+      market: 'codma',
       close: '2254',
       trans: '2322454',
       code: '2'

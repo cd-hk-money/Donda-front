@@ -31,7 +31,6 @@
       <v-card-subtitle>
         {{ code }}
       </v-card-subtitle>
-
     </v-card>
   </v-hover>
 </template>

@@ -34,7 +34,7 @@
       cols="12"
       sm="4"
     >                
-    </v-col>        
+    </v-col> 
   </v-row>       
 </template>
 

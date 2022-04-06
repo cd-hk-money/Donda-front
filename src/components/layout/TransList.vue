@@ -25,7 +25,7 @@
                   ></v-list-item-subtitle>                
                 </v-list-item-content>                          
                 <v-col cols="12" sm="2">
-                  <p>종가 ...</p> <p></p>
+                  <p>₩ {{ item.stock }} </p> <p></p>
                 </v-col>
                 <v-col cols="12" sm="2">
                   <p>변동률 ...</p>
@@ -74,9 +74,6 @@ const StockStoreModule = namespace('StockStore')
 @Component 
 export default class TransList extends Vue {
 
-  @StockStoreModule.State('stock')
-  private stock!: Array<StockSimpleModel>
-
   @StockStoreModule.Mutation('setCode')
   // eslint-disable-next-line no-unused-vars
   private setCode!:(code: string) => void
@@ -85,59 +82,12 @@ export default class TransList extends Vue {
   // eslint-disable-next-line no-unused-vars
   private setTitle!:(code: string) => void
 
+  @StockStoreModule.Getter('getStocks')
+  private getStocks!: Array<StockSimpleModel>
+  
   private selected: number = 0
-  private items: Array<StockSimpleModel> = [
-    {
-      title: '샘송전자',
-      code: '001235',
-      stock: 999
-    },
-    {
-      title: '샘송전자',
-      code: '001236',
-      stock: 999
-    },
-    {
-      title: '샘송전자',
-      code: '001237',
-      stock: 999
-    },
-    {
-      title: '샘송전자',
-      code: '001244',
-      stock: 999
-    },
-    {
-      title: '샘송전자',
-      code: '001284',
-      stock: 999
-    },
-    {
-      title: '샘송전자',
-      code: '001294',
-      stock: 999
-    },
-    {
-      title: '샘송전자',
-      code: '001554',
-      stock: 999
-    },
-    {
-      title: '샘송전자',
-      code: '001004',
-      stock: 999
-    },
-    {
-      title: '샘송전자',
-      code: '001994',
-      stock: 999
-    },
-    {
-      title: '샘송전자',
-      code: '001774',
-      stock: 999
-    },
-  ]
+  private count:number = 5
+  private items: Array<StockSimpleModel> = []
   
   @Watch('selected', {immediate: true, deep: true})
   public selectedItem(): void {       
@@ -157,34 +107,8 @@ export default class TransList extends Vue {
   private moreTran(): void {
 
     // 목록을 더 불러온다.
-    this.items.push(
-      {
-        title: '샘숭전자',
-        code: '004453',
-        stock: 999
-      },
-      {
-        title: '샘숭전자',
-        code: '004453',
-        stock: 999
-      },
-      {
-        title: '샘숭전자',
-        code: '004453',
-        stock: 999
-      },
-      {
-        title: '샘숭전자',
-        code: '004453',
-        stock: 999
-      },
-      {
-        title: '샘숭전자',
-        code: '004453',
-        stock: 999
-      },
-    )
-
+    this.items = this.getStocks.slice(0, this.count += 5)
+    
     setTimeout(() => {
       window.scrollTo(0, document.body.scrollHeight)
     }, 500)    
@@ -196,6 +120,10 @@ export default class TransList extends Vue {
 
   private clickList(e: PointerEvent): void {
     e.target
+  }
+
+  created() {
+    this.items = this.getStocks.slice(0, this.count += 5)
   }
 
   @Emit()
