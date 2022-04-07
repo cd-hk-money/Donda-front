@@ -14,21 +14,8 @@
       :auto-line-width="autoLineWidth"    
       auto-draw        
     >
-      <!-- <template v-slot:label="item">
-        {{ item.value }}
-      </template>        -->
     </v-sparkline>  
-    <!-- <Bar
-      :chart-options="chartOptions"
-      :chart-data="chartData"
-      :chart-id="chartId"
-      :dataset-id-key="datasetIdKey"
-      :plugins="plugins"
-      :css-classes="cssClasses"
-      :styles="styles"
-      :width="width"
-      :height="height"
-    /> -->
+
   </div>  
 </template>
 

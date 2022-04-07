@@ -6,15 +6,18 @@
     dark
   >    
     <v-tabs
+      exact
       fixed-tabs
       centered
-      center-active
       class="ml-n9"
     >
       <v-tab
         v-for="link in links"
-        :key="link.title"
-        @click="push(link)"
+        :key="link.title"        
+        :to="link.route"    
+        replace
+        active
+        exact
       >        
         {{ link.title }}
       </v-tab>
@@ -52,7 +55,7 @@ export default class AppBar extends Vue {
     }
   ]
 
-  private push(link: RouteModel): void {
+  private push(link: RouteModel): void {    
     this.$router.push(link.route)
   }
 }

@@ -28,6 +28,7 @@
       >        
       </v-col>          
     </v-row>
+    <error v-if="isError" />
   </v-container>
 </template>
 
@@ -37,16 +38,21 @@ import { Component, Vue } from 'vue-property-decorator'
 import SideBar from '@/components/layout/SideBar.vue'
 import Market from '@/components/layout/Market.vue'
 import Recommend from '@/components/layout/Recommend.vue'
+import Error from '@/components/layout/Error.vue'
 
 @Component({
   components: {
     SideBar,
     Market,
-    Recommend
+    Recommend,
+    Error
   }
 })
-export default class Home extends Vue {  
-
+export default class Home extends Vue { 
+  private isError: boolean = false 
+  created() {    
+    this.isError = (this.$route.params.error === 'true')
+  }
 }
 </script>
 

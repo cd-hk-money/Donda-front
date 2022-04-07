@@ -4,14 +4,14 @@
   >
     <v-list                   
       two-line>
-      <v-list-item-group        
-        v-model="selected"
-      >
+      <v-list-item-group>
         <template v-for="(item, index) in items">            
           <v-list-item  
             class="ranking-content"
             @click="clickList"
-             :key="item.code"
+            :key="item.code"    
+            :to="`/detail/${item.code}`"
+            replace         
           >
                 <v-list-item-avatar>
                   <p class="text-h4 font-weight-bold">{{ index + 1 }}</p>
@@ -118,8 +118,8 @@ export default class TransList extends Vue {
   // eslint-disable-next-line no-unused-vars
   private readonly searchContents!:(code: string) => Promise<any>
 
-  private clickList(e: PointerEvent): void {
-    e.target
+  private clickList(): void {
+    console.log(this.selected)
   }
 
   created() {

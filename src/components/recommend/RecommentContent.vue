@@ -41,7 +41,6 @@ import { namespace } from 'vuex-class'
 
 const StockStoreModule = namespace('StockStore')
 
-
 @Component
 export default class RecommendConent extends Vue {
 
