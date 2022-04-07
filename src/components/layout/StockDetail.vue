@@ -94,7 +94,7 @@ export default class StockDetail extends Vue {
   @StockStoreModule.State('title')
   private title!: string 
 
-  private reveal: boolean = false
+  private reveal = false
   private model = null
   private titles: Array<string> = [
     '주가',
@@ -104,10 +104,7 @@ export default class StockDetail extends Vue {
   ]
 
   private labels: Array<string> = ['SU', 'MO', 'TU', 'WED', 'TH', 'FR', 'SA']
-  private time: number = 0
-
-  created () {
-    
-  }
+  private time = 0
+  
 }
 </script>

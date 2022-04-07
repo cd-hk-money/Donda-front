@@ -58,25 +58,20 @@ export default class Trans extends Vue {
   private stocks!: Array<StockSimpleModel>
 
   @StockStoreModule.Mutation('setCode')
-  // eslint-disable-next-line no-unused-vars
   private setCode!:(code: string) => void
 
   @StockStoreModule.Mutation('setTitle')  
-  // eslint-disable-next-line no-unused-vars
   private setTitle!:(code: string) => void
-
-  private created (): void {       
-
-    // 파라미터의 코드를 이용하여 store의 code 초기화
-   this.setCode(this.$route.params.code)
-   
-   try{
-     const stock = this.stocks.find((stock: StockSimpleModel) => stock.code === this.$route.params.code) as StockSimpleModel      
-     this.setTitle(stock.title)
+  
+  private created (): void {           
+    this.setCode(this.$route.params.code)   
+    try{
+      const stock = this.stocks.find((stock: StockSimpleModel) => stock.code === this.$route.params.code) as StockSimpleModel      
+      this.setTitle(stock.title)
     } catch(e: any) {     
-     this.$router.push({name: 'Home', params:{error: 'true'}})
-   }
-  }  
+      this.$router.push({name: 'Home', params:{error: 'true'}})
+    }   
+  }    
 }
 </script>
 

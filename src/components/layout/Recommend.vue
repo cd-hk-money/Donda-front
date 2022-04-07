@@ -65,8 +65,8 @@ import RecommendContent from '@/components/recommend/RecommentContent.vue'
 export default class Recommend extends Vue {
   @Prop({default: 'white'}) color!: boolean
   
-  private itemCount: number = 4
-  private expand: boolean = false
+  private itemCount = 4
+  private expand = false
 
   private seeMore() {
     this.itemCount += 4

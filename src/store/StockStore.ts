@@ -13,13 +13,13 @@ const HEADER = {
 export default class StockStore extends VuexModule {
 
   // state
-  public title: string = ''               
-  public code: string = ''
+  public title = ''               
+  public code = ''
 
-  public loading: boolean = false
-  public loaded: boolean = false
-  public subsideLoading: boolean = false
-  public detailsLoading: boolean = false
+  public loading = false
+  public loaded = false
+  public subsideLoading = false
+  public detailsLoading = false
 
   public stocks!: StockSimpleModel[]     // 상장된 모든 종목        
   public stock!: StockDetailModel | null   // 검색한 종목 하나에 대한 주가 정보
@@ -85,16 +85,6 @@ export default class StockStore extends VuexModule {
     this.loading = payload
   }
   
-  @Mutation
-  public updateState(arg: any): void {
-    const state = Object.keys(arg)
-    const payload = Object.values(arg)
-    console.log(state, payload)
-    Object.keys(payload).forEach(key => {
-      
-    })
-  }
-
   @Mutation
   public uptateTitle(payload: string): void {
     this.title = payload

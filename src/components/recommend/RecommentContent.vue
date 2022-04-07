@@ -49,14 +49,12 @@ export default class RecommendConent extends Vue {
   @Prop({ default: true}) expand!: boolean
 
   @StockStoreModule.Mutation('setCode')
-  // eslint-disable-next-line no-unused-vars
   private setCode!: (code: string) => void
 
   @StockStoreModule.Mutation('setTitle')
-  // eslint-disable-next-line no-unused-vars
   private setTitle!: (title: string) => void
 
-  private show: boolean = false
+  private show = false
 
   private cardClick(): void {
     this.setCode(this.code)

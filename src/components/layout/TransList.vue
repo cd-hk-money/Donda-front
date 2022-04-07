@@ -73,21 +73,18 @@ const StockStoreModule = namespace('StockStore')
 export default class TransList extends Vue {
 
   @StockStoreModule.Mutation('setCode')
-  // eslint-disable-next-line no-unused-vars
   private setCode!:(code: string) => void
 
   @StockStoreModule.Mutation('setTitle')
-  // eslint-disable-next-line no-unused-vars
   private setTitle!:(code: string) => void
 
   @StockStoreModule.Getter('getStocks')
   private getStocks!: Array<StockSimpleModel>
   
   @StockStoreModule.Action('searchContents')
-  // eslint-disable-next-line no-unused-vars
   private readonly searchContents!:(code: string) => Promise<any>
 
-  private count:number = 5
+  private count = 5
   private items: Array<StockSimpleModel> = []
   
   private moreTran(): void {

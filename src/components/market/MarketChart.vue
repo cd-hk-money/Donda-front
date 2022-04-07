@@ -51,18 +51,17 @@ export default class MarketChart extends Vue {
   // }
 
   // sparkLine
-  private width: number = 1.5
-  private radius: number = 10
-  private padding: number = 8
-  private lineCap: string = "round"
+  private width = 1.5
+  private radius = 10
+  private padding = 8
+  private lineCap = "round"
   private gradient: string[] = gradients[5]
   private value: number[] = [0, 2, 5, 9, 5, 10, 3, 5, 0, 0, 1, 8, 2, 9, 0]
-  private gradientDirection: string = "top"
+  private gradientDirection = "top"
   private gradients: Array<Array<string>> = gradients
-  private fill: boolean = false
-  private type: string = 'trend'
-  private autoLineWidth: boolean = true
-
+  private fill = false
+  private type = 'trend'
+  private autoLineWidth = true  
 
 }
 

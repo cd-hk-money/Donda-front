@@ -57,7 +57,6 @@ export default class TopList extends Vue{
   private todayMarket!: () => void
 
   @StockStoreModule.Action('searchContents')
-  // eslint-disable-next-line no-unused-vars
   private searchContents!: (payload: string) => void
 
   private searchStock(arg: any) {

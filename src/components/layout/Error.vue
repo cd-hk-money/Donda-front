@@ -24,6 +24,6 @@ import { Component, Vue} from 'vue-property-decorator'
  
 @Component
 export default class Error extends Vue {
-  private snackbar: boolean = true
+  private snackbar = true
 }
 </script>

@@ -119,9 +119,9 @@ export default class SideBar extends Vue {
   // 자동완성 항목
   private items: Array<string> = []
 
-  private inputMode: boolean = false
+  private inputMode = false
 
-  private groupTitle: string = ''
+  private groupTitle = ''
 
   // 관심종목 그룹
   private interetGroups: Array<InterestGroupModel> = [
@@ -154,7 +154,7 @@ export default class SideBar extends Vue {
   }
 
   private querySelections(val: any) {
-    let timeout: number=  0
+    let timeout=  0
     window.clearTimeout(timeout)
     setTimeout(() => {
       this.items = this.searchTable.filter(e => {

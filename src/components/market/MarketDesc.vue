@@ -91,12 +91,9 @@ export default class MarketDesc extends Vue {
   @Prop({ default: 'white'}) private color!: string
   @Prop({ default:'코드'}) private code!: string
 
-  private reveal: boolean = false
-  private dialog: boolean = false
+  private reveal = false
+  private dialog = false
 
-  private clickDetail (): void {
-    
-  }  
 }
 </script>
 
