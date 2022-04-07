@@ -26,6 +26,7 @@ const routes = [
     component: Detail
   }
 ]
+
 const router = new VueRouter({
   mode: "history",
   scrollBehavior() {

@@ -42,21 +42,7 @@ import TransList from '@/components/layout/TransList.vue'
   }
 })
 export default class Trans extends Vue {
-  private clickList(): void {
-      
-  }
 
-  private fab: boolean = false
-
-  private onScroll (e: any): void {
-    if (typeof window === 'undefined') return 
-    const top = window.pageYOffset || e.target.scrollTop || 0
-    this.fab = top > 20
-  }
-
-  private toTop (): void {
-    this.$vuetify.goTo(0)
-  }
 }
 </script>
 

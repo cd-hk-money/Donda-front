@@ -7,8 +7,7 @@
       <v-list-item-group>
         <template v-for="(item, index) in items">            
           <v-list-item  
-            class="ranking-content"
-            @click="clickList"
+            class="ranking-content"            
             :key="item.code"    
             :to="`/detail/${item.code}`"
             replace         
@@ -63,11 +62,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch, Emit } from 'vue-property-decorator'
+import { Component, Vue } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 
 import { StockSimpleModel } from '@/models/stock'
-
 
 const StockStoreModule = namespace('StockStore')
 
@@ -85,51 +83,24 @@ export default class TransList extends Vue {
   @StockStoreModule.Getter('getStocks')
   private getStocks!: Array<StockSimpleModel>
   
-  private selected: number = 0
+  @StockStoreModule.Action('searchContents')
+  // eslint-disable-next-line no-unused-vars
+  private readonly searchContents!:(code: string) => Promise<any>
+
   private count:number = 5
   private items: Array<StockSimpleModel> = []
   
-  @Watch('selected', {immediate: true, deep: true})
-  public selectedItem(): void {       
-    if(!this.selected) return
-
-    const code = this.items[this.selected].code
-    const title = this.items[this.selected].title
-    
-    this.emitClickList()
-    this.setCode(code)
-    this.setTitle(title)
-    this.$router.push(`/detail/${code}`)
-    
-  }
-
-  // 더보기 
   private moreTran(): void {
-
-    // 목록을 더 불러온다.
-    this.items = this.getStocks.slice(0, this.count += 10)
-    
+    this.items = this.getStocks.slice(0, this.count += 10)    
     setTimeout(() => {
       window.scrollTo(0, document.body.scrollHeight)
     }, 500)    
   }    
 
-  @StockStoreModule.Action('searchContents')
-  // eslint-disable-next-line no-unused-vars
-  private readonly searchContents!:(code: string) => Promise<any>
-
-  private clickList(): void {
-    console.log(this.selected)
-  }
-
   created() {
     this.items = this.getStocks.slice(0, this.count += 5)
   }
 
-  @Emit()
-  emitClickList(): number {    
-    return this.selected
-  }
 }
 </script>
 

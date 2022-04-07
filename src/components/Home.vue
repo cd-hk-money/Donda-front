@@ -49,9 +49,12 @@ import Error from '@/components/layout/Error.vue'
   }
 })
 export default class Home extends Vue { 
-  private isError: boolean = false 
-  created() {    
-    this.isError = (this.$route.params.error === 'true')
+  private isError: boolean = this.$route.params.error === 'true'
+
+  created() {
+    this.$watch(() => this.$route.params, (error) => {
+      console.log(error)
+    })
   }
 }
 </script>

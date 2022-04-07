@@ -1,3 +1,7 @@
+
+/detail
+디테일 페이지
+
 <template>       
   <v-container>
     <v-row >
@@ -57,23 +61,22 @@ export default class Trans extends Vue {
   // eslint-disable-next-line no-unused-vars
   private setCode!:(code: string) => void
 
-  @StockStoreModule.Mutation('setTitle')
+  @StockStoreModule.Mutation('setTitle')  
   // eslint-disable-next-line no-unused-vars
   private setTitle!:(code: string) => void
 
-  private simpleStock!: StockSimpleModel | undefined
-
   private created (): void {       
+
+    // 파라미터의 코드를 이용하여 store의 code 초기화
    this.setCode(this.$route.params.code)
+   
    try{
      const stock = this.stocks.find((stock: StockSimpleModel) => stock.code === this.$route.params.code) as StockSimpleModel      
      this.setTitle(stock.title)
-    } catch(e: any) {
-     console.log('잘못된 접근.')
+    } catch(e: any) {     
      this.$router.push({name: 'Home', params:{error: 'true'}})
    }
-  }
-
+  }  
 }
 </script>
 

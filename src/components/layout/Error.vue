@@ -3,7 +3,7 @@
     <v-snackbar
       v-model="snackbar"
     >
-      잘못된 접근.
+      잘못된 접근입니다.
 
       <template v-slot:action="{ attrs }">
         <v-btn

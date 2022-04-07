@@ -13,7 +13,6 @@ import AppBar from '@/components/layout/AppBar.vue'
 
 export default Vue.extend({
   name: 'App',
-
   components: {
     AppBar,
   },
