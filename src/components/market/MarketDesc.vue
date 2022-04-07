@@ -13,7 +13,7 @@
             {{ desc.market }} 
           </span>
           <span class="text-h5 ">
-            0000{{ desc.code }}
+            {{ desc.code }}
           </span>                
         </v-col>
         <v-col cols="12" sm="7">          

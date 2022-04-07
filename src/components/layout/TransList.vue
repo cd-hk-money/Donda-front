@@ -107,7 +107,7 @@ export default class TransList extends Vue {
   private moreTran(): void {
 
     // 목록을 더 불러온다.
-    this.items = this.getStocks.slice(0, this.count += 5)
+    this.items = this.getStocks.slice(0, this.count += 10)
     
     setTimeout(() => {
       window.scrollTo(0, document.body.scrollHeight)

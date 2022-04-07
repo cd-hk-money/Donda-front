@@ -10,7 +10,7 @@
       sm="10"                  
     >      
       <v-carousel
-        height="400px"
+        height="450px"
         class="market-carousel"        
         cycle
         hide-delimiter-background
@@ -87,22 +87,22 @@ export default class Market extends Vue {
 
   private slides: MarketDescModel[] = [
     {
-      market: 'KOPSI',
+      market: '시장1',
       close: '2233',
       trans: '23112',
-      code: '0'
+      code: '주가'
     },
     {
-      market: 'NYSE',
+      market: '시장2',
       close: '265442',
       trans: '221223',
-      code: '1'
+      code: '주가'
     },
     {
-      market: 'codma',
+      market: '시장3',
       close: '2254',
       trans: '2322454',
-      code: '2'
+      code: '주가'
     }
   ]
 
