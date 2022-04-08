@@ -3,18 +3,7 @@
     dark
     class="mx-auto"    
   >    
-    <v-row>      
-      <v-col cols="12" sm="10">
-        <v-card-text>                  
-          <div class="text-h6" style="color: grey;">{{ code }}</div>
-          <span class="text-h4 font-weight-bold">
-            {{ title }}
-          </span>                          
-        </v-card-text>
-      </v-col>
-      <v-col cols="12" sm="5">
-      </v-col>
-    </v-row>
+    <stock-info />
     <v-divider></v-divider>
     <v-sheet
       class="mx-auto"
@@ -48,7 +37,7 @@
       <v-expand-transition>
         <v-sheet
           v-if="model != null"
-          height="200"
+          height="400"
           tile
           rounded="xl"
         >
@@ -56,10 +45,18 @@
             class="fill-height"
             align="center"
             justify="center"
-          >
-            <h3 class="text-h6">
-              {{ titles[model]}} 자세한 정보들..
-            </h3>
+          >            
+            <v-card 
+              class="grey darken-4"
+              min-height="90%"
+              min-width="90%"
+              rounded="ml" 
+            >
+              <v-card-title>
+                {{ titles[model]}} 자세한 정보들..
+              </v-card-title>
+              <detail-chart />
+            </v-card>
           </v-row>
         </v-sheet>
       </v-expand-transition>
@@ -78,12 +75,16 @@ import { Component, Vue } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 
 import MarketChart from '@/components/market/MarketChart.vue'
+import StockInfo from '@/components/detail/StockInfo.vue'
+import DetailChart from '@/components/detail/DetailChart.vue'
 
 const StockStoreModule = namespace('StockStore')
 
 @Component({
   components: {
-    MarketChart
+    MarketChart,
+    StockInfo,
+    DetailChart
   }
 }) 
 export default class StockDetail extends Vue {
@@ -93,6 +94,9 @@ export default class StockDetail extends Vue {
 
   @StockStoreModule.State('title')
   private title!: string 
+  
+  @StockStoreModule.Action('searchContents')
+  private searchContent!: (code: string) => void
 
   private reveal = false
   private model = null
@@ -102,9 +106,13 @@ export default class StockDetail extends Vue {
     '영업이익',
     'EPS'
   ]
-
+  
   private labels: Array<string> = ['SU', 'MO', 'TU', 'WED', 'TH', 'FR', 'SA']
   private time = 0
-  
+
+  created () {  
+    this.searchContent(this.code)
+  }
+ 
 }
 </script>

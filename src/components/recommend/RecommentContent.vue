@@ -11,7 +11,7 @@
       min-height="240"
       rounded="xl"
       :elevation="hover ? 16 : 2"
-      @click="cardClick"
+      :to="`/detail/${code}`"
     >
       <v-card-title>
         <v-row>
@@ -54,13 +54,6 @@ export default class RecommendConent extends Vue {
   @StockStoreModule.Mutation('setTitle')
   private setTitle!: (title: string) => void
 
-  private show = false
-
-  private cardClick(): void {
-    this.setCode(this.code)
-    this.setTitle(this.title)
-    this.$router.push(`/detail/${this.code}`)
-  }
 }
 </script>
 

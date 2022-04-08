@@ -1,6 +1,5 @@
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators'
-import { StockSimpleModel, StockDetailModel, StockPriceModel } from '@/models/stock'
-import { updateStateModel } from '@/models/payload'
+import { StockSimpleModel, StockDetailModel } from '@/models/stock'
 import axios from 'axios'
 const HEADER = {
   headers: {
@@ -15,7 +14,8 @@ export default class StockStore extends VuexModule {
   // state
   public title = ''               
   public code = ''
-
+  
+  public loadingInfo = false
   public loading = false
   public loaded = false
   public subsideLoading = false
@@ -23,8 +23,7 @@ export default class StockStore extends VuexModule {
 
   public stocks!: StockSimpleModel[]     // 상장된 모든 종목        
   public stock!: StockDetailModel | null   // 검색한 종목 하나에 대한 주가 정보
-  public searchTable!: Array<string>
-  public allStock!: any
+  public searchTable!: Array<string>  
 
   public subscribe!: StockSimpleModel[]   // 구독 여부
 
@@ -66,16 +65,6 @@ export default class StockStore extends VuexModule {
   }
 
   @Mutation
-  public updateStock(stock: any) {
-    this.stock = stock.map((stock: any) => {
-      return {
-        title: stock.title,
-        renewalDate: stock.renewal
-      }
-    })
-  }
-
-  @Mutation
   public updateLoaded(payload: boolean): void {
     this.loaded = payload
   }
@@ -90,22 +79,19 @@ export default class StockStore extends VuexModule {
     this.title = payload
   }
 
+
   @Action
   public async searchContents (code: string): Promise<any> {
     try {
       this.context.commit('updateLoading', true)
-
-      const root: string = parseInt(this.title) ? 'findByCode' : 'findByName'    
-      const res = await axios.get(`/${root}/${code}/30`, HEADER)
+      
+      const res = await axios.get(`/findByCode/${code}/30`, HEADER)
 
       this.context.commit('updateLoading', false)
     
       const result = Object.values(res.data).map((value: any) => Object.values(value)[3])
       result.pop()
-  
-      this.context.commit('updateState', {
-        sparkValues: result,
-      })
+            
     } catch(e) {
       console.log(e)
     }

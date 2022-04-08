@@ -1,4 +1,3 @@
-
 /detail
 디테일 페이지
 
@@ -27,7 +26,7 @@
       <v-col
         cols="12"
         sm="2"
-      >        
+      >                
       </v-col>          
     </v-row>
   </v-container>
@@ -49,7 +48,7 @@ const StockStoreModule = namespace('StockStore')
   components: {
     TransList,
     StockDetail,
-    SideBar
+    SideBar,
   }
 })
 export default class Trans extends Vue {

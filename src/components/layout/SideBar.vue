@@ -148,7 +148,7 @@ export default class SideBar extends Vue {
   ]
 
   @Watch("search")
-  public watchSearch(val: any) {
+  public watchSearch(val: unknown) {
     if(!val) return
     val && val !== this.searchTable && this.querySelections(val)
   }
