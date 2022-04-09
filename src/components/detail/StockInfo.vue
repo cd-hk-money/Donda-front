@@ -29,6 +29,15 @@
         </v-card-title>
       </v-card>
     </v-col>
+    <v-col cols="12" sm="auto">        
+      <v-btn                  
+        outlined
+        class="ma-2"
+        dark                
+      >
+        자세히
+      </v-btn>
+    </v-col>
   </v-row>
 </template>
 

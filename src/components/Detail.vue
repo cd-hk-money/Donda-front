@@ -26,7 +26,9 @@
       <v-col
         cols="12"
         sm="2"
-      >                
+      >       
+        <news />
+        <similar />         
       </v-col>          
     </v-row>
   </v-container>
@@ -39,6 +41,8 @@ import { namespace } from 'vuex-class'
 import SideBar from '@/components/layout/SideBar.vue'
 import TransList from '@/components/layout/TransList.vue'
 import StockDetail from '@/components/layout/StockDetail.vue'
+import News from '@/components/layout/News.vue'
+import Similar from '@/components/layout/Similar.vue'
 
 import { StockSimpleModel } from '@/models/stock'
 
@@ -49,6 +53,8 @@ const StockStoreModule = namespace('StockStore')
     TransList,
     StockDetail,
     SideBar,
+    News,
+    Similar
   }
 })
 export default class Trans extends Vue {
@@ -63,6 +69,7 @@ export default class Trans extends Vue {
   private setTitle!:(code: string) => void
   
   private created (): void {           
+    console.log('detail created')
     this.setCode(this.$route.params.code)   
     try{
       const stock = this.stocks.find((stock: StockSimpleModel) => stock.code === this.$route.params.code) as StockSimpleModel      

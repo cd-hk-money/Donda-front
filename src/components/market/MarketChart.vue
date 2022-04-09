@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <v-sparkline
+  <div>    
+    <v-sparkline      
       dark
       :color="color"
       :value="value"    

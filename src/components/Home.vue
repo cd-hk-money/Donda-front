@@ -25,7 +25,7 @@
       <v-col
         cols="12"
         sm="2"
-      >        
+      >           
       </v-col>          
     </v-row>
     <error v-if="isError" />

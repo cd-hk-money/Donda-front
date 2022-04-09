@@ -1,14 +1,18 @@
 <template>
   <v-data-table
+    dense
     :headers="headers"
     :items="desserts"
-    :items-per-page="5"
-    class="elevation-1"
+    item-key="name"
+    class="elevation-1"       
   ></v-data-table>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
+import { namespace} from 'vuex-class'
+
+const StockStoreModule = namespace('StockStore')
 
 @Component 
 export default class DetailChart extends Vue {

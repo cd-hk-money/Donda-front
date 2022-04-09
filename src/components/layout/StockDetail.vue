@@ -9,16 +9,19 @@
       class="mx-auto"
       elevation="8"
     >
+
       <v-slide-group
         v-model="model"
         class="pa-4"
         show-arrows
       >
+
         <v-slide-item
           v-for="n in 4"
           :key="n"
           v-slot="{ active, toggle }"
         >
+
           <v-card
             :color="active ? 'grey lighten-1' : 'grey darken-3'"
             class="ma-4"
@@ -26,15 +29,32 @@
             width="480"
             @click="toggle"
           >
+            
             <v-card-title color="grey-lighten-1">
               {{ titles[n-1]}}              
-            </v-card-title>
-            <market-chart color="white"/>
+            </v-card-title>                    
+              <div v-show="!loading">
+                <!-- <market-chart color="white" /> -->
+                <test-chart :height="100"/>
+              </div>
+              <div v-show="loading">
+                <v-progress-linear
+                  v-if="loading"
+                  bottom
+                  height="10"
+                  absolute
+                  color="grey"
+                  indeterminate
+                  dark                  
+                ></v-progress-linear>
+              </div>
           </v-card>
-        </v-slide-item>
-      </v-slide-group>
 
+        </v-slide-item>
+
+      </v-slide-group>
       <v-expand-transition>
+
         <v-sheet
           v-if="model != null"
           height="400"
@@ -51,10 +71,7 @@
               min-height="90%"
               min-width="90%"
               rounded="ml" 
-            >
-              <v-card-title>
-                {{ titles[model]}} 자세한 정보들..
-              </v-card-title>
+            >                            
               <detail-chart />
             </v-card>
           </v-row>
@@ -71,12 +88,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue, Watch } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 
 import MarketChart from '@/components/market/MarketChart.vue'
 import StockInfo from '@/components/detail/StockInfo.vue'
 import DetailChart from '@/components/detail/DetailChart.vue'
+import TestChart from '@/components/TestChart.vue'
 
 const StockStoreModule = namespace('StockStore')
 
@@ -84,7 +102,8 @@ const StockStoreModule = namespace('StockStore')
   components: {
     MarketChart,
     StockInfo,
-    DetailChart
+    DetailChart,
+    TestChart
   }
 }) 
 export default class StockDetail extends Vue {
@@ -94,6 +113,9 @@ export default class StockDetail extends Vue {
 
   @StockStoreModule.State('title')
   private title!: string 
+
+  @StockStoreModule.State('loading')
+  private loading!: boolean
   
   @StockStoreModule.Action('searchContents')
   private searchContent!: (code: string) => void
@@ -106,13 +128,60 @@ export default class StockDetail extends Vue {
     '영업이익',
     'EPS'
   ]
+
+  private chartData = {
+    labels: [ 'January', 'February', 'March' ],
+    datasets: [ 
+      { 
+        label: '# of Votes',
+        data: [20, 20, 12],
+        height: 50,
+          backgroundColor: [
+          "rgba(255, 99, 132, 0.2)",
+          "rgba(54, 162, 235, 0.2)",
+          "rgba(255, 206, 86, 0.2)",
+          "rgba(75, 192, 192, 0.2)",
+          "rgba(153, 102, 255, 0.2)",
+          "rgba(255, 159, 64, 0.2)",
+        ],
+        borderColor: [
+          "rgba(255,99,132,1)",
+          "rgba(54, 162, 235, 1)",
+          "rgba(255, 206, 86, 1)",
+          "rgba(75, 192, 192, 1)",
+          "rgba(153, 102, 255, 1)",
+          "rgba(255, 159, 64, 1)",
+        ],
+        borderWidth: 1,
+      }       
+    ]
+  }
+  
+  private options = {
+    maintainAspectRatio: false, // default value. false일 경우 포함된 div의 크기에 맞춰서 그려짐.
+    responsive: true,
+    scales: {
+      yAxes: [
+        {
+          ticks: {
+            beginAtZero: true,
+          },
+        },
+      ],
+    },
+  }
   
   private labels: Array<string> = ['SU', 'MO', 'TU', 'WED', 'TH', 'FR', 'SA']
   private time = 0
 
   created () {  
     this.searchContent(this.code)
+  } 
+
+  @Watch('loading')
+  private watchLoading() {
+    console.log('loading')
   }
- 
+
 }
 </script>

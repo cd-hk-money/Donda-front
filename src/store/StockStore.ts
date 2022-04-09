@@ -14,7 +14,7 @@ export default class StockStore extends VuexModule {
   // state
   public title = ''               
   public code = ''
-  
+    
   public loadingInfo = false
   public loading = false
   public loaded = false
@@ -86,12 +86,11 @@ export default class StockStore extends VuexModule {
       this.context.commit('updateLoading', true)
       
       const res = await axios.get(`/findByCode/${code}/30`, HEADER)
-
-      this.context.commit('updateLoading', false)
     
       const result = Object.values(res.data).map((value: any) => Object.values(value)[3])
       result.pop()
-            
+
+      this.context.commit('updateLoading', false)      
     } catch(e) {
       console.log(e)
     }
