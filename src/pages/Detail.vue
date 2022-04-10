@@ -38,11 +38,11 @@
 import { Component, Vue } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 
-import SideBar from '@/components/layout/SideBar.vue'
-import TransList from '@/components/layout/TransList.vue'
-import StockDetail from '@/components/layout/StockDetail.vue'
-import News from '@/components/layout/News.vue'
-import Similar from '@/components/layout/Similar.vue'
+import SideBar from '@/layout/SideBar.vue'
+import TransList from '@/layout/TransList.vue'
+import StockDetail from '@/layout/StockDetail.vue'
+import News from '@/layout/News.vue'
+import Similar from '@/layout/Similar.vue'
 
 import { StockSimpleModel } from '@/models/stock'
 

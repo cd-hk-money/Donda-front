@@ -35,10 +35,10 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 
-import SideBar from '@/components/layout/SideBar.vue'
-import Market from '@/components/layout/Market.vue'
-import Recommend from '@/components/layout/Recommend.vue'
-import Error from '@/components/layout/Error.vue'
+import SideBar from '@/layout/SideBar.vue'
+import Market from '@/layout/Market.vue'
+import Recommend from '@/layout/Recommend.vue'
+import Error from '@/layout/Error.vue'
 
 @Component({
   components: {

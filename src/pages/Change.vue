@@ -31,8 +31,8 @@
 
 <script lang="ts">
 import { Component,  Mixins } from 'vue-property-decorator'
-import SideBar from '@/components/layout/SideBar.vue'
-import TransList from '@/components/layout/TransList.vue'
+import SideBar from '@/layout/SideBar.vue'
+import TransList from '@/layout/TransList.vue'
 import { namespace } from 'vuex-class'
 
 // mixins

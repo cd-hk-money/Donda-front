@@ -1,9 +1,8 @@
 import VueRouter from "vue-router";
-import Home from '@/components/Home.vue'
-import Trans from '@/components/Trans.vue'
-import Change from '@/components/Change.vue'
-import Detail from '@/components/Detail.vue'
-import Test from '@/components/Test.vue'
+import Home from '@/pages/Home.vue'
+import Trans from '@/pages/Trans.vue'
+import Change from '@/pages/Change.vue'
+import Detail from '@/pages/Detail.vue'
 
 const routes = [
   {
@@ -26,12 +25,6 @@ const routes = [
     name: "detail",
     component: Detail
   },
-  {
-    path: "/test",
-    name: "test",
-    component: Test
-  }
-
 ]
 
 const router = new VueRouter({

@@ -102,7 +102,7 @@ import { LineChartModel } from '@/models/stock'
 import MarketChart from '@/components/market/MarketChart.vue'
 import StockInfo from '@/components/detail/StockInfo.vue'
 import DetailChart from '@/components/detail/DetailChart.vue'
-import TestChart from '@/components/TestChart.vue'
+import TestChart from '@/pages/TestChart.vue'
 
 const StockStoreModule = namespace('StockStore')
 

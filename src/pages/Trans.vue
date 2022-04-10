@@ -32,8 +32,8 @@
 
 <script lang="ts">
 import { Component, Vue,  } from 'vue-property-decorator'
-import SideBar from '@/components/layout/SideBar.vue'
-import TransList from '@/components/layout/TransList.vue'
+import SideBar from '@/layout/SideBar.vue'
+import TransList from '@/layout/TransList.vue'
 
 @Component({
   components: {
