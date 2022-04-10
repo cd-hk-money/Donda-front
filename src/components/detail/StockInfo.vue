@@ -35,7 +35,7 @@
         class="ma-2"
         dark                
       >
-        자세히
+        자세히..
       </v-btn>
     </v-col>
   </v-row>
