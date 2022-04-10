@@ -1,5 +1,5 @@
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators'
-import { StockSimpleModel, StockDetailModel } from '@/models/stock'
+import { StockSimpleModel, StockDetailModel, LineChartModel } from '@/models/stock'
 import axios from 'axios'
 const HEADER = {
   headers: {
@@ -15,15 +15,14 @@ export default class StockStore extends VuexModule {
   public title = ''               
   public code = ''
     
-  public loadingInfo = false
   public loading = false
   public loaded = false
-  public subsideLoading = false
-  public detailsLoading = false
-
+  public requestDate = 15
+  
   public stocks!: StockSimpleModel[]     // 상장된 모든 종목        
   public stock!: StockDetailModel | null   // 검색한 종목 하나에 대한 주가 정보
   public searchTable!: Array<string>  
+  public stockChart!: Array<LineChartModel> // 개별종목 주가 차트
 
   public subscribe!: StockSimpleModel[]   // 구독 여부
 
@@ -79,17 +78,27 @@ export default class StockStore extends VuexModule {
     this.title = payload
   }
 
+  @Mutation
+  public updateStockChart(payload: Array<LineChartModel>): void {
+    this.stockChart = payload
+  }
+
 
   @Action
   public async searchContents (code: string): Promise<any> {
     try {
       this.context.commit('updateLoading', true)
       
-      const res = await axios.get(`/findByCode/${code}/30`, HEADER)
-    
-      const result = Object.values(res.data).map((value: any) => Object.values(value)[3])
-      result.pop()
-
+      const res = await axios.get(`/findByCode/${code}/${this.requestDate}`, HEADER)      
+      const chartData: Array<LineChartModel> = Object.entries(res.data).map((stock: any) => {
+        return {
+          date: stock[0],
+          value: stock[1].Close
+        }
+      })
+      chartData.pop()      
+      
+      this.context.commit('updateStockChart', chartData)    
       this.context.commit('updateLoading', false)      
     } catch(e) {
       console.log(e)

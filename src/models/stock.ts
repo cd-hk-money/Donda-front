@@ -27,3 +27,8 @@ export interface StockPriceModel {
   Open: number
   Volume: number
 }
+
+export interface LineChartModel {
+  date: string
+  value: number
+}

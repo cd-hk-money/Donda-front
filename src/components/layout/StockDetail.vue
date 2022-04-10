@@ -5,6 +5,7 @@
   >    
     <stock-info />
     <v-divider></v-divider>
+  
     <v-sheet
       class="mx-auto"
       elevation="8"
@@ -30,14 +31,19 @@
             @click="toggle"
           >
             
-            <v-card-title color="grey-lighten-1">
+            <!-- <v-card-title               
+              class="pa-2"
+              color="grey-lighten-1">
               {{ titles[n-1]}}              
-            </v-card-title>                    
-              <div v-show="!loading">
+            </v-card-title>                     -->
+              <div v-if="!loading">
                 <!-- <market-chart color="white" /> -->
-                <test-chart :height="100"/>
+                <test-chart       
+                  :options="options"            
+                  :chartData="createChart(titles[n-1])"                  
+                  :height="170"/>
               </div>
-              <div v-show="loading">
+              <div v-else>
                 <v-progress-linear
                   v-if="loading"
                   bottom
@@ -88,8 +94,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator'
+import { Component, Vue } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
+
+import { LineChartModel } from '@/models/stock'
 
 import MarketChart from '@/components/market/MarketChart.vue'
 import StockInfo from '@/components/detail/StockInfo.vue'
@@ -117,8 +125,14 @@ export default class StockDetail extends Vue {
   @StockStoreModule.State('loading')
   private loading!: boolean
   
+  @StockStoreModule.State('requestDate')
+  private requestDate!: string
+  
   @StockStoreModule.Action('searchContents')
   private searchContent!: (code: string) => void
+
+  @StockStoreModule.State('stockChart')
+  private stockChart!: Array<LineChartModel>
 
   private reveal = false
   private model = null
@@ -129,59 +143,71 @@ export default class StockDetail extends Vue {
     'EPS'
   ]
 
-  private chartData = {
-    labels: [ 'January', 'February', 'March' ],
-    datasets: [ 
-      { 
-        label: '# of Votes',
-        data: [20, 20, 12],
-        height: 50,
-          backgroundColor: [
-          "rgba(255, 99, 132, 0.2)",
-          "rgba(54, 162, 235, 0.2)",
-          "rgba(255, 206, 86, 0.2)",
-          "rgba(75, 192, 192, 0.2)",
-          "rgba(153, 102, 255, 0.2)",
-          "rgba(255, 159, 64, 0.2)",
-        ],
-        borderColor: [
-          "rgba(255,99,132,1)",
-          "rgba(54, 162, 235, 1)",
-          "rgba(255, 206, 86, 1)",
-          "rgba(75, 192, 192, 1)",
-          "rgba(153, 102, 255, 1)",
-          "rgba(255, 159, 64, 1)",
-        ],
-        borderWidth: 1,
-      }       
-    ]
-  }
-  
   private options = {
-    maintainAspectRatio: false, // default value. false일 경우 포함된 div의 크기에 맞춰서 그려짐.
+    plugins: {
+      title: {
+        display: true,
+        text: 'test..'
+      }
+    },
+    maintainAspectRatio: true, // default value. false일 경우 포함된 div의 크기에 맞춰서 그려짐.
     responsive: true,
     scales: {
+      x: {
+        grid: {
+          borderColor: 'red'
+        }
+      } ,      
       yAxes: [
         {
           ticks: {
-            beginAtZero: true,
+            
           },
         },
       ],
-    },
+    },    
   }
-  
-  private labels: Array<string> = ['SU', 'MO', 'TU', 'WED', 'TH', 'FR', 'SA']
-  private time = 0
+    
+  private createChart(label: string): object {
+    return {
+      labels: this.stockChart.map((stock: LineChartModel) => stock.date),
+      datasets: [ 
+        { 
+          label: label,
+          data: this.stockChart.map((stock: LineChartModel) => stock.value),
+          height: 30,
+          fill: false,
+          backgroundColor: [
+            // "rgba(255, 99, 132, 0.2)",
+            // "rgba(54, 162, 235, 0.2)",
+            // "rgba(255, 206, 86, 0.2)",
+            // "rgba(75, 192, 192, 0.2)",
+            // "rgba(153, 102, 255, 0.2)",
+            // "rgba(255, 159, 64, 0.2)",
+          ],
+          borderColor: [
+            "rgba(255,255,255,1)",
+            // "rgba(54, 162, 235, 1)",
+            // "rgba(255, 206, 86, 1)",
+            // "rgba(75, 192, 192, 1)",
+            // "rgba(153, 102, 255, 1)",
+            // "rgba(255, 159, 64, 1)",
+          ],
+          borderWidth: 5,        
+        }
+      ]
+    }
+  }
 
   created () {  
     this.searchContent(this.code)
   } 
-
-  @Watch('loading')
-  private watchLoading() {
-    console.log('loading')
-  }
-
+  
 }
 </script>
+
+<style>
+  .v-card-title {
+    position: absolute;    
+  }
+</style>
