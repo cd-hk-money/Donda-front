@@ -128,22 +128,22 @@ export default class SideBar extends Vue {
     {
       title: '관심종목 그룹1',
       icon: "mdi-star",
-      listItem: []
+      groupItem: []
     },
     {
       title: '관심종목 그룹2',
       icon: "mdi-star",
-      listItem: []
+      groupItem: []
     },
     {
       title: '관심종목 그룹1',
       icon: "mdi-star",
-      listItem: []
+      groupItem: []
     },
     {
       title: '관심종목 그룹2',
       icon: "mdi-star",
-      listItem: []
+      groupItem: []
     },
   ]
 
@@ -177,7 +177,7 @@ export default class SideBar extends Vue {
     this.interetGroups.push({
       title: this.groupTitle,
       icon: 'mdi-star',
-      listItem: []
+      groupItem: []
     })
     this.groupTitle = ''
   }

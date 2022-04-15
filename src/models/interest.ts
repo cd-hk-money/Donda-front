@@ -1,18 +1,17 @@
 import { StockSimpleModel } from './stock'
 
-export interface InterestGroupsModel {
-  userName: String
-  interestList: InterestGroupModel[]
+export interface InterestGroupsModel {  
+  interestList: InterestGroupModel[],
 }
 
 export interface InterestGroupModel {
   title: string,
   icon: string,
-  listItem: InterestModel[]
+  groupItem: InterestModel[]
 }
 
 export interface InterestModel {
-  notification: Boolean
+  notification: boolean
   stock: StockSimpleModel
 }
 

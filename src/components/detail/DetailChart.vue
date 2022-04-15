@@ -30,6 +30,15 @@ export default class DetailChart extends Vue {
     { text: 'Iron (%)', value: 'iron' },
   ]
 
+  private valueTypes = [
+    {
+      text: '날짜',
+      align: 'start',
+      sortable: false,
+      value: 'date'
+    }
+  ]
+
   private desserts = [
     {
       name: 'Frozen Yogurt',

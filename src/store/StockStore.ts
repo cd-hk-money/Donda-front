@@ -17,12 +17,15 @@ export default class StockStore extends VuexModule {
     
   public loading = false
   public loaded = false
-  public requestDate = 15
+  public requestDate = 10
   
-  public stocks!: StockSimpleModel[]     // 상장된 모든 종목        
-  public stock!: StockDetailModel | null   // 검색한 종목 하나에 대한 주가 정보
+  public stocks!: StockSimpleModel[]        // 상장된 모든 종목에 대한 간단 정보
+  public stocksDetail!: any                 // 상장된 모든 종목에 대한 상세 정보
+  public stock!: StockDetailModel | null    // 검색한 종목 하나에 대한 주가 정보
   public searchTable!: Array<string>  
-  public stockChart!: Array<LineChartModel> // 개별종목 주가 차트
+
+  public stockChart!: Array<LineChartModel> // 개별종목 주가 정보
+  public stockDetail!: any                  // 개별종목 정보
 
   public subscribe!: StockSimpleModel[]   // 구독 여부
 
@@ -54,6 +57,7 @@ export default class StockStore extends VuexModule {
 
   @Mutation
   public updateStocks(stocks: any) {
+    this.stocksDetail = stocks
     this.stocks = stocks.map((stock: Array<number | string | boolean>) => {
       return {
         title: stock[1],
@@ -83,6 +87,17 @@ export default class StockStore extends VuexModule {
     this.stockChart = payload
   }
 
+  @Mutation
+  public updateStockDetail(payload: any): void {    
+    this.stockDetail = this.stocksDetail.find((stock: any) => stock[0] === payload).slice(0, 3)
+  
+  }
+
+  @Mutation
+  public updateRequestDate(payload: number): void {
+    this.requestDate = payload
+  }
+
 
   @Action
   public async searchContents (code: string): Promise<any> {
@@ -97,9 +112,9 @@ export default class StockStore extends VuexModule {
         }
       })
       chartData.pop()      
-      
+      this.context.commit('updateStockDetail', code)               
       this.context.commit('updateStockChart', chartData)    
-      this.context.commit('updateLoading', false)      
+      this.context.commit('updateLoading', false)   
     } catch(e) {
       console.log(e)
     }

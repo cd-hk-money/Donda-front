@@ -22,27 +22,25 @@
         elevation="0" 
         min-height="90%"
         rounded="ml"     
-        hover   
+        hover           
       >        
-        <v-card-title class="text-h7">
-          {{ title }} 에 대한 정보들 ..
-        </v-card-title>
+         {{ stockDetail }} .. 디테일 정보들 표시 예정
+
       </v-card>
     </v-col>
     <v-col cols="12" sm="auto">        
-      <v-btn                  
-        outlined
-        class="ma-2"
-        dark                
-      >
-        자세히..
-      </v-btn>
+      <v-card 
+        max-width="auto"
+        min-height="auto"
+        class="grey darken-4 pt-mr-auto"
+      >          
+      </v-card>
     </v-col>
   </v-row>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 
 const StockStoreModule = namespace('StockStore')
@@ -54,5 +52,9 @@ export default class StockInfo extends Vue {
 
   @StockStoreModule.State('title')
   private title!: string   
+
+  @StockStoreModule.State('stockDetail')
+  private stockDetail!: any
+  
 }
 </script>

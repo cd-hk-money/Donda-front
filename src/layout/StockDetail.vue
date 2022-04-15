@@ -10,13 +10,50 @@
       class="mx-auto"
       elevation="8"
     >
+      <v-row class="align-end">     
+        <!-- <v-btn
+          class="ma-1"
+          :loading="loading"
+          :disabled="loading"
+          color="secondary"
+          @click="refreshContent(code, requestDate + 1)"
+        >
+          날짜 선택
+        </v-btn> -->
+        <v-btn-toggle          
+          tile        
+          group          
+        >
+          <v-btn 
+            @click="refreshContent(code, 5)"
+            value="left">
+            5일
+          </v-btn>
 
+          <v-btn 
+            @click="refreshContent(code, 10)"
+            value="center">
+            10일
+          </v-btn>
+
+          <v-btn 
+            @click="refreshContent(code, 15)"
+            value="right">
+            15일
+          </v-btn>
+
+          <v-btn 
+            @click="refreshContent(code, 20)"
+            value="justify">
+            20일
+          </v-btn>
+        </v-btn-toggle>
+      </v-row>
       <v-slide-group
         v-model="model"
         class="pa-4"
         show-arrows
-      >
-
+      >        
         <v-slide-item
           v-for="n in 4"
           :key="n"
@@ -36,29 +73,28 @@
               color="grey-lighten-1">
               {{ titles[n-1]}}              
             </v-card-title>                     -->
-              <div v-if="!loading">
-                <!-- <market-chart color="white" /> -->
-                <test-chart       
-                  :options="options"            
-                  :chartData="createChart(titles[n-1])"                  
-                  :height="170"/>
-              </div>
-              <div v-else>
-                <v-progress-linear
-                  v-if="loading"
-                  bottom
-                  height="10"
-                  absolute
-                  color="grey"
-                  indeterminate
-                  dark                  
-                ></v-progress-linear>
-              </div>
+            <div v-if="!loading">
+              <!-- <market-chart color="white" /> -->
+              <test-chart       
+                :options="options"            
+                :chartData="createChartData(titles[n-1])"                  
+                :height="170"/>
+            </div>
+            <div v-else>
+              <v-progress-linear
+                v-if="loading"
+                bottom
+                height="10"
+                absolute
+                color="grey"
+                indeterminate
+                dark                  
+              ></v-progress-linear>
+            </div>              
           </v-card>
-
         </v-slide-item>
-
       </v-slide-group>
+
       <v-expand-transition>
 
         <v-sheet
@@ -106,6 +142,8 @@ import TestChart from '@/pages/TestChart.vue'
 
 const StockStoreModule = namespace('StockStore')
 
+const year = new Date().getFullYear()
+
 @Component({
   components: {
     MarketChart,
@@ -116,6 +154,7 @@ const StockStoreModule = namespace('StockStore')
 }) 
 export default class StockDetail extends Vue {
 
+  
   @StockStoreModule.State('code')
   private code!: string 
 
@@ -128,11 +167,17 @@ export default class StockDetail extends Vue {
   @StockStoreModule.State('requestDate')
   private requestDate!: string
   
-  @StockStoreModule.Action('searchContents')
-  private searchContent!: (code: string) => void
-
   @StockStoreModule.State('stockChart')
   private stockChart!: Array<LineChartModel>
+
+  @StockStoreModule.State('stockDetail')
+  private stockDetail!: any
+
+  @StockStoreModule.Action('searchContents')
+  private searchContents!: (code: string) => Promise<any>
+
+  @StockStoreModule.Mutation('updateRequestDate')
+  private updateRequestDate!: (payload: number) => void
 
   private reveal = false
   private model = null
@@ -168,9 +213,10 @@ export default class StockDetail extends Vue {
     },    
   }
     
-  private createChart(label: string): object {
+  private createChartData(label: string): object {
     return {
-      labels: this.stockChart.map((stock: LineChartModel) => stock.date),
+      labels: this.stockChart
+                .map((stock: LineChartModel) => stock.date.substr(5)),
       datasets: [ 
         { 
           label: label,
@@ -199,10 +245,16 @@ export default class StockDetail extends Vue {
     }
   }
 
-  created () {  
-    this.searchContent(this.code)
+  private refreshContent(code: string, requestDate: number): void {
+    this.updateRequestDate(requestDate)
+    this.searchContents(this.code).then(() => {
+      console.log(typeof year)  
+    })
+  }
+
+  created () {          
+    this.refreshContent(this.code, 10)    
   } 
-  
 }
 </script>
 
