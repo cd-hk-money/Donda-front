@@ -75,4 +75,20 @@
  ┗ 📜shims-vuetify.d.ts
 ```
 
-파일 이름 변경 필요.
+#  구성요소
+
+ Framework - Vue 2 (Class Component, Typescript, vuex, vuex-class)  
+ CSS library - Vuetify (Vue 2)  
+
+--- 
+Vuetify의 원활한 사용을 위해 Vue 2 사용.  
+
+API 데이터셋이 복잡하므로, TS 사용.  
+
+TS의 사용 용이성을 위해 컴포넌트와 Store를 Class 형식으로 작성.
+
+
+
+
+
+

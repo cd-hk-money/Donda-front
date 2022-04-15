@@ -5,7 +5,8 @@
     left
     absolute
     bottom    
-    floating       
+    floating           
+        
   >
     <v-list>
       <div class="pa-2">

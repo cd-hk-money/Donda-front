@@ -40,7 +40,7 @@
           cols="12"
         >
           <span             
-            class="text-h10 text--disabled"            
+            class="text-h10 text--white"            
             @click="seeMore"
               >더보기</span>                
         </v-col>

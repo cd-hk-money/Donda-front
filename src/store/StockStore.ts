@@ -1,5 +1,6 @@
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators'
 import { StockSimpleModel, StockDetailModel, LineChartModel } from '@/models/stock'
+
 import axios from 'axios'
 const HEADER = {
   headers: {
@@ -58,7 +59,7 @@ export default class StockStore extends VuexModule {
   @Mutation
   public updateStocks(stocks: any) {
     this.stocksDetail = stocks
-    this.stocks = stocks.map((stock: Array<number | string | boolean>) => {
+    this.stocks = stocks.map((stock: Array<number | string>) => {
       return {
         title: stock[1],
         code: stock[0],

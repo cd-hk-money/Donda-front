@@ -32,3 +32,11 @@ export interface LineChartModel {
   date: string
   value: number
 }
+
+export interface StockListModel {
+  title: string
+  close: string
+  marcap: string
+  tran: string
+  charge: string
+}

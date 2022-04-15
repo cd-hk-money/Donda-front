@@ -46,11 +46,11 @@ export default class AppBar extends Vue {
       route: '/'
     },
     {
-      title: '변동률 TOP 10',
+      title: '변동률 TOP',
       route: '/trans'
     },
     {
-      title: '거래대금 TOP 10',
+      title: '거래대금 TOP',
       route: '/change'
     }
   ]
