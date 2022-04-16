@@ -15,9 +15,14 @@
  ┃ ┗ 📜logo.svg
  ┣ 📂components
  ┃ ┣ 📂detail
+ ┃ ┃ ┣ 📜DatePickers.vue
  ┃ ┃ ┣ 📜DetailChart.vue
- ┃ ┃ ┗ 📜StockInfo.vue
- ┃ ┣ 📂layout
+ ┃ ┃ ┣ 📜LineChart.vue
+ ┃ ┃ ┣ 📜StockAnalysis.vue
+ ┃ ┃ ┣ 📜StockFinanceState.vue
+ ┃ ┃ ┣ 📜StockFinanceStateChart.vue
+ ┃ ┃ ┣ 📜StockInfo.vue
+ ┃ ┃ ┗ 📜TermSelect.vue
  ┃ ┣ 📂market
  ┃ ┃ ┣ 📜MarketCarousel.vue
  ┃ ┃ ┣ 📜MarketChart.vue
@@ -29,13 +34,13 @@
  ┃ ┣ 📂similar
  ┃ ┃ ┗ 📜SimilarContent.vue
  ┃ ┗ 📂translist
+ ┃ ┃ ┣ 📜SortDialog.vue
  ┃ ┃ ┣ 📜TopScroll.vue
  ┃ ┃ ┗ 📜TransListContents.vue
  ┣ 📂layout
  ┃ ┣ 📜AppBar.vue
  ┃ ┣ 📜Error.vue
  ┃ ┣ 📜Market.vue
- ┃ ┣ 📜NavBar.vue
  ┃ ┣ 📜News.vue
  ┃ ┣ 📜Recommend.vue
  ┃ ┣ 📜SideBar.vue
@@ -43,6 +48,7 @@
  ┃ ┣ 📜StockDetail.vue
  ┃ ┗ 📜TransList.vue
  ┣ 📂mixins
+ ┃ ┣ 📜tools.ts
  ┃ ┗ 📜TopListMixin.vue
  ┣ 📂models
  ┃ ┣ 📜app.ts
@@ -54,13 +60,13 @@
  ┣ 📂pages
  ┃ ┣ 📜Change.vue
  ┃ ┣ 📜Detail.vue
+ ┃ ┣ 📜doChart.vue
  ┃ ┣ 📜Home.vue
- ┃ ┣ 📜TestChart.vue
  ┃ ┗ 📜Trans.vue
  ┣ 📂plugins
  ┃ ┗ 📜vuetify.ts
  ┣ 📂routes
- ┃ ┗ 📜index.ts
+ ┃ ┗ 📜index.js
  ┣ 📂scss
  ┃ ┗ 📜variables.scss
  ┣ 📂store
@@ -73,7 +79,6 @@
  ┣ 📜shims-tsx.d.ts
  ┣ 📜shims-vue.d.ts
  ┗ 📜shims-vuetify.d.ts
-```
 
 #  구성요소
 
