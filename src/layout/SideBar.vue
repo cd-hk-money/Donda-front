@@ -9,7 +9,9 @@
         
   >
     <v-list>
-      <div class="pa-2">
+      <div  
+        v-if="loaded"
+        class="pa-2">
         <v-autocomplete      
           dense            
           flat
@@ -94,17 +96,20 @@ import { namespace } from 'vuex-class'
 
 // models
 import { InterestGroupModel } from '@/models/interest'
+import { StockSimpleModel } from '@/models/stock'
 
 const StockStoreModule = namespace('StockStore')
 
 @Component
 export default class SideBar extends Vue {
-
-  @StockStoreModule.Action('todayMarket')
-  private readonly requestTodayMarket!: () => void
-
   @StockStoreModule.State('searchTable')
-  private searchTable!: Array<string>
+  private readonly searchTable!: Array<string>
+
+  @StockStoreModule.State('stocks')
+  private stocks!: StockSimpleModel[]
+
+  @StockStoreModule.State('loaded')
+  private loaded!: boolean
 
   @StockStoreModule.Mutation('setCode')
   // eslint-disable-next-line no-unused-vars
@@ -119,9 +124,7 @@ export default class SideBar extends Vue {
 
   // 자동완성 항목
   private items: Array<string> = []
-
   private inputMode = false
-
   private groupTitle = ''
 
   // 관심종목 그룹
@@ -164,15 +167,14 @@ export default class SideBar extends Vue {
     })
   }
 
-  private push(): void {
-    this.setCode('000000')
-    this.setTitle(this.search)
-    this.$router.push(`/detail/${this.search}`)
-  }
-
-  private revealTextArea(): void {
-    this.inputMode = true
-  }
+  // private push(): void {
+  //   this.setCode('000000')
+  //   this.setTitle(this.search)
+  //   this.$router.push(`/detail/${this.search}`)
+  // }
+  // private revealTextArea(): void {
+  //   this.inputMode = true
+  // }
   
   private addInterestGroup(): void {
     this.interetGroups.push({
@@ -182,14 +184,26 @@ export default class SideBar extends Vue {
     })
     this.groupTitle = ''
   }
+
+  private push(title: string): void {        
+  console.log('push')
+  try{
+    const stock = this.stocks.find((stock: StockSimpleModel) => {
+      stock.title === title
+    }) as StockSimpleModel
+    this.setCode(stock.code)
+    this.setTitle(title)
+    this.$router.push(`/detail/${stock.code}`)
+  } catch(e: any) {     
+    console.log(e)
+  }  
+}
   
   private inputModeBlur(): void {
     this.inputMode = false
     this.groupTitle = ''
   }
-
-  created() {
-    this.requestTodayMarket()
-  }
 }
 </script>
+
+

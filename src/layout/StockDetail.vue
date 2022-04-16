@@ -4,25 +4,14 @@
     class="mx-auto"    
   >    
     <stock-info />
+
     <v-divider></v-divider>
   
     <v-sheet
       class="mx-auto"
       elevation="8"
-    >
-      <v-row class="align-end">     
-        <!-- <v-btn
-          class="ma-1"
-          :loading="loading"
-          :disabled="loading"
-          color="secondary"
-          @click="refreshContent(code, requestDate + 1)"
-        >
-          날짜 선택
-        </v-btn> -->
-
-      </v-row>
-      <term-select />           
+    >      
+      <term-select @toogle="toogle"/>           
       <v-slide-group
         v-model="model"
         class="pa-4"
@@ -44,7 +33,8 @@
               <!-- <market-chart color="white" /> -->
               <v-col col="12">
                 <test-chart                                     
-                  :chartData="createChartData(titles[n-1])"                  
+                  :chartData="stockChart" 
+                  :label="titles[n-1]"                 
                   :height="170"/>                               
               </v-col>              
             </div>
@@ -67,7 +57,7 @@
 
         <v-sheet
           v-if="model != null"
-          height="400"
+          height="auto"
           tile
           rounded="xl"
         >
@@ -75,27 +65,26 @@
             class="fill-height"
             align="center"
             justify="center"
-          >            
-            <v-card 
-              class="grey darken-4"
-              min-height="90%"
-              min-width="90%"
-              rounded="ml" 
-            >                            
-              <detail-chart />
-            </v-card>
+          >                                    
+            <detail-chart />
           </v-row>
         </v-sheet>
       </v-expand-transition>
     </v-sheet>
-    <v-divider></v-divider>
-    <v-sheet>
-      <v-card
-        min-height="200"
-      >
 
-      </v-card>
+    <v-divider></v-divider>
+    
+    <v-sheet>
+      <v-row>
+        <v-col cols="12" sm="8">
+          <stock-finance-state />        
+        </v-col>
+        <v-col cols="12" sm="4">
+          <stock-analysis />
+        </v-col>
+      </v-row>
     </v-sheet>
+
   </v-card>
 </template>
 
@@ -108,8 +97,10 @@ import { LineChartModel } from '@/models/stock'
 import StockInfo from '@/components/detail/StockInfo.vue'
 import DetailChart from '@/components/detail/DetailChart.vue'
 import TermSelect from '@/components/detail/TermSelect.vue'
+import StockFinanceState from '@/components/detail/StockFinanceState.vue'
+import StockAnalysis from '@/components/detail/StockAnalysis.vue'
 
-import TestChart from '@/pages/TestChart.vue'
+import TestChart from '@/components/detail/LineChart.vue'
 
 const StockStoreModule = namespace('StockStore')
 
@@ -120,7 +111,9 @@ const year = new Date().getFullYear()
     StockInfo,
     DetailChart,
     TestChart,    
-    TermSelect
+    TermSelect,
+    StockFinanceState,
+    StockAnalysis
   }
 }) 
 export default class StockDetail extends Vue {
@@ -158,8 +151,7 @@ export default class StockDetail extends Vue {
     '영업이익',
     'EPS'
   ]
-
-    
+  
   private createChartData(label: string): object {
     return {
       labels: this.stockChart
@@ -169,25 +161,11 @@ export default class StockDetail extends Vue {
           label: label,
           data: this.stockChart.map((stock: LineChartModel) => stock.value),
           height: 30,
-          fill: false,
-          backgroundColor: [
-            // "rgba(255, 99, 132, 0.2)",
-            // "rgba(54, 162, 235, 0.2)",
-            // "rgba(255, 206, 86, 0.2)",
-            // "rgba(75, 192, 192, 0.2)",
-            // "rgba(153, 102, 255, 0.2)",
-            // "rgba(255, 159, 64, 0.2)",
-          ],
-          borderColor: [
-            '#0097A7'
-            // "rgba(255,255,255,1)",
-            // "rgba(54, 162, 235, 1)",
-            // "rgba(255, 206, 86, 1)",
-            // "rgba(75, 192, 192, 1)",
-            // "rgba(153, 102, 255, 1)",
-            // "rgba(255, 159, 64, 1)",
-          ],
-          borderWidth: 5,        
+          fill: false,          
+          borderColor: '#0097A7',
+          borderWidth: 3,       
+          radius: 5,
+          pointStyle: 'rectRoundedr'
         }
       ],
     }
@@ -203,6 +181,10 @@ export default class StockDetail extends Vue {
   created () {          
     this.refreshContent(this.code, 10)    
   } 
+
+  public toogle (index: number): void {
+    console.log('전달받음.', index)
+  }
 }
 </script>
 

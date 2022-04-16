@@ -40,7 +40,7 @@ export default class StockStore extends VuexModule {
   get getStocks(): Array<StockSimpleModel> {
     return this.stocks
   }
-
+  
   @Mutation
   public setCode(newCode: string): void {
     this.code = newCode
@@ -126,7 +126,7 @@ export default class StockStore extends VuexModule {
     try {      
       this.context.commit('updateLoaded', false)
       const res = await axios.get(`/today`, HEADER)
-      this.context.commit('updateStocks', res.data.data)
+      this.context.commit('updateStocks', res.data.data)      
       this.context.commit('setSearchTable')   
       this.context.commit('updateLoaded', true)
     } catch(e) {

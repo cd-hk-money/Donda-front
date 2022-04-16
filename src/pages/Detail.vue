@@ -69,7 +69,6 @@ export default class Trans extends Vue {
   private setTitle!:(code: string) => void
   
   private created (): void {           
-    console.log('detail created')
     this.setCode(this.$route.params.code)   
     try{
       const stock = this.stocks.find((stock: StockSimpleModel) => stock.code === this.$route.params.code) as StockSimpleModel      

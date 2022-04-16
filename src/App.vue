@@ -10,20 +10,27 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { Component, Vue } from 'vue-property-decorator'
+import { namespace } from 'vuex-class'
+
 import AppBar from '@/layout/AppBar.vue'
 
-export default Vue.extend({
-  name: 'App',
+const StockStoreModule = namespace('StockStore')
+
+@Component({
   components: {
-    AppBar,
-  },
+    AppBar
+  }
+})
+export default class App extends Vue {
 
-  data: () => ({
+  @StockStoreModule.Action('todayMarket')
+  private readonly requestTodayMarket!: () => void
 
-  }),
-
-});
+  created () {
+    this.requestTodayMarket()
+  }
+}
 </script>
 
 <style>

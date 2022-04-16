@@ -25,7 +25,7 @@
         rounded="ml"     
         hover           
       >        
-         {{ stockDetail }} .. 디테일 정보들 표시 예정
+         {{ stockDetail }}
 
       </v-card>
     </v-col>
@@ -34,7 +34,8 @@
         max-width="auto"
         min-height="auto"
         class="grey darken-4 pt-mr-auto"
-      >          
+      >
+        기타정보..
       </v-card>
     </v-col>
   </v-row>

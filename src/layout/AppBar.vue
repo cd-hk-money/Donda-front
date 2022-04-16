@@ -46,13 +46,9 @@ export default class AppBar extends Vue {
       route: '/'
     },
     {
-      title: '변동률 TOP',
+      title: '상위 종목',
       route: '/trans'
-    },
-    {
-      title: '거래대금 TOP',
-      route: '/change'
-    }
+    },    
   ]
 
   private push(link: RouteModel): void {    

@@ -1,11 +1,18 @@
 <template>
-  <v-data-table
-    dense
-    :headers="headers"
-    :items="desserts"
-    item-key="name"
-    class="elevation-1"       
-  ></v-data-table>
+  <v-card 
+    class="grey darken-4"
+    min-height="100%"
+    min-width="90%"
+    rounded="ml" 
+  >
+    <v-data-table
+      dense
+      :headers="headers"
+      :items="desserts"
+      item-key="name"
+      class="elevation-1"       
+    ></v-data-table>
+  </v-card>
 </template>
 
 <script lang="ts">
