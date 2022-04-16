@@ -79,7 +79,7 @@
  ┣ 📜shims-tsx.d.ts
  ┣ 📜shims-vue.d.ts
  ┗ 📜shims-vuetify.d.ts
-
+```
 #  구성요소
 
  Framework - Vue 2 (Class Component, Typescript, vuex, vuex-class)  
