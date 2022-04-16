@@ -17,7 +17,8 @@
       </v-card>
     </v-col>    
     <v-col cols="12" sm="auto">        
-      <v-card         
+      <v-card      
+        v-if="!loading"   
         class="grey darken-4 pt-mr-auto" 
         elevation="0" 
         min-height="90%"
@@ -52,6 +53,9 @@ export default class StockInfo extends Vue {
 
   @StockStoreModule.State('title')
   private title!: string   
+
+  @StockStoreModule.State('loading')
+  private loading!: boolean
 
   @StockStoreModule.State('stockDetail')
   private stockDetail!: any

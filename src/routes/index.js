@@ -3,6 +3,8 @@ import Home from '@/pages/Home.vue'
 import Trans from '@/pages/Trans.vue'
 import Change from '@/pages/Change.vue'
 import Detail from '@/pages/Detail.vue'
+import doChart from '@/pages/doChart.vue'
+import goTo from "vuetify/lib/services/goto";
 
 const routes = [
   {
@@ -25,14 +27,29 @@ const routes = [
     name: "detail",
     component: Detail
   },
+  {
+    path: '/chart',
+    name: 'chart',
+    component: doChart
+  }
 ]
 
 const router = new VueRouter({
   mode: "history",
-  scrollBehavior() {
-    return {x: 0, y: 0}
+  scrollBehavior: (to, from, savedPosition) => {
+    let scrollTo = 0
+
+    if (to.hash) {
+      scrollTo = to.hash
+    } else if (savedPosition) {
+      scrollTo = savedPosition.y
+    }
+
+    return goTo(scrollTo)
   },
   routes
 })
+
+
 
 export default router

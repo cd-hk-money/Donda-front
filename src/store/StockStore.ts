@@ -90,7 +90,7 @@ export default class StockStore extends VuexModule {
 
   @Mutation
   public updateStockDetail(payload: any): void {    
-    this.stockDetail = this.stocksDetail.find((stock: any) => stock[0] === payload).slice(0, 3)
+    this.stockDetail = this.stocksDetail.find((stock: any) => stock[0] === payload).slice(0, 5)
   
   }
 

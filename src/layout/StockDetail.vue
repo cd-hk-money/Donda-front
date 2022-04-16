@@ -20,35 +20,9 @@
         >
           날짜 선택
         </v-btn> -->
-        <v-btn-toggle          
-          tile        
-          group          
-        >
-          <v-btn 
-            @click="refreshContent(code, 5)"
-            value="left">
-            5일
-          </v-btn>
 
-          <v-btn 
-            @click="refreshContent(code, 10)"
-            value="center">
-            10일
-          </v-btn>
-
-          <v-btn 
-            @click="refreshContent(code, 15)"
-            value="right">
-            15일
-          </v-btn>
-
-          <v-btn 
-            @click="refreshContent(code, 20)"
-            value="justify">
-            20일
-          </v-btn>
-        </v-btn-toggle>
       </v-row>
+      <term-select />           
       <v-slide-group
         v-model="model"
         class="pa-4"
@@ -59,26 +33,20 @@
           :key="n"
           v-slot="{ active, toggle }"
         >
-
           <v-card
-            :color="active ? 'grey lighten-1' : 'grey darken-3'"
+            :color="active ? 'grey darken-4' : 'grey darken-4'"
             class="ma-4"
-            height="210"
-            width="480"
-            @click="toggle"
-          >
-            
-            <!-- <v-card-title               
-              class="pa-2"
-              color="grey-lighten-1">
-              {{ titles[n-1]}}              
-            </v-card-title>                     -->
+            height="220"
+            width="480"                       
+            @click="toggle" 
+          >                      
             <div v-if="!loading">
               <!-- <market-chart color="white" /> -->
-              <test-chart       
-                :options="options"            
-                :chartData="createChartData(titles[n-1])"                  
-                :height="170"/>
+              <v-col col="12">
+                <test-chart                                     
+                  :chartData="createChartData(titles[n-1])"                  
+                  :height="170"/>                               
+              </v-col>              
             </div>
             <div v-else>
               <v-progress-linear
@@ -124,7 +92,9 @@
     <v-sheet>
       <v-card
         min-height="200"
-      ></v-card>
+      >
+
+      </v-card>
     </v-sheet>
   </v-card>
 </template>
@@ -135,9 +105,10 @@ import { namespace } from 'vuex-class'
 
 import { LineChartModel } from '@/models/stock'
 
-import MarketChart from '@/components/market/MarketChart.vue'
 import StockInfo from '@/components/detail/StockInfo.vue'
 import DetailChart from '@/components/detail/DetailChart.vue'
+import TermSelect from '@/components/detail/TermSelect.vue'
+
 import TestChart from '@/pages/TestChart.vue'
 
 const StockStoreModule = namespace('StockStore')
@@ -146,10 +117,10 @@ const year = new Date().getFullYear()
 
 @Component({
   components: {
-    MarketChart,
     StockInfo,
     DetailChart,
-    TestChart
+    TestChart,    
+    TermSelect
   }
 }) 
 export default class StockDetail extends Vue {
@@ -188,30 +159,6 @@ export default class StockDetail extends Vue {
     'EPS'
   ]
 
-  private options = {
-    plugins: {
-      title: {
-        display: true,
-        text: 'test..'
-      }
-    },
-    maintainAspectRatio: true, // default value. false일 경우 포함된 div의 크기에 맞춰서 그려짐.
-    responsive: true,
-    scales: {
-      x: {
-        grid: {
-          borderColor: 'red'
-        }
-      } ,      
-      yAxes: [
-        {
-          ticks: {
-            
-          },
-        },
-      ],
-    },    
-  }
     
   private createChartData(label: string): object {
     return {
@@ -232,7 +179,8 @@ export default class StockDetail extends Vue {
             // "rgba(255, 159, 64, 0.2)",
           ],
           borderColor: [
-            "rgba(255,255,255,1)",
+            '#0097A7'
+            // "rgba(255,255,255,1)",
             // "rgba(54, 162, 235, 1)",
             // "rgba(255, 206, 86, 1)",
             // "rgba(75, 192, 192, 1)",
@@ -241,7 +189,7 @@ export default class StockDetail extends Vue {
           ],
           borderWidth: 5,        
         }
-      ]
+      ],
     }
   }
 

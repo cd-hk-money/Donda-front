@@ -3,7 +3,7 @@
     <v-list                   
       two-line>
       <v-list-item-group>    
-        <v-list-item class="ranking-content blue-grey darken-3">          
+        <v-list-item class="ranking-content cyan darken-2">          
           <v-list-item-action>         
             <v-row justify="center">
               <v-btn 
@@ -83,11 +83,9 @@
       class="text-center"
     >
       <v-btn @click="moreTran">
-        <v-icon>
-          mdi-arrow-down
-        </v-icon>
+        <v-icon>mdi-arrow-down</v-icon>
       </v-btn>      
-    </v-container>      
+    </v-container>            
   </v-card>
 </template>
 
@@ -119,6 +117,7 @@ export default class TransList extends Vue {
   private dialog = false
   private count = 5
   private items: Array<StockSimpleModel> = []
+  private scroll = 0
   private filters = [    
     {
       title: '전일종가',
@@ -141,16 +140,16 @@ export default class TransList extends Vue {
   
   private moreTran(): void {
     this.items = this.getStocks.slice(0, this.count += 10)        
-    setTimeout(() => {
+    this.$nextTick(() => {
       if (this.filter !== ''){
         this.doFilter('title')
       } 
       window.scrollTo(0, document.body.scrollHeight)
-    }, 500)    
+    })    
   }    
 
   private doFilter(filter: string) {         
-     if (this.filter === filter){
+     if (this.filter === filter && filter!== ''){
       this.items.reverse()
      }else {
       this.items = _.sortBy(this.items, filter)
@@ -160,8 +159,7 @@ export default class TransList extends Vue {
   
   created() {
     this.items = this.getStocks.slice(0, this.count += 5)    
-  }
-
+  }  
 }
 </script>
 

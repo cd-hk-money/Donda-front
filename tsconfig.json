@@ -9,6 +9,8 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
+    "allowJs": true,
+    "checkJs": false,
     "forceConsistentCasingInFileNames": true,
     "useDefineForClassFields": true,
     "sourceMap": true,
@@ -35,7 +37,7 @@
     "tests/**/*.ts",
     "tests/**/*.tsx",
     "local.d.ts"
-, "src/router/index.js", "src/routes/index.ts"  ],
+, "src/router/index.js", "src/routes/index.js"  ],
   "exclude": [
     "node_modules"
   ]
