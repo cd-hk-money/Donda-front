@@ -1,20 +1,19 @@
 <template>
   <v-card
     dark
-    class="mx-auto"    
+    class="mx-auto"        
   >    
     <stock-info />
 
     <v-divider></v-divider>
   
-    <v-sheet
+    <v-sheet            
       class="mx-auto"
-      elevation="8"
-    >      
+    >            
       <term-select @toogle="toogle"/>           
       <v-slide-group
         v-model="model"
-        class="pa-4"
+        class="pa-4 md"
         show-arrows
       >        
         <v-slide-item
@@ -24,8 +23,9 @@
         >
           <v-card
             :color="active ? 'grey darken-4' : 'grey darken-4'"
-            class="ma-4"
+            class="ma-4 mt-1 "
             height="220"
+            min-width="480"
             width="480"                       
             @click="toggle" 
           >                      
@@ -54,7 +54,6 @@
       </v-slide-group>
 
       <v-expand-transition>
-
         <v-sheet
           v-if="model != null"
           height="auto"
@@ -70,17 +69,14 @@
           </v-row>
         </v-sheet>
       </v-expand-transition>
-    </v-sheet>
-
-    <v-divider></v-divider>
-    
+    </v-sheet>    
     <v-sheet>
       <v-row>
-        <v-col cols="12" sm="8">
+        <v-col cols="12" :sm="analysisActive ? '4':'8'">
           <stock-finance-state />        
         </v-col>
-        <v-col cols="12" sm="4">
-          <stock-analysis />
+        <v-col cols="12" :sm="analysisActive ? '8':'4'">
+          <stock-analysis @analysis="analysis"/>
         </v-col>
       </v-row>
     </v-sheet>
@@ -143,6 +139,7 @@ export default class StockDetail extends Vue {
   @StockStoreModule.Mutation('updateRequestDate')
   private updateRequestDate!: (payload: number) => void
 
+  private analysisActive = false
   private reveal = false
   private model = null
   private titles: Array<string> = [
@@ -184,6 +181,10 @@ export default class StockDetail extends Vue {
 
   public toogle (index: number): void {
     console.log('전달받음.', index)
+  }
+
+  public analysis(active: boolean) {
+    this.analysisActive = active
   }
 }
 </script>

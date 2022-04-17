@@ -27,7 +27,8 @@
       >        
         <transition name="fade">
           <v-btn   
-
+            dark
+            class="cyan"
             v-if="btnShow"
             bottom
             fixed

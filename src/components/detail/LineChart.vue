@@ -34,7 +34,7 @@ export default class LineChart extends Vue {
           data: this.chartData.map((stock: LineChartModel) => stock.value),
           height: 30,
           fill: false,          
-          borderColor: '#0097A7',
+          borderColor: '#00BCD4',
           borderWidth: 3,       
           radius: 5,
           pointStyle: 'rectRoundedr'
@@ -45,7 +45,7 @@ export default class LineChart extends Vue {
         labels: {
           fontColor: 'grey',
           fontStyle: 'bold',
-          fontSize: 13
+          fontSize: 14
         },
         onclick: function() {return }
       },

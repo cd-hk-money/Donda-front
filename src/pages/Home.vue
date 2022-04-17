@@ -15,7 +15,8 @@
       >       
         <v-sheet
           class="grey darken-2"
-          min-height="800px"
+          min-height="90%"
+          max-height="auto"
           rounded="xl"      
         >       
           <market />                                

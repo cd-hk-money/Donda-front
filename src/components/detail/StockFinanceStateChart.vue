@@ -1,5 +1,5 @@
 <script lang="ts">
-import { mixins, Line } from 'vue-chartjs-typescript'
+import { mixins, Line, Doughnut } from 'vue-chartjs-typescript'
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
 import { LineChartModel } from '@/models/stock'
@@ -7,10 +7,10 @@ import { LineChartModel } from '@/models/stock'
 const { reactiveProp } = mixins
 
 @Component({
-  extends: Line,
+  extends: Doughnut,
   mixins: [reactiveProp],
 })
-export default class LineChart extends Vue {
+export default class StockFinanceStateChart extends Vue {
   @Prop()
   private chartData: any
 
@@ -25,60 +25,32 @@ export default class LineChart extends Vue {
   public renderChart!: (chartData: any, options: any) => any    
 
   mounted() {
+    console.log('mounted')
     this.renderChart({
-      labels: this.chartData
-                .map((stock: LineChartModel) => stock.date.substr(5)),
-      datasets: [ 
-        { 
-          label: this.label,
-          data: this.chartData.map((stock: LineChartModel) => stock.value),
-          height: 30,
-          fill: false,          
-          borderColor: '#0097A7',
-          borderWidth: 3,       
-          radius: 5,
-          pointStyle: 'rectRoundedr'
-        }
-      ],          
+      labels: [
+        'Red',
+        'Blue',
+        "Yellow"
+      ],
+      datasets: [{
+        label: 'My First Dataset',
+        data: [1300, 50, 100],
+        backgroundColor: [
+          '#00BCD4',
+          'rgb(54, 162, 235)',
+          'rgb(255, 205, 86)'
+        ],
+        hoverOffset: 4,        
+        borderJoinStyle: 'round',
+        borderWidth: 2,
+        borderRadius: 30,
+        hoverBorderColor: [
+          '#00BCD4'
+        ]
+      }],
     }, {
       legend: {
-        labels: {
-          fontColor: 'grey',
-          fontStyle: 'bold',
-          fontSize: 13
-        },
-        onclick: function() {return }
-      },
-      scales: {
-        xAxes: [{
-          title: {
-            color: '#fff'
-          },
-          gridLines: {
-            display: false
-          },
-        }],
-        yAxes: [{            
-          ticks: {
-            callback: function(value: string) {return '₩' + value.toLocaleString()},            
-          },
-          gridLines: {
-            display: false
-          }
-        }],          
-      },
-      plugins: {
-        legend: {
-          title: {
-            display: true,
-            text: 'Legend Title',
-          }
-        }
-      },
-      responsive: true,
-      maintainAspectRatio: true,
-      animation: {
-        duration: 2000
+        display: false,        
       }
     })
   }    

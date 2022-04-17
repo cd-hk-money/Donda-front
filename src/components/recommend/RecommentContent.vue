@@ -8,6 +8,7 @@
       dark
       class="pa-2"      
       max-width="230"
+      max-height="90%"
       min-height="240"
       rounded="xl"
       :elevation="hover ? 16 : 2"
@@ -15,12 +16,12 @@
     >
       <v-card-title>
         <v-row>
-          <v-col cols="12" sm="10">
-            <span class="text-h6">
+          <v-col cols="12" lg="10" sm="7">
+            <span>
               {{ title }}
             </span>         
           </v-col>
-          <v-col cols="12" sm="2">
+          <v-col cols="12" lg="2" sm="5">
             <v-btn icon>
               <v-icon>mdi-star-outline</v-icon>
             </v-btn>

@@ -5,8 +5,7 @@
     left
     absolute
     bottom    
-    floating           
-        
+    floating                   
   >
     <v-list>
       <div  

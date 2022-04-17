@@ -26,6 +26,7 @@
           :key="i"
           cols="12"
           sm="3"
+          xs="6"
         >          
           <recommend-content />
         </v-col>  
