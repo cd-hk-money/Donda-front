@@ -21,8 +21,9 @@
             elevation="0"
             rounded
             block 
+            dark
             v-bind="attrs"         
-            v-on="on"
+            v-on="on"            
           >
             <v-icon>mdi-magnify</v-icon>
           </v-btn>

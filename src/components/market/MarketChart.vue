@@ -1,5 +1,6 @@
 <template>
-  <v-sparkline       
+  <v-sparkline           
+    class="mt-10 pt-10"
     dark
     :color="color"
     :value="value"    
@@ -13,7 +14,7 @@
     :auto-line-width="autoLineWidth"    
     auto-draw          
   >
-  </v-sparkline>  
+  </v-sparkline>      
 </template>
 
 <script lang="ts">

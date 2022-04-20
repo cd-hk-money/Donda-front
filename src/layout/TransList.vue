@@ -159,7 +159,14 @@ export default class TransList extends Vue {
   
   created() {
     this.items = this.getStocks.slice(0, this.count += 5)    
+    const iterator: Generator<number> = this.go(3)
+    iterator.next()
   }  
+
+  private *go(count: number): Generator<number> {
+    if(count!==5) yield count
+  }
+  
 }
 </script>
 

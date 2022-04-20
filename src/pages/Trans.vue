@@ -5,7 +5,6 @@
         cols="12"
         sm="2"            
       >         
-        <side-bar />           
       </v-col>       
                              
       <v-col                      

@@ -24,11 +24,11 @@
       </v-tab>
     </v-tabs>
 
-    <v-avatar
+    <!-- <v-avatar
       class="hidden-sm-and-down"
       color="grey darken-1 shrink"
       size="auto"
-    ></v-avatar>
+    ></v-avatar> -->
   </v-app-bar>
 </template>
 

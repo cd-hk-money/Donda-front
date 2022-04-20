@@ -1,6 +1,3 @@
-/detail
-디테일 페이지
-
 <template>       
   <v-container>
     <v-row >
@@ -9,7 +6,6 @@
         sm="2"            
       >                    
       </v-col>                
-        <side-bar />
 
       <v-col                      
         cols="12"

@@ -4,19 +4,20 @@
     open-delay="30"        
   >
     <v-card
+      class="grey darken-4"
       v-show="expand"
       dark
-      min-width="30vh"    
+      min-width="28vh"    
       max-height="95%"
-      min-height="30vh"
+      min-height="28vh"
       rounded="xl"
-      :elevation="hover ? 3 : 0"
+      :elevation="hover ? 16 : 0"
       :to="`/detail/${code}`"
     >
       <v-card-title>
         <v-row>
           <v-col cols="12" lg="10" sm="7">
-            <span>
+            <span class="cyan--text font-weight-bold">
               {{ title }}
             </span>         
           </v-col>

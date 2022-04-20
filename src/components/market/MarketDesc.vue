@@ -30,16 +30,17 @@
               v-model="dialog"
               width="80vh"
             >
-              <template v-slot:activator="{ on, attrs }">
+              <!-- <template v-slot:activator="{ on, attrs }">
                 <v-btn
                   outlined
-                  class="ma-2"
+                  class="ma-2 cyan"
                   dark
                   v-bind="attrs"
                   v-on="on"
+                  right
                 >                  
                 </v-btn>
-              </template>
+              </template> -->
 
               <v-card rounded="xl">
                 <v-card-title>

@@ -1,16 +1,21 @@
 <template>
   <v-card   
     class="mt-7 grey darken-3 d-flex justify-space-around"
-    height="35vh"
-    
-    rounded="xl">    
-      <div  
-        class="d-flex align-center"
-        v-for="i in itemCount"
-        :key="i"                
-      >          
-        <recommend-content />
-      </div>  
+    height="33vh"    
+    outlined
+    rounded="xl"
+  >    
+    <div  
+      class="d-flex align-center"
+      v-for="i in itemCount"
+      :key="i"                
+    >          
+      <transition name="zoom">
+        <div v-if="show">
+          <recommend-content />
+        </div>
+      </transition>
+    </div>  
   </v-card>            
 </template>
 
@@ -31,6 +36,7 @@ export default class Recommend extends Vue {
   
   private itemCount = 4
   private expand = false
+  private show = false
 
   private seeMore() {
     this.itemCount += 4
@@ -39,6 +45,27 @@ export default class Recommend extends Vue {
       window.scrollTo(0, document.body.scrollHeight)
     }, 500) 
   }
+
+  mounted () {
+    this.show = true
+  }
+
+  unmounted () {
+    this.show = false
+  }
 }
 
 </script>
+
+<style>
+.zoom-enter {
+  opacity: 0;
+  transform: translate3d(-100%, 0, 0);
+}
+
+.zoom-enter-active {  
+  transition: opacity .9s ease-out;
+  transform: translateZ(0);
+}
+
+</style>
