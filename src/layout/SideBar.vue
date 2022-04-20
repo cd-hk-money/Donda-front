@@ -1,47 +1,86 @@
 <template>
-  <v-navigation-drawer
+  <v-navigation-drawer    
     expand-on-hover
     dark 
     left
-    absolute
-    bottom    
-    floating                   
-  >
-    <v-list>
-      <div  
-        v-if="loaded"
-        class="pa-2">
-        <v-autocomplete      
-          dense            
-          flat
-          rounded
-          solo-inverted
-          cache-items   
-          ref="autoinput"
-          v-model="searchTable"            
-          :items="items"
-          :search-input.sync="search"
-          hide-no-data
-          hide-details        
-          @keypress.enter="push(search)"
-        ></v-autocomplete>
-      </div>  
+    fixed
+    floating
+    hide-overlay
+    overlay-opacity="0.5"
+    permanent
+    clipped
+  >    
+    <v-list>     
+      <v-dialog
+        v-model="dialog"
+        max-width="30%"
+        min-height="100%"
+      >        
+        <template v-slot:activator="{ on, attrs }">        
+          <v-btn             
+            elevation="0"
+            rounded
+            block 
+            v-bind="attrs"         
+            v-on="on"
+          >
+            <v-icon>mdi-magnify</v-icon>
+          </v-btn>
+        </template>
+
+        <v-card   
+          rounded="xl"
+          dark
+          height="100%">
+          <v-card-title class="text-h6 font-weight-bold cyan--text">
+            기업명, 코드로 종목을 찾아보세요.
+          </v-card-title>
+
+          <v-spacer></v-spacer>
+
+          <v-card-text>
+            <v-autocomplete      
+              autofocus
+              dark              
+              rounded
+              solo-inverted
+              cache-items   
+              ref="autoinput"
+              v-model="searchTable"            
+              :items="items"
+              :search-input.sync="search"
+              hide-no-data
+              hide-details        
+              @keypress.enter="push(search)"
+            ></v-autocomplete>
+          </v-card-text>
+
+          <v-spacer></v-spacer>
+
+          <v-card-text>
+            이런 종목은 어떠세요?
+          </v-card-text>
+        </v-card>
+      </v-dialog> 
     </v-list>
 
     <v-divider></v-divider>
 
     <v-list
+      height="auto"
       nav
       dense
       v-for="(interest, index) in interetGroups"
       :key="index"
     >
-      <v-list-item link>
+      <v-list-item link >
         <v-list-item-icon>
           <v-icon>{{ interest.icon }}</v-icon>
         </v-list-item-icon>          
         <v-list-item-title>{{ interest.title }}</v-list-item-title>
-          <v-btn icon>
+          <v-btn 
+            @click="editInterestGroup(interest.title)"
+            icon>
             <v-icon>mdi-square-edit-outline</v-icon>
           </v-btn>
       </v-list-item>     
@@ -52,12 +91,17 @@
     <v-list>
       <div  
         v-if="!inputMode"
-        class="pa-2">
+        class="text-center"
+      >
         <v-btn 
-          v-if="!inputMode"
-          class="pa-2"
+          elevation="0"
+          rounded
+          fixed
+          block
+          color="primary"
+          v-if="!inputMode"          
           @click="inputMode=true"
-          icon>
+        >
           <v-icon>mdi-plus</v-icon>
         </v-btn>
       </div>   
@@ -120,6 +164,9 @@ export default class SideBar extends Vue {
 
   // 검색창 
   private search: any = null
+
+  // 검색창 다이어로그
+  private dialog = false
 
   // 자동완성 항목
   private items: Array<string> = []
@@ -184,25 +231,49 @@ export default class SideBar extends Vue {
     this.groupTitle = ''
   }
 
+  private editInterestGroup(title: string): void {
+    this.interetGroups = this.interetGroups.filter((interestGroup: InterestGroupModel) => interestGroup.title !== title )
+  }
+
   private push(title: string): void {        
-  console.log('push')
-  try{
-    const stock = this.stocks.find((stock: StockSimpleModel) => {
-      stock.title === title
-    }) as StockSimpleModel
-    this.setCode(stock.code)
-    this.setTitle(title)
-    this.$router.push(`/detail/${stock.code}`)
-  } catch(e: any) {     
-    console.log(e)
-  }  
-}
+    try{
+      const stock = this.stocks.find((stock: StockSimpleModel) => {
+        stock.title === title
+      }) as StockSimpleModel
+      this.setCode(stock.code)
+      this.setTitle(title)
+      this.$router.push(`/detail/${stock.code}`)
+    } catch(e: any) {     
+      console.log(e)
+    }  
+  }
+
+
   
   private inputModeBlur(): void {
     this.inputMode = false
     this.groupTitle = ''
   }
+
+
 }
 </script>
+
+<style scoped>
+.overflow-hidden {
+  overflow: hidden !important;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+.no-scroll { -ms-overflow-style: none; } 
+.no-scroll::-webkit-scrollbar { display:none; }
+
+</style>
 
 

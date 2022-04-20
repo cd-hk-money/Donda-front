@@ -6,12 +6,11 @@
     <v-card
       v-show="expand"
       dark
-      class="pa-2"      
-      max-width="230"
-      max-height="90%"
-      min-height="240"
+      min-width="30vh"    
+      max-height="95%"
+      min-height="30vh"
       rounded="xl"
-      :elevation="hover ? 16 : 2"
+      :elevation="hover ? 3 : 0"
       :to="`/detail/${code}`"
     >
       <v-card-title>

@@ -1,22 +1,19 @@
 <template>
-  <div>    
-    <v-sparkline      
-      dark
-      :color="color"
-      :value="value"    
-      :smooth="radius || false"
-      :padding="padding"
-      :line-width="width"
-      :stroke-linecap="lineCap"
-      :gradient-direction="gradientDirection"
-      :fill="fill"
-      :type="type"
-      :auto-line-width="autoLineWidth"    
-      auto-draw        
-    >
-    </v-sparkline>  
-
-  </div>  
+  <v-sparkline       
+    dark
+    :color="color"
+    :value="value"    
+    :smooth="radius || false"
+    :padding="padding"
+    :line-width="width"
+    :stroke-linecap="lineCap"
+    :gradient-direction="gradientDirection"
+    :fill="fill"
+    :type="type"
+    :auto-line-width="autoLineWidth"    
+    auto-draw          
+  >
+  </v-sparkline>  
 </template>
 
 <script lang="ts">

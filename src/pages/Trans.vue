@@ -66,6 +66,7 @@ export default class Trans extends Vue {
     let scrollTop = window.pageYOffset 
     this.btnShow = scrollTop > 1500 ? true : false
   }
+
   mounted () {
     window.addEventListener('scroll', this.handleScroll)
   }

@@ -1,54 +1,17 @@
 <template>
-  <v-row>
-    <v-col
-      cols="12"
-      sm="1"
-    >
-    </v-col>
-    <v-col
-      cols="12"
-      sm="10"                  
-    >       
-      <p
-        class="text-h5 font-weight-bold "
-        style="color:white;"           
-      >오늘의 추천 종목</p>
-      
-      <v-card 
-        elevation="0"
-        class="grey darken-2"
-        dark
-      >                
-      </v-card>      
-      <v-row>
-        <v-col  
-          v-for="i in itemCount"
-          :key="i"
-          cols="12"
-          sm="3"
-          xs="6"
-        >          
-          <recommend-content />
-        </v-col>  
-      </v-row>  
-      <v-row>
-        <v-col 
-          sm="11"
-          cols="12"
-        ></v-col>
-        <v-col
-          sm="1"
-          cols="12"
-        >
-          <span             
-            class="text-h10 text--white"            
-            @click="seeMore"
-              >더보기</span>                
-        </v-col>
-      </v-row>             
-    </v-col> 
-  </v-row>   
-        
+  <v-card   
+    class="mt-7 grey darken-3 d-flex justify-space-around"
+    height="35vh"
+    
+    rounded="xl">    
+      <div  
+        class="d-flex align-center"
+        v-for="i in itemCount"
+        :key="i"                
+      >          
+        <recommend-content />
+      </div>  
+  </v-card>            
 </template>
 
 <script lang="ts">

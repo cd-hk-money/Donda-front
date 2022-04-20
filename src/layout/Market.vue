@@ -1,60 +1,33 @@
-<template>        
-  <v-row>
-    <v-col
-      cols="12"
-      sm="1"
-    >
-    </v-col>
-    <v-col
-      cols="12"
-      sm="10"                  
-    >      
-      <v-carousel
-        height="450px"
-        class="market-carousel"        
-        cycle
-        hide-delimiter-background
-        show-arrows-on-hover
-      >            
-        <v-carousel-item              
-          v-for="(slide, i) in slides"
-          :key="i"
-        >               
-          <v-sheet
+<template>   
+  <v-card 
+    class="mt-2"
+    rounded="xl"
+  >
+    <v-carousel    
+      height="52vh"
+      class="market-carousel"        
+      cycle
+      hide-delimiter-background
+      show-arrows-on-hover
+    >            
+      <v-carousel-item                
+        v-for="(slide, i) in slides"
+        :key="i"
+        link="/"
+      >               
+        <v-sheet          
+          :color="colors[i]"
+          height="100%"
+        >                        
+          <market-desc 
+            :desc="slide"
             :color="colors[i]"
-            height="100%"
-          >                
-            <v-row
-              class="fill-height"        
-              align="center"
-              justify="center"
-            >
-              <v-col                      
-                cols="12"
-                sm="10"
-              >          
-                <market-desc 
-                  :desc="slide"
-                  :color="colors[i]"
-                />         
-              </v-col>
-              <v-col                
-                cols="12"
-                sm="12"
-              >
-                <market-chart color="grey" />
-              </v-col>
-            </v-row>
-          </v-sheet>
-        </v-carousel-item>              
-      </v-carousel>                  
-    </v-col>
-    <v-col
-      cols="12"
-      sm="1"
-    >                
-    </v-col>            
-  </v-row>                
+          />                   
+          <market-chart color="grey" />
+        </v-sheet>
+      </v-carousel-item>              
+    </v-carousel>                  
+  </v-card>     
 </template>
 
 <script lang="ts">
@@ -113,7 +86,6 @@ export default class Market extends Vue {
 </script>
 
 <style>
- .market-carousel {
-   
- }
+
+ 
 </style>

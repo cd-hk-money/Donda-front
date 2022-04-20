@@ -4,8 +4,7 @@
       <v-col            
         cols="12"
         sm="2"            
-      >        
-        <side-bar />             
+      >                 
       </v-col>          
       
       <v-col   
@@ -14,10 +13,9 @@
         sm="8"
       >       
         <v-sheet
-          class="grey darken-2"
-          min-height="90%"
-          max-height="auto"
-          rounded="xl"      
+          class="grey darken-4"
+          min-height="97vh"
+          max-height="97vh"
         >       
           <market />                                
           <recommend />
@@ -62,6 +60,6 @@ export default class Home extends Vue {
 
 <style scoped>
 .main-content {
-  margin-top: 30px;
+  
 }
 </style>

@@ -1,9 +1,10 @@
 <template>
-  <v-app-bar
+  <v-app-bar    
+    elevation="0"
     app
-    color="grey darken-3"
-    temporary
+    color="grey darken-4"
     dark
+    absolute
   >    
     <v-tabs
       exact
@@ -26,7 +27,7 @@
     <v-avatar
       class="hidden-sm-and-down"
       color="grey darken-1 shrink"
-      size="20"
+      size="auto"
     ></v-avatar>
   </v-app-bar>
 </template>

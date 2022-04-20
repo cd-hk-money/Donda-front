@@ -1,24 +1,22 @@
 <template>
   <v-card    
     dark
-    elevation="0"
-    rounded="xl"
-    class="mx-auto" 
+    elevation="0"    
     :color="color"
+    max-height="20%"
+    min-height="20%"
   >
     <v-card-text>      
-      <v-row>
-        <v-col cols="12" sm="4">
-          <span class="text-h3 font-weight-bold">
+      <v-row>        
+        <v-col cols="12" sm="auto">
+          <span class="ml-3 text-h3 font-weight-bold">
             {{ desc.market }} 
           </span>
           <span class="text-h5 ">
             {{ desc.code }}
           </span>                
-        </v-col>
-        <v-col cols="12" sm="7">          
-        </v-col>
-        <v-col cols="12" sm="1">     
+        </v-col>      
+        <v-col cols="12" sm="auto">     
           <!-- <v-btn 
             class="ma-2"
             outlined
@@ -30,7 +28,7 @@
             <div class="text-center">
             <v-dialog              
               v-model="dialog"
-              width="1100"
+              width="80vh"
             >
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
@@ -39,8 +37,7 @@
                   dark
                   v-bind="attrs"
                   v-on="on"
-                >
-                  자세히
+                >                  
                 </v-btn>
               </template>
 
@@ -51,8 +48,8 @@
 
                 <v-card-text>
                   <v-sheet
-                    class="grey lighten-2"
-                    min-height="660"
+                    class="grey lighten-2"                    
+                    max-height="10%"
                     rounded="xl"
                   >
                    
