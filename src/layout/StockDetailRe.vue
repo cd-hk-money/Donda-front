@@ -32,7 +32,7 @@
             <div v-if="!loading">
               <!-- <market-chart color="white" /> -->
               <v-col col="12">
-                <line-chart                                     
+                <test-chart                                     
                   :chartData="stockChart" 
                   :label="titles[n-1]"                 
                   :height="170"/>                               
@@ -96,7 +96,7 @@ import TermSelect from '@/components/detail/TermSelect.vue'
 import StockFinanceState from '@/components/detail/StockFinanceState.vue'
 import StockAnalysis from '@/components/detail/StockAnalysis.vue'
 
-import LineChart from '@/components/detail/LineChart.vue'
+import TestChart from '@/components/detail/LineChart.vue'
 
 const StockStoreModule = namespace('StockStore')
 
@@ -106,13 +106,13 @@ const year = new Date().getFullYear()
   components: {
     StockInfo,
     DetailChart,
-    LineChart,    
+    TestChart,    
     TermSelect,
     StockFinanceState,
     StockAnalysis
   }
 }) 
-export default class StockDetail extends Vue {
+export default class StockDetailRe extends Vue {
 
   
   @StockStoreModule.State('code')

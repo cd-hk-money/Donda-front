@@ -9,7 +9,7 @@
     <v-card-text>      
       <v-row>        
         <v-col cols="12" sm="auto">
-          <span class="ml-3 text-h3 font-weight-bold">
+          <span class="white--text ml-3 text-h3 font-weight-bold">
             {{ desc.market }} 
           </span>
           <span class="text-h5 ">

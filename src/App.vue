@@ -1,7 +1,9 @@
 <template>
-  <v-app id="inspire">      
-    <app-bar />
-    <side-bar />
+  <v-app 
+    class="grey darken-4"
+    id="inspire">     
+    <side-bar /> 
+    <app-bar />    
     <v-main class="grey darken-4"> 
       <transition name="slide-fade" mode="out-in">
         <router-view />      

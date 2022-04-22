@@ -37,10 +37,11 @@ export default class LineChart extends Vue {
           borderColor: '#00BCD4',
           borderWidth: 3,       
           radius: 5,
-          pointStyle: 'rectRoundedr'
+          pointStyle: 'rectRoundedr',
+          tension: .5
         }
       ],          
-    }, {
+    }, {      
       legend: {
         labels: {
           fontColor: 'grey',
@@ -61,6 +62,7 @@ export default class LineChart extends Vue {
         yAxes: [{            
           ticks: {
             callback: function(value: string) {return '₩' + value.toLocaleString()},            
+            display: false,
           },
           gridLines: {
             display: false

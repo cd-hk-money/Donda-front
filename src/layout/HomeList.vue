@@ -1,9 +1,8 @@
 <template>   
   <v-card 
-    class="mt-2 grey darken-3"    
+    class="mt-mb-2 grey darken-3"    
     rounded="xl"
     max-width="100%"
-    max-height="52vh"        
   >  
       <v-list two-line>
       <v-list-item>        
@@ -81,7 +80,7 @@
       delimiter-icon="mdi-minus"
       hide-delimiter-background
       show-arrows-on-hover      
-      height="44vh"
+      height="44.9vh"
     >    
       <v-carousel-item        
         v-for="(slide, i) in slides"
@@ -97,8 +96,8 @@
             align="center"
             justify="center"
           >
-            <div class="text-h2">
-              {{ slide }} Slide
+            <div class="text-h2 white--text font-weight-bold">
+              {{ slide }}
             </div>
           </v-row>
         </v-sheet>
@@ -116,19 +115,17 @@ export default class HomeList extends Vue {
   private full = false
 
   private colors = [
-    'green',
     'secondary',
-    'yellow darken-4',
-    'red lighten-2',
-    'orange darken-1',
+    'secondary',
+    'secondary',
+    'secondary'
   ]
   
   private slides = [
-    'First',
-    'Second',
-    'Third',
-    'Fourth',
-    'Fifth',    
+    '관심종목1',
+    '관심종목2',
+    '관심종목3',
+    '관심종목4',      
   ]
 
   private cycle = false

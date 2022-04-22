@@ -10,7 +10,7 @@
     permanent
     clipped
   >    
-    <v-list>     
+    <v-list>        
       <v-dialog
         v-model="dialog"
         max-width="30%"
@@ -249,8 +249,6 @@ export default class SideBar extends Vue {
     }  
   }
 
-
-  
   private inputModeBlur(): void {
     this.inputMode = false
     this.groupTitle = ''

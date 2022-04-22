@@ -1,22 +1,21 @@
 <template>
-  <v-card   
-    class="mt-7 grey darken-3 d-flex justify-space-around"
-    height="33vh"    
-    outlined
+  <v-card
+    class="grey darken-4 d-flex justify-space-around"
     rounded="xl"
-  >    
-    <div  
+    height="30vh" 
+  >            
+    <div
       class="d-flex align-center"
       v-for="i in itemCount"
       :key="i"                
-    >          
+    >              
       <transition name="zoom">
         <div v-if="show">
           <recommend-content />
         </div>
       </transition>
-    </div>  
-  </v-card>            
+    </div>        
+  </v-card>
 </template>
 
 <script lang="ts">

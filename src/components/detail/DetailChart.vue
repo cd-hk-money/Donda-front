@@ -1,9 +1,8 @@
 <template>
   <v-card 
-    class="grey darken-4"
-    min-height="100%"
+    class="grey darken-4 mt-4 mb-4"    
     min-width="90%"
-    rounded="ml" 
+    rounded="xl" 
   >
     <v-data-table
       dense

@@ -4,7 +4,7 @@
     open-delay="30"        
   >
     <v-card
-      class="grey darken-4"
+      class="grey darken-3"
       v-show="expand"
       dark
       min-width="28vh"    
@@ -17,7 +17,7 @@
       <v-card-title>
         <v-row>
           <v-col cols="12" lg="10" sm="7">
-            <span class="cyan--text font-weight-bold">
+            <span class="white--text font-weight-bold">
               {{ title }}
             </span>         
           </v-col>

@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container class="grey darken-4">
     <v-row >    
       <v-col            
         cols="12"
@@ -7,7 +7,6 @@
       ></v-col>          
       
       <v-col   
-        class="main-content"
         cols="12"
         sm="8"
       >       
@@ -24,8 +23,19 @@
             <v-col cols="12" xl="8">
               <market />                                
             </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="12" xl="11">
+              <div class="pl-2 white--text text-h5 font-weight-bold">
+                이런 기업은 어떠세요?
+              </div>                
+            </v-col>
+            <v-col cols="12" xl="1">
+              <div class="pl-2 white--text text-h7 font-weight-bold">
+                더보기?
+              </div>                    
+            </v-col>
           </v-row> 
-
           <recommend />
         </v-sheet>                     
       </v-col>        
@@ -67,9 +77,3 @@ export default class Home extends Vue {
   }
 }
 </script>
-
-<style scoped>
-.main-content {
-  
-}
-</style>

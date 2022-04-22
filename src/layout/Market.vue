@@ -1,12 +1,10 @@
 <template>   
   <v-card 
-    class="mt-2 grey darken-3"
+    class="mt-mb-2 grey darken-3"
     rounded="xl"
-    max-width="100%"        
+    max-width="100%"       
   > 
-    <v-carousel
-      min-height="52vh"
-      max-height="52vh"
+    <v-carousel            
       class="grey darken-3"        
       cycle
       hide-delimiter-background

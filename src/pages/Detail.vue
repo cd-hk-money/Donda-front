@@ -1,5 +1,5 @@
 <template>       
-  <v-container>
+  <v-container >
     <v-row >
       <v-col            
         cols="12"
@@ -12,11 +12,41 @@
         sm="8"
       >       
         <v-sheet
-          class="grey darken-2"
-          min-height="800px"
-          rounded="xl"
-        >            
-          <stock-detail />
+          class="grey darken-4"
+          min-height="auto"
+          max-height="auto"       
+        >         
+          <v-row>
+            <v-col cols="12" xl="2" ml="3">
+              <stock-title :title="stockTitle"/>
+            </v-col>
+
+            <v-col cols="12" xl="10" ml="9">
+              <stock-info />
+            </v-col>
+          </v-row>  
+          <v-row>
+            <v-col cols="12" xl="12">
+              <stock-chart />
+            </v-col>
+          </v-row>  
+          <v-row>
+            <v-col cols="12" xl="8">
+              <v-card class="grey darken-3" link rounded="xl" min-height="40vh">
+                <v-card-title>
+                  ㅇㅇ;;
+                </v-card-title>
+              </v-card>
+            </v-col>
+
+            <v-col cols="12" xl="4">
+              <v-card class="grey darken-3" link rounded="xl" min-height="40vh">
+                <v-card-title>
+                  ㅇㅇ;;
+                </v-card-title>
+              </v-card>
+            </v-col>
+          </v-row>        
         </v-sheet>               
       </v-col>        
       <v-col
@@ -40,6 +70,12 @@ import StockDetail from '@/layout/StockDetail.vue'
 import News from '@/layout/News.vue'
 import Similar from '@/layout/Similar.vue'
 
+
+// 재설계
+import StockTitle from '@/components/detail/StockTitle.vue'
+import StockInfo from '@/components/detail/StockInfo.vue'
+import StockChart from '@/components/detail/StockChart.vue'
+
 import { StockSimpleModel } from '@/models/stock'
 
 const StockStoreModule = namespace('StockStore')
@@ -50,7 +86,12 @@ const StockStoreModule = namespace('StockStore')
     StockDetail,
     SideBar,
     News,
-    Similar
+    Similar,
+
+    StockTitle,
+    StockInfo,
+    StockChart
+    
   }
 })
 export default class Trans extends Vue {
@@ -58,21 +99,28 @@ export default class Trans extends Vue {
   @StockStoreModule.State('stocks')
   private stocks!: Array<StockSimpleModel>
 
-  @StockStoreModule.Mutation('setCode')
-  private setCode!:(code: string) => void
-
-  @StockStoreModule.Mutation('setTitle')  
-  private setTitle!:(code: string) => void
+  @StockStoreModule.Action('searchContents')
+  private searchContents!: (code: string) => Promise<any>
   
-  private created (): void {           
-    this.setCode(this.$route.params.code)   
+  private stockTitle!: {
+    title: string
+    code: string,
+  }
+  
+  private created (): void {               
     try{
-      const stock = this.stocks.find((stock: StockSimpleModel) => stock.code === this.$route.params.code) as StockSimpleModel      
-      this.setTitle(stock.title)
+      this.searchContents(this.$route.params.code)
+      const stock = this.stocks.find((stock: StockSimpleModel) => stock.code === this.$route.params.code) as StockSimpleModel            
+      this.stockTitle = {
+        title: stock.title,
+        code: this.$route.params.code
+      }
     } catch(e: any) {     
       this.$router.push({name: 'Home', params:{error: 'true'}})
     }   
   }    
+
+
 }
 </script>
 
