@@ -1,9 +1,13 @@
+
+//
 export interface StockSimpleModel {
  title: string
  code: string
  stock: number 
 }
 
+
+//
 export interface StockDetailModel {
   title: string               // 기업명
   renewalDate: Date           // 최근 갱신일   
@@ -19,6 +23,16 @@ export interface StockDetailModel {
   lowestYears: string         // 52주 최저  
 }
 
+// 임시. 
+export interface StockRankModel {
+  title: string
+  code: string
+  close: number
+  change: number
+  changeRatio: string
+}
+
+//
 export interface StockPriceModel {
   Change: number
   Close: number
@@ -28,11 +42,13 @@ export interface StockPriceModel {
   Volume: number
 }
 
+//
 export interface LineChartModel {
   date: string
   value: number
 }
 
+//
 export interface StockListModel {
   title: string
   close: string

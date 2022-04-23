@@ -4,8 +4,7 @@
     min-height="auto"
     max-height="auto"
     rounded="xl"
-    dark    
-    link
+    dark        
   >
     <v-slide-group
       v-model="model"

@@ -36,8 +36,18 @@ export default class LineChart extends Vue {
           fill: false,          
           borderColor: '#00BCD4',
           borderWidth: 3,       
-          radius: 5,
+          radius: 4,
           pointStyle: 'rectRoundedr',
+          tension: .5
+        },
+        {
+          label: '적정 주가',
+          data: this.chartData.map((stock: LineChartModel) => Math.floor(stock.value * (Math.random()*0.05 + 0.95))),
+          height: 30,
+          fill: false,          
+          borderColor: '#00FF00',
+          borderWidth: 3,       
+          radius: 4,          
           tension: .5
         }
       ],          

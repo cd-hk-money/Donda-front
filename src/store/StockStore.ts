@@ -1,13 +1,15 @@
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators'
-import { StockSimpleModel, StockDetailModel, LineChartModel } from '@/models/stock'
+import { StockSimpleModel, StockDetailModel, LineChartModel, StockRankModel } from '@/models/stock'
 
 import axios from 'axios'
+
 const HEADER = {
   headers: {
     'Content-Type': 'text/plain;charset=utf-8'
   }
 }
 
+const DETAIL_TYPE = ['close', 'type', 'change', 'changeRatio', 'open', 'high', 'low', 'volume']
 
 @Module({namespaced: true})
 export default class StockStore extends VuexModule {
@@ -18,9 +20,10 @@ export default class StockStore extends VuexModule {
     
   public loading = false
   public loaded = false
-  public requestDate = 10
+  public requestDate = 20
   
   public stocks!: StockSimpleModel[]        // 상장된 모든 종목에 대한 간단 정보
+  public stocksRank!: StockRankModel
   public stocksDetail!: any                 // 상장된 모든 종목에 대한 상세 정보
   public stock!: StockDetailModel | null    // 검색한 종목 하나에 대한 주가 정보
   public searchTable!: Array<string>  
@@ -59,6 +62,7 @@ export default class StockStore extends VuexModule {
   @Mutation
   public updateStocks(stocks: any) {
     this.stocksDetail = stocks
+    console.log(stocks)
     this.stocks = stocks.map((stock: Array<number | string>) => {
       return {
         title: stock[1],
@@ -66,6 +70,15 @@ export default class StockStore extends VuexModule {
         stock: stock[4]
       }
     })
+    // this.stocksRank = stocks.map((stock: Array<number | string>, index: number) => {
+    //   return {
+    //     title: stock[1],
+    //     code: stock[0],
+    //     close: stock[4],
+    //     change: stock[6],
+    //     changeRatio: stock[7]
+    //   }
+    // })
   }
 
   @Mutation
@@ -89,9 +102,14 @@ export default class StockStore extends VuexModule {
   }
 
   @Mutation
-  public updateStockDetail(payload: any): void {    
-    this.stockDetail = this.stocksDetail.find((stock: any) => stock[0] === payload).slice(0, 5)
-  
+  public updateStockDetail(payload: any): void {                
+    this.stockDetail = this.stocksDetail
+                        .find((stock: any) => stock[0] === payload)
+                          .slice(4, 12)
+                            .reduce((acc: any, cur: string, index: number) => {
+                                acc[DETAIL_TYPE[index]] = cur
+                                return acc
+                            }, {})
   }
 
   @Mutation

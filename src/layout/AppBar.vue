@@ -50,6 +50,10 @@ export default class AppBar extends Vue {
       title: '상위 종목',
       route: '/trans'
     },    
+    {
+      title: '상위 종목 v2',
+      route: '/rank'
+    }
   ]
 
   private push(link: RouteModel): void {    

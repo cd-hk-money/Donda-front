@@ -17,11 +17,11 @@
           max-height="auto"       
         >         
           <v-row>
-            <v-col cols="12" xl="2" ml="3">
+            <v-col cols="12" xl="auto" ml="3">
               <stock-title :title="stockTitle"/>
             </v-col>
 
-            <v-col cols="12" xl="10" ml="9">
+            <v-col cols="12" xl="9" ml="9">
               <stock-info />
             </v-col>
           </v-row>  
