@@ -1,7 +1,5 @@
 <template>
-  <v-app 
-    class="grey darken-4"
-    id="inspire">     
+  <v-app id="inspire">     
     <side-bar /> 
     <app-bar />    
     <v-main class="grey darken-4"> 
@@ -18,14 +16,13 @@ import { namespace } from 'vuex-class'
 
 import AppBar from '@/layout/AppBar.vue'
 import SideBar from '@/layout/SideBar.vue'
-import FloatingNav from '@/layout/FloatingNav.vue'
+
 const StockStoreModule = namespace('StockStore')
 
 @Component({
   components: {
     AppBar,
     SideBar,
-    FloatingNav
   }
 })
 export default class App extends Vue {

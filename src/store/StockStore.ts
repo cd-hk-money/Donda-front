@@ -62,7 +62,6 @@ export default class StockStore extends VuexModule {
   @Mutation
   public updateStocks(stocks: any) {
     this.stocksDetail = stocks
-    console.log(stocks)
     this.stocks = stocks.map((stock: Array<number | string>) => {
       return {
         title: stock[1],
@@ -70,20 +69,11 @@ export default class StockStore extends VuexModule {
         stock: stock[4]
       }
     })
-    // this.stocksRank = stocks.map((stock: Array<number | string>, index: number) => {
-    //   return {
-    //     title: stock[1],
-    //     code: stock[0],
-    //     close: stock[4],
-    //     change: stock[6],
-    //     changeRatio: stock[7]
-    //   }
-    // })
   }
 
   @Mutation
   public updateLoaded(payload: boolean): void {
-    this.loaded = payload
+    this.loaded = payload    
   }
   
   @Mutation
@@ -117,7 +107,6 @@ export default class StockStore extends VuexModule {
     this.requestDate = payload
   }
 
-
   @Action
   public async searchContents (code: string): Promise<any> {
     try {
@@ -130,7 +119,7 @@ export default class StockStore extends VuexModule {
           value: stock[1].Close
         }
       })
-      chartData.pop()      
+      chartData.pop()            
       this.context.commit('updateStockDetail', code)               
       this.context.commit('updateStockChart', chartData)    
       this.context.commit('updateLoading', false)   

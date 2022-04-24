@@ -4,8 +4,7 @@
       <v-col            
         cols="12"
         sm="2"            
-      >         
-      </v-col>       
+      ></v-col>       
                              
       <v-col                      
         cols="12"
@@ -28,6 +27,7 @@
                     {{ filter.title }}
                   </div>
                 </v-col>
+
                 <v-col cols="12" xl="3">
                   <v-btn
                     class="mx-2"
@@ -73,9 +73,12 @@
                 <v-icon>mdi-sort</v-icon>
               </v-btn>
             </template>
+
             <v-card dark>
               <v-card-title class="grey darken-3 font-weight-bold">정렬 옵션</v-card-title>              
+
               <v-divider></v-divider>
+
               <v-card-text style="height: 300px;">
                 <v-combobox
                   v-model="filtersTemp"
@@ -242,16 +245,13 @@ export default class Rank extends Vue {
   }
   
   created () {
-
     // created 할때 미리 모든 차트 데이터셋 저장.
     this.loadRank(DEFAULT_COUNT)
-
   }
 
   mounted () {
     window.addEventListener('scroll', this.handleScroll)
   }
-
 }
 </script>
 

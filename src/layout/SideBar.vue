@@ -11,58 +11,7 @@
     clipped
   >    
     <v-list>        
-      <v-dialog
-        v-model="dialog"
-        max-width="30%"
-        min-height="100%"
-      >        
-        <template v-slot:activator="{ on, attrs }">        
-          <v-btn             
-            elevation="0"
-            rounded
-            block 
-            dark
-            v-bind="attrs"         
-            v-on="on"            
-          >
-            <v-icon>mdi-magnify</v-icon>
-          </v-btn>
-        </template>
-
-        <v-card   
-          rounded="xl"
-          dark
-          height="100%">
-          <v-card-title class="text-h6 font-weight-bold cyan--text">
-            기업명, 코드로 종목을 찾아보세요.
-          </v-card-title>
-
-          <v-spacer></v-spacer>
-
-          <v-card-text>
-            <v-autocomplete      
-              autofocus
-              dark              
-              rounded
-              solo-inverted
-              cache-items   
-              ref="autoinput"
-              v-model="searchTable"            
-              :items="items"
-              :search-input.sync="search"
-              hide-no-data
-              hide-details        
-              @keypress.enter="push(search)"
-            ></v-autocomplete>
-          </v-card-text>
-
-          <v-spacer></v-spacer>
-
-          <v-card-text>
-            이런 종목은 어떠세요?
-          </v-card-text>
-        </v-card>
-      </v-dialog> 
+      <stock-search dark/>
     </v-list>
 
     <v-divider></v-divider>
@@ -106,7 +55,8 @@
           <v-icon>mdi-plus</v-icon>
         </v-btn>
       </div>   
-      <v-text-field        
+      <v-text-field       
+        v-show="loaded" 
         filled
         dense            
         flat
@@ -142,9 +92,16 @@ import { namespace } from 'vuex-class'
 import { InterestGroupModel } from '@/models/interest'
 import { StockSimpleModel } from '@/models/stock'
 
+// components 
+import StockSearch from '@/layout/StockSearch.vue'
+
 const StockStoreModule = namespace('StockStore')
 
-@Component
+@Component({
+  components: {
+    StockSearch
+  }
+})
 export default class SideBar extends Vue {
   @StockStoreModule.State('searchTable')
   private readonly searchTable!: Array<string>

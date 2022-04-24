@@ -6,6 +6,10 @@ import { LineChartModel } from '@/models/stock'
 
 const { reactiveProp } = mixins
 
+const MIN = 60000
+const MAX = 73000
+const POINT_RADIUS = 2
+
 @Component({
   extends: Line,
   mixins: [reactiveProp],
@@ -33,12 +37,12 @@ export default class LineChart extends Vue {
           label: this.label,
           data: this.chartData.map((stock: LineChartModel) => stock.value),
           height: 30,
-          fill: false,          
+          fill: 'origin',          
           borderColor: '#00BCD4',
           borderWidth: 3,       
-          radius: 4,
+          radius: POINT_RADIUS,
           pointStyle: 'rectRoundedr',
-          tension: .5
+          tension: .5,          
         },
         {
           label: '적정 주가',
@@ -47,7 +51,7 @@ export default class LineChart extends Vue {
           fill: false,          
           borderColor: '#00FF00',
           borderWidth: 3,       
-          radius: 4,          
+          radius: POINT_RADIUS,          
           tension: .5
         }
       ],          
@@ -60,7 +64,7 @@ export default class LineChart extends Vue {
         },
         onclick: function() {return }
       },
-      scales: {
+      scales: {              
         xAxes: [{
           title: {
             color: '#fff'
@@ -71,12 +75,15 @@ export default class LineChart extends Vue {
         }],
         yAxes: [{            
           ticks: {
-            callback: function(value: string) {return '₩' + value.toLocaleString()},            
-            display: false,
+            callback: function(value: string) {return '₩ ' + value.toLocaleString()},            
+            stepSize: MAX - MIN - 1000,
+            display: true,
           },
+          min: MIN,
+          max: MAX,          
           gridLines: {
             display: false
-          }
+          },          
         }],          
       },
       plugins: {
@@ -90,7 +97,8 @@ export default class LineChart extends Vue {
       responsive: true,
       maintainAspectRatio: true,
       animation: {
-        duration: 2000
+        duration: 1000,       
+        easing: 'easeInOutCubic'         
       }
     })
   }    

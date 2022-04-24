@@ -24,18 +24,21 @@
               <market />                                
             </v-col>
           </v-row>
+
           <v-row>
             <v-col cols="12" xl="11">
               <div class="pl-2 white--text text-h5 font-weight-bold">
                 이런 기업은 어떠세요?
               </div>                
             </v-col>
+
             <v-col cols="12" xl="1">
               <div class="pl-2 white--text text-h7 font-weight-bold">
                 더보기?
               </div>                    
             </v-col>
           </v-row> 
+
           <recommend />
         </v-sheet>                     
       </v-col>        
@@ -45,6 +48,7 @@
         sm="2"
       ></v-col>          
     </v-row>
+    
     <error v-if="isError" />
   </v-container>
 </template>
