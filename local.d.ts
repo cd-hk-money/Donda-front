@@ -8,3 +8,13 @@ declare module "lodash" {
 
   export = _;
 }
+
+declare module "vue-mobile-detection" {
+  interface IVueMobileDetection {
+    isMobile(): any
+  }
+
+  const VueMobileDetection: IVueMobileDetection
+
+  export = VueMobileDetection
+}

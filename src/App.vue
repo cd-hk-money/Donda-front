@@ -1,7 +1,7 @@
 <template>
   <v-app id="inspire">     
-    <side-bar /> 
-    <app-bar />    
+    <!-- <side-bar v-if="isMobile"/>  -->
+    <!-- <app-bar v-if="!isMobile"/>     -->
     <v-main class="grey darken-4"> 
       <transition name="slide-fade" mode="out-in">
         <router-view />      
@@ -11,11 +11,16 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue, Watch } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
+import { isMobile } from '@/mixins/tools'
 
-import AppBar from '@/layout/AppBar.vue'
+// v1
+// import AppBar from '@/layout/AppBar.vue'
 import SideBar from '@/layout/SideBar.vue'
+
+// v2
+import AppBar from '@/v2/pages/AppBar.vue'
 
 const StockStoreModule = namespace('StockStore')
 
@@ -29,10 +34,17 @@ export default class App extends Vue {
 
   @StockStoreModule.Action('todayMarket')
   private readonly requestTodayMarket!: () => void
+  
+  get height() {
+    return window.pageXOffset
+  }
+
+  private isMobile = isMobile()
 
   created () {
     this.requestTodayMarket()
   }
+  
 }
 </script>
 

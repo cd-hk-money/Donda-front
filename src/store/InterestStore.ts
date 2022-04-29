@@ -10,7 +10,7 @@ export default class InterestStore extends VuexModule {
   public interestGroups!: Array<string>
   public interestGroup!: InterestGroupModel
 
-  public loaded: boolean = false
+  public loaded = false
 
 
   get getInterestGroups(): Array<string> {

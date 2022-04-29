@@ -15,6 +15,7 @@ const DETAIL_TYPE = ['close', 'type', 'change', 'changeRatio', 'open', 'high', '
 export default class StockStore extends VuexModule {
 
   // state
+  
   public title = ''               
   public code = ''
     

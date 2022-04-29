@@ -1,9 +1,13 @@
+// 첫번째 버전
 import VueRouter from "vue-router";
 import Home from '@/pages/Home.vue'
 import Trans from '@/pages/Trans.vue'
 import Change from '@/pages/Change.vue'
 import Detail from '@/pages/Detail.vue'
 import Rank from '@/pages/Rank.vue'
+
+// 두번째 버전 
+import HomeV2 from '@/v2/pages/HomeV2.vue'
 
 import goTo from "vuetify/lib/services/goto";
 
@@ -32,6 +36,11 @@ const routes = [
     path: "/rank",
     name: "rank",
     component: Rank
+  },
+  {
+    path: "/v2",
+    name: "v2",
+    component: HomeV2
   }
 ]
 

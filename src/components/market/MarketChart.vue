@@ -1,6 +1,5 @@
 <template>
-  <v-sparkline           
-    class="mt-10 pt-10"
+  <v-sparkline               
     dark
     :color="color"
     :value="value"    
