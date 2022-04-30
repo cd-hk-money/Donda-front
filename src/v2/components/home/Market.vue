@@ -1,37 +1,32 @@
 <template>
-  <v-card
-    color="white" 
+  <v-card        
     class="mt-5 ml-5"
-    height="auto"
-    rounded="ml"
+    height="50vh"
+    rounded="xl"
   >
-    <v-carousel                      
+    <v-carousel 
+      v-if="!marketLoaded"                     
       height="auto"
       cycle
       hide-delimiter-background
-      show-arrows-on-hover      
+      show-arrows-on-hover    
+      hide-delimiters  
     >            
       <v-carousel-item                
-        v-for="(slide, i) in slides"
+        v-for="(marketRecent, i) in marketRecents"
         :key="i"
-      >  
-        <v-flex
-          v-if="!loaded"
-          class="align-center text-center"
-        >                  
-          <circular-loading />
-        </v-flex>        
-        <v-card          
-          v-else
-          :color="colors[i]"
+      >          
+        <v-card                    
           height="auto"           
-          @click="full = true"                
+                         
         >                        
-          <market-desc 
-            :desc="slide"
+          <market-desc :desc="marketRecent" />                   
+          <market-chart   
+            class="ml-5 mr-5"
             :color="colors[i]"
-          />                   
-          <market-chart color="grey" />
+            :height="100"
+            :count="20"
+            :type="marketRecent.market" />
         </v-card>
       </v-carousel-item>              
     </v-carousel>       
@@ -45,13 +40,15 @@ import { namespace } from 'vuex-class'
 // components
 import MarketCarousel from '@/components/market/MarketCarousel.vue'
 import MarketDesc from '@/components/market/MarketDesc.vue'
-import MarketChart from '@/components/market/MarketChart.vue'
+import MarketChart from '@/v2/components/home/MarketChart.vue'
 import CircularLoading from '@/layout/CircularLoading.vue'
 
 // models
-import { MarketDescModel } from '@/models/market'
+import { IMarketRecentModel } from '@/models/market'
+
 
 const StockStoreModule = namespace('StockStore')
+const MarketStoreModule = namespace('MarketStore')
 
 @Component({
   components: {
@@ -62,33 +59,14 @@ const StockStoreModule = namespace('StockStore')
   }
 })
 export default class Market extends Vue {
-    private colors: Array<string> = [
-    'grey darken-3',
-    'grey darken-3',
-    'grey darken-3',    
-  ]
+    private colors = ['#40E0D0', '#40E0D0', '#40E0D0']
 
-  private slides: MarketDescModel[] = [
-    {
-      market: '시장1',
-      close: '2233',
-      trans: '23112',
-      code: '주가'
-    },
-    {
-      market: '시장2',
-      close: '265442',
-      trans: '221223',
-      code: '주가'
-    },
-    {
-      market: '시장3',
-      close: '2254',
-      trans: '2322454',
-      code: '주가'
-    }
-  ]
+  @MarketStoreModule.State('marketRecents')
+  private marketRecents!: IMarketRecentModel[] 
 
+  @MarketStoreModule.State('marketLoaded')
+  private marketLoaded!: boolean
+  
   @StockStoreModule.State('loaded')
   private loaded!: boolean
 

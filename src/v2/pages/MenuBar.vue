@@ -3,6 +3,7 @@
     <v-card           
       width="256"
       class="d-flex justify-left mt-5"        
+      rounded="xl"
     >
       <v-tooltip 
         v-for="menu in menus"
@@ -39,6 +40,7 @@
         v-show="expand"
         width="256"
         height="100"
+        rounded="xl"
       >
         검색바 on
       </v-card>
@@ -49,15 +51,16 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 
-interface Imenu {
+export interface IMenu {
   icon: string,
   tooltip: string,
-  click(): boolean | any
+  click(): boolean | any,
+  color?: string
 }
 
 @Component
 export default class MenuBar extends Vue {
-  private menus: Array<Imenu> = [
+  private menus: Array<IMenu> = [
     {      
       icon: 'home',
       tooltip: '홈으로 가기',

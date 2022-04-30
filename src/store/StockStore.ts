@@ -1,5 +1,5 @@
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators'
-import { StockSimpleModel, StockDetailModel, LineChartModel, StockRankModel } from '@/models/stock'
+import { StockSimpleModel, LineChartModel, StockRankModel, IMarketRanksContents } from '@/models/stock'
 
 import axios from 'axios'
 
@@ -9,13 +9,14 @@ const HEADER = {
   }
 }
 
+const URL = '/api'
+
 const DETAIL_TYPE = ['close', 'type', 'change', 'changeRatio', 'open', 'high', 'low', 'volume']
 
 @Module({namespaced: true})
 export default class StockStore extends VuexModule {
 
-  // state
-  
+  // state  
   public title = ''               
   public code = ''
     
@@ -26,7 +27,7 @@ export default class StockStore extends VuexModule {
   public stocks!: StockSimpleModel[]        // 상장된 모든 종목에 대한 간단 정보
   public stocksRank!: StockRankModel
   public stocksDetail!: any                 // 상장된 모든 종목에 대한 상세 정보
-  public stock!: StockDetailModel | null    // 검색한 종목 하나에 대한 주가 정보
+  
   public searchTable!: Array<string>  
 
   public stockChart!: Array<LineChartModel> // 개별종목 주가 정보
@@ -35,6 +36,18 @@ export default class StockStore extends VuexModule {
   public subscribe!: StockSimpleModel[]   // 구독 여부
 
   public sparkValues!: Array<number>
+
+  public recommendLoaded!: boolean
+
+  
+  // 오늘의 간단 랭킹
+  public dailySimpleRanks!: IMarketRanksContents 
+  public dailySimpleRanksLoaded = false
+
+
+  // 오늘의 상세 랭킹
+  public dailyDetailRanks!: Array<any>
+  public dilayDetailRanksLoaded = false
   
   // getters
   get nameMappingCode(): StockSimpleModel[] {
@@ -108,6 +121,21 @@ export default class StockStore extends VuexModule {
     this.requestDate = payload
   }
 
+  @Mutation
+  public updateRecommendLoaded(payload: boolean) {
+    this.recommendLoaded = payload
+  }
+
+  @Mutation
+  public updateDailySimpleRanks(payload: IMarketRanksContents) {
+    this.dailySimpleRanks = payload
+  }
+
+  @Mutation
+  public updateDailySimpleRanksLoaded(payload: boolean) {
+    this.dailySimpleRanksLoaded = payload
+  }
+
   @Action
   public async searchContents (code: string): Promise<any> {
     try {
@@ -134,6 +162,7 @@ export default class StockStore extends VuexModule {
     try {      
       this.context.commit('updateLoaded', false)
       const res = await axios.get(`/today`, HEADER)
+
       this.context.commit('updateStocks', res.data.data)      
       this.context.commit('setSearchTable')   
       this.context.commit('updateLoaded', true)
@@ -141,5 +170,36 @@ export default class StockStore extends VuexModule {
       console.log(e)
     }
   }  
-  
+
+  @Action
+  public async getRecommendStock(): Promise<void> {
+    try {
+      this.context.commit('updateRecommendLoaded', false)
+      const res = await axios.get(`${URL}/daily/recom`)
+
+      this.context.commit('updateRecommendLoaded', true)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  @Action
+  public async getDailySimpleRanks(): Promise<void> {
+
+    const commit = this.context.commit
+    const actionType = 'updateDailySimpleRanks'
+
+    try {
+      commit(`${actionType}Loaded`, false)
+
+      const res = await axios.get(`${URL}/daily/rank`, HEADER)
+      
+      commit(`${actionType}`, res.data)
+      commit(`${actionType}Loaded`, true)
+
+    } catch(e) {
+      console.log(e)
+    }
+  }
 }
+

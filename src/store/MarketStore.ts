@@ -1,6 +1,8 @@
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators'
 import axios from 'axios'
-import { StockSimpleModel } from '@/models/stock'
+import { StockSimpleModel} from '@/models/stock'
+import { MarketModel, IMarketChartModel, IMarketRecentModel } from '@/models/market'
+import * as _ from 'lodash'
 
 const HEADER = {
     headers: {
@@ -8,41 +10,131 @@ const HEADER = {
     }
   }
 
+
 @Module({namespaced: true})
-export default class InterestStore extends VuexModule {
+export default class MarketStore extends VuexModule {
 
-  // state
-  public chartLoading: boolean = false
-  public markets!: StockSimpleModel
+  // 자동 완성을 위한 모든 종목의 종목명과 코드
+  public searchTableLoaded = false  
+  public searchTable!: Array<StockSimpleModel>
+
+  // 주식 시장
+  public marketLoaded = false
+  
+  // 주식 시장 차트
+  public marketChart!: IMarketChartModel
+
+  // 주식 시장 최근
+  public marketRecents!: Array<IMarketRecentModel>
 
   @Mutation
-  public updateTitle(payload: string): void {
-
+  public updateMarketLoaded(payload: boolean) {
+    this.marketLoaded = payload
   }
 
   @Mutation
-  public updateMarket(payload: any): void {
-    this.markets = payload
+  public updateSearchTableLoaded(payload: boolean) {
+    this.searchTableLoaded = payload
   }
 
   @Mutation
-  public updateLoading(payload: boolean): void {
-      this.chartLoading = payload
+  public updateMarket(payload: any) {        
+  
+    const label: IMarketChartModel = {
+      kospi: {
+        labels: [],
+        data: []
+      },
+      nasdaq: {
+        labels: [],
+        data: []
+      },
+      snp500: {
+        labels: [],
+        data: []
+      },
+    }
+    const labels = Object.keys(payload)
+
+    Object.values(payload).forEach((m, index) => {
+      const f = m as Array<MarketModel>
+      
+      const kospi = f.find((market: MarketModel) => market.type === 'KOSPI')
+      const nasdaq = f.find((market: MarketModel) => market.type === 'NASDAQ')
+      const snp500 = f.find((market: MarketModel) => market.type === 'S&P500')
+
+      if(kospi) {
+        label.kospi.labels.push(labels[index])
+        label.kospi.data.push(kospi)        
+      }      
+
+      if(nasdaq) {
+        label.nasdaq.labels.push(labels[index])
+        label.nasdaq.data.push(nasdaq)
+      }
+
+      if(snp500) {
+        label.snp500.labels.push(labels[index])
+        label.snp500.data.push(snp500)
+      }
+
+    })
+
+    this.marketChart = label        
+    this.marketRecents = [
+      {
+        market: 'KOSPI',
+        close: label.kospi.data.slice(-1)[0].close,
+        changes: label.kospi.data.slice(-1)[0].changes
+      },
+      {
+        market: 'NASDAQ',
+        close: label.nasdaq.data.slice(-1)[0].close,
+        changes: label.nasdaq.data.slice(-1)[0].changes
+      },
+      {
+        market: 'S&P500',
+        close: label.snp500.data.slice(-1)[0].close,
+        changes: label.snp500.data.slice(-1)[0].changes
+      }
+    ]    
   }
 
-
+  @Mutation
+  public updateSearchTable(payload: any) {
+    this.searchTable = payload
+  }
+  
   @Action
-  public async initInterestGroups(token: string): Promise<void> {
+  public async getTodayMarket(): Promise<void> {
     try {
-        this.context.commit('updateLoading', false)        
-        const res = await axios.get(`/today`, HEADER)
-        this.context.commit('updateMarket', res.data.data)
-        this.context.commit('updateLoading', true)
-        
-    } catch (e) {
-        console.log(e)
+      this.context.commit('updateMarketLoaded', true)      
+      const res = await axios.get('/api/daily/total', HEADER)
+
+      this.context.commit('updateMarket', res.data)
+      this.context.commit('updateMarketLoaded', false)
+    } catch (e: any) {    
+      console.log(e)
+    }
+  }  
+  
+  @Action
+  public async getSearchTable(): Promise<void> {
+    try {
+      this.context.commit('updateSearchTableLoaded', true)
+      const res = await axios.get('/api/allcorps', HEADER)
+
+      const markets: Array<StockSimpleModel> = Object.entries(res.data).map((stock: any) => {
+        return {  
+          code: stock[0],
+          title: stock[1]
+        }
+      })
+
+      this.context.commit('updateSearchTable', markets)
+      this.context.commit('updateSearchTableLoaded', false)
+    } catch (e: any) {
+      console.log(e)
     }
   }
-
-  
 }

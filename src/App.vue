@@ -41,10 +41,6 @@ export default class App extends Vue {
 
   private isMobile = isMobile()
 
-  created () {
-    this.requestTodayMarket()
-  }
-  
 }
 </script>
 

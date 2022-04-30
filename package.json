@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@kurkle/color": "^0.1.9",
     "@types/chart.js": "^2.9.36",
     "@types/lodash": "^4.14.181",
     "axios": "^0.26.1",
