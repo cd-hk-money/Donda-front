@@ -3,6 +3,7 @@ import axios from 'axios'
 import { StockSimpleModel} from '@/models/stock'
 import { MarketModel, IMarketChartModel, IMarketRecentModel } from '@/models/market'
 import * as _ from 'lodash'
+import { Getter } from 'vuex-class'
 
 const HEADER = {
     headers: {
@@ -26,6 +27,15 @@ export default class MarketStore extends VuexModule {
 
   // 주식 시장 최근
   public marketRecents!: Array<IMarketRecentModel>
+
+  public requestDate = 20
+
+  @Mutation updateRequestDate(payload: number) {    
+    if(payload * this.requestDate < 3) return
+  
+    this.requestDate = Math.floor(this.requestDate * payload)
+  
+  }
 
   @Mutation
   public updateMarketLoaded(payload: boolean) {
@@ -81,21 +91,25 @@ export default class MarketStore extends VuexModule {
     })
 
     this.marketChart = label        
+
     this.marketRecents = [
       {
         market: 'KOSPI',
         close: label.kospi.data.slice(-1)[0].close,
-        changes: label.kospi.data.slice(-1)[0].changes
+        changes: label.kospi.data.slice(-1)[0].changes,
+        recent: label.kospi.labels[label.kospi.labels.length - 1],
       },
       {
         market: 'NASDAQ',
         close: label.nasdaq.data.slice(-1)[0].close,
-        changes: label.nasdaq.data.slice(-1)[0].changes
+        changes: label.nasdaq.data.slice(-1)[0].changes,
+        recent: label.nasdaq.labels[label.nasdaq.labels.length -1]
       },
       {
         market: 'S&P500',
         close: label.snp500.data.slice(-1)[0].close,
-        changes: label.snp500.data.slice(-1)[0].changes
+        changes: label.snp500.data.slice(-1)[0].changes,
+        recent: label.snp500.labels[label.snp500.labels.length - 1]
       }
     ]    
   }

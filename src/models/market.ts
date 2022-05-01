@@ -34,4 +34,5 @@ export interface IMarketRecentModel {
   market: string
   close: number
   changes: number
+  recent?: string
 }

@@ -1,6 +1,6 @@
 <template>
   <v-app id="inspire">     
-    <!-- <side-bar v-if="isMobile"/>  -->
+    <!-- <side-bar v-if="!isMobile"/>  -->
     <!-- <app-bar v-if="!isMobile"/>     -->
     <v-main class="grey darken-4"> 
       <transition name="slide-fade" mode="out-in">

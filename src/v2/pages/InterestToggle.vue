@@ -3,10 +3,9 @@
     class="mt-5"
     rounded="xl"
     width="256"    
-    min-height="556"        
+    min-height="573"        
   >      
     <v-card-title v-if="loaded">
-      간단 랭킹
     </v-card-title>
   </v-card>
 </template>
