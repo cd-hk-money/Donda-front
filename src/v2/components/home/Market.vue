@@ -25,7 +25,6 @@
             @changeRequestDate="changeRequestDate"            
             :desc="marketRecent" />                   
           <market-chart   
-            :chartOptions="getChartOptions(marketRecent.market)"
             :fill="fill"
             class="ml-5 mr-5"
             :color="colors[i]"
@@ -48,8 +47,10 @@ import MarketDesc from '@/v2/components/home/MarketDesc.vue'
 import MarketChart from '@/v2/components/home/MarketChart.vue'
 import CircularLoading from '@/layout/CircularLoading.vue'
 
+
 // models
 import { IMarketRecentModel } from '@/models/market'
+
 
 
 const StockStoreModule = namespace('StockStore')
@@ -86,6 +87,7 @@ export default class Market extends Vue {
   private changeRequestDate (date: number) {    
     this.count = this.count + date
   }
+
 
   private getChartOptions (type: string) {
     return {
@@ -130,9 +132,20 @@ export default class Market extends Vue {
       responsive: true,
       maintainAspectRatio: true,
       animation: {
-        duration: 1000,       
-        easing: 'easeInOutCubic'         
-      },          
+        duration: 2000,       
+        easing: 'easeOutBounce'         
+      },    
+      plugins: {
+        zoom: {
+          zoom: {
+            enabled: true
+          },
+          pinch: {
+            enabeld: true
+          },
+          mode: 'x'
+        }
+      }      
     }
   }
 

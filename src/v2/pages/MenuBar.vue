@@ -20,7 +20,7 @@
             icon                  
             :link="menu.link"
             :to="menu.to"
-            @click="menu.click"            
+            @click="menu.callback"            
           >
             <v-icon>{{ menu.icon }}</v-icon>
           </v-btn>
@@ -55,12 +55,15 @@
 import { Component, Vue } from 'vue-property-decorator'
 
 export interface IMenu {
-  icon: string,
-  tooltip: string,
-  color?: string,
-  link?: boolean
-  to?: string
-  click(): boolean | any,
+  icon?: string,
+  tooltip?: string,
+  color?: string | undefined
+  link?: boolean | undefined
+  to?: string | undefined
+  callback?(): boolean | any | undefined,
+  tile?: boolean | undefined
+  enable?: boolean
+  title?: string | undefined
 }
 
 @Component
@@ -70,21 +73,21 @@ export default class MenuBar extends Vue {
     {      
       icon: 'search',
       tooltip: '검색',
-      click: () => {
+      callback: () => {
         this.searchExpand()
       }
     },
     {      
       icon: 'mdi-account',
       tooltip: '내 계정',
-      click: () => {
+      callback: () => {
         console.log('account')
       }
     },
     {      
       icon: 'mdi-format-list-numbered',
       tooltip: '종목 순위',
-      click: () => {
+      callback: () => {
         if(this.$route.fullPath !== '/trans') {
           this.$router.push('/trans')
         }
@@ -95,7 +98,7 @@ export default class MenuBar extends Vue {
       tooltip: '홈으로 가기',
       link: true,
       to:"/v2",
-      click: () => {
+      callback: () => {
         if(this.$route.fullPath !== '/v2') {
           this.$router.push('/v2')          
         }        

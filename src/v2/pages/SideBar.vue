@@ -8,7 +8,7 @@
       <v-navigation-drawer permanent>
         <v-list-item>
           <v-list-item-content>
-            <v-list-item-title class="text-h7 font-weight-bold">
+            <v-list-item-title class="text-h7 text font-weight-bold">
               내 관심종목 그룹
             </v-list-item-title>
             <v-list-item-subtitle>
@@ -90,7 +90,7 @@
                   fab
                   dark
                   small
-                  @click="menu.click"
+                  @click="menu.callback"
                 >
                   <v-icon>{{ menu.icon }}</v-icon>
                 </v-btn>
@@ -182,7 +182,7 @@ export default class SideBar extends Vue {
       icon: 'mdi-pencil',
       tooltip: '그룹 편집',
       color: 'green',
-      click: () => {
+      callback: () => {
         console.log('편집')
       }
     },
@@ -190,7 +190,7 @@ export default class SideBar extends Vue {
       icon: 'mdi-plus',
       tooltip: '그룹 추가',
       color: 'indigo',
-      click: () => {
+      callback: () => {
         console.log('추가')
       }
     },
@@ -198,7 +198,7 @@ export default class SideBar extends Vue {
       icon: 'mdi-delete',
       tooltip: '그룹 삭제',
       color: 'red',
-      click: () => {
+      callback: () => {
         console.log('삭제')
       }
     }

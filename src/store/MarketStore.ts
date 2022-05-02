@@ -31,10 +31,14 @@ export default class MarketStore extends VuexModule {
   public requestDate = 20
 
   @Mutation updateRequestDate(payload: number) {    
-    if(payload * this.requestDate < 3) return
-  
-    this.requestDate = Math.floor(this.requestDate * payload)
-  
+    if(payload < 2 ) {
+
+      if(payload * this.requestDate < 3) return      
+      this.requestDate = Math.floor(this.requestDate * payload)
+    } 
+    else {
+      this.requestDate = payload
+    }  
   }
 
   @Mutation

@@ -1,10 +1,15 @@
 <script lang="ts">
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
+
 import { mixins, Line } from 'vue-chartjs-typescript'
 import { transparentize } from '@/mixins/tools'
-import Vue from 'vue'
 
+import Vue from 'vue'
+import Chart, { ChartData, ChartOptions } from 'chart.js'
+import VueChart from 'vue-chartjs'
+import zoom from 'chartjs-plugin-zoom'
+// import datalabels from 'chartjs-plugin-datalabels'
 import { IMarketChartModel, MarketModel } from '@/models/market'
 
 const { reactiveProp } = mixins
@@ -12,9 +17,10 @@ const MarketStoreModule = namespace('MarketStore')
 
 const MIN = 60000
 const MAX = 73000
+const MAIN_COLOR = '#40E0D0'
 
-const POINT_RADIUS = 3
-const BORDER_RADIUS = 4
+const POINT_RADIUS = 4
+const BORDER_RADIUS = 6
 
 @Component({
   extends: Line,
@@ -36,9 +42,6 @@ export default class LineChart extends Vue {
   @Prop({default: function () { return {} }})
   options!: object
 
-  @Prop()
-  private chartOptions: any
-
   @MarketStoreModule.State('marketChart')
   private marketChart!: IMarketChartModel
 
@@ -46,6 +49,8 @@ export default class LineChart extends Vue {
   private requestDate!: number
   
   public renderChart!: (chartData: any, options: any) => any    
+
+  public chartOptions: Chart.ChartOptions = {}
 
   @Watch('requestDate')
   private watchRequestDate () {
@@ -70,6 +75,68 @@ export default class LineChart extends Vue {
     })    
   }
 
+    
+  private applyDefaultOptions() {
+    this.chartOptions.legend = {
+      display: false,      
+    }
+
+    this.chartOptions.scales = {
+      xAxes: [{
+        gridLines: {
+          display: false
+        },        
+        scaleLabel: {
+          fontSize: 20
+        }
+      }],
+      yAxes: [{
+        ticks: {
+          callback: function(value: string) {return value.toLocaleString()}                     
+        },
+        gridLines: {
+          display: false
+        }
+      }]
+    }
+    this.chartOptions.responsive = true
+    // this.chartOptions.maintainAspectRatio = true
+    this.chartOptions.animation = {
+      duration: 2000,
+      easing: 'easeOutBounce'
+    }
+
+    Chart.plugins.register(zoom)    
+    // Chart.plugins.register(datalabels)
+
+    this.chartOptions.plugins = {      
+      zoom: {
+        zoom: {          
+          drag: {
+            enabled: true
+          },
+          pinch: {
+            enabled: true
+          },
+          mode: 'x'
+        }
+      },      
+    }  
+    
+    this.chartOptions.tooltips = {
+      enabled: true,
+      titleFontSize: 25,
+      titleFontColor: MAIN_COLOR,
+      bodyFontSize: 25,
+      cornerRadius: 10,
+      displayColors: false,
+      callbacks: {
+        label: (tooltipItem) => tooltipItem.yLabel as string,        
+      }
+    }
+    
+  }
+
   public createChartData (type: string, count: number, fill: boolean | string) {
     let marketType
 
@@ -86,9 +153,9 @@ export default class LineChart extends Vue {
           height: 30,
           fill: fill,
           borderColor: this.color,
-          backgroundColor: transparentize(this.color, 0.9),
-          borderWidth: BORDER_RADIUS,                 
-          radius: POINT_RADIUS,
+          backgroundColor: transparentize(this.color, 0.93),
+          borderWidth: this.requestDate > 300 ? 4 : 6,                 
+          radius: this.requestDate > 300 ? 1 : 4,
           pointStyle: 'rectRoundedr',
           tension: .4,          
         },
@@ -97,6 +164,7 @@ export default class LineChart extends Vue {
   }
 
   public renderLineChart() {
+    this.applyDefaultOptions()
     this.renderChart(this.createChartData(this.type, this.requestDate, this.fill), this.chartOptions)    
   }
 

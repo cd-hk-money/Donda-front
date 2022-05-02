@@ -7,10 +7,11 @@
   >
     <v-card-text>      
       <v-row>        
-        <v-col cols="12" xl="9">
+        <v-col cols="12" xl="8">
           <span class="primary--text text-h2 font-weight-bold pl-10">
             {{ desc.market }} 
           </span>
+
           <span class="mr-5">
             <v-btn               
               icon
@@ -19,67 +20,81 @@
               <v-icon>fa-solid fa-circle-info</v-icon>  
             </v-btn>
           </span>
+
           <span class="primary--text ml-12 text-h3">
             {{ desc.close }}
           </span>           
+
           <span :class="['text-h4', color]">
             {{ desc.changes * 100}} %
           </span>               
         </v-col>            
 
-        <v-col cols="12" xl="3">          
-          <span class="text-h7">
+        <v-col cols="12" xl="4">          
+          <span class="text-h7 ml-12">
             갱신일 : {{ desc.recent }}
           </span>     
-          <v-btn
-            v-model="fill" 
-            class="mx-1"
-            elevation="0"              
-            small          
-            @click="fillChange"  
-          >
-            <v-icon>mdi-chart-areaspline-variant</v-icon>
-          </v-btn>
 
-          <v-btn 
-            class="mx-1"
-            elevation="0"              
-            small
-            tile
-            @click="changeRequestDate(0.5)"
+          <v-tooltip
+            v-for="menu in menus"
+            :key="menu.icon"
+            bottom
           >
-            <v-icon>fa-thin fa-magnifying-glass-plus</v-icon>
-          </v-btn>
-          
-          <v-btn        
-            class="mx-1"     
-            elevation="0"              
-            small
-            tile
-            @click="changeRequestDate(1.5)"
-          >
-            <v-icon>fa-thin fa-magnifying-glass-minus</v-icon>
-          </v-btn>            
+            <template v-slot:activator="{on, attrs}">
+              <v-btn
+                v-model="menu.enable"
+                class="mx-1"
+                elevation="0"
+                small
+                tile
+                v-on="on"
+                v-bind="attrs"
+                @click="menu.callback"
+              >
+                  <v-icon>{{ menu.icon }}</v-icon>
+              </v-btn>
+            </template>
+            <span>{{ menu.tooltip }}</span>
+          </v-tooltip>
 
-          <v-btn        
-            class="mx-1"     
-            elevation="0"                          
-            small
-            tile
+          <v-speed-dial            
+            absolute
+            v-model="fab"
+            right
+            top
+            direction="bottom"
+            open-on-hover
+            transition="slide-y-reverse-transition"
           >
-            <v-icon>fa-regular fa-calendar</v-icon>
-          </v-btn>            
-        </v-col>  
-        
+            <template v-slot:activator>
+              <v-btn                        
+                class="mx-1"     
+                elevation="0"                          
+                small
+              >
+                <v-icon>fa-regular fa-calendar</v-icon>
+              </v-btn>                          
+            </template>
+              <v-btn                
+                v-for="item in dateTooltips"
+                :key="item.icon"                   
+                small
+                @click="item.callback"
+              >
+                {{ item.title }}
+              </v-btn>            
+          </v-speed-dial>            
+        </v-col>          
       </v-row>
     </v-card-text>        
   </v-card>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Emit }  from 'vue-property-decorator'
+import { Component, Vue, Prop, Emit, Watch }  from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 import MarketChart from '@/v2/components/home/MarketChart.vue'
+import { IMenu } from '@/v2/pages/MenuBar.vue'
 
 const MarketStoreModule = namespace('MarketStore')
 
@@ -111,20 +126,70 @@ export default class MarketDesc extends Vue {
   
   private toggle_exclusive = 0
 
-  private color = this.desc?.changes > 0 ? 'green--text' : 'red--text'
+  private color = this.desc?.changes > 0 ? 'red-text' : 'blue--text'
+
+  private fill = true
+  private fab = false
+  private dateToggle = 1
+
+  @Watch('fill')
+  private watchFill () {
+    this.menus[1].enable = !this.menus[1].enable    
+  }
+
+  private menus: IMenu[] = [
+    {
+      icon: 'mdi-chart-waterfall',    
+      tooltip: '봉차트로 전환',
+      callback: () => undefined,
+    },
+    {
+      icon: 'mdi-chart-areaspline-variant',    
+      tooltip: '차트 색상 채우기',
+      callback: () => this.fillChange() ,
+      enable: this.fill
+    },
+    {
+      icon: 'fa-thin fa-magnifying-glass-plus',    
+      tooltip: '확대',
+      callback: () => this.changeRequestDate(0.5)
+    },
+    {
+      icon: 'fa-thin fa-magnifying-glass-minus',    
+      tooltip: '축소',
+      callback: () => this.changeRequestDate(1.5) 
+    },
+  ]
+
+  private dateTooltips: IMenu[] = [
+    {
+      tooltip: '그룹 편집',
+      title: '20일',
+      callback: () => this.changeRequestDate(20)
+    },
+    {
+      tooltip: '그룹 추가',
+      title: '분기',
+      callback: () => this.changeRequestDate(30)
+    },
+    {
+      tooltip: '그룹 삭제',
+      title: '년',
+      callback: () => this.changeRequestDate(360)
+    }
+  ]
 
   private changeRequestDate (date: number) {
     this.updateRequestDate(date)    
   }
   
-  private fill = true
-
   private fillChange () {    
     if(this.fill) this.$emit('fillChange', false)
     else this.$emit('fillChange', 'start')
 
     this.fill = !this.fill    
   }
+
     
 }
 </script>
