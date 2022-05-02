@@ -77,6 +77,9 @@ export default class LineChart extends Vue {
 
     
   private applyDefaultOptions() {
+    Chart.plugins.register(zoom)    
+
+    this.chartOptions.responsive = true
     this.chartOptions.legend = {
       display: false,      
     }
@@ -99,15 +102,11 @@ export default class LineChart extends Vue {
         }
       }]
     }
-    this.chartOptions.responsive = true
-    // this.chartOptions.maintainAspectRatio = true
+
     this.chartOptions.animation = {
-      duration: 2000,
+      duration: 1200,
       easing: 'easeOutBounce'
     }
-
-    Chart.plugins.register(zoom)    
-    // Chart.plugins.register(datalabels)
 
     this.chartOptions.plugins = {      
       zoom: {
@@ -127,22 +126,21 @@ export default class LineChart extends Vue {
       enabled: true,
       titleFontSize: 25,
       titleFontColor: MAIN_COLOR,
-      bodyFontSize: 25,
+      bodyFontSize: 40,
       cornerRadius: 10,
       displayColors: false,
       callbacks: {
         label: (tooltipItem) => tooltipItem.yLabel as string,        
       }
-    }
-    
+    }    
   }
 
   public createChartData (type: string, count: number, fill: boolean | string) {
     let marketType
 
-    if(type === 'KOSPI') { marketType = this.marketChart.kospi }
-    else if(type === 'NASDAQ') { marketType = this.marketChart.nasdaq }
-    else { marketType = this.marketChart.snp500 }
+    if(type === 'KOSPI') marketType = this.marketChart.kospi 
+    else if(type === 'NASDAQ') marketType = this.marketChart.nasdaq 
+    else marketType = this.marketChart.snp500 
 
     return {
       labels: [...[...marketType.labels].reverse().slice(0, this.requestDate)].reverse().map((date: string) => date.substr(5)),
@@ -154,8 +152,8 @@ export default class LineChart extends Vue {
           fill: fill,
           borderColor: this.color,
           backgroundColor: transparentize(this.color, 0.93),
-          borderWidth: this.requestDate > 300 ? 4 : 6,                 
-          radius: this.requestDate > 300 ? 1 : 4,
+          borderWidth: this.requestDate > 150 ? 4 : 6,                 
+          radius: this.requestDate > 150 ? 0.5 : 4,
           pointStyle: 'rectRoundedr',
           tension: .4,          
         },

@@ -1,7 +1,7 @@
 <template>
   <v-card        
-    class="mt-5 ml-5"
-    height="50vh"
+    class="mt-5 ml-5 mr-5"
+    height="465"
     rounded="xl"
   >
     <v-carousel 
@@ -11,7 +11,7 @@
       hide-delimiter-background
       show-arrows-on-hover    
       hide-delimiters  
-      interval="20000"
+      interval="200000"
     >            
       <v-carousel-item                
         v-for="(marketRecent, i) in marketRecents"

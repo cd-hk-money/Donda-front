@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div class="mr-10">
     <v-card           
-      width="256"
-      class="d-flex justify-left mt-5"        
+      width="100%"
+      class="d-flex justify-space-between mt-5 mr-5"        
       rounded="xl"
     >
       <v-tooltip 

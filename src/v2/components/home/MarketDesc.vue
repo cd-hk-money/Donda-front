@@ -7,7 +7,7 @@
   >
     <v-card-text>      
       <v-row>        
-        <v-col cols="12" xl="8">
+        <v-col cols="12" xl="8" lg="8" md="7">
           <span class="primary--text text-h2 font-weight-bold pl-10">
             {{ desc.market }} 
           </span>
@@ -30,7 +30,7 @@
           </span>               
         </v-col>            
 
-        <v-col cols="12" xl="4">          
+        <v-col cols="12" xl="4" lg="4" md="5">          
           <span class="text-h7 ml-12">
             갱신일 : {{ desc.recent }}
           </span>     
@@ -63,7 +63,6 @@
             right
             top
             direction="bottom"
-            open-on-hover
             transition="slide-y-reverse-transition"
           >
             <template v-slot:activator>
