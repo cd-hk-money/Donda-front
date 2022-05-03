@@ -1,4 +1,3 @@
-export interface updateStateModel {
-  state: any
-  payload: any
+export interface IUpdateStateModel {  
+  [state: string]: any
 }

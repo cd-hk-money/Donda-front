@@ -89,13 +89,18 @@ export default class LineChart extends Vue {
         gridLines: {
           display: false
         },        
+        ticks: {
+          fontSize: this.requestDate > 150 ? 15 : 20,          
+          maxTicksLimit: 10
+        },
         scaleLabel: {
           fontSize: 20
         }
       }],
       yAxes: [{
         ticks: {
-          callback: function(value: string) {return value.toLocaleString()}                     
+          callback: function(value: string) {return value.toLocaleString()},
+          fontSize: 20,                
         },
         gridLines: {
           display: false
@@ -151,7 +156,7 @@ export default class LineChart extends Vue {
           height: 30,
           fill: fill,
           borderColor: this.color,
-          backgroundColor: transparentize(this.color, 0.93),
+          backgroundColor: transparentize(this.color, 0.8),
           borderWidth: this.requestDate > 150 ? 4 : 6,                 
           radius: this.requestDate > 150 ? 0.5 : 4,
           pointStyle: 'rectRoundedr',

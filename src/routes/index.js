@@ -8,39 +8,45 @@ import Rank from '@/pages/Rank.vue'
 
 // 두번째 버전 
 import HomeV2 from '@/v2/pages/HomeV2.vue'
+import DetailV2 from '@/v2/pages/DetailV2.vue'
 
 import goTo from "vuetify/lib/services/goto";
 
 const routes = [
+  // {
+  //   path: "/",
+  //   name: "Home",
+  //   component: Home
+  // },
+  // {
+  //   path: "/trans",
+  //   name: "Trans",
+  //   component: Trans
+  // },
+  // {
+  //   path: "/change",
+  //   name: "change",
+  //   component: Change
+  // },
+  // {
+  //   path: "/detail/:code",
+  //   name: "detail",
+  //   component: Detail
+  // },
+  // {
+  //   path: "/rank",
+  //   name: "rank",
+  //   component: Rank
+  // },
   {
     path: "/",
-    name: "Home",
-    component: Home
-  },
-  {
-    path: "/trans",
-    name: "Trans",
-    component: Trans
-  },
-  {
-    path: "/change",
-    name: "change",
-    component: Change
-  },
-  {
-    path: "/detail/:code",
-    name: "detail",
-    component: Detail
-  },
-  {
-    path: "/rank",
-    name: "rank",
-    component: Rank
-  },
-  {
-    path: "/v2",
-    name: "v2",
+    name: "home",
     component: HomeV2
+  },
+  {
+    path: "/detail/:title",
+    name: "detail",
+    component: DetailV2
   }
 ]
 

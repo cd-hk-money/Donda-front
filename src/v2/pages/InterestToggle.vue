@@ -4,7 +4,6 @@
     rounded="xl"
     width="256"    
     min-height="573"        
-    v-if="loaded"
   >      
     <v-card-title v-text="'MARCAP TOP 6'">      
     </v-card-title>
@@ -13,8 +12,8 @@
       <v-list-item    
         class="text-h5"
         v-for="(content, i) in dailySimpleRanks.marcap.slice(0, 7)"
-        :key="content"
-        link
+        :key="i"
+        @click="listClick(content[1])"        
       >   
         <span class="mr-3 font-weight-bold"> {{ i }}</span>     
         <v-list-item-content>          
@@ -29,10 +28,10 @@
 
 <script lang="ts">
 
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue, Watch } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 
-import { IMarketRanksContents } from '@/models/stock'
+import { IMarketRank } from '@/models/stock'
 
 const StockStoreModule = namespace('StockStore')
 
@@ -40,16 +39,15 @@ const StockStoreModule = namespace('StockStore')
 export default class InterestToggle extends Vue {
   
   @StockStoreModule.State('dailySimpleRanks')
-  private dailySimpleRanks!: IMarketRanksContents
+  private dailySimpleRanks!: IMarketRank
 
-  @StockStoreModule.State('dailySimpleRanksLoaded')
-  private loaded!: boolean
+  @StockStoreModule.Action('getStock')
+  private getStock!: (name: string) => Promise<void>
 
-  @StockStoreModule.Action('getDailySimpleRanks')
-  private getDailySimpleRanks!: () => Promise<void>
-
-  created() {
-    this.getDailySimpleRanks()    
+  private listClick(name: string) {
+    this.getStock(name).then(() => {
+      this.$router.push(`/detail/${name}`)
+    })
   }
   
 }

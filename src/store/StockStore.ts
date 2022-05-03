@@ -183,23 +183,6 @@ export default class StockStore extends VuexModule {
     }
   }
 
-  @Action
-  public async getDailySimpleRanks(): Promise<void> {
 
-    const commit = this.context.commit
-    const actionType = 'updateDailySimpleRanks'
-
-    try {
-      commit(`${actionType}Loaded`, false)
-
-      const res = await axios.get(`${URL}/daily/rank`, HEADER)
-      
-      commit(`${actionType}`, res.data)
-      commit(`${actionType}Loaded`, true)
-
-    } catch(e) {
-      console.log(e)
-    }
-  }
 }
 

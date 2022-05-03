@@ -2,10 +2,19 @@
   <v-app id="inspire">     
     <!-- <side-bar v-if="!isMobile"/>  -->
     <!-- <app-bar v-if="!isMobile"/>     -->
-    <v-main class="grey darken-4"> 
-      <transition name="slide-fade" mode="out-in">
-        <router-view />      
-      </transition>
+    <v-main>       
+        <v-row>
+          <v-col cols="12" xl="10" lg="10">
+            <transition name="slide-fade" mode="out-in">
+              <router-view />      
+            </transition>
+          </v-col>
+        <v-col cols="12" xl="2" lg="2">
+          <menu-bar />   
+          <side-bar />
+          <interest-toggle v-if="!rankLoaded"/>          
+        </v-col>
+      </v-row>
     </v-main>
   </v-app>
 </template>
@@ -15,19 +24,21 @@ import { Component, Vue, Watch } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 import { isMobile } from '@/mixins/tools'
 
-// v1
-// import AppBar from '@/layout/AppBar.vue'
-import SideBar from '@/layout/SideBar.vue'
+import SideBar from '@/v2/pages/SideBar.vue'
+import MenuBar from '@/v2/pages/MenuBar.vue'
+import InterestToggle from '@/v2/pages/InterestToggle.vue'
 
 // v2
-import AppBar from '@/v2/pages/AppBar.vue'
 
 const StockStoreModule = namespace('StockStore')
+const MarketStoreModule = namespace('MarketStore')
+
 
 @Component({
   components: {
-    AppBar,
     SideBar,
+    MenuBar,
+    InterestToggle    
   }
 })
 export default class App extends Vue {
@@ -39,8 +50,29 @@ export default class App extends Vue {
     return window.pageXOffset
   }
 
+  @MarketStoreModule.Action('getTodayMarket')
+  public getTodayMarket!: () => Promise<void>
+
+  @MarketStoreModule.Action('getSearchTable')
+  public getSearchTable!: () => Promise<void>
+
+  @MarketStoreModule.Action('getRecommend')
+  public getRecommend!: () => Promise<void>
+  
+  @StockStoreModule.Action('getDailySimpleRanks')
+  private getDailySimpleRanks!: () => Promise<void>
+
+  @StockStoreModule.State('dailySimpleRanksloaded')
+  private rankLoaded!: boolean
+
   private isMobile = isMobile()
 
+  created () {
+    this.getDailySimpleRanks()  
+    this.getTodayMarket()  
+    this.getSearchTable()
+    this.getRecommend()
+  }
 }
 </script>
 
