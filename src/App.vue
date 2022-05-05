@@ -12,7 +12,7 @@
         <v-col cols="12" xl="2" lg="2">
           <menu-bar />   
           <side-bar />
-          <interest-toggle v-if="!rankLoaded"/>          
+          <!-- <interest-toggle v-if="!rankLoaded"/>           -->
         </v-col>
       </v-row>
     </v-main>

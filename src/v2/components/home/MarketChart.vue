@@ -75,7 +75,6 @@ export default class LineChart extends Vue {
     })    
   }
 
-    
   private applyDefaultOptions() {
     Chart.plugins.register(zoom)    
 
@@ -87,11 +86,11 @@ export default class LineChart extends Vue {
     this.chartOptions.scales = {
       xAxes: [{
         gridLines: {
-          display: false
+          display: true,
         },        
-        ticks: {
+        ticks: {       
           fontSize: this.requestDate > 150 ? 15 : 20,          
-          maxTicksLimit: 10
+          maxTicksLimit: 8             
         },
         scaleLabel: {
           fontSize: 20
@@ -100,10 +99,11 @@ export default class LineChart extends Vue {
       yAxes: [{
         ticks: {
           callback: function(value: string) {return value.toLocaleString()},
-          fontSize: 20,                
+          fontSize: 20,    
+          maxTicksLimit: 3            
         },
         gridLines: {
-          display: false
+          display: true
         }
       }]
     }
@@ -159,7 +159,7 @@ export default class LineChart extends Vue {
           backgroundColor: transparentize(this.color, 0.8),
           borderWidth: this.requestDate > 150 ? 4 : 6,                 
           radius: this.requestDate > 150 ? 0.5 : 4,
-          pointStyle: 'rectRoundedr',
+          pointStyle: 'rectRounded',
           tension: .4,          
         },
       ],          

@@ -17,7 +17,7 @@
 import { Component, Vue } from 'vue-property-decorator'
 
 import StockInfo from '@/v2/components/detail/StockInfo.vue'
-import StockChart from '@/v2/components/detail/StockChart.vue'
+import StockChart from '@/v2/components/detail/Stock.vue'
 import StockFinance from '@/v2/components/detail/StockFinance.vue'
 import StockNews from '@/v2/components/detail/StockNews.vue'
 

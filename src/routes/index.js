@@ -9,6 +9,7 @@ import Rank from '@/pages/Rank.vue'
 // 두번째 버전 
 import HomeV2 from '@/v2/pages/HomeV2.vue'
 import DetailV2 from '@/v2/pages/DetailV2.vue'
+import RankV2 from '@/v2/pages/RankV2.vue'
 
 import goTo from "vuetify/lib/services/goto";
 
@@ -47,6 +48,11 @@ const routes = [
     path: "/detail/:title",
     name: "detail",
     component: DetailV2
+  },
+  {
+    path: "/rank",
+    name: "rank",
+    component: RankV2
   }
 ]
 

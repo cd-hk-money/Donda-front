@@ -188,8 +188,6 @@ export default class MarketDesc extends Vue {
 
     this.fill = !this.fill    
   }
-
-    
 }
 </script>
 

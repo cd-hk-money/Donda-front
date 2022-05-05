@@ -4,7 +4,7 @@
     height="44vh"
     width="auto"
     rounded="xl"
-    elevation="0" 
+    elevation="3"
   >
     <v-card-title             
       class="text-h4 font-weight-bold cyan--text ml-5">
@@ -18,61 +18,184 @@
           <v-icon>fa-solid fa-circle-info</v-icon>
         </v-btn>
       </span>
-    </v-card-title>
-     <v-sheet
-      elevation="0"
-      max-width="100%"
-      v-show="!recommendLoaded"
-      rounded="xl"
-    >
-      <v-slide-group
-        v-model="model"
-        class="pa-4"
-        mandatory
-        show-arrows        
-      >
-        <v-slide-item
-          v-for="recommend in recommends"
-          :key="recommend.code"          
-        >
-          <v-card       
-            elevation="1"     
-            class="ma-4"
-            height="280"
-            width="265"            
-            rounded="xl"
-            outlined
-            link
-            :to="`/detail/${recommend.name}`"
+    </v-card-title>    
+    <div class="d-flex justify-center">
+      <v-card 
+        class="mt-10 ml-5 mr-5"
+        height="65%"
+        width="42%"
+        rounded="xl"
+        elevation="5"
+      >    
+        <v-list-item three-line>
+          <v-list-item-content>
+            <div class="mb-4">
+              시장
+            </div>
+            <v-list-item-title class="text-h4 font-weight-bold m-1 ml-5">
+              <span>기업명</span>                        
+              <v-tooltip right>
+                <template v-slot:activator="{on}">
+                  <v-icon v-on="on" size="30" class="ml-5" color="red">fa-solid fa-arrow-trend-up</v-icon>
+                </template>
+                <span class="red--text font-weight-bold">상승</span> 
+                <span> 추세입니다.</span>
+              </v-tooltip>
+            </v-list-item-title>
+            <v-list-item-subtitle class="text-h5 mb-1 ml-6">
+              코드
+            </v-list-item-subtitle>
+          </v-list-item-content>
+          <v-list-item-avatar
+            tile
+            size="80"        
           >
-            <v-card-title class="text-h5" v-text="recommend.name"></v-card-title>
-            <v-card-subtitle v-text="recommend.code"></v-card-subtitle>            
-            <v-btn absolute top right icon>              
-              <v-icon>fa-thin fa-flag</v-icon>              
+            <v-btn icon>
+              <v-icon>fa-flag</v-icon>
             </v-btn>
-            <v-row
-              class="fill-height"
-              align="center"
-              justify="center"
-            >
-              <span class="text-h4"> {{ recommend.close.toLocaleString()}}₩</span>
-              <span :class="['text-h6 pl-1 pt-2', recommend.changes_ratio > 0 ? 'red--text' : 'blue--text']"> {{recommend.changes_ratio}}%</span>
-            </v-row>
-            
-          </v-card>
-        </v-slide-item>
-      </v-slide-group>
-    </v-sheet> 
+          </v-list-item-avatar>              
+        </v-list-item>
+
+        <v-divider></v-divider>    
+
+        <v-row>
+          <v-col cols="12" xl="5" lg="5">
+            <v-card-title class="text-h5 font-weight-bold ml-5">
+              <span> 10,000₩</span>
+              <v-btn  
+                class="ml-3"
+                icon
+                right
+                x-small
+              ><v-icon>fa-solid fa-circle-info</v-icon>
+              </v-btn>
+            </v-card-title>
+            <v-card-subtitle :class="['text-h6', 'font-weight-bold', 'ml-5', 'red--text']">
+              <span> +1,000(+10%)</span>                        
+            </v-card-subtitle>                            
+          </v-col>
+          <v-col cols="12" xl="7" lg="7">
+            <v-tooltip bottom>
+              <template v-slot:activator="{on} ">
+                <v-sheet 
+                  class="mt-3 mr-5"
+                  width="auto"
+                  max-height="100%"          
+                  v-on="on"
+                >          
+                  <v-sparkline 
+                    class="pl-2 pr-2 pt-2"
+                    color="#40E0D0"
+                    line-width="5"
+                    smooth="100"
+                    auto-draw
+                    type="trend"
+                    :value="sparkLineValue"
+                  ></v-sparkline>              
+                </v-sheet>
+              </template>
+              <span>최근 1년간의 추이를 보여줍니다.</span>
+            </v-tooltip>
+          </v-col>
+        </v-row>
+      </v-card>
+      <v-card 
+        class="mt-10 ml-5 mr-5"
+        height="65%"
+        width="42%"
+        rounded="xl"
+        elevation="5"
+      >    
+        <v-list-item three-line>
+          <v-list-item-content>
+            <div class="mb-4">
+              시장
+            </div>
+            <v-list-item-title class="text-h4 font-weight-bold m-1 ml-5">
+              <span>기업명</span>                        
+              <v-tooltip right>
+                <template v-slot:activator="{on}">
+                  <v-icon v-on="on" size="30" class="ml-5" color="red">fa-solid fa-arrow-trend-up</v-icon>
+                </template>
+                <span class="red--text font-weight-bold">상승</span> 
+                <span> 추세입니다.</span>
+              </v-tooltip>
+            </v-list-item-title>
+            <v-list-item-subtitle class="text-h5 mb-1 ml-6">
+              코드
+            </v-list-item-subtitle>
+          </v-list-item-content>
+          <v-list-item-avatar
+            tile
+            size="80"        
+          >
+            <v-btn icon>
+              <v-icon>fa-flag</v-icon>
+            </v-btn>
+          </v-list-item-avatar>              
+        </v-list-item>
+
+        <v-divider></v-divider>    
+
+        <v-row>
+          <v-col cols="12" xl="5" lg="5">
+            <v-card-title class="text-h5 font-weight-bold ml-5">
+              <span> 10,000₩</span>
+              <v-btn  
+                class="ml-3"
+                icon
+                right
+                x-small
+              ><v-icon>fa-solid fa-circle-info</v-icon>
+              </v-btn>
+            </v-card-title>
+            <v-card-subtitle :class="['text-h6', 'font-weight-bold', 'ml-5', 'red--text']">
+              <span> +1,000(+10%)</span>                        
+            </v-card-subtitle>                            
+          </v-col>
+          <v-col cols="12" xl="7" lg="7">
+            <v-tooltip bottom>
+              <template v-slot:activator="{on} ">
+                <v-sheet 
+                  class="mt-3 mr-5"
+                  width="auto"
+                  max-height="100%"          
+                  v-on="on"
+                >          
+                  <v-sparkline 
+                    class="pl-2 pr-2 pt-2"
+                    color="#40E0D0"
+                    line-width="5"
+                    smooth="100"
+                    auto-draw
+                    type="trend"
+                    :value="sparkLineValue"
+                  ></v-sparkline>              
+                </v-sheet>
+              </template>
+              <span>최근 1년간의 추이를 보여줍니다.</span>
+            </v-tooltip>
+          </v-col>
+        </v-row>
+      </v-card>
+
+    </div>
+
     <v-overlay 
       :value="overlay"
       absolute
       opacity="0.88"
     >
-      <v-btn         
-        bottom
-        @click="overlay = false">
-        닫기
-      </v-btn>
+      <div>
+        추천 종목 기준에 대해, 어떤 기업을 선택하면 좋은지에 대해 설명
+      </div>
+      <div class="d-flex justify-center">
+        <v-btn 
+          bottom
+          @click="overlay = false">
+          닫기
+        </v-btn>
+      </div>
     </v-overlay>
   </v-card>
 </template>
@@ -88,6 +211,7 @@ const MarketStoreModule = namespace('MarketStore')
 @Component
 export default class StockRecommend extends Vue {
 
+  private sparkLineValue: Array<number> = []
   private model = null
   private overlay = false
 
@@ -100,7 +224,9 @@ export default class StockRecommend extends Vue {
   @MarketStoreModule.State('recommedLoaded')
   private recommendLoaded!: boolean
 
+
   created () {
+    this.sparkLineValue = [1, 11, 3, 4, 5, 7, 5, 9, 1, 5, 16]
     this.getRecommend()
   }
 }

@@ -3,6 +3,7 @@
     class="mt-5 ml-5 mr-5"
     height="465"
     rounded="xl"
+    elevation="3"
   >
     <v-carousel 
       v-if="!marketLoaded"                     
@@ -17,9 +18,7 @@
         v-for="(marketRecent, i) in marketRecents"
         :key="i"        
       >          
-        <v-card                    
-          height="auto"                                    
-        >                        
+        <v-card height="auto">
           <market-desc 
             @fillChange="onFill"
             @changeRequestDate="changeRequestDate"            
@@ -50,7 +49,6 @@ import CircularLoading from '@/layout/CircularLoading.vue'
 
 // models
 import { IMarketRecentModel } from '@/models/market'
-
 
 
 const StockStoreModule = namespace('StockStore')

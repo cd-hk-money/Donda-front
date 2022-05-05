@@ -40,10 +40,14 @@ export default class StockStore extends VuexModule {
     stocks: 0
   }
 
-  // 개별 종목 재무제표
-  public statement: IStockStatementModel = {}
-  public statementLoaded = false
+  // 종목 하나의 2주 그래프정보
+  public stockGraphDefaultLoaded = false
+  public stockGraphDefault = {}
 
+  // 종목 하나의 재무제표
+  public statementLoaded = false
+  public statement: IStockStatementModel = {}
+  
   @Mutation
   public updateState(payload: IUpdateStateModel) {    
     Object.entries(payload).forEach((state) => {
@@ -91,6 +95,7 @@ export default class StockStore extends VuexModule {
     }
   }
 
+  // 종목 하나의 제무재표를 가져옵니다.
   @Action
   public async getStockStatement(name: string): Promise<void> {
     try {
@@ -99,11 +104,30 @@ export default class StockStore extends VuexModule {
       })
 
       const res = await axios(`${URL}/stock/statement/${name}`, HEADER)
-      console.log(Object.keys(res.data))
 
       this.context.commit('updateState', {
         statement: res.data,
         statementLoaded: false
+      })
+
+    } catch(e) {
+      console.log(e)
+    }
+  }
+
+  // 종목 하나의 2주동안의 주가 정보를 가져옵니다.
+  @Action
+  public async getStockGraphDefault(name: string): Promise<void> {
+    try {
+      this.context.commit('updateState', {
+        stockGraphDefaultLoaded: true,        
+      })
+
+      const res = await axios(`${URL}/stock/graph/${name}`, HEADER)
+      console.log(res.data)
+      this.context.commit('updateState', {
+        stockGraphDefault: res.data,
+        stockGraphDefaultLoaded: false
       })
 
     } catch(e) {

@@ -36,6 +36,7 @@
               v-for="child in item.items"
               :key="child.title"
               link
+              :to="`/detail/${child.title}`"
             >
               <v-list-item-content>
                 <v-list-item-title v-text="child.title"></v-list-item-title>
@@ -142,8 +143,8 @@ export default class SideBar extends Vue {
       active: false,
       items: [
         {
-          subtitle: '000000',
-          title: '관심종목1',
+          subtitle: '068290',
+          title: '삼성출판사',
         },
         {
           subtitle: '000111',

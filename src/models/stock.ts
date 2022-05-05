@@ -126,22 +126,9 @@ export interface IStockStatementModel {
   revenue?: IStockStatementChartModel  
 }
 
-export const statement: IStockStatementModel = {
-  asset: {
-    date: ['날짜1', '날짜2', '날짜3', '날짜4'],
-    value: [111, 2222, 3333 ,444]
-  },
-  cash: {
-    date: ['날짜1', '날짜2', '날짜3', '날짜4'],
-    value: [111, 2222, 3333 ,444]
-  }
+export interface IStockLineChartModel {
+  [date: string]: number
 }
-
-const example= {
-  기존모델: {},
-  차트모델: {}
-}
-
 
 
 

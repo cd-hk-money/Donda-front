@@ -50,7 +50,6 @@
       >
         <v-card-text>
           <v-autocomplete    
-            :loading="loading"           
             v-model="searchs"            
             :items="items"
             :search-input.sync="search"
@@ -119,8 +118,8 @@ export default class MenuBar extends Vue {
       icon: 'mdi-format-list-numbered',
       tooltip: '종목 순위',
       callback: () => {
-        if(this.$route.fullPath !== '/trans') {
-          this.$router.push('/')
+        if(this.$route.fullPath !== '/rank') {
+          this.$router.push('/rank')
         }
       }
     },

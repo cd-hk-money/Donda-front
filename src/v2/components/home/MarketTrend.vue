@@ -4,7 +4,7 @@
     width="auto"
     class="mt-5 ml-5"
     rounded="xl"
-    elevation="0"
+    elevation="3"
   >
     <v-carousel
       :continuous="false"
@@ -12,6 +12,7 @@
       :show-arrows="false"
       delimiter-icon="mdi-minus"
       height="100%"          
+      elevation="3"
     >
       <v-carousel-item
         v-for="(slide, i) in sparklines"
@@ -58,11 +59,16 @@
       opacity="0.88"
       absolute
     >
-      <v-btn 
-        bottom
-        @click="overlay = false">
-        닫기
-      </v-btn>
+      <div>
+        하락하면 뭐가 좋고 뭐가 나쁜가? 설명
+      </div>
+      <div class="d-flex justify-center">
+        <v-btn 
+          bottom
+          @click="overlay = false">
+          닫기
+        </v-btn>
+      </div>
     </v-overlay>
   </v-card>
 </template>
