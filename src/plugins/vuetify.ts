@@ -3,7 +3,6 @@ import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
 import Vue from 'vue';
 import Vuetify from 'vuetify/lib/framework';
-import colors from 'vuetify/lib/util/colors'
 
 Vue.use(Vuetify);
 
@@ -15,11 +14,12 @@ export default new Vuetify({
     themes: {
       light: {
         primary: '#000000',
+        secondary: '#DCDCDC',
         info: '#DCDCDC'
       },
       dark: {
         primary: '#FFFFFF',
-        secondary: '#E91E63',
+        secondary: '#696969',
         info: '#000000'
       },      
     }

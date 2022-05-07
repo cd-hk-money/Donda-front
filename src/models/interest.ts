@@ -15,8 +15,18 @@ export interface InterestModel {
   stock: StockSimpleModel
 }
 
-// export interface SimpleStockModel {
-//   title: String   // 종목 이름
-//   code: String    // 종목 코드
-//   stock: Number   // 종가
-// }
+
+interface IInterestGroup {
+  title: string
+  item: IInterestGroupItem[]
+}
+
+interface IInterestGroupItem {
+  title: string
+  code: string
+}
+
+export {
+  IInterestGroup,
+  IInterestGroupItem
+}

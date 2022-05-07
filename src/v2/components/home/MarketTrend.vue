@@ -78,7 +78,7 @@ import { Component, Vue } from 'vue-property-decorator'
 
 @Component
 export default class MarketTrend extends Vue {
-  private sparklines = [
+  sparklines = [
     {
       value: [0, 26, 5, 0, 18],
       color: '#40E0D0',
@@ -91,13 +91,13 @@ export default class MarketTrend extends Vue {
     },
   ]
   
-  private slides = [
+  slides = [
     'First',
     'Second',    
   ]
 
-  private overlay = false
+  overlay = false
 
-  private cycle = true
+  cycle = true
 }
 </script>

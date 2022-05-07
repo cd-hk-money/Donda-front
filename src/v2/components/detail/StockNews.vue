@@ -1,9 +1,11 @@
 <template>
   <v-card 
-    class="mt-8 ml-5"
+    class="ml-5 mr-5 mt-5"
+    height="300"
     rounded="xl"
     outlined
-    height="615" width="100%">
+    width="94%"
+  >
   </v-card>      
 </template>
 

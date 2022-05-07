@@ -1,13 +1,14 @@
 <template>
   <v-card     
-    class="mt-10 ml-10"
+    class="mt-5 ml-5"
     height="500"
     rounded="xl"
+    width="94%"
     outlined        
+    v-if="!loaded"      
   >
     <v-carousel
       height="auto"
-      v-if="!loaded"      
       cycle
       hide-delimiter-background
       show-arrows-on-hover    
@@ -21,7 +22,8 @@
         <v-card height="auto">                    
           <stock-chart 
             class="ml-5 mr-5"                      
-            :height="'200'"
+            :height="200"
+            :chartData="stockGraphDefault"
           />
         </v-card>
       </v-carousel-item>
@@ -31,7 +33,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { namespace} from 'vuex-class'
+import { namespace } from 'vuex-class'
 import StockChart from '@/v2/components/detail/StockChart.vue'
 
 const StockStoreModule = namespace('StockStore')
@@ -44,16 +46,16 @@ const StockStoreModule = namespace('StockStore')
 export default class Stock extends Vue {
   
   @StockStoreModule.State('stockGraphDefault')
-  private stockGraphDefault: any
+  stockGraphDefault!: any
 
   @StockStoreModule.State('stockGraphDefaultLoaded')
-  private loaded!: boolean
+  loaded!: boolean
 
   @StockStoreModule.Action('getStockGraphDefault')
-  private getStockGraphDefaultLoaded!: (name: string) => Promise<void>
+  getStockGraphDefault!: (name: string) => Promise<void>
 
   created () {
-    this.getStockGraphDefaultLoaded(this.$route.params.title)
+    this.getStockGraphDefault(this.$route.params.title)
   }
 }
 

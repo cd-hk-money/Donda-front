@@ -205,25 +205,23 @@ import { StockRecommendModel } from '@/models/stock'
 import { Component, Vue } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 
-
 const MarketStoreModule = namespace('MarketStore')
 
 @Component
 export default class StockRecommend extends Vue {
 
-  private sparkLineValue: Array<number> = []
-  private model = null
-  private overlay = false
+  sparkLineValue: Array<number> = []
+  model = null
+  overlay = false
 
   @MarketStoreModule.Action('getRecommend')
-  private getRecommend!: () => Promise<void>
+  getRecommend!: () => Promise<void>
 
   @MarketStoreModule.State('recommend')
-  private recommends!: StockRecommendModel[]
+  recommends!: StockRecommendModel[]
 
   @MarketStoreModule.State('recommedLoaded')
-  private recommendLoaded!: boolean
-
+  recommendLoaded!: boolean
 
   created () {
     this.sparkLineValue = [1, 11, 3, 4, 5, 7, 5, 9, 1, 5, 16]

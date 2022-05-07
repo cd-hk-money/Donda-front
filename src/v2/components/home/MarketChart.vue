@@ -1,26 +1,19 @@
 <script lang="ts">
+import Vue from 'vue'
+import Chart from 'chart.js'
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
-
 import { mixins, Line } from 'vue-chartjs-typescript'
-import { transparentize } from '@/mixins/tools'
 
-import Vue from 'vue'
-import Chart, { ChartData, ChartOptions } from 'chart.js'
-import VueChart from 'vue-chartjs'
-import zoom from 'chartjs-plugin-zoom'
-// import datalabels from 'chartjs-plugin-datalabels'
+import { transparentize } from '@/mixins/tools'
 import { IMarketChartModel, MarketModel } from '@/models/market'
+
+import zoom from 'chartjs-plugin-zoom'
 
 const { reactiveProp } = mixins
 const MarketStoreModule = namespace('MarketStore')
 
-const MIN = 60000
-const MAX = 73000
 const MAIN_COLOR = '#40E0D0'
-
-const POINT_RADIUS = 4
-const BORDER_RADIUS = 6
 
 @Component({
   extends: Line,
@@ -28,54 +21,54 @@ const BORDER_RADIUS = 6
 })
 export default class LineChart extends Vue {
   @Prop()
-  private type!: string
+  type!: string
 
   @Prop()
-  private chartData!: null
+  chartData!: null
 
   @Prop()
-  private fill!: boolean
+  fill!: boolean
 
   @Prop()
-  private color!: string
+  color!: string
 
   @Prop({default: function () { return {} }})
   options!: object
 
   @MarketStoreModule.State('marketChart')
-  private marketChart!: IMarketChartModel
+  marketChart!: IMarketChartModel
 
   @MarketStoreModule.State('requestDate')
-  private requestDate!: number
+  requestDate!: number
   
-  public renderChart!: (chartData: any, options: any) => any    
+  renderChart!: (chartData: any, options: any) => any    
 
-  public chartOptions: Chart.ChartOptions = {}
+  chartOptions: Chart.ChartOptions = {}
 
   @Watch('requestDate')
-  private watchRequestDate () {
+  watchRequestDate () {
     this.$nextTick(() => {
       this.reRender()
     })
   }
 
   @Watch('chartOptions')
-  private watchChartOptions () {
+  watchChartOptions () {
     this.reRender()
   }
   
   @Watch('fill')
-  private watchFill () {
+  watchFill () {
     this.reRender()
   }
   
-  public reRender () {
+  reRender () {
     this.$nextTick(() => {
       this.renderLineChart()
     })    
   }
 
-  private applyDefaultOptions() {
+  applyDefaultOptions() {
     Chart.plugins.register(zoom)    
 
     this.chartOptions.responsive = true
@@ -109,7 +102,7 @@ export default class LineChart extends Vue {
     }
 
     this.chartOptions.animation = {
-      duration: 1200,
+      duration: 1000,
       easing: 'easeOutBounce'
     }
 
@@ -136,11 +129,12 @@ export default class LineChart extends Vue {
       displayColors: false,
       callbacks: {
         label: (tooltipItem) => tooltipItem.yLabel as string,        
-      }
+      },
+      intersect: false
     }    
   }
 
-  public createChartData (type: string, count: number, fill: boolean | string) {
+  createChartData (type: string, count: number, fill: boolean | string) {
     let marketType
 
     if(type === 'KOSPI') marketType = this.marketChart.kospi 
@@ -153,7 +147,6 @@ export default class LineChart extends Vue {
         { 
           label: this.type,
           data: [...[...marketType.data].reverse().slice(0, this.requestDate)].reverse().map((k: MarketModel) => k.close),
-          height: 30,
           fill: fill,
           borderColor: this.color,
           backgroundColor: transparentize(this.color, 0.8),
@@ -166,7 +159,7 @@ export default class LineChart extends Vue {
     }
   }
 
-  public renderLineChart() {
+  renderLineChart() {
     this.applyDefaultOptions()
     this.renderChart(this.createChartData(this.type, this.requestDate, this.fill), this.chartOptions)    
   }

@@ -90,9 +90,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Emit, Watch }  from 'vue-property-decorator'
+import { Component, Vue, Prop, Watch }  from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
-import MarketChart from '@/v2/components/home/MarketChart.vue'
 import { IMenu } from '@/v2/pages/MenuBar.vue'
 
 const MarketStoreModule = namespace('MarketStore')
@@ -111,32 +110,32 @@ export default class MarketDesc extends Vue {
         trans: '변화량' 
       }
     }
-  }) private desc!: IMarketRecentModel
+  }) desc!: IMarketRecentModel
 
   @Prop({ default: 'ㅇㅇ'})
-  private date!: string | undefined
+  date!: string | undefined
 
 
   @MarketStoreModule.Mutation('updateRequestDate')
-  private updateRequestDate!: (payload: number) => void
+  updateRequestDate!: (payload: number) => void
   
   @MarketStoreModule.State('marketLoaded')
-  private loaded!: boolean
+  loaded!: boolean
   
-  private toggle_exclusive = 0
+  toggle_exclusive = 0
 
-  private color = this.desc?.changes > 0 ? 'red-text' : 'blue--text'
+  color = this.desc?.changes > 0 ? 'red-text' : 'blue--text'
 
-  private fill = true
-  private fab = false
-  private dateToggle = 1
+  fill = true
+  fab = false
+  dateToggle = 1
 
   @Watch('fill')
-  private watchFill () {
+  watchFill () {
     this.menus[1].enable = !this.menus[1].enable    
   }
 
-  private menus: IMenu[] = [
+  menus: IMenu[] = [
     {
       icon: 'mdi-chart-waterfall',    
       tooltip: '봉차트로 전환',
@@ -160,7 +159,7 @@ export default class MarketDesc extends Vue {
     },
   ]
 
-  private dateTooltips: IMenu[] = [
+  dateTooltips: IMenu[] = [
     {
       tooltip: '그룹 편집',
       title: '20일',
@@ -178,11 +177,11 @@ export default class MarketDesc extends Vue {
     }
   ]
 
-  private changeRequestDate (date: number) {
+  changeRequestDate (date: number) {
     this.updateRequestDate(date)    
   }
   
-  private fillChange () {    
+  fillChange () {    
     if(this.fill) this.$emit('fillChange', false)
     else this.$emit('fillChange', 'start')
 

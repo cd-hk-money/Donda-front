@@ -59,13 +59,15 @@ const routes = [
 const router = new VueRouter({
   mode: "history",
   scrollBehavior: (to, from, savedPosition) => {
-    let scrollTo = 0
-    if (to.hash) {
-      scrollTo = to.hash
-    } else if (savedPosition) {
-      scrollTo = savedPosition.y
-    }
-    return goTo(scrollTo)
+    setTimeout(() => {
+      let scrollTo = 0
+      if (to.hash) {
+        scrollTo = to.hash
+      } else if (savedPosition) {
+        scrollTo = savedPosition.y
+      }
+      return goTo(scrollTo)
+    }, 10)
   },
   routes
 })

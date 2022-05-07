@@ -1,11 +1,16 @@
 <template>
-    <v-card    
-      class="mt-5"    
-      height="auto"
-      width="256"
-      rounded="xl"        
+  <div class="mr-10">
+    <v-navigation-drawer 
+      :class="['ml-5', height < 500 ? 'mt-15' : 'mt-5']"     
+      permanent       
+      width="100%" 
+      :height="height < 500 ? 'auto' : '110%'"
     >
-      <v-navigation-drawer permanent>
+      <v-card    
+        height="auto"
+        width="100%"        
+        outlined        
+      >
         <v-list-item>
           <v-list-item-content>
             <v-list-item-title class="text-h7 text font-weight-bold">
@@ -19,10 +24,12 @@
 
         <v-divider></v-divider>
 
-        <v-list>
+        <v-list two-line>
           <v-list-group
-            v-for="item in items"
-            :key="item.title"
+            active-class="secondary" 
+            :value="true"
+            v-for="(item, i) in itemsV2"
+            :key="i"
             v-model="item.active"          
             append-icon='mdi-chevron-down'
           >
@@ -33,9 +40,10 @@
             </template> 
 
             <v-list-item
-              v-for="child in item.items"
-              :key="child.title"
+              v-for="(child, i) in item.items"
+              :key="i"
               link
+              replace
               :to="`/detail/${child.title}`"
             >
               <v-list-item-content>
@@ -51,9 +59,10 @@
                 >
                   <v-icon>fa-edit</v-icon>
                 </v-btn>
-              </v-list-item-action>
-            </v-list-item>          
+              </v-list-item-action>                    
+            </v-list-item> 
           </v-list-group>
+
           <v-speed-dial 
             absolute
             v-model="fab"
@@ -66,7 +75,7 @@
             <template v-slot:activator>
               <v-btn
                 elevation="0"
-                small
+                x-small
                 v-model="fab"              
                 fab
               >
@@ -90,7 +99,7 @@
                   :color="menu.color"
                   fab
                   dark
-                  small
+                  x-small
                   @click="menu.callback"
                 >
                   <v-icon>{{ menu.icon }}</v-icon>
@@ -98,18 +107,23 @@
               </template>
               <span>{{ menu.tooltip }}</span>
             </v-tooltip>
-          </v-speed-dial>
-        
-        </v-list>        
-      </v-navigation-drawer>    
+          </v-speed-dial>        
+      </v-list>        
     </v-card>
-      
+  </v-navigation-drawer>    
+
+  </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator'
+import { namespace } from 'vuex-class'
+
 import { isMobile } from '@/mixins/tools'
 import { IMenu } from '@/v2/pages/MenuBar.vue'
+import { IInterestGroup, IInterestGroupItem } from '@/models/interest'
+
+const InterestStoreModule = namespace('InterestStore')
 
 @Component({
   components: {
@@ -117,8 +131,7 @@ import { IMenu } from '@/v2/pages/MenuBar.vue'
   }
 })
 export default class SideBar extends Vue {
-
-  private items = [
+  items = [
     {
       action: 'mdi-ticket',
       active: false,
@@ -178,7 +191,19 @@ export default class SideBar extends Vue {
     },    
   ]
 
-  private menus: Array<IMenu> = [
+  get itemsV2 () {
+    return this.interestGroups.map((group: IInterestGroup) => ({
+      title: group.title,
+      action: 'mdi-ticket',
+      active: false,
+      items: group.item.map((item: IInterestGroupItem) => ({
+        title: item.title,
+        subtitle: item.code
+      }))
+    })) 
+  }
+
+  menus: Array<IMenu> = [
     {
       icon: 'mdi-pencil',
       tooltip: '그룹 편집',
@@ -205,16 +230,34 @@ export default class SideBar extends Vue {
     }
   ]
   
-  private fab = false
+  fab = false
+  drawer = false
+  group: boolean | null = null
 
-  private drawer = false
-  private group: boolean | null = null
-
-  private isMobile = isMobile()
+  get height () {
+    switch (this.$vuetify.breakpoint.name) {
+      case 'xs': return 220
+      case 'sm': return 400
+      case 'md': return 500
+      case 'lg': return 600
+      case 'xl': return 800    
+    }
+    return 800
+  }
 
   @Watch('group')
   groupWatch() {
     this.group = false
+  }
+   
+  @InterestStoreModule.State('interestGroups')
+  interestGroups!: IInterestGroup[]
+
+  @InterestStoreModule.Mutation('initInterestGroup')
+  readonly initInterestGroup!: () => void
+
+  created () {
+    this.initInterestGroup()    
   }
 }
 </script>

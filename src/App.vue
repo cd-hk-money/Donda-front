@@ -1,19 +1,16 @@
 <template>
   <v-app id="inspire">     
-    <!-- <side-bar v-if="!isMobile"/>  -->
-    <!-- <app-bar v-if="!isMobile"/>     -->
     <v-main>       
-        <v-row>
-          <v-col cols="12" xl="10" lg="10">
-            <transition name="slide-fade" mode="out-in">
-              <router-view />      
+      <v-row>
+        <v-col cols="12" xl="10" lg="10">
+          <transition name="slide-fade" mode="out-in">
+            <router-view />      
             </transition>
           </v-col>
-        <v-col cols="12" xl="2" lg="2">
-          <menu-bar />   
-          <side-bar />
-          <!-- <interest-toggle v-if="!rankLoaded"/>           -->
-        </v-col>
+          <v-col cols="12" xl="2" lg="2">
+              <menu-bar />   
+              <side-bar />
+          </v-col>
       </v-row>
     </v-main>
   </v-app>

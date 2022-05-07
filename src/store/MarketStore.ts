@@ -29,7 +29,7 @@ export default class MarketStore extends VuexModule {
   public marketRecents!: Array<IMarketRecentModel>
   public requestDate = 20
 
-  // 종목 추전 정보
+  // 종목 추천 정보
   public recommendLoaded = false
   public recommend: StockRecommendModel[] = []
 

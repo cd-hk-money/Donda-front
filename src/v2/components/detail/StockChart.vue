@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Component, Prop, Watch, Vue } from 'vue-property-decorator'
+import { Component, Prop, Vue } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 
 import { mixins, Line } from 'vue-chartjs-typescript'
@@ -18,24 +18,18 @@ const MAIN_COLOR = '#40E0D0'
 })
 export default class StockChart extends Vue {
 
-
-  // data
   @Prop({default: false})
-  private fill!: boolean
+  fill!: boolean
   
   @Prop()
-  private chartData!: null
+  chartData!: any
 
-  @StockStoreModule.State('stockGraphDefault')
-  private stockGraphDefault!: IStockLineChartModel
-
-  public chartOptions: Chart.ChartOptions = {}
-
+  chartOptions: Chart.ChartOptions = {}
 
   // methods  
-  public renderChart!: (chartData: any, options: any) => any
+  renderChart!: (chartData: any, options: any) => any
 
-  public applyDefaultChartOptions (): void {
+  applyDefaultChartOptions (): void {
 
     this.chartOptions.maintainAspectRatio = true
     this.chartOptions.responsive = true
@@ -60,7 +54,6 @@ export default class StockChart extends Vue {
         ticks: {
           callback: (value: string) => value.toLocaleString(),
           fontSize: 20,
-          maxTicksLimit: 3
         },
         gridLines: {
           display: true
@@ -69,12 +62,13 @@ export default class StockChart extends Vue {
     }
 
     this.chartOptions.animation = {
-      duration: 1200,
+      duration: 2000,
       easing: 'easeOutBounce'
     }
     
     this.chartOptions.tooltips = {
       enabled: true,
+      intersect: false,
       titleFontSize: 25,
       titleFontColor: MAIN_COLOR,
       bodyFontSize: 40,
@@ -86,13 +80,13 @@ export default class StockChart extends Vue {
     }  
   }
 
-  public createChartData() {
+  createChartData() {
     return {
-      labels: Object.keys(this.stockGraphDefault).map((date: string) => date.substr(5)),
+      labels: Object.keys(this.chartData).map((date: string) => date.substr(5)),
       datasets: [
         {
-          data : Object.values(this.stockGraphDefault),
-          fill: false,
+          data : Object.values(this.chartData),
+          fill: true,
           borderColor: MAIN_COLOR,
           backgroundColor: transparentize(MAIN_COLOR, 0.8),
           borderWidth: 6,
@@ -104,12 +98,11 @@ export default class StockChart extends Vue {
     }
   }
 
-  public renderLineChart () {    
+  renderLineChart () {    
     this.applyDefaultChartOptions()
     this.renderChart(this.createChartData(), this.chartOptions)    
   }
 
-  // hooks
   mounted () {    
     this.renderLineChart()    
   }

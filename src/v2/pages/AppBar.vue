@@ -22,12 +22,6 @@
         {{ link.title }}
       </v-tab>
     </v-tabs>
-
-    <!-- <v-avatar
-      class="hidden-sm-and-down"
-      color="grey darken-1 shrink"
-      size="auto"
-    ></v-avatar> -->
   </v-app-bar>
 </template>
 
@@ -40,7 +34,7 @@ import { RouteModel } from '@/models/app'
 @Component
 export default class AppBar extends Vue {
 
-  private links: Array<RouteModel> = [
+  links: RouteModel[] = [
     {
       title: '오늘의 주식 시장',
       route: '/'
@@ -55,7 +49,7 @@ export default class AppBar extends Vue {
     }
   ]
 
-  private push(link: RouteModel): void {    
+  push(link: RouteModel): void {    
     this.$router.push(link.route)
   }
 }

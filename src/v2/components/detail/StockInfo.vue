@@ -1,13 +1,14 @@
 <template>
   <div>
     <v-card 
-      class="mt-10 ml-5 mr-5"
+      class="mt-5 ml-5"
       height="20%"
-      width="100%"
+      width="94%"
       rounded="xl"
       v-if="!loaded"    
     >    
       <v-list-item three-line>
+
         <v-list-item-content>
           <div class="mb-4">
             {{ stock.market }} 
@@ -26,14 +27,67 @@
             {{ stock.code }}
           </v-list-item-subtitle>
         </v-list-item-content>
-        <v-list-item-avatar
-          tile
-          size="80"        
-        >
-          <v-btn icon>
-            <v-icon>fa-flag</v-icon>
-          </v-btn>
+
+        <v-list-item-avatar>                  
+          <v-dialog
+            v-model="dialog"
+            width="auto"
+            height="auto"
+          >
+            <template v-slot:activator="{ on, attrs}">
+              <v-btn icon x-large
+                v-on="on"
+                v-bind="attrs"
+              >
+                <v-icon size="40">{{ bookmarked ? 'mdi-bookmark' : 'mdi-bookmark-outline' }}</v-icon>
+              </v-btn>
+            </template>
+
+            <v-card>
+              <v-card-title class="text-h5">
+                관심 종목 추가
+              </v-card-title>
+
+              <v-card-text>
+                어따 추가할래?
+              </v-card-text>
+
+              <v-divider></v-divider>
+            
+              <v-list>                  
+                <v-list-item 
+                  :key="group.title"
+                  v-for="group in interestGroups"
+                  @click="[addInterestGroupItem({
+                    title: group.title,
+                    item: {
+                      title: stock.name,
+                      code: stock.code
+                    }
+                  }), dialog = false]"
+                >
+                  <v-list-item-content>
+                    <v-list-item-title>
+                      {{ group.title }}
+                    </v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list>
+              
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn
+                  color="primary"
+                  text
+                  @click="dialog = false"
+                >
+                  확인
+                </v-btn>
+              </v-card-actions>              
+            </v-card>
+          </v-dialog>
         </v-list-item-avatar>              
+
       </v-list-item>
 
       <v-divider></v-divider>    
@@ -83,28 +137,44 @@
 </template>
 
 <script lang="ts">
-import { IStockModel } from '@/models/stock'
 import { Component, Vue } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 
+import { IStockModel } from '@/models/stock'
+import { IInterestGroup, IInterestGroupItem } from '@/models/interest'
+
 const StockStoreModule = namespace('StockStore')
+const InterestStoreModule = namespace('InterestStore')
 
 @Component
 export default class StockInfo extends Vue {
+
+  dialog = false
+  bookmarked = false
+
   @StockStoreModule.Action('getStock')
-  private getStock!: (name: string) => Promise<void>
+  getStock!: (name: string) => Promise<void>
 
   @StockStoreModule.State('stock')
-  private stock!: IStockModel
+  stock!: IStockModel
 
   @StockStoreModule.State('stockLoaded')
-  private loaded!: boolean
+  loaded!: boolean
 
-  private sparkLineValue: Array<number> = []
+  @InterestStoreModule.State('interestGroups')
+  interestGroups!: IInterestGroup[]
+
+  @InterestStoreModule.Mutation('addInterestGroupItem')
+  addInterestGroupItem!: (payload: {title: string, item: IInterestGroupItem}) => void
+
+  @InterestStoreModule.Mutation('initInterestGroup')
+  readonly initInterestGroup!: () => void
+
+  sparkLineValue: number[] = []
     
   created () {
     this.getStock(this.$route.params.title)    
-    this.sparkLineValue = [1, 11, 3, 4, 5, 7, 5, 9, 1, 5, 16]
+    this.sparkLineValue = [1,5,4,8,5,10,2,17]
   }
 }
 </script>

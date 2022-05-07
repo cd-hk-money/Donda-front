@@ -65,29 +65,29 @@ const MarketStoreModule = namespace('MarketStore')
 export default class Market extends Vue {
   
   @MarketStoreModule.State('marketRecents')
-  private marketRecents!: IMarketRecentModel[] 
+  marketRecents!: IMarketRecentModel[] 
 
   @MarketStoreModule.State('marketLoaded')
-  private marketLoaded!: boolean
+  marketLoaded!: boolean
     
   @StockStoreModule.State('loaded')
-  private loaded!: boolean
+  loaded!: boolean
 
   // kospi, nasdaq, snp500의 차트 색상
-  private colors = ['#40E0D0', '#40E0D0', '#40E0D0']  
+  colors = ['#40E0D0', '#40E0D0', '#40E0D0']  
 
   // 그래프의 채움 
-  private fill: boolean | string = 'start'
+  fill: boolean | string = 'start'
 
   // 초기 라벨 개수
-  private count = 20
+  count = 20
 
-  private changeRequestDate (date: number) {    
+  changeRequestDate (date: number) {    
     this.count = this.count + date
   }
 
 
-  private getChartOptions (type: string) {
+  getChartOptions () {
     return {
       legend: {
         display: false,
@@ -147,7 +147,7 @@ export default class Market extends Vue {
     }
   }
 
-  public onFill (payload: boolean | string) {
+  onFill (payload: boolean | string) {
     console.log(payload)
     this.fill = payload
   }
