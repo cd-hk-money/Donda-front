@@ -1,16 +1,23 @@
 <template>
   <v-card 
-    class="mt-5 ml-5"
+    class="mt-5 ml-5 mr-5"
     height="365"
     width="94%"
     rounded="xl"
     elevation="1"
-  >
+  >  
     <v-card-title class="ml-5">
-      NEWS
+      Similar
+      <v-btn  
+        class="ml-3"
+        icon
+        right
+        x-small
+      ><v-icon>fa-solid fa-circle-question</v-icon>
+      </v-btn>
     </v-card-title>      
     <v-card-subtitle class="ml-5">
-       종목 관련 뉴스를 보여줍니다.
+      유사 종목을 보여줍니다.
     </v-card-subtitle>
   </v-card>
 </template>
@@ -21,9 +28,9 @@ import { namespace } from 'vuex-class'
 import { mobileHeight } from '@/mixins/tools'
 
 @Component
-export default class StockNews extends Vue {
+export default class StockSimilar extends Vue {
   mounted () {
-    console.log('StockNews Mounted')
+    console.log('StockSimilar Mounted')
   }
 }
 </script>

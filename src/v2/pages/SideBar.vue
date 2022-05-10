@@ -2,9 +2,9 @@
   <div class="mr-10">
     <v-navigation-drawer 
       :class="['ml-5', height < 500 ? 'mt-15' : 'mt-5']"     
-      permanent       
+      permanent             
       width="100%" 
-      :height="height < 500 ? 'auto' : '110%'"
+      :height="height < 500 ? 'auto' : 'auto'"
     >
       <v-card    
         height="auto"
@@ -41,12 +41,12 @@
 
             <v-list-item
               v-for="(child, i) in item.items"
-              :key="i"
+              :key="i"              
               link
               replace
               :to="`/detail/${child.title}`"
             >
-              <v-list-item-content>
+              <v-list-item-content >
                 <v-list-item-title v-text="child.title"></v-list-item-title>
 
                 <v-list-item-subtitle v-text="child.subtitle"></v-list-item-subtitle>
@@ -56,15 +56,16 @@
                 <v-btn 
                   x-small
                   icon
+                  @click="test"
                 >
-                  <v-icon>fa-edit</v-icon>
+                  <v-icon>fa-regular fa-x</v-icon>
                 </v-btn>
               </v-list-item-action>                    
             </v-list-item> 
           </v-list-group>
 
           <v-speed-dial 
-            absolute
+            fixed
             v-model="fab"
             right
             top
@@ -131,6 +132,11 @@ const InterestStoreModule = namespace('InterestStore')
   }
 })
 export default class SideBar extends Vue {
+
+  fab = false
+  drawer = false
+  group: boolean | null = null
+
   items = [
     {
       action: 'mdi-ticket',
@@ -203,6 +209,18 @@ export default class SideBar extends Vue {
     })) 
   }
 
+  get height () {
+    switch (this.$vuetify.breakpoint.name) {
+      case 'xs': return 220
+      case 'sm': return 400
+      case 'md': return 500
+      case 'lg': return 600
+      case 'xl': return 800    
+    }
+    return 800
+  }
+
+
   menus: Array<IMenu> = [
     {
       icon: 'mdi-pencil',
@@ -230,21 +248,6 @@ export default class SideBar extends Vue {
     }
   ]
   
-  fab = false
-  drawer = false
-  group: boolean | null = null
-
-  get height () {
-    switch (this.$vuetify.breakpoint.name) {
-      case 'xs': return 220
-      case 'sm': return 400
-      case 'md': return 500
-      case 'lg': return 600
-      case 'xl': return 800    
-    }
-    return 800
-  }
-
   @Watch('group')
   groupWatch() {
     this.group = false
@@ -255,6 +258,8 @@ export default class SideBar extends Vue {
 
   @InterestStoreModule.Mutation('initInterestGroup')
   readonly initInterestGroup!: () => void
+
+  test
 
   created () {
     this.initInterestGroup()    

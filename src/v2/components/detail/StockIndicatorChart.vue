@@ -9,12 +9,13 @@ import { ISimpleChartData } from '@/models/stock'
 
 const { reactiveProp } = mixins
 const MAIN_COLOR = '#40E0D0'
+const SUB_COLOR = 'rgb(255, 99, 132)'
 
 @Component({
   extends: Radar,
   mixins: [reactiveProp],
 })
-export default class StockScoreChart extends Vue {
+export default class StockIndicatorChart extends Vue {
   
   @Prop({default: {}})
   chartData!: ISimpleChartData
@@ -71,9 +72,29 @@ export default class StockScoreChart extends Vue {
           ],          
           borderColor: MAIN_COLOR,
           borderWidth: 2,
+          fill: true,
           backgroundColor: transparentize(MAIN_COLOR, 0.8),
-          lineColor: '#fff'
+          lineColor: '#fff',
+          pointBackgroundColor: MAIN_COLOR,
+          pointBorderColor: '#fff',
+          pointHoverBackgroundColor: '#fff',
+          pointHoverBorderColor: 'rgb(255, 99, 132)'
         },
+        {
+          label: this.$route.params.title,
+          data: [
+            this.chartData?.bps.value[0]/100 + 5000,
+            this.chartData?.roe.value[0] + 5000,
+            this.chartData?.eps.value[0] + 10,
+          ],          
+          fill: true,
+          backgroundColor: 'rgba(255, 99, 132, 0.2)',
+          borderColor: SUB_COLOR,
+          pointBackgroundColor: SUB_COLOR,
+          pointBorderColor: '#fff',
+          pointHoverBackgroundColor: '#fff',
+          pointHoverBorderColor: SUB_COLOR
+        }
       ],          
     }
   }

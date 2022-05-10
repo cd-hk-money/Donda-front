@@ -8,7 +8,7 @@ export function priceNormalization(price: number | string): string {
     price.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
 }
 
-// 모바일 여부를 판별하빈다.
+// 모바일 여부를 판별합니다.
 export function isMobile(): boolean | any {    
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent); 
 }

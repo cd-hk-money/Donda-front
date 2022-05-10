@@ -16,18 +16,14 @@ const SUB_COLOR = 'rgb(255, 99, 132)'
   extends: Bar,
   mixins: [reactiveProp]
 })
-export default class StockFinanceChart extends Vue {
+export default class StockScoreBarChart extends Vue {
 
-  @Prop()
-  type!: string
-  
-  chartData!: IStockStatementBarChartModel
+  chartData!: number[]
   chartOptions: Chart.ChartOptions = {}
 
   applyDefaultOptions() {
     this.chartOptions.maintainAspectRatio = true
     this.chartOptions.responsive = true
-    
     this.chartOptions.legend = {
       display: false
     }
@@ -38,7 +34,9 @@ export default class StockFinanceChart extends Vue {
           zeroLineColor: '#696969',          
         },
         ticks: {
-          fontSize: 15,
+          fontSize: 20,
+          fontStyle: 'bold'
+          
         },
         scaleLabel: {
           fontSize: 15
@@ -46,13 +44,12 @@ export default class StockFinanceChart extends Vue {
       }],
       yAxes: [{
         ticks: {
-          callback: function(value: string) {return value.toLocaleString()},
           display: false,
           fontSize: 15,       
           maxTicksLimit: 1   
         },
         gridLines: {
-          display: true,                  
+          display: false,                  
           color: '#696969',  
           zeroLineWidth: 4,
           zeroLineColor: 'white'
@@ -60,7 +57,7 @@ export default class StockFinanceChart extends Vue {
       }], 
     }
     this.chartOptions.animation = {
-      duration: 800,
+      duration: 2000,
       easing: 'easeOutQuad'
     }
     
@@ -70,31 +67,30 @@ export default class StockFinanceChart extends Vue {
       titleFontColor: MAIN_COLOR,
       bodyFontSize: 20,
       cornerRadius: 10,
-      displayColors: false,      
+      displayColors: false,       
       callbacks: {
-        label: (tooltipItem) => {
-          const temp = tooltipItem.yLabel as string  
-          return temp.toLocaleString() + ' ₩'
-        }
-      },
+        label: (tooltipItem) => tooltipItem.yLabel.toLocaleString() + ' ₩'
+      }    
     }  
   }
 
 
   createChartData() {
     return {
-      labels: [...this.chartData.date].reverse(),
+      labels: ['현재주가', '적정주가'],
       datasets: [
         {
-          data : [...this.chartData.value].reverse().map((value: number) => `${value}`),
+          type: 'bar',
+          data : [...this.chartData],
           fill: true,
-          borderColor: MAIN_COLOR,        
-          backgroundColor: transparentize(MAIN_COLOR, 0.5),
-          borderWidth: 6,
+          borderColor: [MAIN_COLOR, SUB_COLOR],        
+          backgroundColor: [transparentize(MAIN_COLOR, 0.8) ,transparentize(SUB_COLOR, 0.8)],
+          borderWidth: 4,
           radius: 4,
           pointStyple: 'rectRounded',
-          tension: .4,               
-        }
+          tension: .4,              
+          indexAxis: 'y'                    
+        },
       ]
     }    
   }

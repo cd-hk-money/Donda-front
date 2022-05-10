@@ -1,16 +1,15 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
-import { namespace } from 'vuex-class'
 
 import { mixins, Line } from 'vue-chartjs-typescript'
 import { transparentize } from '@/mixins/tools'
-import { IStockLineChartModel } from '@/models/stock'
 
 import Chart from 'chart.js'
 
-const StockStoreModule = namespace('StockStore')
 const { reactiveProp } = mixins
+
 const MAIN_COLOR = '#40E0D0'
+const SUB_COLOR = 'rgb(255, 99, 132)'
 
 @Component({
   extends: Line,
@@ -52,7 +51,7 @@ export default class StockChart extends Vue {
       }],
       yAxes: [{
         ticks: {
-          callback: (value: string) => value.toLocaleString(),
+          callback: function(value: string) {return value.toLocaleString()},
           fontSize: 20,
         },
         gridLines: {
@@ -79,6 +78,7 @@ export default class StockChart extends Vue {
       }
     }  
   }
+  SUB_COLOR
 
   createChartData() {
     return {
@@ -90,7 +90,17 @@ export default class StockChart extends Vue {
           borderColor: MAIN_COLOR,
           backgroundColor: transparentize(MAIN_COLOR, 0.8),
           borderWidth: 6,
-          radius: 4,
+          radius: 0,
+          pointStyple: 'rectRounded',
+          tension: .4
+        },
+        {
+          data : (Object.values(this.chartData) as number[]).map((value: number) => value * 0.995),
+          fill: true,
+          borderColor: SUB_COLOR,
+          backgroundColor: transparentize(SUB_COLOR, 0.8),
+          borderWidth: 6,
+          radius: 0,
           pointStyple: 'rectRounded',
           tension: .4
         }

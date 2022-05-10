@@ -1,40 +1,36 @@
 <template>
-  <div>
-    <v-card 
-      v-show="!loaded"
-      class="mt-5 ml-5"
-      rounded="xl"
-      outlined
-      height="360"
-      width="94%"
+  <v-card 
+    v-show="!loaded"
+    class="mt-5 ml-5"
+    rounded="xl"
+    height="360"
+    width="94%"
+  >
+    <v-carousel 
+      hide-delimiter-background
+      hide-delimiters
+      show-arrows-on-hover
+      height="100%"
+      cycle
+      v-model="model"
+      interval="1000000"
     >
-      <v-carousel 
-        hide-delimiter-background
-        hide-delimiters
-        show-arrows-on-hover
-        height="100%"
-        cycle
-        v-model="model"
-        interval="10000"
+      <v-carousel-item 
+        v-for="(type, index) in statementTypes"
+        :key="index"
       >
-        <v-carousel-item 
-          v-for="(type, index) in statementTypes"
-          :key="index"
-        >
-          <div class="text-center text-h4 mt-5 mb-5">
-            {{ type.toUpperCase() }}
-          </div>
-          <stock-finance-chart
-            class="ml-5 mr-5"
-            :chartData="statement[type]"
-            :type="type"
-            :height="height > 500 ? 100 : 180"
-          />
-
-        </v-carousel-item>
-      </v-carousel>
-    </v-card>
-  </div>
+        <div class="text-center text-h4 mt-5 mb-5">
+          {{ type.toUpperCase() }}
+        </div>
+        <stock-finance-chart
+          class="ml-5 mr-5 mb-5"
+          :chartData="statement[type]"
+          :type="type"
+          :height="height > 500 ? 100 : 180"
+        />
+      </v-carousel-item>
+    </v-carousel>
+  </v-card>
 </template>
 
 <script lang="ts">

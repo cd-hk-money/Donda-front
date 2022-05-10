@@ -16,11 +16,11 @@ const SUB_COLOR = 'rgb(255, 99, 132)'
   extends: Bar,
   mixins: [reactiveProp]
 })
-export default class StockFinanceChart extends Vue {
+export default class StockScoreBarChart extends Vue {
 
   @Prop()
   type!: string
-  
+
   chartData!: IStockStatementBarChartModel
   chartOptions: Chart.ChartOptions = {}
 
@@ -46,13 +46,12 @@ export default class StockFinanceChart extends Vue {
       }],
       yAxes: [{
         ticks: {
-          callback: function(value: string) {return value.toLocaleString()},
           display: false,
           fontSize: 15,       
           maxTicksLimit: 1   
         },
         gridLines: {
-          display: true,                  
+          display: false,                  
           color: '#696969',  
           zeroLineWidth: 4,
           zeroLineColor: 'white'
@@ -60,7 +59,7 @@ export default class StockFinanceChart extends Vue {
       }], 
     }
     this.chartOptions.animation = {
-      duration: 800,
+      duration: 2000,
       easing: 'easeOutQuad'
     }
     
@@ -71,12 +70,6 @@ export default class StockFinanceChart extends Vue {
       bodyFontSize: 20,
       cornerRadius: 10,
       displayColors: false,      
-      callbacks: {
-        label: (tooltipItem) => {
-          const temp = tooltipItem.yLabel as string  
-          return temp.toLocaleString() + ' ₩'
-        }
-      },
     }  
   }
 
@@ -86,14 +79,26 @@ export default class StockFinanceChart extends Vue {
       labels: [...this.chartData.date].reverse(),
       datasets: [
         {
-          data : [...this.chartData.value].reverse().map((value: number) => `${value}`),
+          type: 'bar',
+          label: this.type,
+          data : [...this.chartData.value].reverse(),
           fill: true,
           borderColor: MAIN_COLOR,        
-          backgroundColor: transparentize(MAIN_COLOR, 0.5),
-          borderWidth: 6,
+          backgroundColor: transparentize(MAIN_COLOR, 0.9),
+          borderWidth: 2,
           radius: 4,
-          pointStyple: 'rectRounded',
           tension: .4,               
+        },
+        {
+          type: 'line',
+          label: this.type,
+          data : [...this.chartData.value].reverse().map((value: number) => value * Math.random() + 0.5),
+          fill: false,
+          borderColor: SUB_COLOR,        
+          backgroundColor: transparentize(SUB_COLOR, 0.9),
+          borderWidth: 3,
+          radius: 4,          
+          tension: .4,                      
         }
       ]
     }    

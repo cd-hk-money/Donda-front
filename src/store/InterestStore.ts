@@ -28,6 +28,11 @@ export default class InterestStore extends VuexModule {
       title: '관심종목 그룹6',
       item: []
     },
+    {
+      title: '관심종목 그룹7',
+      item: []
+    },
+
   ]
 
   @Mutation
@@ -87,17 +92,7 @@ export default class InterestStore extends VuexModule {
 
   @Mutation
   public initInterestGroup() {    
-    let k = 0
-    this.interestGroups.forEach((group: IInterestGroup) => {
-      for(let i = 0; i<3; i++) {
-        group.item.push({
-          title: `종목 이름${++k}`,
-          code: '000000'
-        })       
-      }
-    })
-
-    console.log(this.interestGroups)
+    // 사용자의 관심종목을 불러옴..
   }
 }
 
