@@ -1,25 +1,23 @@
 <template>
-  <div>
-    <v-row>
-      <v-col cols="12" xl="4" lg="4">        
-        <stock-info :keys="componentKey + 1"/>           
-        <stock-score :keys="componentKey + 3"/>     
-        <stock-indicator :keys="componentKey + 2"/>    
-      </v-col>    
-      <v-col cols="12" xl="8" lg="8">
-        <stock-chart :keys="componentKey + 4"/>
-        <!-- <stock-finance :keys="componentKey + 5"/>         -->
-        <v-row>
-          <v-col cols="12" xl="6" lg="6" sm="12">
-            <stock-similar :keys="componentKey + 7"/>
-          </v-col>
-          <v-col cols="12" xl="6" lg="6" sm="12">
-            <stock-news :keys="componentKey + 8"/>
-          </v-col>
-        </v-row>
-      </v-col>
-    </v-row>
-  </div>
+  <v-row>
+    <v-col cols="12" xl="4" lg="4">        
+      <stock-info :keys="componentKey + 1"/>           
+      <stock-score :keys="componentKey + 3"/>     
+      <stock-indicator :keys="componentKey + 2"/>    
+    </v-col>    
+    <v-col cols="12" xl="8" lg="8">
+      <stock-chart :keys="componentKey + 4"/>
+      <!-- <stock-finance :keys="componentKey + 5"/>         -->
+      <v-row>
+        <v-col cols="12" xl="6" lg="6" sm="12">
+          <stock-similar :keys="componentKey + 7"/>
+        </v-col>
+        <v-col cols="12" xl="6" lg="6" sm="12">
+          <stock-news :keys="componentKey + 8"/>
+        </v-col>
+      </v-row>
+    </v-col>
+  </v-row>
 </template>
 
 <script lang="ts">

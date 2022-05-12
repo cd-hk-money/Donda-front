@@ -9,10 +9,25 @@
           </v-col>
           <v-col cols="12" xl="2" lg="2">
               <menu-bar />   
-              <side-bar />
+              <side-bar />              
           </v-col>
       </v-row>
     </v-main>
+    <v-snackbar   
+      v-model="snackBar"
+    >
+      그룹 추가 성공
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="blue"
+          text
+          v-bind="attrs"
+          @click="snackBarClose"
+        >
+          닫기
+        </v-btn>
+      </template>
+    </v-snackbar>
   </v-app>
 </template>
 
@@ -29,7 +44,7 @@ import InterestToggle from '@/v2/pages/InterestToggle.vue'
 
 const StockStoreModule = namespace('StockStore')
 const MarketStoreModule = namespace('MarketStore')
-
+const InterestStoreModule = namespace('InterestStore')
 
 @Component({
   components: {
@@ -40,35 +55,38 @@ const MarketStoreModule = namespace('MarketStore')
 })
 export default class App extends Vue {
 
-  @StockStoreModule.Action('todayMarket')
-  private readonly requestTodayMarket!: () => void
-  
+  timeout = 2000
   get height() {
     return window.pageXOffset
   }
 
+  @StockStoreModule.Action('todayMarket')
+  private readonly requestTodayMarket!: () => void
+
   @MarketStoreModule.Action('getTodayMarket')
-  public getTodayMarket!: () => Promise<void>
+  readonly getTodayMarket!: () => Promise<void>
 
   @MarketStoreModule.Action('getSearchTable')
-  public getSearchTable!: () => Promise<void>
-
-  @MarketStoreModule.Action('getRecommend')
-  public getRecommend!: () => Promise<void>
+  readonly getSearchTable!: () => Promise<void>
   
   @StockStoreModule.Action('getDailySimpleRanks')
-  private getDailySimpleRanks!: () => Promise<void>
+  readonly getDailySimpleRanks!: () => Promise<void>
 
   @StockStoreModule.State('dailySimpleRanksloaded')
-  private rankLoaded!: boolean
+  rankLoaded!: boolean
 
-  private isMobile = isMobile()
+  @InterestStoreModule.State('snackBar')
+  snackBar!: boolean
+
+  @InterestStoreModule.Mutation('snackBarClose')
+  snackBarClose!: () => void
+
+  isMobile = isMobile()
 
   created () {
     this.getDailySimpleRanks()  
     this.getTodayMarket()  
     this.getSearchTable()
-    this.getRecommend()
   }
 }
 </script>

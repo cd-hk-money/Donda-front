@@ -6,6 +6,7 @@ import * as _ from 'lodash'
 import { StockSimpleModel, StockRecommendModel} from '@/models/stock'
 import { MarketModel, IMarketChartModel, IMarketRecentModel } from '@/models/market'
 import { IUpdateStateModel } from '@/models/payload'
+import { division } from '@/mixins/tools'
 
 
 const HEADER = {
@@ -32,6 +33,10 @@ export default class MarketStore extends VuexModule {
   // 종목 추천 정보
   public recommendLoaded = false
   public recommend: StockRecommendModel[] = []
+  get recommendArray () {
+    return division(this.recommend, 2)
+  }
+  
 
   @Mutation updateRequestDate(payload: number) {    
     if(payload < 2) {
@@ -139,14 +144,11 @@ export default class MarketStore extends VuexModule {
       })
       const res = await axios.get('/api/allcorps', HEADER)
 
-      const markets: Array<StockSimpleModel> = Object.entries(res.data).map((stock: any) => {
-        return {  
+      this.context.commit('updateState', {
+        searchTable: Object.entries(res.data).map((stock: any) => ({
           code: stock[0],
           title: stock[1]
-        }
-      })
-      this.context.commit('updateState', {
-        searchTable: markets,
+        })),
         searchTableLoaded: false
       })      
     } catch (e) {
@@ -162,15 +164,12 @@ export default class MarketStore extends VuexModule {
         recommendLoaded : true
       })
       const res = await axios.get(`${URL}/daily/recom`)
-      const k: StockRecommendModel[] = Object.entries(res.data).map((recommend: any[]) => {
-        return {
+      
+      this.context.commit('updateState', {
+        recommend: Object.entries(res.data).map((recommend: any[]) => ({
           code: recommend[0],
           ...recommend[1]
-        }
-      })
-
-      this.context.commit('updateState', {
-        recommend: k,
+        })),
         recommendLoaded : false,
       })      
 

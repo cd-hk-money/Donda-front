@@ -1,17 +1,34 @@
 <template>
   <v-card
-    height="44vh"
-    width="auto"
-    class="mt-5 ml-5"
+    height="410"
+    width="94%"
+    class="ml-5"
     rounded="xl"
     elevation="3"
   >
+    <v-card-title class="text-h4 font-weight-bold ml-5">
+      시장 동향
+      <v-btn
+          icon      
+          large
+          @click="overlay = !overlay"
+        >
+          <v-icon>fa-solid fa-circle-info</v-icon>
+        </v-btn>
+    </v-card-title>
+    <v-card-subtitle class="ml-5">
+      현재 시장 동향을 알아보세요.
+    </v-card-subtitle>
+
+    <v-divider></v-divider>
     <v-carousel
       :continuous="false"
       :cycle="cycle"
       :show-arrows="false"
+      hide-delimiter-background
+      hide-delimiters
       delimiter-icon="mdi-minus"
-      height="100%"          
+      height="94%"          
       elevation="3"
     >
       <v-carousel-item
@@ -43,11 +60,6 @@
                 <v-list-item-content class="text-center">
                   <v-list-item-title class="text-h5">현재 {{ slide.text }}시장은 하락중입니다.</v-list-item-title>          
                 </v-list-item-content>        
-                <v-list-item-action-text>
-                  <v-btn top left small icon @click="overlay = !overlay">
-                    <v-icon>fa-solid fa-circle-info</v-icon>
-                  </v-btn>
-                </v-list-item-action-text>
               </v-list-item>
             </v-list>
           </v-row>
@@ -91,11 +103,6 @@ export default class MarketTrend extends Vue {
     },
   ]
   
-  slides = [
-    'First',
-    'Second',    
-  ]
-
   overlay = false
 
   cycle = true

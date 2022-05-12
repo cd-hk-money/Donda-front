@@ -22,8 +22,6 @@ import { mobileHeight } from '@/mixins/tools'
 
 @Component
 export default class StockNews extends Vue {
-  mounted () {
-    console.log('StockNews Mounted')
-  }
+
 }
 </script>

@@ -29,8 +29,6 @@ import { mobileHeight } from '@/mixins/tools'
 
 @Component
 export default class StockSimilar extends Vue {
-  mounted () {
-    console.log('StockSimilar Mounted')
-  }
+
 }
 </script>

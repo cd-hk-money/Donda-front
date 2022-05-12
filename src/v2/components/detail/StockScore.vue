@@ -1,7 +1,7 @@
 <template>
   <v-card 
     class="ml-5 mr-5 mt-7"
-    :height="height > 500 ? 260 : 400"
+    :height="mobile ? 600 : 260"
     rounded="xl"
     width="95%"
   >
@@ -24,16 +24,16 @@
       자체 계산한 적정 주가를 보여줍니다.
     </v-card-subtitle>
     <v-row>
-      <v-col cols="12" xl="7" xs="7">
+      <v-col cols="12" xl="7">
         <stock-score-bar-chart 
           v-if="!loaded"
-          :chartData="[stock.close, stock.close * 1.1]"
-          :height="height > 500 ? 240 : 135"
+          :chartData="[stock.close, stock.close * 1.2]"
+          :height="mobile ? 250 : 200"
         />
       </v-col>      
       <v-divider vertical></v-divider>
 
-      <v-col cols="12" xl="5" sm="5" class="text-center align-center mt-7">
+      <v-col cols="12" xl="5" lg="5" sm="12" md="12" class="text-center align-center mt-7">
         <div class="text-h4">20%</div>
         <div> 저평가 되었습니다.</div>
         <v-btn  
@@ -88,8 +88,8 @@ export default class StockScore extends Vue {
   @StockStoreModule.State('stockLoaded')
   loaded!: boolean
 
-  get height () {
-    return mobileHeight(this.$vuetify.breakpoint.name)
+  get mobile () {
+    return mobileHeight(this.$vuetify.breakpoint.name) < 500
   }
 }
 </script>

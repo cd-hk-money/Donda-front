@@ -3,6 +3,7 @@ import { IInterestGroupItem, IInterestGroup } from "@/models/interest";
 
 @Module({namespaced: true})
 export default class InterestStore extends VuexModule {
+  public snackBar = false
   public interestGroups: IInterestGroup[] = [
     {
       title: '관심종목 그룹1',
@@ -32,8 +33,17 @@ export default class InterestStore extends VuexModule {
       title: '관심종목 그룹7',
       item: []
     },
-
   ]
+
+  @Mutation
+  public snackBarClose() {
+    this.snackBar = this.snackBar = false
+  }
+
+  @Mutation
+  public snackBarOpen() {
+    this.snackBar = this.snackBar = true
+  }
 
   @Mutation
   public addInterestGroup(group: IInterestGroup) {
@@ -77,17 +87,10 @@ export default class InterestStore extends VuexModule {
   }
 
   @Mutation
-  public removeInterstGroupItem(groupTitle: string, itemTitle: string) {
-    try {
-      this.interestGroups.find(group => {
-        group.title === groupTitle
-      }).item.filter(item => {
-        item.title !== itemTitle
-      })
-    } catch (e) {
-      console.log('아이템 삭제 실패')
-      throw e
-    }
+  public removeInterstGroupItem(itemTitle: string) {    
+    this.interestGroups.forEach((group: IInterestGroup) => {
+      group.item.filter((item: IInterestGroupItem) => item.title !== itemTitle)
+    })
   }
 
   @Mutation

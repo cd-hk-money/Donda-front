@@ -2,12 +2,7 @@
   <v-card   
     height="auto"    
     class="ml-15 mr-15"
-    rounded="xl"
-      >
-    <v-card-title class="text-h4 d-flex justify-center font-weight-bold">
-      {{ type.toUpperCase() }}
-    </v-card-title>    
-
+   >
     <v-divider></v-divider>
 
     <v-list>
@@ -40,10 +35,8 @@
                 </v-list-item-content>  
               </v-col>
               <v-col cols="12" xl="1" md="2" sm="3">
-                <span 
-                  class="red--text text-h6"
-                  v-if="type !== 'marcap'">  
-                    +{{ content[3].toLocaleString()}} % 
+                <span class="red--text text-h6">  
+                    {{ subContent(title, content[3])}} 
                 </span>
               </v-col>
               <v-col cols="12" xl="1" md="2" sm="3">
@@ -71,7 +64,7 @@
         @click="moreRank"
       >
         <v-icon>
-          fa-solid fa-caret-down
+          {{ isUp ? 'fa-solid fa-caret-up' : 'fa-solid fa-caret-down' }}
         </v-icon>
       </v-btn>    
     </v-card-actions>
@@ -90,14 +83,29 @@ import { IMarketRanksContents } from '@/models/stock'
   }
 })
 export default class RankComponent extends Vue {
+
+
+  isUp = false
   @Prop()
   contents!: IMarketRanksContents
 
   @Prop({default: ''})
-  type!: string  
+  title!: string  
 
   moreRank () {
-    this.$emit('seeMore')
+    if(this.isUp) this.$emit('seeMore', 10)
+    else this.$emit('seeMore', 50)
+
+    this.isUp = !this.isUp
+  }
+
+  subContent(title: string, content: number) {
+    switch (title) {
+      case '시가총액': return ''
+      case '상승률': return '+' + content.toLocaleString() + '%'
+      case '하락률': return content.toLocaleString() + '%'
+      case '거래량': return content.toLocaleString()
+    }
   }
 }
 </script>

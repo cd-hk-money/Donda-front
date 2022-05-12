@@ -55,8 +55,7 @@
               <v-list-item-action>
                 <v-btn 
                   x-small
-                  icon
-                  @click="test"
+                  icon                  
                 >
                   <v-icon>fa-regular fa-x</v-icon>
                 </v-btn>
@@ -258,8 +257,6 @@ export default class SideBar extends Vue {
 
   @InterestStoreModule.Mutation('initInterestGroup')
   readonly initInterestGroup!: () => void
-
-  test
 
   created () {
     this.initInterestGroup()    

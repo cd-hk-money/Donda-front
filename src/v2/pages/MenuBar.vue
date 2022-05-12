@@ -1,11 +1,11 @@
 <template>
   <div class="mr-10">
     <v-navigation-drawer        
-      :class="['ml-5', mobile ? 'mt-0' : 'mt-5']"
+      :class="[mobile ? '' : 'ml-5 mt-5']"
       bottom         
       permanent
       :fixed="mobile"
-      :width="mobile ? '94%' : '110%'"
+      :width="mobile ? '100%' : '110%'"
       :height="mobile ? '72' : '110%'"
     >
       <v-card       

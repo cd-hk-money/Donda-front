@@ -85,7 +85,8 @@
           </v-speed-dial>            
         </v-col>          
       </v-row>
-    </v-card-text>        
+    </v-card-text>      
+    <v-divider></v-divider>  
   </v-card>
 </template>
 
@@ -124,7 +125,7 @@ export default class MarketDesc extends Vue {
   
   toggle_exclusive = 0
 
-  color = this.desc?.changes > 0 ? 'red-text' : 'blue--text'
+  color = this.desc?.changes > 0 ? 'red--text' : 'blue--text'
 
   fill = true
   fab = false

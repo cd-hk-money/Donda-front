@@ -130,14 +130,11 @@ export default class StockIndicator extends Vue {
   readonly getStockIndicator!: (name: string) => Promise<void>
 
   onIntersect (entries, observer) {
-    this.isIntersecting = entries[0].isIntersecting
-    console.log(entries, observer)
+    this.isIntersecting = entries[0].isIntersecting    
   }
 
   created () {
-    this.getStockIndicator(this.$route.params.title).then(() => {
-      console.log(this.indicator)
-    })
+    this.getStockIndicator(this.$route.params.title)
   }
 }
 </script> 

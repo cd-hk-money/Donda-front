@@ -80,7 +80,6 @@ export default class Stock extends Vue {
 
   created () {
     this.getStockGraphDefault(this.$route.params.title)    
-    console.log(this.stock)
   }
 }
 
