@@ -41,10 +41,8 @@ import { Component, Vue } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 
 // components
-import MarketCarousel from '@/components/market/MarketCarousel.vue'
 import MarketDesc from '@/v2/components/home/MarketDesc.vue'
 import MarketChart from '@/v2/components/home/MarketChart.vue'
-import CircularLoading from '@/layout/CircularLoading.vue'
 
 
 // models
@@ -56,10 +54,8 @@ const MarketStoreModule = namespace('MarketStore')
 
 @Component({
   components: {
-    MarketCarousel,
     MarketDesc,
     MarketChart,
-    CircularLoading
   }
 })
 export default class Market extends Vue {

@@ -31,6 +31,6 @@ import StockRecommend from '@/v2/components/home/StockRecommend.vue'
   }
 })
 export default class HomeV2 extends Vue {
-
+  
 }
 </script>

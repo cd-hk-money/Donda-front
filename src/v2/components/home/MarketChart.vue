@@ -148,12 +148,12 @@ export default class LineChart extends Vue {
           label: this.type,
           data: [...[...marketType.data].reverse().slice(0, this.requestDate)].reverse().map((k: MarketModel) => k.close),
           fill: fill,
-          borderColor: this.color,
+          borderColor: MAIN_COLOR,
           backgroundColor: transparentize(this.color, 0.8),
           borderWidth: this.requestDate > 150 ? 4 : 6,                 
           radius: this.requestDate > 150 ? 0.5 : 4,
           pointStyle: 'rectRounded',
-          tension: .4,          
+          tension: .4,                    
         },
       ],          
     }
@@ -168,4 +168,7 @@ export default class LineChart extends Vue {
     this.renderLineChart()
   }    
 }
+
+const skipped = (ctx, value) => ctx.p0.skip || ctx.p1.skip ? value : undefined;
+const down = (ctx, value) => ctx.p0.parsed.y > ctx.p1.parsed.y ? value : undefined;
 </script>

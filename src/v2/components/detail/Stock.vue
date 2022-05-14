@@ -1,30 +1,17 @@
 <template>
   <v-card     
-    class="mt-8 ml-5 mr-5"
-    height="500"
+    class="mt-8 ml-5 mr-5 mb-5"
+    height="875"
     rounded="xl"
     width="95%"
     v-if="!loaded"      
   >
-    <v-row>      
-      <v-col cols="12" xl="12" sm="12" class="d-flex justify-center align-center">
-        <!-- <span class="text-h6 mr-2">
-          시가 {{  stock.open.toLocaleString() }}
-        </span>
-        <span class="text-h6 mr-2">                  
-          고가 {{  stock.high.toLocaleString() }}
-        </span>
-        <span class="text-h6 mr-2">
-          저가 {{  stock.low.toLocaleString() }}
-        </span>
-        <span class="text-h6 mr-2">
-          종가 {{  stock.close.toLocaleString() }}
-        </span>           
-        <span class="text-h6 mr-2">
-          거래량 {{ stock.amount.toLocaleString() }}
-        </span>  -->
-      </v-col>
-    </v-row> 
+    <v-card-title>
+      주가
+    </v-card-title>
+    <v-card-subtitle>
+      {{ stock.name }}의 주가 정보를 확인해보세요.
+    </v-card-subtitle>
     <v-divider></v-divider>
     <v-carousel
       height="auto"
@@ -42,11 +29,12 @@
           <v-divider></v-divider>
           <stock-chart 
             class="ml-5 mr-5 mt-10"                      
-            :height="160"
+            :height="280"
             :chartData="stockGraphDefault"
           />
         </v-card>
       </v-carousel-item>
+
     </v-carousel>
   </v-card>
 </template>

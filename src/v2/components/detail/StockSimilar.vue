@@ -1,7 +1,7 @@
 <template>
   <v-card 
     class="mt-5 ml-5 mr-5"
-    height="365"
+    height="885"
     width="94%"
     rounded="xl"
     elevation="1"

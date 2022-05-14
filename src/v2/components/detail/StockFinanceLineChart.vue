@@ -16,11 +16,8 @@ const SUB_COLOR = 'rgb(255, 99, 132)'
   extends: Bar,
   mixins: [reactiveProp]
 })
-export default class StockFinanceChart extends Vue {
+export default class StockFinanceLineChart extends Vue {
 
-  @Prop()
-  type!: string
-  
   chartData!: IStockStatementBarChartModel
   chartOptions: Chart.ChartOptions = {}
 
@@ -38,7 +35,7 @@ export default class StockFinanceChart extends Vue {
           zeroLineColor: '#696969',          
         },
         ticks: {
-          fontSize: 15,
+          fontSize: 12,
         },
         scaleLabel: {
           fontSize: 15
@@ -52,7 +49,7 @@ export default class StockFinanceChart extends Vue {
           maxTicksLimit: 1   
         },
         gridLines: {
-          display: true,                  
+          display: false,                  
           color: '#696969',  
           zeroLineWidth: 4,
           zeroLineColor: 'white'
@@ -89,8 +86,8 @@ export default class StockFinanceChart extends Vue {
           data : [...this.chartData.value].reverse().map((value: number) => `${value}`),
           fill: true,
           borderColor: MAIN_COLOR,        
-          backgroundColor: transparentize(MAIN_COLOR, 0.5),
-          borderWidth: 6,
+          backgroundColor: transparentize(MAIN_COLOR, 0.9),
+          borderWidth: 3,
           radius: 4,
           pointStyple: 'rectRounded',
           tension: .4,               

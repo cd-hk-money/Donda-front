@@ -51,7 +51,7 @@ export default class StockStore extends VuexModule {
   public statement: ISimpleChartData = {}
   public statementTypes: string[] = []
 
-  // 종목 하나의 5년치 보조지표
+  // 종목 하나의 5년치 재무제표
   public statementAllLoaded = false
   public statementAll: ISimpleChartData = {}
   
@@ -158,7 +158,7 @@ export default class StockStore extends VuexModule {
     }
   }
 
-   // 종목 하나의 5년지 보조지표를 가져옵니다.
+   // 종목 하나의 5년치 보조지표를 가져옵니다.
   @Action
   public async getStockStatementAll(name: string): Promise<void> {
     try {
@@ -178,7 +178,7 @@ export default class StockStore extends VuexModule {
     }
   }
 
-  // 종목 하나의 제무재표를 가져옵니다.
+  // 종목 하나의 4분기 분량의 제무재표를 가져옵니다.
   @Action
   public async getStockStatement(name: string): Promise<void> {
     try {

@@ -39,9 +39,10 @@ export default class StockChart extends Vue {
     this.chartOptions.scales = {
       xAxes: [{
         gridLines: {
-          display: true
+          display: false
         },
         ticks: {
+          display: false,
           fontSize: 20,
           maxTicksLimit: 8
         },
@@ -51,11 +52,12 @@ export default class StockChart extends Vue {
       }],
       yAxes: [{
         ticks: {
+          display: false,
           callback: function(value: string) {return value.toLocaleString()},
           fontSize: 20,
         },
         gridLines: {
-          display: true
+          display: false
         }
       }]
     }
@@ -68,9 +70,9 @@ export default class StockChart extends Vue {
     this.chartOptions.tooltips = {
       enabled: true,
       intersect: false,
-      titleFontSize: 25,
+      titleFontSize: 10,
       titleFontColor: MAIN_COLOR,
-      bodyFontSize: 40,
+      bodyFontSize: 20,
       cornerRadius: 10,
       displayColors: false,
       callbacks: {
@@ -78,7 +80,6 @@ export default class StockChart extends Vue {
       }
     }  
   }
-  SUB_COLOR
 
   createChartData() {
     return {
@@ -86,20 +87,20 @@ export default class StockChart extends Vue {
       datasets: [
         {
           data : Object.values(this.chartData),
-          fill: true,
+          fill: this.fill,
           borderColor: MAIN_COLOR,
           backgroundColor: transparentize(MAIN_COLOR, 0.8),
-          borderWidth: 6,
+          borderWidth: 2,
           radius: 0,
           pointStyple: 'rectRounded',
           tension: .4
         },
         {
           data : (Object.values(this.chartData) as number[]).map((value: number) => value * 0.995),
-          fill: true,
+          fill: this.fill,
           borderColor: SUB_COLOR,
           backgroundColor: transparentize(SUB_COLOR, 0.8),
-          borderWidth: 6,
+          borderWidth: 2,
           radius: 0,
           pointStyple: 'rectRounded',
           tension: .4
