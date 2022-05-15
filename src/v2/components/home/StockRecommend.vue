@@ -151,7 +151,6 @@
 import { StockRecommendModel } from '@/models/stock'
 import { Component, Vue } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
-import { division } from '@/mixins/tools'
 
 const MarketStoreModule = namespace('MarketStore')
 

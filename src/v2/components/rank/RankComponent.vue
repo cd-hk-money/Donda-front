@@ -3,8 +3,7 @@
     height="auto"    
     class="ml-15 mr-15"
    >
-    <v-divider></v-divider>
-
+    <v-divider></v-divider>      
     <v-list>
       <v-tooltip 
         v-for="(content, i) in contents"
@@ -24,7 +23,7 @@
               {{ i + 1 }} 
             </v-list-item-avatar>    
             <v-row class="d-flex align-center justify-end">
-              <v-col cols="12" xl="10" md="8" sm="6">
+              <v-col cols="12" xl="8" md="8" sm="6">
                 <v-list-item-content>
                   <v-list-item-title class="text-h5">
                     {{ content[1] }}
@@ -34,20 +33,19 @@
                   </v-list-item-subtitle>                            
                 </v-list-item-content>  
               </v-col>
-              <v-col cols="12" xl="1" md="2" sm="3">
-                <span class="red--text text-h6">  
+              <v-col cols="12" xl="2" md="2" sm="3">
+                <span class="red--text text-h6 ml-15">  
                     {{ subContent(title, content[3])}} 
                 </span>
               </v-col>
-              <v-col cols="12" xl="1" md="2" sm="3">
-                <span class="text-h5">
-                  {{ content[2].toLocaleString()}}
+              <v-col cols="12" xl="2" md="2" sm="3">
+                <span class="text-h5 ml-15">
+                  {{ content[2].toLocaleString()}}₩
                 </span>            
               </v-col>
             </v-row>      
             <span>              
               <v-icon 
-                class="ml-5"
                 size="40">mdi-bookmark-outline
               </v-icon>
             </span>

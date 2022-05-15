@@ -8,7 +8,7 @@
     <v-card-text>      
       <v-row>        
         <v-col cols="12" xl="8" lg="8" md="7">
-          <span class="primary--text text-h2 font-weight-bold pl-10">
+          <span class="text-h2 font-weight-bold pl-10">
             {{ desc.market }} 
           </span>
 
@@ -21,7 +21,7 @@
             </v-btn>
           </span>
 
-          <span class="primary--text ml-12 text-h3">
+          <span class="ml-12 text-h3">
             {{ desc.close }}
           </span>           
 

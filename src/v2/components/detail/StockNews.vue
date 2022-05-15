@@ -25,8 +25,7 @@
               {{ news }}
             </v-list-item-title>
             <v-list-item-subtitle>
-              뉴스사
-            </v-list-item-subtitle>
+            </v-list-item-subtitle>            
             <v-divider></v-divider>
           </v-list-item-content>          
         </v-list-item>
@@ -40,10 +39,10 @@ import { Component, Vue} from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 import { mobileHeight } from '@/mixins/tools'
 
-const NEWS_COUNT = 10
+const NEWS_COUNT = 12
 
 @Component
 export default class StockNews extends Vue {
-  newsAll = [...new Array(NEWS_COUNT)].map((_, i) => `뉴스${i}`)
+  newsAll = [...new Array(NEWS_COUNT)].map((_, i) => `뉴스 ${i}`)
 }
 </script>

@@ -34,9 +34,8 @@
                   v-bind="attrs"
                 ><v-icon>fa-solid fa-caret-down</v-icon>
               </v-btn>
-              </template>
-
-              <v-list>
+              </template>              
+              <v-list>                
                 <v-list-item                                    
                   v-for="(item, i) in rankTitle"
                   :key="i"

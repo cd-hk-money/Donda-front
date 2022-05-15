@@ -18,7 +18,7 @@ export default new Vuetify({
         info: '#DCDCDC'
       },
       dark: {
-        primary: '#000000',
+        primary: '#FFFFFF',
         secondary: '#696969',
         info: '#000000'
       },      
