@@ -1,13 +1,15 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
+import { namespace } from 'vuex-class'
 
 import Chart from 'chart.js'
 import { mixins, Bar } from 'vue-chartjs-typescript'
 
 import { transparentize } from '@/mixins/tools'
-import { IStockStatementBarChartModel } from '@/models/stock'
+import { IStockModel } from '@/models/stock'
 
 const { reactiveProp } = mixins
+const StockStoreModule = namespace('StockStore')
 
 const MAIN_COLOR = '#40E0D0'
 const SUB_COLOR = 'rgb(255, 99, 132)'
@@ -19,7 +21,10 @@ const SUB_COLOR = 'rgb(255, 99, 132)'
 export default class StockScoreBarChart extends Vue {
 
   @Prop()
-  chartData!: number[]
+  chartData!: null
+
+  @StockStoreModule.State('stock')
+  stock!: IStockModel
   
   chartOptions: Chart.ChartOptions = {}
 
@@ -83,7 +88,7 @@ export default class StockScoreBarChart extends Vue {
       datasets: [
         {
           type: 'bar',
-          data : [...this.chartData],
+          data : [this.stock.close, this.stock.close * 1.2],
           fill: true,
           borderColor: [MAIN_COLOR, SUB_COLOR],        
           backgroundColor: [transparentize(MAIN_COLOR, 0.8) ,transparentize(SUB_COLOR, 0.8)],

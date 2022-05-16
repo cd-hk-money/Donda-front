@@ -1,13 +1,12 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
-
 import { mixins, Line } from 'vue-chartjs-typescript'
 import { transparentize } from '@/mixins/tools'
-
 import Chart from 'chart.js'
+import { namespace } from 'vuex-class'
 
 const { reactiveProp } = mixins
-
+const StockStoreModule = namespace('StockStore')
 const MAIN_COLOR = '#40E0D0'
 const SUB_COLOR = 'rgb(255, 99, 132)'
 
@@ -21,7 +20,10 @@ export default class StockChart extends Vue {
   fill!: boolean
   
   @Prop()
-  chartData!: any
+  chartData!: never
+
+  @StockStoreModule.State('stockGraphDefault')
+  stockGraphDefault!: any
 
   chartOptions: Chart.ChartOptions = {}
 
@@ -83,10 +85,10 @@ export default class StockChart extends Vue {
 
   createChartData() {
     return {
-      labels: Object.keys(this.chartData).map((date: string) => date.substr(5)),
+      labels: Object.keys(this.stockGraphDefault).map((date: string) => date.substr(5)),
       datasets: [
         {
-          data : Object.values(this.chartData),
+          data : Object.values(this.stockGraphDefault),
           fill: this.fill,
           borderColor: MAIN_COLOR,
           backgroundColor: transparentize(MAIN_COLOR, 0.8),
@@ -96,7 +98,7 @@ export default class StockChart extends Vue {
           tension: .4
         },
         {
-          data : (Object.values(this.chartData) as number[]).map((value: number) => value * 0.995),
+          data : (Object.values(this.stockGraphDefault) as number[]).map((value: number) => value * 0.995),
           fill: this.fill,
           borderColor: SUB_COLOR,
           backgroundColor: transparentize(SUB_COLOR, 0.8),

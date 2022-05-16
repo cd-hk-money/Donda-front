@@ -158,7 +158,7 @@ export default class StockStore extends VuexModule {
     }
   }
 
-   // 종목 하나의 5년치 보조지표를 가져옵니다.
+   // 종목 하나의 특정 재무제표 5년치 를 가져옵니다.
   @Action
   public async getStockStatementAll(name: string): Promise<void> {
     try {
@@ -167,6 +167,7 @@ export default class StockStore extends VuexModule {
       })
 
       const res = await axios.get(`${URL}/stock/statement/ebitda/${name}`, HEADER)
+      console.log(res.data)
 
       this.context.commit('updateState', {
         statementAll: res.data,
@@ -178,7 +179,7 @@ export default class StockStore extends VuexModule {
     }
   }
 
-  // 종목 하나의 4분기 분량의 제무재표를 가져옵니다.
+  // 종목 하나의 모든항목 재무제표 4분기를 가져옵니다.
   @Action
   public async getStockStatement(name: string): Promise<void> {
     try {

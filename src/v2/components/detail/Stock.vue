@@ -30,7 +30,6 @@
           <stock-chart 
             class="ml-5 mr-5 mt-10"                      
             :height="280"
-            :chartData="stockGraphDefault"
           />
         </v-card>
       </v-carousel-item>
@@ -54,9 +53,6 @@ const StockStoreModule = namespace('StockStore')
 })
 export default class Stock extends Vue {
   
-  @StockStoreModule.State('stockGraphDefault')
-  stockGraphDefault!: any
-
   @StockStoreModule.State('stock')
   stock!: IStockModel
 

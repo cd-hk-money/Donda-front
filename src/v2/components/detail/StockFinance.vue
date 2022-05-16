@@ -48,21 +48,27 @@
       </v-card>
   
       <v-dialog      
-        class="ml-15"
-        max-width="700"
-        min-height="800"
+        :style="dialogStyle"
+        max-width="800"
+        min-height="500"
         v-model="dialog"      
         overlay-opacity="0.2"      
       >
         <v-card         
-          max-width="700"
+          max-width="800"
           min-height="500"
-          outlined
+          outlined      
         >
-          <v-card-title>
+          <v-card-title class="font-weight-bold">
             {{ dialogType }}
           </v-card-title>
-  
+
+          <stock-finance-line-chart 
+            class="mr-5"            
+            :type="dialogType"
+            :title="title"
+            :height="200"
+          />  
           <v-divider></v-divider>
         </v-card>
       </v-dialog>
@@ -76,6 +82,7 @@ import { namespace } from 'vuex-class'
 import { mobileHeight } from '@/mixins/tools'
 
 import StockFinanceBarChart from '@/v2/components/detail/StockFinanceBarChart.vue'
+import StockFinanceLineChart from '@/v2/components/detail/StockFinanceLineChart.vue'
 import { ISimpleChartData } from '@/models/stock'
 
 // import StockFinanceChart from '@/v2/components/detail/StockFinanceChart.vue'
@@ -84,17 +91,18 @@ const StockStoreModule = namespace('StockStore')
 
 @Component({
   components: {
-    StockFinanceBarChart
+    StockFinanceBarChart,
+    StockFinanceLineChart
   }
 })
 export default class StockFinance extends Vue {
 
   model = 0
   dialog = false
-  dialogType!: string
-
-  @StockStoreModule.State('statement')
-  statement!: ISimpleChartData
+  dialogType = ''
+  dialogStyle = {
+    'margin-left': '20px'
+  }
 
   types = [
     '자산총계',              // asset
@@ -109,6 +117,19 @@ export default class StockFinance extends Vue {
     '영업이익',            // ebitda
     '영업총이익',          // gross_margin    
   ]
+
+  get title () {
+    return this.$route.params.title
+  }
+
+  get height () {
+    return mobileHeight(this.$vuetify.breakpoint.name)
+  }
+
+
+  @StockStoreModule.State('statement')
+  statement!: ISimpleChartData
+
 
   @StockStoreModule.State('statementTypes')
   statementTypes!: string[]
@@ -128,16 +149,9 @@ export default class StockFinance extends Vue {
   @StockStoreModule.Action('getStockStatementAll')
   readonly getStockStatementAll!: (name: string) => Promise<void>
 
-  get height () {
-    return mobileHeight(this.$vuetify.breakpoint.name)
-  }
-
   created() {        
-    console.log('re')
-    const title = this.$route.params.title
-
-    this.getStockStatement(title).then(() => {
-      this.getStockStatementAll(title).then(() => {
+    this.getStockStatement(this.title).then(() => {
+      this.getStockStatementAll(this.title).then(() => {
         console.log(this.statementAll)
       })
       console.log(this.statementTypes)

@@ -37,17 +37,13 @@
           v-if="!loaded"
         >
           <v-carousel-item>
-            <stock-score-bar-chart                     
-              :chartData="[stock.close, stock.close * 1.2]"
-              :height="mobile ? 250 : 200"
-            />
+            <stock-score-bar-chart :height="mobile ? 250 : 200" />
           </v-carousel-item>
           <v-carousel-item>
             <stock-chart 
-              class="ml-5 mr-5 mt-10"
-              :chartData="stockGraphDefault"
+              class="ml-5 mr-5 mt-10"              
               :height="mobile ? 236 : 200"
-              />
+            />
           </v-carousel-item>
         </v-carousel>
       </v-col>      
@@ -117,17 +113,9 @@ export default class StockScore extends Vue {
     return mobileHeight(this.$vuetify.breakpoint.name) < 500
   }
 
-  @StockStoreModule.State('stock')
-  stock!: IStockModel
-
+  
   @StockStoreModule.State('stockLoaded')
   loaded!: boolean
-
-  @StockStoreModule.State('stockGraphDefault')
-  stockGraphDefault!: any
-
-  @StockStoreModule.State('stockGraphDefaultLoaded')
-  stockLoaded!: boolean
 
   @StockStoreModule.Action('getStockGraphDefault')
   getStockGraphDefault!: (name: string) => Promise<void>

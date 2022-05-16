@@ -1,25 +1,42 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
+import { namespace } from 'vuex-class'
 
 import Chart from 'chart.js'
-import { mixins, Bar } from 'vue-chartjs-typescript'
+import { mixins, Line } from 'vue-chartjs-typescript'
 
 import { transparentize } from '@/mixins/tools'
-import { IStockStatementBarChartModel } from '@/models/stock'
+import { ISimpleChartData, IStockStatementBarChartModel } from '@/models/stock'
 
 const { reactiveProp } = mixins
+const StockStoreModule = namespace('StockStore')
 
 const MAIN_COLOR = '#40E0D0'
 const SUB_COLOR = 'rgb(255, 99, 132)'
+const END_LABEL_INDEX = 23
 
 @Component({
-  extends: Bar,
+  extends: Line,
   mixins: [reactiveProp]
 })
 export default class StockFinanceLineChart extends Vue {
 
-  chartData!: IStockStatementBarChartModel
+  @Prop()
+  chartData!: null
+
+  @Prop()
+  type!: string
+
+  @Prop()
+  title!: string
+
   chartOptions: Chart.ChartOptions = {}
+
+  @StockStoreModule.Action('getStockStatementAll')
+  readonly getStockStatementAll!: (name: string) => Promise<void>
+
+  @StockStoreModule.State('statementAll')
+  statementAll!: ISimpleChartData
 
   applyDefaultOptions() {
     this.chartOptions.maintainAspectRatio = true
@@ -32,7 +49,7 @@ export default class StockFinanceLineChart extends Vue {
       xAxes: [{
         gridLines: {
           display: false,
-          zeroLineColor: '#696969',          
+          zeroLineColor: '#444444',          
         },
         ticks: {
           fontSize: 12,
@@ -46,13 +63,14 @@ export default class StockFinanceLineChart extends Vue {
           callback: function(value: string) {return value.toLocaleString()},
           display: false,
           fontSize: 15,       
-          maxTicksLimit: 1   
+          beginAtZero: true,
         },
         gridLines: {
-          display: false,                  
-          color: '#696969',  
-          zeroLineWidth: 4,
-          zeroLineColor: 'white'
+          display: true,             
+          lineWidth: 0,
+          zeroLineWidth: 2,       
+          zeroLineBorderDash: [10, ],        
+          zeroLineColor: this.$vuetify.theme.dark ?  '#fff' : 'gray'
         },      
       }], 
     }
@@ -80,15 +98,15 @@ export default class StockFinanceLineChart extends Vue {
 
   createChartData() {
     return {
-      labels: [...this.chartData.date].reverse(),
+      labels: Object.keys(this.statementAll),
       datasets: [
         {
-          data : [...this.chartData.value].reverse().map((value: number) => `${value}`),
-          fill: true,
+          data : Object.values(this.statementAll),
+          fill: false,
           borderColor: MAIN_COLOR,        
           backgroundColor: transparentize(MAIN_COLOR, 0.9),
-          borderWidth: 3,
-          radius: 4,
+          borderWidth: 3,          
+          radius: ctx => (ctx.dataIndex === END_LABEL_INDEX || ctx.dataIndex === 0) ? 4 : 0,          
           pointStyple: 'rectRounded',
           tension: .4,               
         }
@@ -98,13 +116,17 @@ export default class StockFinanceLineChart extends Vue {
 
   renderChart!: (chartData: any, options: any) => any
 
-  renderBarChart() {
+  renderLineChart() {
     this.applyDefaultOptions()
     this.renderChart(this.createChartData(), this.chartOptions)
   }
 
   mounted () {
-    this.renderBarChart()
+    this.getStockStatementAll(this.title).then(() => {
+      console.log(this.statementAll)
+      this.renderLineChart()
+    })    
   }
+  
 }
 </script>
