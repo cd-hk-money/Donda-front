@@ -33,7 +33,6 @@
 <script lang="ts">
 import { Component, Vue, Prop} from 'vue-property-decorator'
 import Stock from '@/v2/components/detail/Stock.vue'
-import StockChart from '@/v2/components/detail/StockChart.vue'
 import StockSimilar from '@/v2/components/detail/StockSimilar.vue'
 import StockNews from '@/v2/components/detail/StockNews.vue'
 import StockFinance from '@/v2/components/detail/StockFinance.vue'
@@ -44,7 +43,6 @@ import StockFinance from '@/v2/components/detail/StockFinance.vue'
     Stock,
     StockSimilar,
     StockNews,
-    StockChart,
     StockFinance
   }
 })

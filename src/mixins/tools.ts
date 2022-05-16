@@ -51,3 +51,31 @@ export function division(arr: any[], n: number): any[any] {
 
   return newArray
 }
+
+export function belowGradient (ctx, chartArea, data, scales, width, height) {
+  const {left, right, top, bottom} = chartArea
+  const x = scales['x-axis-0']
+  const y = scales['y-axis-0']
+  const gradientBackground = ctx.createLinearGradient(
+    0, y.getPixelForValue(data.datasets[0].data[0]), 0, bottom) 
+
+  gradientBackground.addColorStop(0, 'rgba(255, 26, 104, 0)')
+  gradientBackground.addColorStop(0, 'rgba(255, 26, 104, 0.4)')
+  console.log('fucl')
+  return gradientBackground
+}
+
+export function getGradient (ctx, chartArea, data, scales, width, height) {
+  const {left, right, top, bottom} = chartArea
+  const x = scales['x-axis-0']
+  const y = scales['y-axis-0']
+  const gradientBorder = ctx.createLinearGradient(0, 0, 0, bottom)   
+  const shift = y.getPixelForValue(data.datasets[0].data[0]) / bottom
+
+  gradientBorder.addColorStop(0, 'rgba(28, 24, 222, 1)')
+  gradientBorder.addColorStop(shift, 'rgba(75, 192, 192, 1)')
+  gradientBorder.addColorStop(shift, 'rgba(255, 26, 104, 1)')
+  gradientBorder.addColorStop(1, 'rgba(255, 26, 104, 1)')
+
+  return gradientBorder
+}

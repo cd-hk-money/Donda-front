@@ -27,7 +27,7 @@
       >        
         <v-card height="auto">                             
           <v-divider></v-divider>
-          <stock-chart 
+          <stock-big-chart 
             class="ml-5 mr-5 mt-10"                      
             :height="280"
           />
@@ -41,14 +41,14 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
-import StockChart from '@/v2/components/detail/StockChart.vue'
+import StockBigChart from '@/v2/components/detail/StockBigChart.vue'
 import { IStockModel } from '@/models/stock'
 
 const StockStoreModule = namespace('StockStore')
 
 @Component({
   components: {
-    StockChart
+    StockBigChart
   }
 })
 export default class Stock extends Vue {
