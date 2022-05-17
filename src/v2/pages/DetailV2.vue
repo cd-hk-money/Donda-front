@@ -78,6 +78,9 @@ export default class DetailV2 extends Vue {
   @StockStoreModule.Action('getStockGraphDefault')
   readonly getStockGraphDefault!: (name: string) => Promise<void>
 
+  @StockStoreModule.Action('getStockGraphAll')
+  readonly getStockGraphAll!: (name: string) => Promise<void>
+
   @StockStoreModule.Action('getStockStatement')
   readonly getStockStatement!: (name: string) => Promise<void>
 
@@ -105,6 +108,20 @@ export default class DetailV2 extends Vue {
     }
   ]
 
+  stockLoad(title: string) {
+    this.getStock(title)
+    this.getStockGraphAll(title)
+    this.getStockGraphDefault(title)
+    this.getStockStatement(title)
+    this.getStockStatementAll(title)
+    this.getStockIndicator(title)
+    this.drawer = 0
+  }
+
+  created () {
+    this.stockLoad(this.$route.params.title)
+  }
+
   drawerChange (val) {
     this.drawer = val
   }
@@ -114,14 +131,7 @@ export default class DetailV2 extends Vue {
   }
   @Watch('$route')
   watchRoute() {    
-    const title = this.$route.params.title
-    this.getStock(title)
-    this.getStockGraphDefault(title)
-    this.getStockStatement(title)
-    this.getStockStatementAll(title)
-    this.getStockIndicator(title)
-
-    this.drawer = 0
+   this.stockLoad(this.$route.params.title)
   }  
 
 

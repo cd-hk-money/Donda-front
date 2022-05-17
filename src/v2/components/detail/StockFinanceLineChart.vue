@@ -5,7 +5,7 @@ import { namespace } from 'vuex-class'
 import Chart from 'chart.js'
 import { mixins, Line } from 'vue-chartjs-typescript'
 
-import { transparentize } from '@/mixins/tools'
+import { getGradient, transparentize } from '@/mixins/tools'
 import { ISimpleChartData, IStockStatementBarChartModel } from '@/models/stock'
 
 const { reactiveProp } = mixins
@@ -44,6 +44,9 @@ export default class StockFinanceLineChart extends Vue {
     
     this.chartOptions.legend = {
       display: false
+    }
+    this.chartOptions.plugins = {
+      crosshair: false
     }
       this.chartOptions.scales = {
       xAxes: [{
@@ -103,7 +106,11 @@ export default class StockFinanceLineChart extends Vue {
         {
           data : Object.values(this.statementAll),
           fill: false,
-          borderColor: MAIN_COLOR,        
+          borderColor: context => {
+            const {ctx, chartArea, data, scales, width, height} = context.chart
+            if(!chartArea) return null            
+            return getGradient(ctx, chartArea, data, scales, width, height)
+          },        
           backgroundColor: transparentize(MAIN_COLOR, 0.9),
           borderWidth: 3,          
           radius: ctx => (ctx.dataIndex === END_LABEL_INDEX || ctx.dataIndex === 0) ? 4 : 0,          

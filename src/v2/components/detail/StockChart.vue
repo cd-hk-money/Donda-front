@@ -38,6 +38,10 @@ export default class StockChart extends Vue {
       display: false
     }
 
+    this.chartOptions.plugins = {      
+      crosshair: false
+    }  
+
     this.chartOptions.scales = {
       xAxes: [{
         gridLines: {

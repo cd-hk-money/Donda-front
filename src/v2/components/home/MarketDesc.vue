@@ -127,7 +127,7 @@ export default class MarketDesc extends Vue {
 
   color = this.desc?.changes > 0 ? 'red--text' : 'blue--text'
 
-  fill = true
+  fill = false
   fab = false
   dateToggle = 1
 

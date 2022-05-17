@@ -73,7 +73,7 @@ export default class Market extends Vue {
   colors = ['#40E0D0', '#40E0D0', '#40E0D0']  
 
   // 그래프의 채움 
-  fill: boolean | string = 'start'
+  fill: boolean | string = false
 
   // 초기 라벨 개수
   count = 20

@@ -79,3 +79,60 @@ export function getGradient (ctx, chartArea, data, scales, width, height) {
 
   return gradientBorder
 }
+
+export function crosshairLine(chart, mousemove) {  
+  const { ctx, canvas, chartArea: {left, right, top, bottom}} = chart;
+
+  const coorX = mousemove.offsetX
+  const coorY = mousemove.offsetY  
+
+  // chart.update('none')
+  // ctx.restore()
+
+  if(coorX > left && coorX <= right && coorY >= top && coorY <= bottom) {
+    canvas.style.cursor = 'crosshair'
+  } else {
+    canvas.style.cursor = 'default'
+  }
+
+  // crosshairLabel(chart, mousemove)
+
+  // // 대시바 설정
+  // ctx.strokeStyle = '#666'
+  // ctx.lineWidth = 3
+  // ctx.setLineDash([5, 7])
+
+  // ctx.beginPath();
+  // ctx.moveTo(left, coorY);
+  // ctx.lineTo(right, coorY);
+
+  // ctx.moveTo(coorX, top);
+  // ctx.lineTo(coorX, coorY);
+  // ctx.stroke();   
+  // ctx.closePath(); 
+
+}
+
+function crosshairLabel(chart, mousemove) {
+  const { ctx, canvas, scales, chartArea: {left, right, top, bottom}} = chart;
+  const x = scales['x-axis-0']
+  const y = scales['y-axis-0']
+
+  const coorX = mousemove.offsetX
+  const coorY = mousemove.offsetY  
+
+  ctx.beginPath()
+  ctx.fillStyle = 'rgba(132, 132, 132, 1)'
+  ctx.fillRect(0, coorY - 10, left, 20)
+  ctx.closePath()
+
+  ctx.font = '12px sans-serif'
+  ctx.fillStype = 'white'
+  ctx.textBaseline = 'middle'
+  ctx.textAlign = 'center'
+  ctx.fillText(y.getValueForPixel(coorY).toFixed(1), left / 2, coorY)
+
+  ctx.beginPath()
+  ctx.fillStyle = 'rgba(132, 132, 132, 1)'
+
+}

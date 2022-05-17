@@ -1,8 +1,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
-
-import Chart from 'chart.js'
 import { mixins, Bar } from 'vue-chartjs-typescript'
+import Chart from 'chart.js'
 
 import { transparentize } from '@/mixins/tools'
 import { IStockStatementBarChartModel } from '@/models/stock'
@@ -28,7 +27,10 @@ export default class StockFinanceBarChart extends Vue {
     this.chartOptions.legend = {
       display: false
     }
-      this.chartOptions.scales = {
+    this.chartOptions.plugins = {
+      crosshair: false
+    }
+    this.chartOptions.scales = {
       xAxes: [{
         gridLines: {
           display: false,
@@ -60,7 +62,7 @@ export default class StockFinanceBarChart extends Vue {
       duration: 800,
       easing: 'easeOutQuad'
     }
-    
+      
     this.chartOptions.tooltips = {      
       enabled: true,
       titleFontSize: 15,

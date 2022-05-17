@@ -30,6 +30,10 @@ export default class StockIndicatorChart extends Vue {
     this.chartOptions.legend = {
       display: false,      
     }
+
+    this.chartOptions.plugins = {
+      crosshair: false
+    }
     this.chartOptions.animation = {
       duration: 1000,
       easing: 'easeOutBounce'

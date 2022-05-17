@@ -5,7 +5,7 @@ import { Component, Prop, Watch } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 import { mixins, Line } from 'vue-chartjs-typescript'
 
-import { transparentize } from '@/mixins/tools'
+import { getGradient, transparentize } from '@/mixins/tools'
 import { IMarketChartModel, MarketModel } from '@/models/market'
 
 import zoom from 'chartjs-plugin-zoom'
@@ -40,6 +40,39 @@ export default class LineChart extends Vue {
 
   @MarketStoreModule.State('requestDate')
   requestDate!: number
+
+  dottedLine = {
+    id: 'dottedLine',
+    beforeDatasetsDraw(chart, args, pluginOptions) {
+      const {ctx, data, chartArea: {left, right}, width, scales} = chart
+      const x = scales['x-axis-0']
+      const y = scales['y-axis-0']
+
+      const startingPoint = data.datasets[0].data[0]
+
+      ctx.save()
+      ctx.beginPath()
+      ctx.lineWidth = 2
+      ctx.setLineDash([5, 7])
+      ctx.strokeStyle = 'rgba(102, 102, 102, 0.2)'
+      ctx.moveTo(left, y.getPixelForValue(startingPoint))
+      ctx.lineTo(right, y.getPixelForValue(startingPoint))
+      ctx.stroke()
+      ctx.closePath()
+      ctx.setLineDash([])
+
+      ctx.beginPath()
+      ctx.fillStyle = 'rgba(102, 102, 102, 0.9)'
+      ctx.fillRect(0, y.getPixelForValue(startingPoint) - 10, left, 20)
+      ctx.closePath()
+
+      ctx.font = '15px sans-serif'
+      ctx.fillStyle = 'white'
+      ctx.textBaseline = 'middle'
+      ctx.textAlign = 'center'
+      ctx.fillText(startingPoint.toLocaleString() + '₩', left / 2, y.getPixelForValue(startingPoint))
+    }
+  }
   
   renderChart!: (chartData: any, options: any) => any    
 
@@ -69,8 +102,6 @@ export default class LineChart extends Vue {
   }
 
   applyDefaultOptions() {
-    Chart.plugins.register(zoom)    
-
     this.chartOptions.responsive = true
     this.chartOptions.legend = {
       display: false,      
@@ -107,17 +138,7 @@ export default class LineChart extends Vue {
     }
 
     this.chartOptions.plugins = {      
-      zoom: {
-        zoom: {          
-          drag: {
-            enabled: true
-          },
-          pinch: {
-            enabled: true
-          },
-          mode: 'x'
-        }
-      },      
+      crosshair: false
     }  
     
     this.chartOptions.tooltips = {
@@ -148,12 +169,18 @@ export default class LineChart extends Vue {
           label: this.type,
           data: [...[...marketType.data].reverse().slice(0, this.requestDate)].reverse().map((k: MarketModel) => k.close),
           fill: fill,
-          borderColor: MAIN_COLOR,
+          borderColor: context => {
+            const {ctx, chartArea, data, scales, width, height} = context.chart
+            if(!chartArea) return null            
+            return getGradient(ctx, chartArea, data, scales, width, height)
+          },
           backgroundColor: transparentize(this.color, 0.8),
-          borderWidth: this.requestDate > 150 ? 4 : 6,                 
+          borderWidth: 2,                 
           radius: this.requestDate > 150 ? 0.5 : 4,
           pointStyle: 'rectRounded',
-          tension: .4,                    
+          tension: 0,          
+          pointHitRadius: 10,
+          hoverPointRadius: 10          
         },
       ],          
     }

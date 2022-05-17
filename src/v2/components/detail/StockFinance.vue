@@ -41,6 +41,7 @@
         <v-card-text>
           <stock-finance-bar-chart
             class="ml-5 mr-5"
+            :key="index"
             :chartData="statement[type]"          
             :height="height > 500 ? 300 : 180"
           />

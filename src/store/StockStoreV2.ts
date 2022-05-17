@@ -46,6 +46,10 @@ export default class StockStore extends VuexModule {
   public stockGraphDefaultLoaded = false
   public stockGraphDefault = {}
 
+  // 종목 하나의 5년치 그래프정보
+  public stockGraphAllLoaded = false
+  public stockGraphAll = {}
+
   // 종목 하나의 재무제표
   public statementLoaded = false
   public statement: ISimpleChartData = {}
@@ -127,6 +131,27 @@ export default class StockStore extends VuexModule {
         stockGraphDefault: res.data,
         stockGraphDefaultLoaded: false
       })
+
+    } catch(e) {
+      console.log(e)
+    }
+  }
+
+  @Action
+  public async getStockGraphAll(name: string): Promise<void> {
+    try {
+      this.context.commit('updateState', {
+        stockGraphAllLoaded: true
+      })
+
+      const res = await axios(`${URL}/stock/graph/${name}/1`, HEADER)
+
+      this.context.commit('updateState', {
+        stockGraphAll: res.data,
+        stockGraphAllLoaded: false
+      })
+
+      console.log('done')
 
     } catch(e) {
       console.log(e)

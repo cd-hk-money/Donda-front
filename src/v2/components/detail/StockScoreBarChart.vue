@@ -34,6 +34,10 @@ export default class StockScoreBarChart extends Vue {
     this.chartOptions.legend = {
       display: false
     }
+
+    this.chartOptions.plugins = {      
+      crosshair: false
+    }  
       this.chartOptions.scales = {
       xAxes: [{
         gridLines: {
