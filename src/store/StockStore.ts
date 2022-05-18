@@ -9,7 +9,7 @@ const HEADER = {
   }
 }
 
-const URL = '/api'
+const URL = ''
 
 const DETAIL_TYPE = ['close', 'type', 'change', 'changeRatio', 'open', 'high', 'low', 'volume']
 
@@ -175,7 +175,7 @@ export default class StockStore extends VuexModule {
   public async getRecommendStock(): Promise<void> {
     try {
       this.context.commit('updateRecommendLoaded', false)
-      const res = await axios.get(`${URL}/daily/recom`)
+      const res = await axios.get(`/daily/recommand`)
 
       this.context.commit('updateRecommendLoaded', true)
     } catch (e) {

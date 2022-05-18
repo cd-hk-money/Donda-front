@@ -17,18 +17,10 @@ export interface MarketModel {
 }
 
 export interface IMarketChartModel {
-  kospi: {
-    labels: Array<string>
-    data: Array<MarketModel>
-  },
-  nasdaq: {
-    labels: Array<string>
-    data:  Array<MarketModel>  
-  },
-  snp500: {
-    labels: Array<string>
-    data:  Array<MarketModel>
-  }      
+  [type: string] : {
+    labels: String[]
+    data: MarketModel[]
+  }     
 }
 
 export interface IMarketRecentModel {

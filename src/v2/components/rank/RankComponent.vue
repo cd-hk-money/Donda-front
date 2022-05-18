@@ -26,21 +26,21 @@
               <v-col cols="12" xl="8" md="8" sm="6">
                 <v-list-item-content>
                   <v-list-item-title class="text-h5">
-                    {{ content[1] }}
+                    {{ content[2] }}
                   </v-list-item-title>
                   <v-list-item-subtitle>
-                    {{ content[0] }}
+                    {{ content[1] }}
                   </v-list-item-subtitle>                            
                 </v-list-item-content>  
               </v-col>
               <v-col cols="12" xl="2" md="2" sm="3">
                 <span class="red--text text-h6 ml-15">  
-                    {{ subContent(title, content[3])}} 
+                    {{ subContent(title, content[6])}} 
                 </span>
               </v-col>
               <v-col cols="12" xl="2" md="2" sm="3">
                 <span class="text-h5 ml-15">
-                  {{ content[2].toLocaleString()}}₩
+                  {{ content[4].toLocaleString()}}₩
                 </span>            
               </v-col>
             </v-row>      
@@ -51,7 +51,7 @@
             </span>
           </v-list-item>
         </template>
-        <span class="text-h4"> {{ content[3].toLocaleString() }} </span>
+        <span class="text-h4"> {{ content[12].toLocaleString() }} </span>
       </v-tooltip>
     </v-list>
 

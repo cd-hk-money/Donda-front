@@ -157,10 +157,17 @@ export default class LineChart extends Vue {
 
   createChartData (type: string, count: number, fill: boolean | string) {
     let marketType
+    console.log(this.marketChart)
 
     if(type === 'KOSPI') marketType = this.marketChart.kospi 
     else if(type === 'NASDAQ') marketType = this.marketChart.nasdaq 
-    else marketType = this.marketChart.snp500 
+    else if(type === 'S&P500') marketType = this.marketChart.snp500
+    else if(type === 'US1YT') marketType = this.marketChart.us1yt
+    else if(type === 'US5YT') marketType = this.marketChart.us5yt
+    else if(type === 'US10YT') marketType = this.marketChart.us10yt
+    else if(type === 'USD/KRW') marketType = this.marketChart.usdkrw
+
+    console.log(marketType)
 
     return {
       labels: [...[...marketType.labels].reverse().slice(0, this.requestDate)].reverse().map((date: string) => date.substr(5)),

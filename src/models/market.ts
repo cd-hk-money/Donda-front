@@ -27,7 +27,23 @@ export interface IMarketChartModel {
   snp500: {
     labels: Array<string>
     data:  Array<MarketModel>
-  }      
+  },
+  us1yt: {
+    labels: Array<string>
+    data:  Array<MarketModel>
+  }, 
+  us5yt: {
+    labels: Array<string>
+    data:  Array<MarketModel>
+  },
+  us10yt: {
+    labels: Array<string>
+    data:  Array<MarketModel>
+  },
+  usdkrw: {
+    labels: Array<string>
+    data:  Array<MarketModel>
+  },    
 }
 
 export interface IMarketRecentModel {

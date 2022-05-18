@@ -5,7 +5,7 @@ import { IUpdateStateModel } from "@/models/payload";
 
 import { convertChartData } from "@/mixins/tools";
 
-const URL = '/api'
+const URL = ''
 const HEADER = {
   headers: {
     'Content-Type': 'text/plain;charset=utf-8'
@@ -86,7 +86,7 @@ export default class StockStore extends VuexModule {
         dailySimpleRanksLoaded: true
       })
 
-      const res = await axios.get(`${URL}/daily/rank`, HEADER)
+      const res = await axios.get(`/daily/rank`, HEADER)
             
       this.context.commit('updateState', {
         dailySimpleRanks: res.data,
@@ -106,7 +106,7 @@ export default class StockStore extends VuexModule {
         stockLoaded: true
       })
 
-      const res = await axios.get(`${URL}/stock/${name}`, HEADER)
+      const res = await axios.get(`/stock/${name}`, HEADER)
       this.context.commit('updateState', {
         stock: res.data,
         stockLoaded: false
@@ -125,10 +125,10 @@ export default class StockStore extends VuexModule {
         stockGraphDefaultLoaded: true
       })
 
-      const res = await axios(`${URL}/stock/graph/${name}`, HEADER)
+      const res = await axios(`/stock/${name}/price`, HEADER)
 
       this.context.commit('updateState', {
-        stockGraphDefault: res.data,
+        stockGraphDefault: res.data.origin,
         stockGraphDefaultLoaded: false
       })
 
@@ -144,7 +144,7 @@ export default class StockStore extends VuexModule {
         stockGraphAllLoaded: true
       })
 
-      const res = await axios(`${URL}/stock/graph/${name}/1`, HEADER)
+      const res = await axios(`/stock/${name}/year-price`, HEADER)
 
       this.context.commit('updateState', {
         stockGraphAll: res.data,
@@ -166,7 +166,7 @@ export default class StockStore extends VuexModule {
         indicatorLoaded: true,        
       })
 
-      const res = await axios(`${URL}/stock/indicator/${name}`, HEADER)
+      const res = await axios(`/stock/${name}/indicator`, HEADER)
 
       const label = Object.keys(res.data).slice(0, 4)      
       const value = Object.values(res.data).slice(0, 4) as string[]  
@@ -191,7 +191,7 @@ export default class StockStore extends VuexModule {
         statementAllLoaded: true
       })
 
-      const res = await axios.get(`${URL}/stock/statement/ebitda/${name}`, HEADER)
+      const res = await axios.get(`/stock/${name}/statement/ebitda`, HEADER)
       console.log(res.data)
 
       this.context.commit('updateState', {
@@ -212,7 +212,7 @@ export default class StockStore extends VuexModule {
         statementLoaded: true
       })
 
-      const res = await axios(`${URL}/stock/statement/${name}`, HEADER)
+      const res = await axios(`/stock/${name}/statement`, HEADER)
 
       const label = Object.keys(res.data)
       const value = Object.values(res.data) as string[]                        

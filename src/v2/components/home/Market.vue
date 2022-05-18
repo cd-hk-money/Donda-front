@@ -15,21 +15,17 @@
       interval="200000"
     >            
       <v-carousel-item                
-        v-for="(marketRecent, i) in marketRecents"
+        v-for="(marketType, i) in marketTypes"
         :key="i"        
       >          
-        <v-card height="auto">
-          <market-desc 
-            @fillChange="onFill"
-            @changeRequestDate="changeRequestDate"            
-            :desc="marketRecent" />                   
+        <v-card height="auto">                  
           <market-chart   
             :fill="fill"
             class="ml-5 mr-5"
             :color="colors[i]"
             :height="100"
             :count="count"            
-            :type="marketRecent.market" />
+            :type="marketType" />
         </v-card>
       </v-carousel-item>              
     </v-carousel>       
@@ -82,6 +78,7 @@ export default class Market extends Vue {
     this.count = this.count + date
   }
 
+  marketTypes = ['kospi', 'nasdaq', 's&p500', 'us1yt', 'us5yt', 'us10yt', 'usdkrw']
 
   getChartOptions () {
     return {
