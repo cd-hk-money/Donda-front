@@ -3,33 +3,32 @@
     class="mt-5 ml-5 mr-5"
     height="465"
     rounded="xl"
-    elevation="3"
+    elevation="3"         
   >
-    <v-carousel 
-      v-if="!marketLoaded"                     
+    <v-carousel        
       height="auto"
       cycle
       hide-delimiter-background
       show-arrows-on-hover    
       hide-delimiters  
       interval="200000"
+      v-if="!marketLoaded"                     
     >            
       <v-carousel-item                
-        v-for="(marketRecent, i) in marketRecents"
-        :key="i"        
+        v-for="(marketType, i) in marketTypes"
+        :key="i"                
       >          
         <v-card height="auto">
           <market-desc 
             @fillChange="onFill"
             @changeRequestDate="changeRequestDate"            
-            :desc="marketRecent" />                   
+            :type="marketType" />                   
           <market-chart   
             :fill="fill"
             class="ml-5 mr-5"
-            :color="colors[i]"
             :height="100"
             :count="count"            
-            :type="marketRecent.market" />
+            :type="marketType" />
         </v-card>
       </v-carousel-item>              
     </v-carousel>       
@@ -63,14 +62,11 @@ export default class Market extends Vue {
   @MarketStoreModule.State('marketRecents')
   marketRecents!: IMarketRecentModel[] 
 
+  marketTypes = ['kospi', 'nasdaq', 'snp500', 'us10yt', 'us1yt', 'us5yt', 'usdkrw']
+
   @MarketStoreModule.State('marketLoaded')
   marketLoaded!: boolean
     
-  @StockStoreModule.State('loaded')
-  loaded!: boolean
-
-  // kospi, nasdaq, snp500의 차트 색상
-  colors = ['#40E0D0', '#40E0D0', '#40E0D0']  
 
   // 그래프의 채움 
   fill: boolean | string = false

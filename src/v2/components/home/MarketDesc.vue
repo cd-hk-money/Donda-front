@@ -1,6 +1,5 @@
 <template>
   <v-card    
-    v-show="!loaded"
     elevation="0"    
     max-height="20%"
     min-height="20%"    
@@ -9,7 +8,7 @@
       <v-row>        
         <v-col cols="12" xl="8" lg="8" md="7">
           <span class="text-h2 font-weight-bold pl-10">
-            {{ desc.market }} 
+            {{ type }} 
           </span>
 
           <span class="mr-5">
@@ -59,7 +58,7 @@
 
           <v-speed-dial            
             absolute
-            v-model="fab"
+            v-model="dial"
             right
             top
             direction="bottom"
@@ -103,44 +102,28 @@ import { IMarketRecentModel } from '@/models/market'
 @Component
 export default class MarketDesc extends Vue {
 
-  @Prop({
-    default: () => {
-      return {
-        market: '시장이름',
-        close: '종가',
-        trans: '변화량' 
-      }
-    }
-  }) desc!: IMarketRecentModel
-
-  @Prop({ default: 'ㅇㅇ'})
-  date!: string | undefined
-
+  @Prop()
+  type!: string
 
   @MarketStoreModule.Mutation('updateRequestDate')
   updateRequestDate!: (payload: number) => void
   
-  @MarketStoreModule.State('marketLoaded')
-  loaded!: boolean
+  @MarketStoreModule.State('marketRecents')
+  marketRecents!: IMarketRecentModel 
   
   toggle_exclusive = 0
-
-  color = this.desc?.changes > 0 ? 'red--text' : 'blue--text'
-
   fill = false
-  fab = false
+  dial = false
   dateToggle = 1
 
-  @Watch('fill')
-  watchFill () {
-    this.menus[1].enable = !this.menus[1].enable    
-  }
+  desc: any
+  color!: string
 
   menus: IMenu[] = [
     {
       icon: 'mdi-chart-waterfall',    
       tooltip: '봉차트로 전환',
-      callback: () => undefined,
+      callback: () => console.log('ss'),
     },
     {
       icon: 'mdi-chart-areaspline-variant',    
@@ -178,6 +161,11 @@ export default class MarketDesc extends Vue {
     }
   ]
 
+  @Watch('fill')
+  watchFill () {
+    this.menus[1].enable = !this.menus[1].enable    
+  }
+
   changeRequestDate (date: number) {
     this.updateRequestDate(date)    
   }
@@ -187,6 +175,11 @@ export default class MarketDesc extends Vue {
     else this.$emit('fillChange', 'start')
 
     this.fill = !this.fill    
+  }  
+
+  created () {    
+    this.desc = this.marketRecents[this.type]
+    this.color = this.marketRecents[this.type].changes > 0 ? 'red--text' : 'blue--text'     
   }
 }
 </script>

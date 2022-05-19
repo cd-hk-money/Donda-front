@@ -7,32 +7,25 @@ export interface MarketDescModel {
 
 export interface MarketModel {
   type?: string,
-  open: number,
-  close: number,
-  high: number,
-  low: number,
-  changes: number,
-  volume: number
+  open?: number,
+  close?: number,
+  high?: number,
+  low?: number,
+  changes?: number,
+  volume?: number
 }
 
 export interface IMarketChartModel {
-  kospi: {
-    labels: Array<string>
-    data: Array<MarketModel>
-  },
-  nasdaq: {
-    labels: Array<string>
-    data:  Array<MarketModel>  
-  },
-  snp500: {
-    labels: Array<string>
-    data:  Array<MarketModel>
+  [marketType: string]: {
+    labels: string[],
+    values: (MarketModel | unknown)[]
   }      
 }
 
-export interface IMarketRecentModel {
-  market: string
-  close: number
-  changes: number
-  recent?: string
+export interface IMarketRecentModel {  
+  [marketType: string]: {
+    close?: number,
+    changes?: number,
+    recent?: string
+  }
 }

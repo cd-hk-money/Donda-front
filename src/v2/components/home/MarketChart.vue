@@ -29,8 +29,6 @@ export default class LineChart extends Vue {
   @Prop()
   fill!: boolean
 
-  @Prop()
-  color!: string
 
   @Prop({default: function () { return {} }})
   options!: object
@@ -96,9 +94,7 @@ export default class LineChart extends Vue {
   }
   
   reRender () {
-    this.$nextTick(() => {
-      this.renderLineChart()
-    })    
+    this.renderLineChart()
   }
 
   applyDefaultOptions() {
@@ -156,29 +152,25 @@ export default class LineChart extends Vue {
   }
 
   createChartData (type: string, count: number, fill: boolean | string) {
-    let marketType
-
-    if(type === 'KOSPI') marketType = this.marketChart.kospi 
-    else if(type === 'NASDAQ') marketType = this.marketChart.nasdaq 
-    else marketType = this.marketChart.snp500 
-
+    const marketType = this.marketChart[this.type]
     return {
       labels: [...[...marketType.labels].reverse().slice(0, this.requestDate)].reverse().map((date: string) => date.substr(5)),
       datasets: [ 
         { 
           label: this.type,
-          data: [...[...marketType.data].reverse().slice(0, this.requestDate)].reverse().map((k: MarketModel) => k.close),
+          data: [...[...marketType.values].reverse().slice(0, this.requestDate)].reverse().map((k: MarketModel) => k.close),
           fill: fill,
-          borderColor: context => {
-            const {ctx, chartArea, data, scales, width, height} = context.chart
-            if(!chartArea) return null            
-            return getGradient(ctx, chartArea, data, scales, width, height)
-          },
-          backgroundColor: transparentize(this.color, 0.8),
+          // borderColor: context => {
+          //   const {ctx, chartArea, data, scales, width, height} = context.chart
+          //   if(!chartArea) return null            
+          //   return getGradient(ctx, chartArea, data, scales, width, height)
+          // },
+          borderColor: MAIN_COLOR,
+          backgroundColor: transparentize(MAIN_COLOR, 0.8),
           borderWidth: 2,                 
           radius: this.requestDate > 150 ? 0.5 : 4,
           pointStyle: 'rectRounded',
-          tension: 0,          
+          tension: .4,          
           pointHitRadius: 10,
           hoverPointRadius: 10          
         },
@@ -191,9 +183,14 @@ export default class LineChart extends Vue {
     this.renderChart(this.createChartData(this.type, this.requestDate, this.fill), this.chartOptions)    
   }
 
-  mounted() {        
-    this.renderLineChart()
+  mounted() {            
+    console.log(this.type)
+    this.renderLineChart()    
   }    
+
+  updated() {
+    this.renderLineChart()    
+  }
 }
 
 const skipped = (ctx, value) => ctx.p0.skip || ctx.p1.skip ? value : undefined;

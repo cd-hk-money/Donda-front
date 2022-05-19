@@ -69,7 +69,7 @@ export function getGradient (ctx, chartArea, data, scales, width, height) {
   const {left, right, top, bottom} = chartArea
   const x = scales['x-axis-0']
   const y = scales['y-axis-0']
-  const gradientBorder = ctx.createLinearGradient(0, 0, 0, bottom)   
+  const gradientBorder = ctx.createLinearGradient(0, 0, 0, bottom)    
   const shift = y.getPixelForValue(data.datasets[0].data[0]) / bottom
 
   gradientBorder.addColorStop(0, 'rgba(28, 24, 222, 1)')
