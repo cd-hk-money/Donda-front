@@ -52,7 +52,23 @@ export function division(arr: any[], n: number): any[any] {
   return newArray
 }
 
-export function belowGradient (ctx, chartArea, data, scales, width, height) {
+
+export function getGradient (ctx, chartArea, data, scales, width, height) {
+  const {left, right, top, bottom} = chartArea
+  const x = scales['x-axis-0']
+  const y = scales['y-axis-0']
+  const gradientBorder = ctx.createLinearGradient(0, 0, 0, bottom)   
+  const shift = y.getPixelForValue(data.datasets[0].data[0]) / bottom
+  
+  gradientBorder.addColorStop(0, 'rgba(28, 24, 222, 1)')
+  gradientBorder.addColorStop(shift, 'rgba(75, 192, 192, 1)')
+  gradientBorder.addColorStop(shift, 'rgba(255, 26, 104, 1)')
+  gradientBorder.addColorStop(1, 'rgba(255, 26, 104, 1)')
+  
+  return gradientBorder
+}
+
+export function belowGradient (ctx, chartArea, data, scales) {
   const {left, right, top, bottom} = chartArea
   const x = scales['x-axis-0']
   const y = scales['y-axis-0']
@@ -60,24 +76,20 @@ export function belowGradient (ctx, chartArea, data, scales, width, height) {
     0, y.getPixelForValue(data.datasets[0].data[0]), 0, bottom) 
 
   gradientBackground.addColorStop(0, 'rgba(255, 26, 104, 0)')
-  gradientBackground.addColorStop(0, 'rgba(255, 26, 104, 0.4)')
-  console.log('fucl')
+  gradientBackground.addColorStop(1, 'rgba(255, 26, 104, 0.4)')
   return gradientBackground
 }
 
-export function getGradient (ctx, chartArea, data, scales, width, height) {
+export function aboveGradient (ctx, chartArea, data, scales) {
   const {left, right, top, bottom} = chartArea
   const x = scales['x-axis-0']
   const y = scales['y-axis-0']
-  const gradientBorder = ctx.createLinearGradient(0, 0, 0, bottom)    
-  const shift = y.getPixelForValue(data.datasets[0].data[0]) / bottom
+  const gradientBackground = ctx.createLinearGradient(
+    0, y.getPixelForValue(data.datasets[0].data[0]), 0, bottom) 
 
-  gradientBorder.addColorStop(0, 'rgba(28, 24, 222, 1)')
-  gradientBorder.addColorStop(shift, 'rgba(75, 192, 192, 1)')
-  gradientBorder.addColorStop(shift, 'rgba(255, 26, 104, 1)')
-  gradientBorder.addColorStop(1, 'rgba(255, 26, 104, 1)')
-
-  return gradientBorder
+  gradientBackground.addColorStop(0, 'rgba(75, 192, 192, 0.2)')
+  gradientBackground.addColorStop(1, 'rgba(75, 192, 192, 0.5)')
+  return gradientBackground
 }
 
 export function crosshairLine(chart, mousemove) {  
@@ -87,7 +99,7 @@ export function crosshairLine(chart, mousemove) {
   const coorY = mousemove.offsetY  
 
   // chart.update('none')
-  // ctx.restore()
+  ctx.restore()
 
   if(coorX > left && coorX <= right && coorY >= top && coorY <= bottom) {
     canvas.style.cursor = 'crosshair'
@@ -97,19 +109,19 @@ export function crosshairLine(chart, mousemove) {
 
   // crosshairLabel(chart, mousemove)
 
-  // // 대시바 설정
-  // ctx.strokeStyle = '#666'
-  // ctx.lineWidth = 3
-  // ctx.setLineDash([5, 7])
+  // 대시바 설정
+  ctx.strokeStyle = '#666'
+  ctx.lineWidth = 3
+  ctx.setLineDash([3, 3])
 
-  // ctx.beginPath();
-  // ctx.moveTo(left, coorY);
-  // ctx.lineTo(right, coorY);
-
-  // ctx.moveTo(coorX, top);
-  // ctx.lineTo(coorX, coorY);
-  // ctx.stroke();   
+  ctx.beginPath();
+  ctx.moveTo(left, coorY);
+  ctx.lineTo(right, coorY);
   // ctx.closePath(); 
+
+  ctx.moveTo(coorX, top);
+  ctx.lineTo(coorX, coorY);
+  ctx.stroke();   
 
 }
 

@@ -5,7 +5,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import { mixins, Line } from 'vue-chartjs-typescript'
-import { transparentize, belowGradient, getGradient, crosshairLine } from '@/mixins/tools'
+import { transparentize, belowGradient, getGradient, crosshairLine, aboveGradient } from '@/mixins/tools'
 
 import zoom from 'chartjs-plugin-zoom'
 import crosshair from '@sashke-er/chartjs-plugin-crosshair'
@@ -68,6 +68,98 @@ export default class StockBigChart extends Vue {
     }
   }
 
+  myCrossHair = {
+    id: 'mycrosshair',
+    afterInit: function(chart) {
+      chart.crosshair = {
+				enabled: false,
+				x: null,
+				originalData: [],
+				originalXRange: {},
+				dragStarted: false,
+				dragStartX: null,
+				dragEndX: null,  
+      }
+    },
+    getXScale: function(chart) {
+			return chart.data.datasets.length ? chart.scales[chart.getDatasetMeta(0).xAxisID] : null;
+		},
+		getYScale: function(chart) {
+			return chart.scales[chart.getDatasetMeta(0).yAxisID];
+		},
+    afterEvent: function(chart, e) {
+      chart.crosshair.x = e.x
+      chart.crosshair.y = e.y
+      chart.draw();
+    },
+    drawTraceLine: (chart) => {
+      const {ctx, data, chartArea: {top, bottom, left, right}, scales, width} = chart      
+      const x = scales['x-axis-0']
+      const y = scales['y-axis-0']
+      const lineX = chart.crosshair.x
+      const lineY = chart.crosshair.y
+      const yScale = this.myCrossHair.getYScale(chart);
+      const textWidth = ctx.measureText('0000-00-00').width + 10
+
+      ctx.font = '12px sans-serif'      
+      ctx.textBaseline = 'middle'
+      ctx.textAlign = 'center'
+            
+      chart.canvas.style.cursor = 'crosshair'
+      
+
+      // crosshair
+      ctx.beginPath()
+
+        ctx.setLineDash([3, 3])
+        ctx.lineWidth = 2
+        ctx.strokeStyle = '#666'
+
+        ctx.moveTo(lineX, yScale.getPixelForValue(yScale.max))
+        ctx.lineTo(lineX, yScale.getPixelForValue(yScale.min))
+        ctx.moveTo(left ,lineY)
+        ctx.lineTo(right ,lineY)
+        ctx.stroke()
+        ctx.setLineDash([]);
+
+      ctx.closePath()
+      
+
+      // y virtual value
+      ctx.beginPath()
+        ctx.fillStyle = 'rgba(132, 132, 132, 1)'
+        ctx.fillRect(0, lineY - 10, left, 20)
+      ctx.closePath()
+
+      ctx.fillStyle = 'white'
+      const maxTick = y.ticksAsNumbers[0]
+      const minTick = y.ticksAsNumbers[y.ticksAsNumbers.length - 1]
+      const valuePerPixel = (maxTick - minTick) / (bottom - top) 
+          
+      const text = minTick + valuePerPixel * (bottom - lineY)
+      ctx.fillText(text.toLocaleString().split('.')[0] + '₩', left / 2, lineY)
+
+
+      // x virtual value
+      ctx.beginPath()
+      ctx.fillStyle = 'rgba(132, 132, 132, 1)'
+      ctx.fillRect(lineX - (textWidth / 2) , bottom, 90, 20)
+      ctx.closePath()
+
+      ctx.fillStyle = 'white'
+      ctx.fillText(this.createChartData().labels[x.getValueForPixel(lineX)], lineX, bottom + 10)
+
+    },
+    afterDraw: function(chart, e) {      
+      if(e.y > chart.chartArea.bottom || e.y < chart.chartArea.top || e.x < chart.chartArea.left || e.x > chart.chartArea.right) {
+        return true
+      }
+      else {
+        this.drawTraceLine(chart);
+      }
+    }
+  }
+
   applyDefaultChartOptions (): void {
     this.chartOptions = {
       maintainAspectRatio: true,
@@ -83,7 +175,7 @@ export default class StockBigChart extends Vue {
       },
 
       scales: {
-        xAxes: [{
+        xAxes: [{          
           gridLines: {
             display: true
           },
@@ -104,7 +196,7 @@ export default class StockBigChart extends Vue {
           },
           gridLines: {
             display: true
-          },
+          },                    
         }],
       },
 
@@ -128,6 +220,7 @@ export default class StockBigChart extends Vue {
 
       plugins: {
         'dottedLine': true,
+        'mycrosshair': true,
         zoom: {
           pan: {
             enabled: false,
@@ -150,29 +243,45 @@ export default class StockBigChart extends Vue {
           zoom: {
             enabled: false
           },
+
         }
       }
     }
   }
 
-  createChartData() {
+  public createChartData() {
     return {
       labels: Object.keys(this.stockGraphDefault),
       datasets: [
         {
           data : Object.values(this.stockGraphDefault),
-          fill: false,
+          fill: {
+            target: {
+              value: Object.values(this.stockGraphDefault)[0]
+            },
+            below: context => {
+              const {ctx, chartArea, data, scales, width, height} = context.chart
+              if(!chartArea) return null            
+              return belowGradient(ctx, chartArea, data, scales)  
+            },
+            above: context => {
+              const {ctx, chartArea, data, scales, width, height} = context.chart
+              if(!chartArea) return null            
+              aboveGradient(ctx, chartArea, data, scales)  
+            }
+          },
           borderColor: context => {
             const {ctx, chartArea, data, scales, width, height} = context.chart
             if(!chartArea) return null            
             return getGradient(ctx, chartArea, data, scales, width, height)
           },
-          borderWidth: 2,
+          borderWidth: 3,
           pointStyle: 'rectRounded',          
-          tension: 0,         
+          tension: .4,         
+          pointRadius: 0,
           pointHitRadius: 10,
-          hoverPointRadius: 20
-        },
+          pointHoverRadius: 5
+        },        
       ]
     }
   }
@@ -183,19 +292,20 @@ export default class StockBigChart extends Vue {
       type: 'line',
       data: chartData,
       options: this.chartOptions,
-      plugins: [this.dottedLine, zoom, crosshair]
+      plugins: [this.dottedLine, zoom, this.myCrossHair]
     }
     const chartCanvas= new Chart(canvas, options)
-    chartCanvas.canvas.addEventListener('mousemove', e => {
-      crosshairLine(chartCanvas, e)      
-    })
   }
 
   mounted () {    
     this.applyDefaultChartOptions()    
-    setTimeout(() => {
-      this.createChart(this.createChartData())
-    }, 500)
+    this.createChart(this.createChartData())
   }
 }
 </script>
+
+<style>
+#lineChart {
+  backface-visibility: hidden
+}
+</style>

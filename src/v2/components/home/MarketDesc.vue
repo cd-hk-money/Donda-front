@@ -25,7 +25,7 @@
           </span>           
 
           <span :class="['text-h4', color]">
-            {{ desc.changes * 100}} %
+            {{ desc.changes > 0 ? '+' + (desc.changes * 100).toFixed(2):(desc.changes * 100).toFixed(2)}} %
           </span>               
         </v-col>            
 

@@ -207,7 +207,10 @@ export default class StockInfo extends Vue {
   }
       
   created () {    
-    this.getStock(this.$route.params.title)
+    this.getStock(this.$route.params.title).then(() => {
+      console.log(this.stock)
+    })
+
   }
   
 }

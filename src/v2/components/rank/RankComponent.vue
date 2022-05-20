@@ -15,7 +15,7 @@
         <template v-slot:activator="{on, bind}">
           <v-list-item 
             link
-            :to="`/detail/${content[1]}`"
+            :to="`/detail/${content[2]}`"
             v-on="on"
             v-bind="bind"
           >     

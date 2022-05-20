@@ -129,10 +129,9 @@ export default class StockFinanceLineChart extends Vue {
   }
 
   mounted () {
-    this.getStockStatementAll(this.title).then(() => {
-      console.log(this.statementAll)
+    this.$nextTick(() => {
       this.renderLineChart()
-    })    
+    })
   }
   
 }

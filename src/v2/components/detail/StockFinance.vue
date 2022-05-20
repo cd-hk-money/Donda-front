@@ -12,7 +12,7 @@
       </v-card-subtitle>
     </v-card>
     <v-card 
-      v-show="!loaded"
+      v-if="!loaded"
       class="ml-5 d-flex flex-wrap justify-center"
       :height="height > 500 ? 800 : '100%'"
       width="94%"    
@@ -141,9 +141,6 @@ export default class StockFinance extends Vue {
   @StockStoreModule.State('statementAll')
   statementAll!: ISimpleChartData
 
-  @StockStoreModule.State('statementAllLoaded')
-  loadedAll!: boolean
-
   @StockStoreModule.Action('getStockStatement')
   readonly getStockStatement!: (name: string) => Promise<void>
 
@@ -152,10 +149,7 @@ export default class StockFinance extends Vue {
 
   created() {        
     this.getStockStatement(this.title).then(() => {
-      this.getStockStatementAll(this.title).then(() => {
-        console.log(this.statementAll)
-      })
-      console.log(this.statementTypes)
+      this.getStockStatementAll(this.title)
     })
   }
   

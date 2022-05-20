@@ -109,12 +109,12 @@ export default class DetailV2 extends Vue {
   ]
 
   stockLoad(title: string) {
-    this.getStock(title)
-    this.getStockGraphAll(title)
-    this.getStockGraphDefault(title)
-    this.getStockStatement(title)
-    this.getStockStatementAll(title)
-    this.getStockIndicator(title)
+    // this.getStock(title)
+    // this.getStockGraphAll(title)
+    // this.getStockGraphDefault(title)
+    // this.getStockStatement(title)
+    // this.getStockStatementAll(title)
+    // this.getStockIndicator(title)
     this.drawer = 0
   }
 

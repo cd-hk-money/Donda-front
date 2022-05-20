@@ -125,10 +125,10 @@ export default class StockStore extends VuexModule {
         stockGraphDefaultLoaded: true
       })
 
-      const res = await axios(`/stock/graph/${name}`, HEADER)
+      const res = await axios.get(`/stock/${name}/price`, HEADER)
 
       this.context.commit('updateState', {
-        stockGraphDefault: res.data,
+        stockGraphDefault: res.data.origin,
         stockGraphDefaultLoaded: false
       })
 
@@ -144,14 +144,12 @@ export default class StockStore extends VuexModule {
         stockGraphAllLoaded: true
       })
 
-      const res = await axios(`/stock/graph/${name}/1`, HEADER)
+      // const res = await axios.get(`/stock/${name}/years-price`, HEADER)
 
       this.context.commit('updateState', {
-        stockGraphAll: res.data,
+        // stockGraphAll: res.data.origin,
         stockGraphAllLoaded: false
       })
-
-      console.log('done')
 
     } catch(e) {
       console.log(e)
@@ -166,7 +164,7 @@ export default class StockStore extends VuexModule {
         indicatorLoaded: true,        
       })
 
-      const res = await axios(`/stock/indicator/${name}`, HEADER)
+      const res = await axios.get(`/stock/${name}/indicator`, HEADER)
 
       const label = Object.keys(res.data).slice(0, 4)      
       const value = Object.values(res.data).slice(0, 4) as string[]  
@@ -191,11 +189,10 @@ export default class StockStore extends VuexModule {
         statementAllLoaded: true
       })
 
-      const res = await axios.get(`/stock/statement/ebitda/${name}`, HEADER)
-      console.log(res.data)
+      const res = await axios.get(`/stock/${name}/statement/revenue`, HEADER)
 
       this.context.commit('updateState', {
-        statementAll: res.data,
+        statementAll: res.data.origin,
         statementAllLoaded: false
       })
 
@@ -212,7 +209,7 @@ export default class StockStore extends VuexModule {
         statementLoaded: true
       })
 
-      const res = await axios(`/stock/statement/${name}`, HEADER)
+      const res = await axios.get(`/stock/${name}/statement`, HEADER)
 
       const label = Object.keys(res.data)
       const value = Object.values(res.data) as string[]                        
