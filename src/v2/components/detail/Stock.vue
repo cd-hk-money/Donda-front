@@ -9,12 +9,42 @@
       주가
     </v-card-title>
     <v-card-subtitle>
-      {{ stock.name }}의 주가 정보를 확인해보세요.
+      <span>{{ stock.name }}의 주가 정보를 확인해보세요.</span>
+      <v-btn  
+        class="ml-3"
+        icon
+        right
+        x-small
+      ><v-icon>fa-solid fa-circle-info</v-icon>
+      </v-btn>
     </v-card-subtitle>
+    <v-divider></v-divider>
+    <v-card
+      elevation="0"
+      height="50"
+      class="d-flex justify-end align-center"
+    > 
+      <v-btn
+        v-for="(menu, i) in menus"
+        :key="i"
+        icon
+        class="mr-5"
+        elevation="0"
+        tile
+        small
+        v-model="menu.enable"
+        @click="menu.callback"
+      >
+        <v-icon>{{ menu.icon }}</v-icon>
+      </v-btn>
+    </v-card>
     <v-divider></v-divider>
     <v-card-text v-if="!loaded">
       <stock-big-chart   
-        :height="250"
+        :height="200"
+        :count="count"
+        :gradient="gradientEnable"
+        :volume="volumeEnable"
       />        
     </v-card-text>  
     <v-divider></v-divider>
@@ -22,10 +52,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue, Watch } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
-import StockBigChart from '@/v2/components/detail/StockBigChart.vue'
 import { IStockModel } from '@/models/stock'
+import { IMenu } from '@/v2/pages/MenuBar.vue'
+import StockBigChart from '@/v2/components/detail/StockBigChart.vue'
 
 const StockStoreModule = namespace('StockStore')
 
@@ -39,8 +70,11 @@ export default class Stock extends Vue {
   @StockStoreModule.State('stock')
   stock!: IStockModel
 
-  @StockStoreModule.State('stockGraphDefaultLoaded')
+  @StockStoreModule.State('stockGraphAllLoaded')
   loaded!: boolean
+
+  @StockStoreModule.State('stockGraphAllFlag')
+  flag!: boolean
   
   @StockStoreModule.Action('getStockGraphAll')
   getStockGraphAll!: (name: string) => Promise<void>
@@ -48,8 +82,78 @@ export default class Stock extends Vue {
   @StockStoreModule.Action('getStockGraphDefault')
   getStockGraphDefault!: (name: string) => Promise<void>
 
+  count = 20
+
+
+  gradientEnable = true
+  @Watch('gradientEnable')
+  watchGradient () {
+    const content = this.menus.find((menu: IMenu) => menu.title === 'gradient')
+    content.enable = !content.enable
+  }
+  getGradient () {
+    return this.gradientEnable
+  }
+
+  volumeEnable = false
+  @Watch('volumeEnable')
+  watchVolume () {
+    const content = this.menus.find((menu: IMenu) => menu.title === 'volume')
+    content.enable = !content.enable
+  }
+
+  getVolumeEnable () {
+    return this.volumeEnable
+  }
+  
+  
+  menus: IMenu[] = [
+    {
+      title: 'volume',
+      icon: 'mdi-chart-bar',
+      callback: () => this.changeChartOptions({
+        volumeEnable: !this.getVolumeEnable()
+      }),
+      enable: this.volumeEnable,
+    },
+    {
+      title: 'gradient',
+      icon: 'mdi-gradient-vertical',
+      callback: () => this.changeChartOptions({
+        gradientEnable: !this.getGradient()
+      }),
+      enable: this.gradientEnable,
+    },
+    // {
+    //   title: 'zoom-out',
+    //   icon: 'fa-thin fa-magnifying-glass-minus',
+    //   callback: () => this.changeChartOptions({
+    //     count: this.count++
+    //   })
+    // },
+    // {
+    //   title: 'zoom-in',
+    //   icon: 'fa-thin fa-magnifying-glass-plus',
+    //   callback: () => this.changeChartOptions({
+    //     count: this.count--
+    //   })
+    // },      
+  ]
+
+  changeChartOptions(payload) {
+    Object.entries(payload).forEach(state => {
+      this[state[0]] = state[1]
+    })         
+  }
+
+  async initChartData () {
+    const title = this.$route.params.title
+    await this.getStockGraphDefault(title)  
+    await this.getStockGraphAll(title)
+  }
+
   created () {
-    this.getStockGraphDefault(this.$route.params.title)  
+    this.initChartData()
   }
   
 }

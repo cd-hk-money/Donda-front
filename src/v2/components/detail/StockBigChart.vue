@@ -1,11 +1,11 @@
-<template>
-  <canvas id="lineChart"></canvas>
+<template>  
+  <canvas id="lineChart" :height="height"></canvas>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator'
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 import { mixins, Line } from 'vue-chartjs-typescript'
-import { transparentize, belowGradient, getGradient, crosshairLine, aboveGradient } from '@/mixins/tools'
+import { transparentize, belowGradient, getGradient, crosshairLine, aboveGradient, meanStockData } from '@/mixins/tools'
 
 import zoom from 'chartjs-plugin-zoom'
 import crosshair from '@sashke-er/chartjs-plugin-crosshair'
@@ -26,23 +26,70 @@ export default class StockBigChart extends Vue {
 
   @Prop({default: false})
   fill!: boolean
+
+  @Prop({default: 300})
+  height!: number
+
+  @Prop({default: 20})
+  count!: number
   
   @Prop()
   chartData!: never
 
+  @Prop({default: true})
+  gradient!: boolean
+
+  @Prop({default: false})
+  volume!: boolean
+
   @StockStoreModule.State('stockGraphDefault')
   stockGraphDefault!: any
 
+  @StockStoreModule.State('stockGraphAll')
+  stockGraphAll!: any
+
+  @StockStoreModule.Action('getStockGraphVolume')
+  getStockGraphVolume!: (name: string) => Promise<void>
+
+
+  @StockStoreModule.State('stockGraphVolumeFlag')
+  volumeFlag!: boolean
+
+  @StockStoreModule.State('stockGraphVolume')
+  stockGraphVolume!: boolean
+
+
+  @Watch('count')
+  watchCount() {
+    this.renderingChart()
+  }
+
+  @Watch('gradient')
+  watchGradient() {
+    this.renderingChart()
+  }
+
+  @Watch('volume')
+  watchVolume() {
+    this.renderingChart()
+  }
+
+  getChartLabels () {
+    return Object.keys(this.stockGraphAll)
+  }  
+  
   chartOptions: Chart.ChartOptions = {}
 
+
+  // 2주간 평균 주가를 기준으로 dash 선을 생성하는 chart.js custom plugin
   dottedLine = {
     id: 'dottedLine',
     beforeDatasetsDraw(chart, args, pluginOptions) {
       const {ctx, data, chartArea: {left, right}, width, scales} = chart
       const x = scales['x-axis-0']
       const y = scales['y-axis-0']
-
-      const startingPoint = data.datasets[0].data[0]
+            
+      const startingPoint = meanStockData(data.datasets[0].data)
 
       ctx.save()
       ctx.beginPath()
@@ -68,6 +115,8 @@ export default class StockBigChart extends Vue {
     }
   }
 
+
+  // 마우스 포인터를 십자선으로 바꾸고, 포인터에 수평 수직선을 추가하는 chart.js plugin
   myCrossHair = {
     id: 'mycrosshair',
     afterInit: function(chart) {
@@ -146,8 +195,10 @@ export default class StockBigChart extends Vue {
       ctx.fillRect(lineX - (textWidth / 2) , bottom, 90, 20)
       ctx.closePath()
 
-      ctx.fillStyle = 'white'
-      ctx.fillText(this.createChartData().labels[x.getValueForPixel(lineX)], lineX, bottom + 10)
+      ctx.fillStyle = 'white'      
+      ctx.fillText(chart.data.labels[x.getValueForPixel(lineX)], lineX, bottom + 10)
+
+
 
     },
     afterDraw: function(chart, e) {      
@@ -160,7 +211,9 @@ export default class StockBigChart extends Vue {
     }
   }
 
+  
   applyDefaultChartOptions (): void {
+    const labels = this.getChartLabels()
     this.chartOptions = {
       maintainAspectRatio: true,
       responsive: true,
@@ -175,14 +228,16 @@ export default class StockBigChart extends Vue {
       },
 
       scales: {
-        xAxes: [{          
+        xAxes: [{                    
           gridLines: {
-            display: true
+            display: false
           },
           ticks: {
             display: true,
             fontSize: 12,
-            maxTicksLimit: 20
+            min: labels[labels.length - 1 - this.count],
+            max: labels[labels.length - 1],
+            maxTicksLimit: 10
           },
           scaleLabel: {
             fontSize: 20
@@ -195,14 +250,15 @@ export default class StockBigChart extends Vue {
             fontSize: 17,
           },
           gridLines: {
-            display: true
-          },                    
-        }],
+            display: false
+          },      
+                       
+        }],        
       },
 
       animation: {
-      duration: 1200,
-      easing: 'easeOutBounce'        
+        duration: 1500,
+        easing: 'easeOutQuart'        
       },
 
       tooltips: {
@@ -225,7 +281,9 @@ export default class StockBigChart extends Vue {
           pan: {
             enabled: false,
           },
-          enabeld: true,
+          zoom: {
+            enabled: false,
+          },
           mode: 'xy',
           sensitivity: 3,
           speed: 0.1
@@ -248,16 +306,19 @@ export default class StockBigChart extends Vue {
       }
     }
   }
-
-  public createChartData() {
-    return {
-      labels: Object.keys(this.stockGraphDefault),
+  
+  public createChartData(): any {    
+    const labels = this.getChartLabels()
+    const data = Object.values(this.stockGraphAll)    
+    return {      
+      labels: [...[...labels].reverse().slice(0, this.count)].reverse(),
       datasets: [
         {
-          data : Object.values(this.stockGraphDefault),
+          type: 'line',
+          data: [...[...data].reverse().slice(0, this.count)].reverse(),
           fill: {
             target: {
-              value: Object.values(this.stockGraphDefault)[0]
+              value: Object.values(this.stockGraphAll)[0]
             },
             below: context => {
               const {ctx, chartArea, data, scales, width, height} = context.chart
@@ -270,11 +331,11 @@ export default class StockBigChart extends Vue {
               aboveGradient(ctx, chartArea, data, scales)  
             }
           },
-          borderColor: context => {
+          borderColor: this.gradient ? context => {
             const {ctx, chartArea, data, scales, width, height} = context.chart
             if(!chartArea) return null            
             return getGradient(ctx, chartArea, data, scales, width, height)
-          },
+          } : MAIN_COLOR,
           borderWidth: 3,
           pointStyle: 'rectRounded',          
           tension: .4,         
@@ -286,21 +347,103 @@ export default class StockBigChart extends Vue {
     }
   }
 
-  createChart(chartData: object) {    
-    const canvas = document.getElementById('lineChart') as HTMLCanvasElement
-    const options = {
-      type: 'line',
-      data: chartData,
-      options: this.chartOptions,
-      plugins: [this.dottedLine, zoom, this.myCrossHair]
+  renderingChart() {
+    this.applyDefaultChartOptions()    
+    const chartData = this.createChartData()
+
+    if(!this.volumeFlag) { 
+      this.getStockGraphVolume(this.$route.params.title).then(() => {
+        this.createChart(chartData)
+      })
+    } 
+    else {      
+      if(this.volume) {
+        const data = Object.values(this.stockGraphVolume)
+        this.chartOptions.scales.yAxes.push({
+          id: 'volume',
+          type: 'linear',
+          position: 'right',
+          ticks: {
+            min: 0,
+            max: 10000000,
+            display: false
+          },
+          gridLines: {
+            display: false
+          }                  
+        })
+        chartData.datasets.push({
+          label: '거래량ㅎ',
+          type: 'bar',
+          data: [...[...data].reverse().slice(0, this.count)].reverse(),
+          fill: true,
+          yAxisID: 'volume',
+          backgroundColor: transparentize(MAIN_COLOR, 0.8)
+        })
+        this.createChart(chartData)
+      }
+      else {
+        this.createChart(chartData)
+      }
     }
-    const chartCanvas= new Chart(canvas, options)
   }
 
-  mounted () {    
-    this.applyDefaultChartOptions()    
-    this.createChart(this.createChartData())
+  // 마우스 휠에 대응하는 zoom 이벤트 콜백
+  myZoom (chart, e) {
+    const labels = this.getChartLabels()
+
+    const min = chart.config.options.scales.xAxes[0].ticks.min
+    const max = chart.config.options.scales.xAxes[0].ticks.max
+
+    if(min !== max) {
+      if(e.wheelDeltaY >= 0) {
+        chart.config.options.scales.xAxes[0].ticks.min = labels[labels.indexOf(min) + 1]
+        chart.config.options.scales.xAxes[0].ticks.max = labels[labels.indexOf(max) - 1]
+      }
+    }
+
+    if(e.wheelDeltaY < 0) {
+      chart.config.options.scales.xAxes[0].ticks.min = labels[labels.indexOf(min) - 1]
+      chart.config.options.scales.xAxes[0].ticks.max = labels[labels.indexOf(max) + 1]
+    }
+
+    if(+(labels[labels.indexOf(min)]) <= 0) {
+      chart.config.options.scales.xAxes[0].ticks.min = labels[0]
+    }
+
+    if((labels[labels.indexOf(max)]) >= labels[labels.length - 1]) {
+      chart.config.options.scales.xAxes[0].ticks.max = labels[labels.length - 1]
+    }
+
+
+    this.chart.options.animation = null
+    this.chart.update()
   }
+
+  createChart(chartData: object) {                    
+    if(this.chart) {
+      this.chart.destroy()      
+    }    
+
+    const canvas = document.getElementById('lineChart') as HTMLCanvasElement
+    const options = {
+      data: chartData,
+      options: this.chartOptions,
+      plugins: [this.dottedLine, this.myCrossHair]
+    }    
+    this.chart = new Chart(canvas, options)    
+    this.chart.canvas.addEventListener('mousewheel', e => {
+      
+      this.myZoom(this.chart, e)
+    })
+  }
+
+  chart!: Chart
+
+  mounted () {    
+    this.renderingChart()
+  }
+    
 }
 </script>
 

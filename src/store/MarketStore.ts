@@ -29,6 +29,7 @@ export default class MarketStore extends VuexModule {
   public marketChart!: IMarketChartModel  
   public marketRecents!: IMarketRecentModel
   public requestDate = 20
+  public stockRequestDate = 20
 
   // 종목 추천 정보
   public recommendLoaded = false

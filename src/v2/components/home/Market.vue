@@ -78,69 +78,7 @@ export default class Market extends Vue {
     this.count = this.count + date
   }
 
-
-  getChartOptions () {
-    return {
-      legend: {
-        display: false,
-        labels: {          
-          fontColor: 'grey',
-          fontStyle: 'bold',
-          fontSize: 14
-        },
-        onclick: function() {return }
-      },
-      tooltip: {
-        usePointStyle: true,
-        enabled: false,
-        mode: 'x',
-        position: 'cursor'
-      },
-      datalabels: {
-        color: 'red'
-      },
-      scales: {              
-        xAxes: [{
-          title: {
-            color: '#fff'
-          },
-          gridLines: {
-            display: false
-          },
-        }],
-        yAxes: [{            
-          ticks: {
-            callback: function(value: string) {return value.toLocaleString()},                        
-            display: true,
-          },
-          min: 2600,          
-          gridLines: {
-            display: false
-          },          
-        }],          
-      },
-      responsive: true,
-      maintainAspectRatio: true,
-      animation: {
-        duration: 2000,       
-        easing: 'easeOutBounce'         
-      },    
-      plugins: {
-        zoom: {
-          zoom: {
-            enabled: true
-          },
-          pinch: {
-            enabeld: true
-          },
-          mode: 'x'
-        }
-      }      
-    }
-  }
-
   onFill (payload: boolean | string) {
-    console.log(payload)
     this.fill = payload
   }
 }

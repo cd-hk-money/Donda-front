@@ -29,6 +29,10 @@ export function convertChartData(keys: string[], value: string[], label: string[
   },{})
 }
 
+export function meanStockData(arg: number[]): number {
+  return arg.reduce((arr, acc, index) => arr + acc) / arg.length
+}
+
 export function mobileHeight(type: string): number {
   switch (type) {
     case 'xs': return 220
@@ -58,7 +62,7 @@ export function getGradient (ctx, chartArea, data, scales, width, height) {
   const x = scales['x-axis-0']
   const y = scales['y-axis-0']
   const gradientBorder = ctx.createLinearGradient(0, 0, 0, bottom)   
-  const shift = y.getPixelForValue(data.datasets[0].data[0]) / bottom
+  const shift = y.getPixelForValue(meanStockData(data.datasets[0].data)) / bottom
   
   gradientBorder.addColorStop(0, 'rgba(28, 24, 222, 1)')
   gradientBorder.addColorStop(shift, 'rgba(75, 192, 192, 1)')

@@ -47,8 +47,14 @@ export default class StockStore extends VuexModule {
   public stockGraphDefault = {}
 
   // 종목 하나의 5년치 그래프정보
-  public stockGraphAllLoaded = false
   public stockGraphAll = {}
+  public stockGraphAllLoaded = false
+
+  public stockGraphVolume = {}
+  public stockGraphVolumeLoaded = false
+  
+  public stockGraphAllFlag = false
+  public stockGraphVolumeFlag = false
 
   // 종목 하나의 재무제표
   public statementLoaded = false
@@ -57,7 +63,7 @@ export default class StockStore extends VuexModule {
 
   // 종목 하나의 5년치 재무제표
   public statementAllLoaded = false
-  public statementAll: ISimpleChartData = {}
+  public statementAll: ISimpleChartData = {}  
   
 
   // 종목 하나의 4분기 보조지표
@@ -125,7 +131,7 @@ export default class StockStore extends VuexModule {
         stockGraphDefaultLoaded: true
       })
 
-      const res = await axios.get(`/stock/${name}/price`, HEADER)
+      const res = await axios.get(`/stock/${name}/price`, HEADER)      
 
       this.context.commit('updateState', {
         stockGraphDefault: res.data.origin,
@@ -137,6 +143,8 @@ export default class StockStore extends VuexModule {
     }
   }
 
+
+  // 종목 하나의 5년동안의 종가 정보를 가져옵니다.
   @Action
   public async getStockGraphAll(name: string): Promise<void> {
     try {
@@ -144,17 +152,39 @@ export default class StockStore extends VuexModule {
         stockGraphAllLoaded: true
       })
 
-      // const res = await axios.get(`/stock/${name}/years-price`, HEADER)
-
+      const res = await axios.get(`/stock/${name}/years-price`, HEADER)
+      
       this.context.commit('updateState', {
-        // stockGraphAll: res.data.origin,
-        stockGraphAllLoaded: false
+        stockGraphAll: res.data.origin,
+        stockGraphAllLoaded: false,
+        stockGraphAllFlag: true
       })
 
     } catch(e) {
       console.log(e)
     }
   }
+
+  // 종목 하나의 5년동안의 거래량 정보를 가져옵니다.
+  @Action
+  public async getStockGraphVolume(name: string): Promise<void> {
+    try {
+      
+      const res = await axios.get(`/stock/${name}/years-price/volume`, HEADER)
+      
+      this.context.commit('updateState', {
+        stockGraphVolume: res.data.origin,
+        stockGraphVolumeLoaded: false,
+        stockGraphVolumeFlag: true
+      })
+
+
+    } catch(e) {
+      console.log(e)
+    }
+  }
+
+  
 
   // 종목 하나의 최근 4분기 보조지표를 가져옵니다.
   @Action
@@ -180,7 +210,7 @@ export default class StockStore extends VuexModule {
       console.log(e)
     }
   }
-
+  
    // 종목 하나의 특정 재무제표 5년치 를 가져옵니다.
   @Action
   public async getStockStatementAll(name: string): Promise<void> {
