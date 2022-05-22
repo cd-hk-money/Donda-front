@@ -14,10 +14,7 @@
         x-small
         @click="overlay = true"
       ><v-icon>fa-solid fa-circle-question</v-icon>
-      </v-btn>
-      <!-- <span id="date">
-        기준일 :{{ stock.date }}
-      </span> -->
+      </v-btn>      
     </v-card-title>
 
     <v-card-subtitle class="ml-5">
@@ -113,7 +110,6 @@ export default class StockScore extends Vue {
     return mobileHeight(this.$vuetify.breakpoint.name) < 500
   }
 
-  
   @StockStoreModule.State('stockLoaded')
   loaded!: boolean
 

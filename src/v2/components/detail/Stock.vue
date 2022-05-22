@@ -107,7 +107,7 @@ export default class Stock extends Vue {
   }
   
   
-  menus: IMenu[] = [
+  menus: IMenu[] = [    
     {
       title: 'dateFicker',
       icon: 'mdi-calendar-expand-horizontal',

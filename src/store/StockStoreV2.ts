@@ -41,6 +41,8 @@ export default class StockStore extends VuexModule {
     marcap: 0,
     stocks: 0
   }
+  // 주가 그래프 인덱스 저장
+  public stockGraphLength = 20
 
   // 종목 하나의 2주 그래프정보
   public stockGraphDefaultLoaded = false
@@ -65,7 +67,6 @@ export default class StockStore extends VuexModule {
   public statementAllLoaded = false
   public statementAll: ISimpleChartData = {}  
   
-
   // 종목 하나의 4분기 보조지표
   public indicatorLoaded = false
   public indicator: ISimpleChartData = {}

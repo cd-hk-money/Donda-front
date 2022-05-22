@@ -102,7 +102,7 @@ export default class StockChart extends Vue {
           tension: .4
         },
         {
-          data : (Object.values(this.stockGraphDefault) as number[]).map((value: number) => value * 0.995),
+          data : (Object.values(this.stockGraphDefault) as number[]).map((value: number) => value * 1.005),
           fill: this.fill,
           borderColor: SUB_COLOR,
           backgroundColor: transparentize(SUB_COLOR, 0.8),
