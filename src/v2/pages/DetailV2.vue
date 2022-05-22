@@ -92,7 +92,7 @@ export default class DetailV2 extends Vue {
 
   drawer = 0
   componentKey = 1
-
+  
   menus: IMenu[] = [
     {
       title: '주가',

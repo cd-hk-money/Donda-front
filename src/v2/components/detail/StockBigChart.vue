@@ -15,8 +15,6 @@ import { namespace } from 'vuex-class'
 const { reactiveProp } = mixins
 const StockStoreModule = namespace('StockStore')
 const MAIN_COLOR = '#40E0D0'
-const SUB_COLOR = 'rgb(255, 99, 132)'
-const END_LABEL_INDEX = 11
 
 @Component({
   extends: Line,
@@ -347,6 +345,7 @@ export default class StockBigChart extends Vue {
     }
   }
 
+  // 차트 
   renderingChart() {
     this.applyDefaultChartOptions()    
     const chartData = this.createChartData()

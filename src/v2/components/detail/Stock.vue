@@ -24,6 +24,7 @@
       height="50"
       class="d-flex justify-end align-center"
     > 
+
       <v-btn
         v-for="(menu, i) in menus"
         :key="i"
@@ -41,8 +42,7 @@
     <v-divider></v-divider>
     <v-card-text v-if="!loaded">
       <stock-big-chart   
-        :height="200"
-        :count="count"
+        :height="200"        
         :gradient="gradientEnable"
         :volume="volumeEnable"
       />        
@@ -81,9 +81,9 @@ export default class Stock extends Vue {
 
   @StockStoreModule.Action('getStockGraphDefault')
   getStockGraphDefault!: (name: string) => Promise<void>
-
+  
   count = 20
-
+  dateOverlay = false
 
   gradientEnable = true
   @Watch('gradientEnable')
@@ -109,6 +109,14 @@ export default class Stock extends Vue {
   
   menus: IMenu[] = [
     {
+      title: 'dateFicker',
+      icon: 'mdi-calendar-expand-horizontal',
+      callback: () => this.changeChartOptions({
+
+      }),
+      enable: false
+    },
+    {
       title: 'volume',
       icon: 'mdi-chart-bar',
       callback: () => this.changeChartOptions({
@@ -123,21 +131,7 @@ export default class Stock extends Vue {
         gradientEnable: !this.getGradient()
       }),
       enable: this.gradientEnable,
-    },
-    // {
-    //   title: 'zoom-out',
-    //   icon: 'fa-thin fa-magnifying-glass-minus',
-    //   callback: () => this.changeChartOptions({
-    //     count: this.count++
-    //   })
-    // },
-    // {
-    //   title: 'zoom-in',
-    //   icon: 'fa-thin fa-magnifying-glass-plus',
-    //   callback: () => this.changeChartOptions({
-    //     count: this.count--
-    //   })
-    // },      
+    },        
   ]
 
   changeChartOptions(payload) {
