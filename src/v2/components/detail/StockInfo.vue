@@ -3,7 +3,8 @@
     :class="['ml-5', mobile ? 'mt-15' : 'mt-5']"    
     :height="mobile ? 410 : 240"
     width="95%"
-    rounded="xl"
+    outlined   
+    elevation="0"
     v-if="!loaded"    
   >    
     <v-list-item three-line>
@@ -87,8 +88,9 @@
     </v-list-item>
 
     <v-card 
-      rounded="xl"
       elevation="0"
+      outlined
+      height="120"
     >        
       <v-divider></v-divider>    
 
@@ -196,8 +198,7 @@ export default class StockInfo extends Vue {
     this.snackBarOpen()
   }
 
-  removeBookmarking () {
-    console.log('click')
+  removeBookmarking () {    
     this.bookmarked = false
     this.removeInterestGroupItem(this.stock.name)
   }

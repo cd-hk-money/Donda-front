@@ -219,10 +219,9 @@ export default class StockBigChart extends Vue {
       ctx.beginPath()
       ctx.fillStyle = 'rgba(132, 132, 132, 1)'
       ctx.fillRect(lineX - (textWidth / 2) , bottom, 90, 20)
-      ctx.closePath()
-
+      ctx.closePath()      
       ctx.fillStyle = 'white'      
-      ctx.fillText(chart.data.labels[x.getValueForPixel(lineX)], lineX, bottom + 10)
+      ctx.fillText(chart.data.labels[chart.data.labels.length - x.getValueForPixel(lineX)], lineX, bottom + 10)
     },
     afterDraw: function(chart, e) {      
       if(e.y > chart.chartArea.bottom || e.y < chart.chartArea.top || e.x < chart.chartArea.left || e.x > chart.chartArea.right) {
@@ -472,7 +471,7 @@ export default class StockBigChart extends Vue {
 
   chart!: Chart
 
-  mounted () {    
+  mounted () {        
     this.renderingChart()
   }
 
@@ -485,6 +484,6 @@ export default class StockBigChart extends Vue {
 
 <style>
 #lineChart {
-  backface-visibility: hidden
+  backface-visibility: hidden;
 }
 </style>

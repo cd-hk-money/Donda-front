@@ -2,7 +2,7 @@
   <v-card 
     class="ml-5 mr-5 mt-7"
     :height="mobile ? 600 : 260"
-    rounded="xl"
+    outlined    
     width="95%"
   >
     <v-card-title class="ml-5">
@@ -102,7 +102,6 @@ const StockStoreModule = namespace('StockStore')
   }
 })
 export default class StockScore extends Vue {
-
   overlay = false
   carousel = 0
 
@@ -117,7 +116,7 @@ export default class StockScore extends Vue {
   getStockGraphDefault!: (name: string) => Promise<void>
 
   drawerChange () {
-    this.$emit('drawerChange', 1)
+    this.$emit('drawerChange', 3)
   }
 
   created () {

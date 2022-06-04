@@ -4,7 +4,7 @@
       class="ml-5 mr-5 mt-5"
       height="340"
       width="95%"
-      rounded="xl"
+      outlined
     >     
       <v-card-title class="ml-5">
         보조 지표

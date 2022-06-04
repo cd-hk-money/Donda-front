@@ -27,6 +27,9 @@
         </v-col>
       </v-row>
     </v-carousel-item>
+    <v-carousel-item>      
+      <stock-valuation/>
+    </v-carousel-item>
   </v-carousel>
 </template>
 
@@ -36,6 +39,7 @@ import Stock from '@/v2/components/detail/Stock.vue'
 import StockSimilar from '@/v2/components/detail/StockSimilar.vue'
 import StockNews from '@/v2/components/detail/StockNews.vue'
 import StockFinance from '@/v2/components/detail/StockFinance.vue'
+import StockValuation from '@/v2/components/detail/StockValuation.vue'
 
 
 @Component({
@@ -43,7 +47,8 @@ import StockFinance from '@/v2/components/detail/StockFinance.vue'
     Stock,
     StockSimilar,
     StockNews,
-    StockFinance
+    StockFinance,
+    StockValuation
   }
 })
 export default class StockDrawer extends Vue {

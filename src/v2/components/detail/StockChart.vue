@@ -30,7 +30,7 @@ export default class StockChart extends Vue {
   // methods  
   renderChart!: (chartData: any, options: any) => any
 
-  applyDefaultChartOptions (): void {
+  applyDefaultChartOptions () {
 
     this.chartOptions.maintainAspectRatio = true
     this.chartOptions.responsive = true
@@ -74,7 +74,7 @@ export default class StockChart extends Vue {
     }
     
     this.chartOptions.tooltips = {
-      enabled: true,
+      enabled: false,
       intersect: false,
       titleFontSize: 10,
       titleFontColor: MAIN_COLOR,

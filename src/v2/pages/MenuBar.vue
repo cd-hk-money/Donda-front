@@ -43,7 +43,11 @@
           class="ml-2 pt-1 mb-1"      
           inset
         ></v-switch>
-
+      </v-card>
+      <v-card height="50" v-if="!logined" outlined elevation="0" class="text-center">
+        <div class=text-h5>
+          환영합니다.
+        </div>
       </v-card>
       
       <v-expand-transition>
@@ -75,6 +79,23 @@
       </v-expand-transition>
 
     </v-navigation-drawer>
+    <v-dialog v-model="loginDialog" height="300" width="300">
+      <v-card height="350" width="300" opacity-100>
+        <v-card-title class="text-h5">
+          LOGIN
+        </v-card-title>        
+
+        <v-divider></v-divider>
+
+        <v-card-text class="mt-8">
+          <v-text-field outlined label="ID" />
+          <v-text-field outlined label="PASSWORD" />
+          <v-btn block outlined elevation="0"> 로그인 </v-btn>
+        </v-card-text>
+
+        <v-divider></v-divider>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -108,14 +129,14 @@ export default class MenuBar extends Vue {
       icon: 'search',
       tooltip: '검색',
       callback: () => {
-        this.searchExpand()
+        this.expandState('expand')
       }
     },
     {      
       icon: 'mdi-account',
       tooltip: '내 계정',
       callback: () => {
-        console.log('account')
+        this.expandState('loginDialog')
       }
     },
     {      
@@ -145,8 +166,10 @@ export default class MenuBar extends Vue {
   items: string[] = []
   loading = false
   dialog = false
+  loginDialog = false
   expand = false
   darkMode = false
+  logined = true
 
   get switchLabel () {
     return this.darkMode ? 'light' : 'dark'
@@ -191,9 +214,14 @@ export default class MenuBar extends Vue {
     this.expand = !this.expand
   }  
 
+  expandState(state: string) {
+    this[state] = !this[state]
+    console.log(this[state])
+  }
+
   push(item: string) {
     this.search = null
-    this.searchExpand()
+    this.expandState('expand')
 
     this.getStock(item).then(() => {
       this.$router.push(`/detail/${item}`)
@@ -202,3 +230,9 @@ export default class MenuBar extends Vue {
   }
 }
 </script>
+
+<style>
+::-webkit-scrollbar {
+  width: 0px;
+}
+</style>
