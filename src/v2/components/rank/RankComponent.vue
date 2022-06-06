@@ -2,9 +2,78 @@
   <v-card   
     height="auto"    
     class="ml-15 mr-15"
+    elevation="0"
+    outlined
    >
     <v-divider></v-divider>      
-    <v-list>
+
+    <v-data-table
+      hide-default-footer
+      :headers="headers"
+      :items="tableItem"
+      :search="null"
+      @click:row="rowClick"
+    >
+      <!-- 순위  -->
+      <template v-slot:[`item.rank`]="{ item }">        
+        <span class="text-h4 font-weight-bold">
+          {{ item.rank }}
+        </span>
+      </template>
+      <!-- 종목 코드 -->
+      <template v-slot:[`item.name`]="{ item }">        
+        <span class="text-h5">
+          {{ item.name }}
+        </span>
+        <span class="text-h7 grey--text">
+          {{ item.code }}
+        </span>
+      </template>
+
+      <!-- 종가  -->
+      <template v-slot:[`item.close`]="{ item }">
+        <v-chip label dark>
+          <span class="text-h6">
+            {{ item.close }}
+          </span>
+        </v-chip>        
+      </template>
+
+      <!-- 변동값 -->
+      <template v-slot:[`item.changes`]="{ item }">
+        <v-chip
+          label
+          dark
+          :color="item.changes.includes('-') ? 'blue' : 'red'" 
+        >
+          <span class="text-h6">
+            {{ item.changes }}
+          </span>          
+        </v-chip>        
+      </template>
+
+      <!-- 변동률 -->
+      <template v-slot:[`item.changes_ratio`]="{ item }">
+        <v-chip
+          label
+          dark
+          :color="item.changes_ratio.includes('-') ? 'blue' : 'red'" 
+        >
+          <span class="text-h6">
+            {{ item.changes_ratio }}
+          </span>          
+        </v-chip>        
+      </template>
+
+      <!-- 종가  -->
+      <template v-slot:[`item.bookmarked`]="{ item }">
+        <v-icon size="30">
+          {{ item.bookmarked ? 'mdi-bookmark' : 'mdi-bookmark-outline'}}
+        </v-icon>
+      </template>
+      
+    </v-data-table>
+    <!-- <v-list>
       <v-tooltip 
         v-for="(content, i) in contents"
         :key="i" 
@@ -53,7 +122,7 @@
         </template>
         <span class="text-h4"> {{ content[11].toLocaleString() }} </span>
       </v-tooltip>
-    </v-list>
+    </v-list> -->
 
     <v-divider></v-divider>
     <v-card-actions class="d-flex justify-center">
@@ -73,7 +142,11 @@
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import RankContents from '@/v2/components/rank/RankContents.vue'
 
-import { IMarketRanksContents } from '@/models/stock'
+
+import { IStockModel } from '@/models/stock'
+const TABLE_TYPE = ['rank', 'date', 'code', 'name', 'market', 'close', 'changes', 'changes_ratio',
+  'open', 'high', 'low', 'volume', 'amount', 'marcap', 'stocks', 'per', 'pbr', 'bookmarked'
+  ]
 
 @Component({
   components: {
@@ -82,10 +155,29 @@ import { IMarketRanksContents } from '@/models/stock'
 })
 export default class RankComponent extends Vue {
 
-
   isUp = false
+  tableItem: IStockModel[] = []
+  headers = [
+    { text: '순위', value: 'rank'},
+    {
+      text: ' 종목명',
+      align: 'start',
+      filterable: false,
+      value: 'name',
+    },
+    { text: '종가', value: 'close' },
+    { text: '저가', value: 'low' },
+    { text: '고가', value: 'high' },
+    { text: '시가', value: 'open' },
+    { text: '거래량', value: 'volume'},
+    { text: '변동값', value: 'changes'},
+    { text: '변동률', value: 'changes_ratio' },
+    { text: '시가총액', value: 'marcap' },    
+    { text: '', value: 'bookmarked'}
+  ]
+
   @Prop()
-  contents!: IMarketRanksContents
+  contents!: any
 
   @Prop({default: ''})
   title!: string  
@@ -95,6 +187,28 @@ export default class RankComponent extends Vue {
     else this.$emit('seeMore', 50)
 
     this.isUp = !this.isUp
+  }
+
+  mounted () {    
+    this.contents.forEach((content, i) => {
+      content.unshift(i + 1)
+      content.push(false)
+      this.tableItem.push(content.reduce((acc, cur, index) => {
+        const key = TABLE_TYPE[index]
+        if(key === "close" || key === 'open' || key === 'high' || key === 'low' || key == 'marcap' || key == 'changes') {
+          acc[TABLE_TYPE[index]] = cur.toLocaleString() + ' ₩'
+        } else if (key === 'changes_ratio'){
+          acc[TABLE_TYPE[index]] = cur > 0 ? '+' + cur + '%' : cur + '%'
+        } else {
+          acc[TABLE_TYPE[index]] = cur
+        } 
+        return acc
+      }, {}))
+    })
+  }
+
+  rowClick (target, event) {
+    this.$router.push(`/detail/${target.name}`)
   }
 
   subContent(title: string, content: number) {

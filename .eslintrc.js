@@ -20,6 +20,7 @@ module.exports = {
         "@typescript-eslint"
     ],
     "rules": {
+        "vue/valid-v-slot": ["error", { "allowModifiers": false }]
     },
     "parser": "vue-eslint-parser"
 };

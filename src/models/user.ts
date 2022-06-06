@@ -3,3 +3,8 @@ export interface BarUser {
   fullName: string
   email: string 
 }
+
+export interface IUserAccount {
+  id: string,
+  password: string | undefined
+}

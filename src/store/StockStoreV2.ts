@@ -39,7 +39,7 @@ export default class StockStore extends VuexModule {
     low: 0,
     amount: 0,
     marcap: 0,
-    stocks: 0
+    stocks: 0,    
   }
   // 주가 그래프 인덱스 저장
   public stockGraphLength = 20

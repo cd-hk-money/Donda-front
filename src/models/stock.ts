@@ -101,6 +101,8 @@ export interface IStockModel {
   amount: number
   marcap: number
   stocks: number
+  per?: number
+  pbr?: number
 }
 
 export interface ISimpleChartData {

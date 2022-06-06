@@ -39,12 +39,12 @@ const StockStoreModule = namespace('StockStore')
 export default class InterestToggle extends Vue {
   
   @StockStoreModule.State('dailySimpleRanks')
-  private dailySimpleRanks!: IMarketRank
+  dailySimpleRanks!: IMarketRank
 
   @StockStoreModule.Action('getStock')
-  private getStock!: (name: string) => Promise<void>
+  getStock!: (name: string) => Promise<void>
 
-  private listClick(name: string) {
+  listClick(name: string) {
     this.getStock(name).then(() => {
       this.$router.push(`/detail/${name}`)
     })

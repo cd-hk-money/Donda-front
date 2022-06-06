@@ -1,14 +1,81 @@
 <template>
   <div id="scroll-target">
+    <v-card     
+      class="mt-5 menu"
+      elevation="0"      
+      outlined
+    >
+      <v-card-title class="text-h4 d-flex justify-center font-weight-bold">
+        {{ rankTitle[model] }} TOP 10
+      </v-card-title>    
+      <v-menu 
+        v-model="filterMenu"
+        transition="scale-transition"
+        origin="center center"
+        offset-x
+        :close-on-content-click="false"
+        :nudge-width="300"            
+        bottom
+      >
+        <template v-slot:activator="{ on, attrs }">
+        <v-btn 
+          v-on="on"
+          v-bind="attrs"
+          left top absolute icon outlined 
+          elevation="0" 
+        >
+          <v-icon>mdi-format-line-spacing</v-icon>
+        </v-btn> 
+        </template>
+        <v-card>
+          <v-card-title class="text-h6">Filter</v-card-title>
+
+          <v-divider></v-divider>
+
+          <v-row>
+            <v-col cols="12" xl="6">
+              <v-radio-group 
+                class="ml-3"
+                v-model="radioValue">
+                <v-radio
+                  v-for="(title, n) in rankTitle"
+                  :key="n"
+                  :label="title"
+                  :value="n"
+                ></v-radio>
+              </v-radio-group>
+            </v-col>            
+          </v-row>
+
+          <v-divider></v-divider>
+
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              text
+              @click="filterMenu = false"
+            >
+              취소
+            </v-btn>
+            <v-btn                  
+              text
+              @click="(filterMenu = false, model = radioValue)"
+            >
+              적용
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-menu>
+    </v-card>
     <v-carousel
-      :class="[mobile ? 'mt-15 mr-5' : 'mt-5 ml-5']"
+      :class="[mobile ? 'mt-15 mr-5' : 'ml-5']"
       v-model="model"
       mandatory
-      show-arrows
-      show-arrows-on-hover
+      :show-arrows="false"
       hide-delimiter-background
       hide-delimiters
-      width="94%"
+      width="100%"
       height="100%"
       interval="1000000"
       cycle
@@ -17,37 +84,7 @@
         v-for="(rankType, i) in Object.keys(dailySimpleRanks)"
         :key="i"      
       > 
-        <v-card 
-          class="ml-15 mr-15">
-          <v-card-title class="text-h4 d-flex justify-center font-weight-bold">
-            {{ rankTitle[i] }}
-            <v-menu 
-              open-on-hover
-              offset-y
-            >
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn 
-                  class="ml-5"                
-                  x-small
-                  icon
-                  v-on="on"
-                  v-bind="attrs"
-                ><v-icon>fa-solid fa-caret-down</v-icon>
-              </v-btn>
-              </template>              
-              <v-list>                
-                <v-list-item                                    
-                  v-for="(item, i) in rankTitle"
-                  :key="i"
-                  @click="model = i"
-                >
-                  <v-list-item-title> {{ item }}</v-list-item-title>
-                </v-list-item>
-              </v-list>
-            </v-menu>
-          </v-card-title>     
-        </v-card>
-        <rank-component
+        <rank-component        
           :title="rankTitle[i]"  
           :contents="dailySimpleRanks[rankType].slice(0, amount)"
           @seeMore="changeAmount"
@@ -89,6 +126,7 @@ const StockStoreModule = namespace('StockStore')
 export default class RankV2 extends Vue {
 
   btnShow = false
+  filterMenu = false
   amount = 10
   model = 0
 
@@ -102,6 +140,7 @@ export default class RankV2 extends Vue {
   readonly getDailySimpleRanks!: () => Promise<void>
 
   rankTitle = ['시가총액', '상승률', '하락률', '거래량']
+  radioValue: any = '시가총액'
 
   toTop() {
     this.$vuetify.goTo('#scroll-target')
@@ -112,7 +151,7 @@ export default class RankV2 extends Vue {
     let scrollTop = window.pageYOffset 
     this.btnShow = scrollTop > 1500 ? true : false
   }
-
+ 
   created () {
     this.getDailySimpleRanks().then(() => {
       console.log(this.dailySimpleRanks)
@@ -132,3 +171,10 @@ export default class RankV2 extends Vue {
   }
 }
 </script>
+
+<style>
+.menu {
+  margin-left: 80px;
+  margin-right: 40px;
+}
+</style>

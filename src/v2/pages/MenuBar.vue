@@ -14,11 +14,35 @@
         outlined
       >
         <v-tooltip 
-          v-for="menu in menus"
-          :key="menu.icon"
+          v-for="(menu, i) in menus"
+          :key="i"
           bottom
         >
           <template v-slot:activator="{on, attrs }">
+          <div v-if="i === 1">            
+            <v-badge
+              color="error"
+              :content="badge"
+              :value="badge"
+              overlap
+              offset-y="30"
+            >
+              <v-btn          
+                class="ml-1 mt-3"
+                v-on="on"
+                v-bind="attrs"
+                large
+                rounded
+                icon                  
+                :link="menu.link"
+                :to="menu.to"
+                @click="menu.callback"            
+              >
+                <v-icon>{{ menu.icon }}</v-icon>
+              </v-btn>
+            </v-badge>
+          </div>
+          <div v-else>
             <v-btn          
               class="ml-1 mt-3"
               v-on="on"
@@ -32,6 +56,7 @@
             >
               <v-icon>{{ menu.icon }}</v-icon>
             </v-btn>
+          </div>
           </template>
           <span>{{ menu.tooltip }}</span>
         </v-tooltip>
@@ -70,7 +95,7 @@
               cache-items   
               clearable
               validate-on-blur
-              ref="autoinput"  
+              ref="autoinput"                
               @keypress.enter="push(search)"   
             >       
             </v-autocomplete>
@@ -80,7 +105,7 @@
 
     </v-navigation-drawer>
     <v-dialog v-model="loginDialog" height="300" width="300">
-      <v-card height="350" width="300" opacity-100>
+      <v-card height="350" width="300" opacity-100 elevation="">
         <v-card-title class="text-h5">
           LOGIN
         </v-card-title>        
@@ -88,9 +113,24 @@
         <v-divider></v-divider>
 
         <v-card-text class="mt-8">
-          <v-text-field outlined label="ID" />
-          <v-text-field outlined label="PASSWORD" />
-          <v-btn block outlined elevation="0"> 로그인 </v-btn>
+          <v-text-field 
+            outlined 
+            label="ID"
+            v-model="id" />
+          <v-text-field
+            outlined 
+            label="PASSWORD" 
+            :append-icon="passwordShow? 'mdi-eye' : 'mdi-eye-off'"
+            :type="passwordShow ? 'text' : 'password'"
+            @click:append="passwordShow = !passwordShow"
+            v-model="password" />
+          <v-btn 
+            block 
+            outlined 
+            elevation="0"
+            @click="tryLogin"
+          > 로그인 
+          </v-btn>
         </v-card-text>
 
         <v-divider></v-divider>
@@ -105,9 +145,12 @@ import { StockSimpleModel } from '@/models/stock'
 import { Component, Vue, Watch } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 import { mobileHeight } from '@/mixins/tools'
+import { IUserAccount } from '@/models/user'
+import { IUpdateStateModel } from '@/models/payload'
 
 const MarketStoreModule = namespace('MarketStore')
 const StockStoreModule = namespace('StockStore')
+const UserStoreModule = namespace('UserStore')
 
 export interface IMenu {
   icon?: string,
@@ -129,13 +172,16 @@ export default class MenuBar extends Vue {
       icon: 'search',
       tooltip: '검색',
       callback: () => {
-        this.expandState('expand')
+        this.expandState('expand')        
       }
     },
     {      
       icon: 'mdi-account',
       tooltip: '내 계정',
       callback: () => {
+        this.updateState({
+          badge: 0
+        })
         this.expandState('loginDialog')
       }
     },
@@ -170,6 +216,11 @@ export default class MenuBar extends Vue {
   expand = false
   darkMode = false
   logined = true
+  badge = 3
+
+  password = ''
+  id =''
+  passwordShow = false
 
   get switchLabel () {
     return this.darkMode ? 'light' : 'dark'
@@ -184,6 +235,9 @@ export default class MenuBar extends Vue {
 
   @StockStoreModule.Action('getStock')
   getStock!: (name: string) => Promise<void>
+
+  @UserStoreModule.Action('tryLogin')
+  login!: (payload: IUserAccount) => Promise<void>
 
   @Watch("search")
   watchSearch(val: unknown) {
@@ -210,13 +264,21 @@ export default class MenuBar extends Vue {
     this.darkMode = !this.darkMode        
   }
 
-  searchExpand () {
-    this.expand = !this.expand
-  }  
-
   expandState(state: string) {
     this[state] = !this[state]
-    console.log(this[state])
+  }
+
+  updateState(payload: IUpdateStateModel) {
+    Object.entries(payload).forEach((state) => {
+      this[state[0]] = state[1]
+    })        
+  }
+
+  async tryLogin() {
+    await this.login({
+      id: this.id,
+      password: this.password
+    })
   }
 
   push(item: string) {
