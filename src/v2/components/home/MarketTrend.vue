@@ -23,7 +23,7 @@
     <v-divider></v-divider>
     <v-carousel
       :continuous="false"
-      :cycle="cycle"
+      cycle
       :show-arrows="false"
       hide-delimiter-background
       hide-delimiters
@@ -90,6 +90,10 @@ import { Component, Vue } from 'vue-property-decorator'
 
 @Component
 export default class MarketTrend extends Vue {
+  // 오버레이 유무
+  overlay = false
+  
+  // V-SPARKLINE 데이터
   sparklines = [
     {
       value: [0, 26, 5, 0, 18],
@@ -103,8 +107,6 @@ export default class MarketTrend extends Vue {
     },
   ]
   
-  overlay = false
 
-  cycle = true
 }
 </script>

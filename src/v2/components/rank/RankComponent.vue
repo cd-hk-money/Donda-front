@@ -161,11 +161,13 @@ const InterestStoreModule = namespace('InterestStore')
 })
 export default class RankComponent extends Vue {
 
-  @InterestStoreModule.State('bookmarked')
-  bookmarked!: IInterestGroup[]
-
+  // 더보기 버튼 위 아래 유무
   isUp = false
+
+  // V-DATA-TABLE 테이블 컨텐츠
   tableItem: IStockModel[] = []
+
+  // V-DATA-TABLE 테이블 헤더
   headers = [
     { text: '순위', value: 'rank'},
     {
@@ -184,6 +186,9 @@ export default class RankComponent extends Vue {
     { text: '시가총액', value: 'marcap' },    
     { text: '', value: 'bookmarked'}
   ]
+
+  @InterestStoreModule.State('bookmarked')
+  bookmarked!: IInterestGroup[]
 
   @Prop()
   contents!: any
@@ -217,10 +222,6 @@ export default class RankComponent extends Vue {
     )
   }
 
-  mounted () {    
-    this.updateTableItem()
-  }
-
   rowClick (target, event) {
     this.$router.push(`/detail/${target.name}`)
   }
@@ -232,6 +233,10 @@ export default class RankComponent extends Vue {
       case '하락률': return content.toLocaleString() + '%'
       case '거래량': return content.toLocaleString()
     }
+  }
+
+  mounted () {    
+    this.updateTableItem()
   }
 }
 </script>

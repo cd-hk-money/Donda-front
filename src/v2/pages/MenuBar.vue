@@ -167,6 +167,7 @@ export interface IMenu {
 @Component
 export default class MenuBar extends Vue {
 
+  // 상단 메뉴
   menus: IMenu[] = [    
     {      
       icon: 'search',
@@ -207,21 +208,41 @@ export default class MenuBar extends Vue {
     },
   ]
 
+  // 검색창
   searchs = ''
+
+  // 검색창 필터
   search: any = null
+
+  // 연관 검색어들
   items: string[] = []
+
+  // 검색창 로딩
   loading = false
-  dialog = false
+
+  // 로그인 다이어로그
   loginDialog = false
+
+  // 검색창 확장
   expand = false
+
+  // 다크모드
   darkMode = false
+
+  // 로그인 유무
   logined = true
+
+  // 알림 뱃지 개수
   badge = 3
 
-  password = ''
+  // ID, PASSWORD
   id =''
+  password = ''
+
+  // PASSWORD 숨김 여부
   passwordShow = false
 
+  // 다크모드 스위치
   get switchLabel () {
     return this.darkMode ? 'light' : 'dark'
   }

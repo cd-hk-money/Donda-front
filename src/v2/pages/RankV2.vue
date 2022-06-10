@@ -125,10 +125,23 @@ const StockStoreModule = namespace('StockStore')
 })
 export default class RankV2 extends Vue {
 
+  // toTop 버튼 표시 유무
   btnShow = false
+
+  // 랭크 필터 메뉴
   filterMenu = false
+
+  // 랭크 리스트 개수 
   amount = 10
+
+  // 초기 필터
   model = 0
+
+  // 필터 메뉴들
+  rankTitle = ['시가총액', '상승률', '하락률', '거래량']
+
+  // 초기 라디오 값
+  radioValue: any = '시가총액'
 
   @StockStoreModule.State('dailySimpleRanks')
   dailySimpleRanks!: IMarketRank
@@ -139,8 +152,6 @@ export default class RankV2 extends Vue {
   @StockStoreModule.Action('getDailySimpleRanks')  
   readonly getDailySimpleRanks!: () => Promise<void>
 
-  rankTitle = ['시가총액', '상승률', '하락률', '거래량']
-  radioValue: any = '시가총액'
 
   toTop() {
     this.$vuetify.goTo('#scroll-target')
@@ -158,9 +169,6 @@ export default class RankV2 extends Vue {
     })
   }
 
-  mounted () {
-    window.addEventListener('scroll', this.handleScroll)
-  }
 
   get mobile () {
     return mobileHeight(this.$vuetify.breakpoint.name) < 500
@@ -168,6 +176,10 @@ export default class RankV2 extends Vue {
 
   changeAmount (amount) {
     this.amount = amount
+  }
+
+  mounted () {
+    window.addEventListener('scroll', this.handleScroll)
   }
 }
 </script>

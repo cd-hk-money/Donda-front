@@ -44,7 +44,6 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator'
-import { namespace } from 'vuex-class'
 import { IMenu } from '@/v2/pages/MenuBar.vue'
 
 import StockInfo from '@/v2/components/detail/StockInfo.vue'
@@ -55,8 +54,6 @@ import StockDrawer from '@/v2/components/detail/StockDrawer.vue'
 import StockIndicator from '@/v2/components/detail/StockIndicator.vue'
 import StockSimilar from '@/v2/components/detail/StockSimilar.vue'
 import StockNews from '@/v2/components/detail/StockNews.vue'
-
-const StockStoreModule = namespace('StockStore')
 
 @Component({
   components: {
@@ -72,24 +69,7 @@ const StockStoreModule = namespace('StockStore')
 })
 export default class DetailV2 extends Vue { 
 
-  @StockStoreModule.Action('getStock')
-  readonly getStock!: (name: string) => Promise<void>
-
-  @StockStoreModule.Action('getStockGraphDefault')
-  readonly getStockGraphDefault!: (name: string) => Promise<void>
-
-  @StockStoreModule.Action('getStockGraphAll')
-  readonly getStockGraphAll!: (name: string) => Promise<void>
-
-  @StockStoreModule.Action('getStockStatement')
-  readonly getStockStatement!: (name: string) => Promise<void>
-
-  @StockStoreModule.Action('getStockStatementAll')
-  readonly getStockStatementAll!: (name: string) => Promise<void>
-
-  @StockStoreModule.Action('getStockIndicator')
-  readonly getStockIndicator!: (name: string) => Promise<void>
-
+  // 컴포넌트 로딩 변수
   drawer = 0
   componentKey = 1
   
@@ -108,18 +88,8 @@ export default class DetailV2 extends Vue {
     }
   ]
 
-  stockLoad(title: string) {
-    // this.getStock(title)
-    // this.getStockGraphAll(title)
-    // this.getStockGraphDefault(title)
-    // this.getStockStatement(title)
-    // this.getStockStatementAll(title)
-    // this.getStockIndicator(title)
+  stockLoad(title: string) {    
     this.drawer = 0
-  }
-
-  created () {
-    this.stockLoad(this.$route.params.title)
   }
 
   drawerChange (val) {
@@ -134,6 +104,8 @@ export default class DetailV2 extends Vue {
    this.stockLoad(this.$route.params.title)
   }  
 
-
+  created () {
+    this.stockLoad(this.$route.params.title)
+  }
 }
 </script>

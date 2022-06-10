@@ -111,14 +111,19 @@ export default class MarketDesc extends Vue {
   @MarketStoreModule.State('marketRecents')
   marketRecents!: IMarketRecentModel 
   
-  toggle_exclusive = 0
+  // 그래프 채움 여부
   fill = false
-  dial = false
-  dateToggle = 1
 
+  // 날짜 선택 다이얼 여부
+  dial = false
+
+  // 시장 정보
   desc: any
+
+  // 시장 가격 색상
   color!: string
 
+  // 시장 정보 메뉴
   menus: IMenu[] = [
     {
       icon: 'mdi-chart-waterfall',    
@@ -143,6 +148,7 @@ export default class MarketDesc extends Vue {
     },
   ]
 
+  // 날짜 선택 다이얼 메뉴
   dateTooltips: IMenu[] = [
     {
       tooltip: '그룹 편집',

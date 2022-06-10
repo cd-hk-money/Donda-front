@@ -59,20 +59,21 @@ const MarketStoreModule = namespace('MarketStore')
 })
 export default class Market extends Vue {
   
-  @MarketStoreModule.State('marketRecents')
-  marketRecents!: IMarketRecentModel[] 
-
+  
+  // 마켓 타입
   marketTypes = ['kospi', 'nasdaq', 'snp500', 'us10yt', 'us1yt', 'us5yt', 'usdkrw']
-
-  @MarketStoreModule.State('marketLoaded')
-  marketLoaded!: boolean
-    
 
   // 그래프의 채움 
   fill: boolean | string = false
 
   // 초기 라벨 개수
   count = 20
+
+  @MarketStoreModule.State('marketLoaded')
+  marketLoaded!: boolean
+    
+  @MarketStoreModule.State('marketRecents')
+  marketRecents!: IMarketRecentModel[] 
 
   changeRequestDate (date: number) {    
     this.count = this.count + date

@@ -8,8 +8,7 @@ import axios from 'axios'
 export default class UserStore extends VuexModule {
 
   @Action
-  public async tryLogin(payload: IUserAccount): Promise<void> {
-    
+  public async tryLogin(payload: IUserAccount): Promise<void> {    
     try {
       const res = await axios.post('/api', payload)  
       const userBookmarked = [...new Set(res.data.map((interest: IInterestGroup) => interest.item).flat())]
@@ -17,6 +16,10 @@ export default class UserStore extends VuexModule {
     } catch (e) {
       console.log(e)
     }
+  }
 
+  @Action
+  public async tryLogout(paylaod: any): Promise<void> {
+    console.log('tryLogout')
   }
 }

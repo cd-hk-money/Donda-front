@@ -132,10 +132,10 @@ const InterestStoreModule = namespace('InterestStore')
 })
 export default class SideBar extends Vue {
 
+  // 그룹 편집메뉴 선택 다이어로그 
   fab = false
-  drawer = false
-  group: boolean | null = null
 
+  // 디폴트 관심종목 그룹
   items = [
     {
       action: 'mdi-ticket',
@@ -196,6 +196,7 @@ export default class SideBar extends Vue {
     },    
   ]
 
+  // 관심종목 그룹
   get itemsV2 () {
     return this.interestGroups.map((group: IInterestGroup) => ({
       title: group.title,
@@ -208,6 +209,7 @@ export default class SideBar extends Vue {
     })) 
   }
 
+  // grid별 높이
   get height () {
     switch (this.$vuetify.breakpoint.name) {
       case 'xs': return 220
@@ -219,8 +221,8 @@ export default class SideBar extends Vue {
     return 800
   }
 
-
-  menus: Array<IMenu> = [
+  // 그룹 메뉴
+  menus: IMenu[] = [
     {
       icon: 'mdi-pencil',
       tooltip: '그룹 편집',
@@ -246,11 +248,6 @@ export default class SideBar extends Vue {
       }
     }
   ]
-  
-  @Watch('group')
-  groupWatch() {
-    this.group = false
-  }
    
   @InterestStoreModule.State('interestGroups')
   interestGroups!: IInterestGroup[]
