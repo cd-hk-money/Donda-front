@@ -4,6 +4,7 @@ import { IInterestGroupItem, IInterestGroup } from "@/models/interest";
 @Module({namespaced: true})
 export default class InterestStore extends VuexModule {
   public snackBar = false
+  public bookmarked: string[] = []
   public interestGroups: IInterestGroup[] = [
     {
       title: '관심종목 그룹1',
@@ -78,8 +79,9 @@ export default class InterestStore extends VuexModule {
   @Mutation 
   public addInterestGroupItem(payload: {title: string, item: IInterestGroupItem}) {    
     try {
-      const findContent = this.interestGroups.find(group => group.title === payload.title)
-      findContent.item.push(payload.item)
+      this.interestGroups.find(group => group.title === payload.title).item.push(payload.item)
+      this.bookmarked.push(payload.item.title)
+
     } catch (e) {
       console.log('아이템 추가 실패')
       throw e

@@ -13,6 +13,7 @@
       :items="tableItem"
       :search="null"
       @click:row="rowClick"
+      :items-per-page="contents.length"
     >
       <!-- 순위  -->
       <template v-slot:[`item.rank`]="{ item }">        
@@ -25,7 +26,7 @@
         <span class="text-h5">
           {{ item.name }}
         </span>
-        <span class="text-h7 grey--text">
+        <span class="text-h6 grey--text">
           {{ item.code }}
         </span>
       </template>
@@ -139,14 +140,19 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator'
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import RankContents from '@/v2/components/rank/RankContents.vue'
-
-
 import { IStockModel } from '@/models/stock'
+import { namespace } from 'vuex-class'
+import { IInterestGroup } from '@/models/interest'
+
 const TABLE_TYPE = ['rank', 'date', 'code', 'name', 'market', 'close', 'changes', 'changes_ratio',
   'open', 'high', 'low', 'volume', 'amount', 'marcap', 'stocks', 'per', 'pbr', 'bookmarked'
   ]
+
+const moneyType = ['close', 'open', 'high', 'low', 'marcap', 'changes']
+
+const InterestStoreModule = namespace('InterestStore')
 
 @Component({
   components: {
@@ -154,6 +160,9 @@ const TABLE_TYPE = ['rank', 'date', 'code', 'name', 'market', 'close', 'changes'
   }
 })
 export default class RankComponent extends Vue {
+
+  @InterestStoreModule.State('bookmarked')
+  bookmarked!: IInterestGroup[]
 
   isUp = false
   tableItem: IStockModel[] = []
@@ -182,29 +191,34 @@ export default class RankComponent extends Vue {
   @Prop({default: ''})
   title!: string  
 
+  @Watch('contents')
+  watchContents() {    
+    this.$nextTick(() => {
+      this.updateTableItem()
+    })
+  }
+
   moreRank () {
     if(this.isUp) this.$emit('seeMore', 10)
     else this.$emit('seeMore', 50)
-
     this.isUp = !this.isUp
   }
 
-  mounted () {    
-    this.contents.forEach((content, i) => {
-      content.unshift(i + 1)
-      content.push(false)
-      this.tableItem.push(content.reduce((acc, cur, index) => {
+  updateTableItem() {
+    this.tableItem = this.contents.map((content, i) => 
+      [i+1, ...content, this.bookmarked.includes(content[2])].reduce((acc, cur, index) => {
         const key = TABLE_TYPE[index]
-        if(key === "close" || key === 'open' || key === 'high' || key === 'low' || key == 'marcap' || key == 'changes') {
-          acc[TABLE_TYPE[index]] = cur.toLocaleString() + ' ₩'
-        } else if (key === 'changes_ratio'){
-          acc[TABLE_TYPE[index]] = cur > 0 ? '+' + cur + '%' : cur + '%'
-        } else {
-          acc[TABLE_TYPE[index]] = cur
-        } 
-        return acc
-      }, {}))
-    })
+        
+        if(moneyType.indexOf(key) > -1) acc[key] = cur.toLocaleString() + '₩'
+        else if (key === 'changes_ratio') acc[key] = cur > 0 ? '+' + cur + '%' : cur + '%' 
+        else acc[key] = cur        
+        return acc    
+      },{})
+    )
+  }
+
+  mounted () {    
+    this.updateTableItem()
   }
 
   rowClick (target, event) {
