@@ -7,7 +7,7 @@
     </v-row>
     <v-row>
       <v-col cols="12" xl="4" lg="4">
-        <market-trend />
+        <market-trend />                
       </v-col>
       <v-col cols="12" xl="8" lg="8">
         <stock-recommend />      
@@ -31,6 +31,6 @@ import StockRecommend from '@/v2/components/home/StockRecommend.vue'
   }
 })
 export default class HomeV2 extends Vue {
-  
+
 }
 </script>

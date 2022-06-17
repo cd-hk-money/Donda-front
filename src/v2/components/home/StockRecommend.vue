@@ -1,10 +1,10 @@
 <template>    
   <v-card
     class="ml-5 mr-5 align-center justify-center"
-    height="410"
+    :height="mobile ? 950 : 400"
     width="auto"
-    rounded="xl"
-    elevation="3"
+    elevation="0"
+    outlined
     v-if="!loaded"
   >
     <v-card-title             
@@ -29,7 +29,7 @@
       hide-delimiter-background
       hide-delimiters
       show-arrows-on-hover
-      height="310"
+      :height="mobile ? 850 : 400"
       cycle
       vertical
     >
@@ -148,6 +148,7 @@
 </template>
 
 <script lang="ts">
+import { mobileHeight } from '@/mixins/tools'
 import { StockRecommendModel } from '@/models/stock'
 import { Component, Vue } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
@@ -172,6 +173,10 @@ export default class StockRecommend extends Vue {
 
   @MarketStoreModule.Getter('recommendArray')
   recommendArray!: any
+
+  get mobile () {
+    return mobileHeight(this.$vuetify.breakpoint.name) < 500
+  }  
     
   created () {    
     this.getRecommend()

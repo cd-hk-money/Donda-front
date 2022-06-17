@@ -1,9 +1,9 @@
 <template>
   <v-card        
-    class="mt-5 ml-5 mr-5"
-    height="465"
-    rounded="xl"
-    elevation="3"         
+    :class="[mobile ? 'mt-15 ml-5 mr-5' : 'mt-5 ml-5 mr-5']"
+    :height="mobile ? 480 : 475"    
+    elevation="0"         
+    outlined
   >
     <v-carousel        
       height="auto"
@@ -24,9 +24,10 @@
             @changeRequestDate="changeRequestDate"            
             :type="marketType" />                   
           <market-chart   
-            :fill="fill"
-            class="ml-5 mr-5"
-            :height="100"
+            :mobile="mobile"
+            :fill="fill"            
+            :class="[mobile ? 'mr-5' : 'ml-5 mr-5']"      
+            :height="mobile ? 280 : 100"
             :count="count"            
             :type="marketType" />
         </v-card>
@@ -46,9 +47,9 @@ import MarketChart from '@/v2/components/home/MarketChart.vue'
 
 // models
 import { IMarketRecentModel } from '@/models/market'
+import { mobileHeight } from '@/mixins/tools'
 
 
-const StockStoreModule = namespace('StockStore')
 const MarketStoreModule = namespace('MarketStore')
 
 @Component({
@@ -77,6 +78,10 @@ export default class Market extends Vue {
 
   changeRequestDate (date: number) {    
     this.count = this.count + date
+  }
+
+  get mobile () {
+    return mobileHeight(this.$vuetify.breakpoint.name) < 500
   }
 
   onFill (payload: boolean | string) {

@@ -5,7 +5,7 @@ import { Component, Prop, Watch } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 import { mixins, Line } from 'vue-chartjs-typescript'
 
-import { getGradient, transparentize } from '@/mixins/tools'
+import { transparentize } from '@/mixins/tools'
 import { IMarketChartModel, MarketModel } from '@/models/market'
 
 import zoom from 'chartjs-plugin-zoom'
@@ -29,6 +29,8 @@ export default class LineChart extends Vue {
   @Prop()
   fill!: boolean
 
+  @Prop()
+  mobile!: boolean
 
   @Prop({default: function () { return {} }})
   options!: object
@@ -87,6 +89,11 @@ export default class LineChart extends Vue {
   watchChartOptions () {
     this.reRender()
   }
+
+  @Watch('height')
+  watchHeight(val) {
+    console.log(val)
+  }
   
   @Watch('fill')
   watchFill () {
@@ -106,11 +113,13 @@ export default class LineChart extends Vue {
     this.chartOptions.scales = {
       xAxes: [{
         gridLines: {
-          display: true,
+          display: false,                    
+          drawTicks: false
         },        
         ticks: {       
-          fontSize: this.requestDate > 150 ? 15 : 20,          
-          maxTicksLimit: 8             
+          fontSize: this.mobile ? 14 : 20,     
+          maxTicksLimit: 15,   
+          lineHeight: 1                                                 
         },
         scaleLabel: {
           fontSize: 20
@@ -120,10 +129,12 @@ export default class LineChart extends Vue {
         ticks: {
           callback: function(value: string) {return value.toLocaleString()},
           fontSize: 20,    
-          maxTicksLimit: 3            
+          maxTicksLimit: 3,
+          display: !this.mobile            
         },
         gridLines: {
-          display: true
+          display: false,  
+          drawTicks: false        
         }
       }]
     }
@@ -159,16 +170,11 @@ export default class LineChart extends Vue {
         { 
           label: this.type,
           data: [...[...marketType.values].reverse().slice(0, this.requestDate)].reverse().map((k: MarketModel) => k.close),
-          fill: fill,
-          // borderColor: context => {
-          //   const {ctx, chartArea, data, scales, width, height} = context.chart
-          //   if(!chartArea) return null            
-          //   return getGradient(ctx, chartArea, data, scales, width, height)
-          // },
+          fill: fill,        
           borderColor: MAIN_COLOR,
           backgroundColor: transparentize(MAIN_COLOR, 0.8),
-          borderWidth: 2,                 
-          radius: this.requestDate > 150 ? 0.5 : 4,
+          borderWidth: 5,                 
+          radius: this.requestDate > 150 ? 0 : 0,
           pointStyle: 'rectRounded',
           tension: .4,          
           pointHitRadius: 10,
@@ -184,7 +190,6 @@ export default class LineChart extends Vue {
   }
 
   mounted() {            
-    console.log(this.type)
     this.renderLineChart()    
   }    
 
@@ -193,6 +198,4 @@ export default class LineChart extends Vue {
   }
 }
 
-const skipped = (ctx, value) => ctx.p0.skip || ctx.p1.skip ? value : undefined;
-const down = (ctx, value) => ctx.p0.parsed.y > ctx.p1.parsed.y ? value : undefined;
 </script>

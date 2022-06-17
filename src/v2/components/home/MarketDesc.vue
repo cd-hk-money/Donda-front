@@ -6,9 +6,9 @@
   >
     <v-card-text>      
       <v-row>        
-        <v-col cols="12" xl="8" lg="8" md="7">
-          <span class="text-h2 font-weight-bold pl-10">
-            {{ type }} 
+        <v-col cols="12" xl="8" lg="8" md="7" :class="[mobile ? 'mt-5' : '']">
+          <span class="text-h3 font-weight-bold">
+            {{ type.toUpperCase() }} 
           </span>
 
           <span class="mr-5">
@@ -20,41 +20,43 @@
             </v-btn>
           </span>
 
-          <span class="ml-12 text-h3">
+          <span class="ml-5 text-h3">
             {{ desc.close }}
           </span>           
 
-          <span :class="['text-h4', color]">
+          <span :class="['text-h4', color] ">
             {{ desc.changes > 0 ? '+' + (desc.changes * 100).toFixed(2):(desc.changes * 100).toFixed(2)}} %
           </span>               
         </v-col>            
 
-        <v-col cols="12" xl="4" lg="4" md="5">          
-          <span class="text-h7 ml-12">
-            갱신일 : {{ desc.recent }}
-          </span>     
-
-          <v-tooltip
-            v-for="menu in menus"
-            :key="menu.icon"
-            bottom
-          >
-            <template v-slot:activator="{on, attrs}">
-              <v-btn
-                v-model="menu.enable"
-                class="mx-1"
-                elevation="0"
-                small
-                tile
-                v-on="on"
-                v-bind="attrs"
-                @click="menu.callback"
-              >
-                  <v-icon>{{ menu.icon }}</v-icon>
-              </v-btn>
-            </template>
-            <span>{{ menu.tooltip }}</span>
-          </v-tooltip>
+        <v-col cols="12" xl="4" lg="4" md="5">    
+          <div v-if="!mobile">
+            <span class="text-h7 ml-12">
+              갱신일 : {{ desc.recent }}
+            </span>     
+  
+            <v-tooltip
+              v-for="menu in menus"
+              :key="menu.icon"
+              bottom
+            >
+              <template v-slot:activator="{on, attrs}">
+                <v-btn
+                  v-model="menu.enable"
+                  class="mx-1"
+                  elevation="0"
+                  small
+                  tile
+                  v-on="on"
+                  v-bind="attrs"
+                  @click="menu.callback"
+                >
+                    <v-icon>{{ menu.icon }}</v-icon>
+                </v-btn>
+              </template>
+              <span>{{ menu.tooltip }}</span>
+            </v-tooltip>
+          </div>      
 
           <v-speed-dial            
             absolute
@@ -98,6 +100,7 @@ const MarketStoreModule = namespace('MarketStore')
 
 // models
 import { IMarketRecentModel } from '@/models/market'
+import { mobileHeight } from '@/mixins/tools'
 
 @Component
 export default class MarketDesc extends Vue {
@@ -125,11 +128,11 @@ export default class MarketDesc extends Vue {
 
   // 시장 정보 메뉴
   menus: IMenu[] = [
-    {
-      icon: 'mdi-chart-waterfall',    
-      tooltip: '봉차트로 전환',
-      callback: () => console.log('ss'),
-    },
+    // {
+    //   icon: 'mdi-chart-waterfall',    
+    //   tooltip: '봉차트로 전환',
+    //   callback: () => console.log('ss'),
+    // },
     {
       icon: 'mdi-chart-areaspline-variant',    
       tooltip: '차트 색상 채우기',
@@ -182,6 +185,10 @@ export default class MarketDesc extends Vue {
 
     this.fill = !this.fill    
   }  
+
+  get mobile () {
+    return mobileHeight(this.$vuetify.breakpoint.name) < 500
+  }
 
   created () {    
     this.desc = this.marketRecents[this.type]

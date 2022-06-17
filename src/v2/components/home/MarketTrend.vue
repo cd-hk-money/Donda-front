@@ -1,10 +1,10 @@
 <template>
   <v-card
-    height="410"
-    width="94%"
-    class="ml-5"
-    rounded="xl"
-    elevation="3"
+    height="400"
+    :width="mobile ? '' : '94%'"    
+    :class="[mobile ? 'ml-5 mr-5' : 'ml-5 mr-5']"
+    elevation="0"
+    outlined
   >
     <v-card-title class="text-h4 font-weight-bold ml-5">
       시장 동향
@@ -86,7 +86,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { mobileHeight } from '@/mixins/tools'
+import { Component, Prop, Vue } from 'vue-property-decorator'
 
 @Component
 export default class MarketTrend extends Vue {
@@ -106,7 +107,10 @@ export default class MarketTrend extends Vue {
       text: '미국'
     },
   ]
-  
+
+  get mobile () {
+    return mobileHeight(this.$vuetify.breakpoint.name) < 500
+  }  
 
 }
 </script>
