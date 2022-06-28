@@ -26,9 +26,16 @@ interface IInterestGroupItem {
   code: string
 }
 
+interface IUserInterestGroupItem {
+  title: string
+  code: string
+  alarm: boolean
+}
+
 
 
 export {
   IInterestGroup,
-  IInterestGroupItem
+  IInterestGroupItem,
+  IUserInterestGroupItem
 }

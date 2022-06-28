@@ -1,5 +1,5 @@
 import { Module, VuexModule, Mutation } from "vuex-module-decorators";
-import { IInterestGroupItem, IInterestGroup } from "@/models/interest";
+import { IInterestGroupItem, IInterestGroup, IUserInterestGroupItem  } from "@/models/interest";
 
 @Module({namespaced: true})
 export default class InterestStore extends VuexModule {
@@ -35,6 +35,9 @@ export default class InterestStore extends VuexModule {
       item: []
     },
   ]
+
+  public userInterests: IUserInterestGroupItem[] = []
+  
 
   @Mutation
   public snackBarClose() {
@@ -79,8 +82,18 @@ export default class InterestStore extends VuexModule {
   @Mutation 
   public addInterestGroupItem(payload: {title: string, item: IInterestGroupItem}) {    
     try {
+      this.userInterests = []
       this.interestGroups.find(group => group.title === payload.title).item.push(payload.item)
-      this.bookmarked.push(payload.item.title)
+      this.bookmarked.push(payload.item.title)             
+      this.interestGroups.forEach((interestGroup: IInterestGroup) => {
+        interestGroup.item.forEach((item: IInterestGroupItem) =>  this.userInterests.push({
+          ...item,
+          alarm: false
+        }))
+      })
+
+      this.userInterests = [...new Set(this.userInterests)]
+      console.log(this.userInterests)
 
     } catch (e) {
       console.log('아이템 추가 실패')
@@ -96,9 +109,28 @@ export default class InterestStore extends VuexModule {
   }
 
   @Mutation
+  public userInterestUpdate() {
+    this.userInterests = []
+    this.interestGroups.forEach((interestGroup: IInterestGroup) => {
+      interestGroup.item.forEach((item: IInterestGroupItem) =>  this.userInterests.push({
+        ...item,
+        alarm: false
+      }))
+    })
+
+    this.userInterests = [...new Set(this.userInterests)]
+  }
+
+  @Mutation
   public initInterestGroup() {    
     // 사용자의 관심종목을 불러옴..
   }
+
+  @Mutation
+  public changeUserInterestAlram(payload: number) {
+    this.userInterests[payload].alarm = !this.userInterests[payload].alarm
+  }
+  
 }
 
 

@@ -69,14 +69,9 @@
           inset
         ></v-switch>
       </v-card>
-      <v-card height="50" v-if="!logined" outlined elevation="0" class="text-center">
-        <div class=text-h5>
-          환영합니다.
-        </div>
-      </v-card>
-      
+              
       <v-expand-transition>
-        <v-card   
+        <v-card             
           v-show="expand"
           width="100%"
           height="80"
@@ -100,11 +95,99 @@
             >       
             </v-autocomplete>
           </v-card-text>        
+        </v-card>        
+      </v-expand-transition>
+
+      <v-expand-transition>
+        <v-card
+          v-if="logined"
+          v-show="userExpand"
+          width="100%"
+          height="38"
+          elevation="0"
+          outlined
+        >
+          <div class="d-flex">
+            <v-btn 
+              elevation="0"
+              width="33%"
+              :key="i"
+              v-for="(menu, i) in userMenu"
+              @click="menu.callback"
+            >
+              {{ menu.title }}
+            </v-btn>
+          </div>
+          
+        <v-divider></v-divider>
+          
+          <!-- <v-list
+            subheader
+            two-line
+          >
+            <v-list-item
+              v-for="(list, i) in userInterests"
+              :key="i"
+            >
+              <v-list-item-content>
+                <v-list-item-title v-text="list.title"></v-list-item-title>
+
+                <v-list-item-subtitle v-text="list.code"></v-list-item-subtitle>                
+              </v-list-item-content>
+
+              <v-list-item-action>
+                <v-btn icon @click="alramChange(i)">
+                  <v-icon color="grey lighten-1">
+                    {{ list.alarm ? 'mdi-alarm-light' : 'mdi-alarm-light-outline'}}
+                  </v-icon>
+                </v-btn>
+            
+              </v-list-item-action>              
+            </v-list-item>               
+          </v-list> -->
+          
+
         </v-card>
+      </v-expand-transition>
+        
+      <v-expand-transition>
+        <v-card          
+          v-show="alramConfig"
+          width="100%"          
+          height="300"
+          elevation="0"
+          outlined
+        >
+          <v-list
+            subheader
+            two-line
+          >
+            <v-list-item
+              v-for="(list, i) in userInterests"
+              :key="i"
+            >
+              <v-list-item-content>
+                <v-list-item-title v-text="list.title"></v-list-item-title>
+
+                <v-list-item-subtitle v-text="list.code"></v-list-item-subtitle>                
+              </v-list-item-content>
+
+              <v-list-item-action>
+                <v-btn icon @click="alramChange(i)">
+                  <v-icon color="grey lighten-1">
+                    {{ list.alarm ? 'mdi-alarm-light' : 'mdi-alarm-light-outline'}}
+                  </v-icon>
+                </v-btn>
+            
+              </v-list-item-action>              
+            </v-list-item>               
+          </v-list>
+        </v-card>
+            
       </v-expand-transition>
 
     </v-navigation-drawer>
-    <v-dialog v-model="loginDialog" height="300" width="300">
+    <v-dialog v-model="loginDialog" height="300" width="300" v-if="!logined">
       <v-card height="350" width="300" opacity-100 elevation="">
         <v-card-title class="text-h5">
           LOGIN
@@ -134,8 +217,9 @@
         </v-card-text>
 
         <v-divider></v-divider>
-      </v-card>
-    </v-dialog>
+      </v-card>      
+    </v-dialog>    
+    
   </div>
 </template>
 
@@ -147,10 +231,12 @@ import { namespace } from 'vuex-class'
 import { mobileHeight } from '@/mixins/tools'
 import { IUserAccount } from '@/models/user'
 import { IUpdateStateModel } from '@/models/payload'
+import { IInterestGroup, IInterestGroupItem, InterestGroupModel, IUserInterestGroupItem } from '@/models/interest'
 
 const MarketStoreModule = namespace('MarketStore')
 const StockStoreModule = namespace('StockStore')
 const UserStoreModule = namespace('UserStore')
+const InterestStoreModule = namespace('InterestStore')
 
 export interface IMenu {
   icon?: string,
@@ -166,6 +252,23 @@ export interface IMenu {
 
 @Component
 export default class MenuBar extends Vue {
+
+  userMenu: IMenu[] = [
+    {
+      title: '로그아웃',
+      callback: () => {
+        this.expandState('logined')
+        this.setState('alramConfig', false)
+      }
+    },
+    {
+      title: '알림 확인'
+    },
+    {
+      title: '알림 설정',
+      callback: () => this.expandState('alramConfig')
+    }    
+  ]
 
   // 상단 메뉴
   menus: IMenu[] = [    
@@ -184,6 +287,7 @@ export default class MenuBar extends Vue {
           badge: 0
         })
         this.expandState('loginDialog')
+        this.expandState('userExpand')
       }
     },
     {      
@@ -223,8 +327,14 @@ export default class MenuBar extends Vue {
   // 로그인 다이어로그
   loginDialog = false
 
+  // 유저 정보 확장
+  userExpand = false
+
   // 검색창 확장
   expand = false
+
+  // 알림 설정 확장
+  alramConfig = false
 
   // 다크모드
   darkMode = false
@@ -233,7 +343,7 @@ export default class MenuBar extends Vue {
   logined = true
 
   // 알림 뱃지 개수
-  badge = 3
+  badge = 10
 
   // ID, PASSWORD
   id =''
@@ -251,6 +361,7 @@ export default class MenuBar extends Vue {
     return mobileHeight(this.$vuetify.breakpoint.name) < 500
   }
 
+  
   @MarketStoreModule.State('searchTable')
   searchTable!: StockSimpleModel[]
 
@@ -260,12 +371,32 @@ export default class MenuBar extends Vue {
   @UserStoreModule.Action('tryLogin')
   login!: (payload: IUserAccount) => Promise<void>
 
+  @InterestStoreModule.State('interestGroups')
+  interestGroups!: IInterestGroup[]
+
+  @InterestStoreModule.State('userInterests')
+  userInterests!: IUserInterestGroupItem[]
+
+  @InterestStoreModule.Mutation('userInterestUpdate')
+  userInterestUpdate!: () => void
+
+  @InterestStoreModule.State('userInerestAlarms')
+  userInerestAlarms!: () =>void
+
+  @InterestStoreModule.Mutation('changeUserInterestAlram')
+  changeUserInterestAlram!: (payload: number) => void
+
+  
+
+
+
   @Watch("search")
   watchSearch(val: unknown) {
     if(!val) return
     val && val !== this.searchTable && this.querySelections(val)
   }  
 
+  
 
   querySelections(val: any) {
     let timeout=  0
@@ -287,6 +418,10 @@ export default class MenuBar extends Vue {
 
   expandState(state: string) {
     this[state] = !this[state]
+  }
+
+  setState(state: string, value: any) {
+    this[state] = value
   }
 
   updateState(payload: IUpdateStateModel) {
@@ -311,6 +446,19 @@ export default class MenuBar extends Vue {
     });    
     (document.activeElement as HTMLElement).blur()      
   }
+
+  mounted () {    
+    this.userInterestUpdate()    
+  } 
+
+  
+  alramChange(i) {
+    this.changeUserInterestAlram(i)
+  } 
+
+
+
+
 }
 </script>
 
