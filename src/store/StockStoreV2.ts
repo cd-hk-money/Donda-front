@@ -72,6 +72,9 @@ export default class StockStore extends VuexModule {
   public indicator: ISimpleChartData = {}
   public indicatorTypes: string[] = []
 
+  public newsLoaded = false
+  public news: any[] = []
+
   // Mutations
   // state를 초기화합니다.
   @Mutation
@@ -113,11 +116,15 @@ export default class StockStore extends VuexModule {
         stockLoaded: true
       })
 
+      console.log('start')
+
       const res = await axios.get(`/stock/${name}`, HEADER)
       this.context.commit('updateState', {
         stock: res.data,
         stockLoaded: false
       })
+
+      console.log('end')
 
     } catch(e) {
       console.log(e)
@@ -256,5 +263,23 @@ export default class StockStore extends VuexModule {
       console.log(e)
     }
   }  
+
+  @Action
+  public async getStockNews(name: string): Promise<void> {
+    try {
+      this.context.commit('updateState', {
+        newsLoaded: true
+      })
+
+      const res = await axios.get(`/stock/${name}/news`)
+      
+      this.context.commit('updateState', {
+        news: res.data,
+        newsLoaded: false,
+      })
+    } catch (e) {
+      console.log(e)
+    }
+  }
   
 }

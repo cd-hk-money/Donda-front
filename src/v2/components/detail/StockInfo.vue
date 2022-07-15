@@ -207,8 +207,10 @@ export default class StockInfo extends Vue {
     return mobileHeight(this.$vuetify.breakpoint.name) < 500
   }
       
-  created () {    
-    this.getStock(this.$route.params.title)
+  async created () {    
+    console.log('start')
+    await this.getStock(this.$route.params.title)
+    console.log('end')
   }
   
 }
