@@ -11,7 +11,7 @@
     </v-card-title>
     <v-card-subtitle>
       어떻게 적정 주가를 산출 했을까요?
-    </v-card-subtitle>
+    </v-card-subtitle>    
 
     <v-divider></v-divider>
 
@@ -57,7 +57,7 @@
       </v-tab>
 
       <v-tab-item>
-        <v-card flat>
+        <v-card flat class="valuation-donda">
           <v-card-text>
             <p>
               <strong>돈다</strong> 에서 자체적으로 계산한 주가 지수입니다.
@@ -72,6 +72,14 @@
             <p>
               <strong>EPS</strong>와 <strong>ROE</strong>를 활용한 적정 주가 계산 공식입니다.
             </p>
+            <p class="text-h5 blue--text">
+              <math-jax :latex="'$$EPS = {순이익 \\over 주식수} = 1주당순이익$$'"/>
+            </p>
+            <p class="text-h5 blue--text">
+              <math-jax :latex="'$$ROE = {순이익 \\over 자기자본} = 자기자본이익률$$'"/>
+            </p>
+            <div>              
+            </div>            
           </v-card-text>
         </v-card>
       </v-tab-item>
@@ -103,7 +111,7 @@ const StockStoreModule = namespace('StockStore')
 
 @Component({
   components: {
-    StockValuationChart
+    StockValuationChart,
   }
 })
 export default class StockValuation extends Vue {
@@ -113,6 +121,7 @@ export default class StockValuation extends Vue {
 
   tab = 0
   colors: string[] = ['#ff6384', '#994433', '#6495ed']
+  formula = '$$x = {-b \\pm \\sqrt{b^2-4ac} \\over 2a}.$$'
 
   @Watch('tab')
   watchTab() {
@@ -156,6 +165,10 @@ export default class StockValuation extends Vue {
 .valuation-active-donda {
   font-weight: bold !important;
   color: #ff6384 !important;  
+}
+
+.valuation-donda strong {
+  color: #ff6384;
 }
 .valuation-active-one {
   font-weight: bold !important;

@@ -114,7 +114,7 @@ export default class StockValuationChart extends Vue {
           tension: .4
         },
         {
-          label: '방법 1',
+          label: 'EPS-ROE',
           data : (Object.values(this.stockGraphDefault) as number[]).map((value: number) => value * 1.010),
           fill: this.fill,
           borderColor: '#943',
@@ -123,7 +123,18 @@ export default class StockValuationChart extends Vue {
           radius: 0,
           pointStyple: 'rectRounded',
           tension: .4
-        },             
+        },        
+        {
+          label: 'S-RIM',
+          data : (Object.values(this.stockGraphDefault) as number[]).map((value: number) => value * 1.050),
+          fill: this.fill,
+          borderColor: '#6495ed',
+          // backgroundColor: transparentize(SUB_COLOR, 0.8),
+          borderWidth: 2,
+          radius: 0,
+          pointStyple: 'rectRounded',
+          tension: .4
+        }     
       ]
     }
   }
