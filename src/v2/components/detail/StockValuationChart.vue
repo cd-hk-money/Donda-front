@@ -20,7 +20,7 @@ export default class StockValuationChart extends Vue {
   fill!: boolean
   
   @Prop()
-  chartData!: never
+  chartData!: any
 
   @StockStoreModule.State('stockGraphDefault')
   stockGraphDefault!: any
@@ -96,7 +96,7 @@ export default class StockValuationChart extends Vue {
           data : Object.values(this.stockGraphDefault),
           fill: this.fill,
           borderColor: MAIN_COLOR,
-          backgroundColor: transparentize(MAIN_COLOR, 0.8),
+          // backgroundColor: transparentize(MAIN_COLOR, 0.8),
           borderWidth: 2,
           radius: 0,
           pointStyple: 'rectRounded',
@@ -107,7 +107,7 @@ export default class StockValuationChart extends Vue {
           data : (Object.values(this.stockGraphDefault) as number[]).map((value: number) => value * 1.005),
           fill: this.fill,
           borderColor: SUB_COLOR,
-          backgroundColor: transparentize(SUB_COLOR, 0.8),
+          // backgroundColor: transparentize(SUB_COLOR, 0.8),
           borderWidth: 2,
           radius: 0,
           pointStyple: 'rectRounded',
@@ -118,7 +118,7 @@ export default class StockValuationChart extends Vue {
           data : (Object.values(this.stockGraphDefault) as number[]).map((value: number) => value * 1.010),
           fill: this.fill,
           borderColor: '#943',
-          backgroundColor: transparentize(SUB_COLOR, 0.8),
+          // backgroundColor: transparentize(SUB_COLOR, 0.8),
           borderWidth: 2,
           radius: 0,
           pointStyple: 'rectRounded',
@@ -134,7 +134,8 @@ export default class StockValuationChart extends Vue {
   }
 
   mounted () {    
-    this.renderLineChart()    
+    this.renderLineChart()   
+    console.log('val chart load') 
     
   }
 }

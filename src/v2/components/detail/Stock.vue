@@ -140,14 +140,10 @@ export default class Stock extends Vue {
     })         
   }
 
-  async initChartData () {
+  async mounted () {
     const title = this.$route.params.title
     await this.getStockGraphDefault(title)  
     await this.getStockGraphAll(title)
-  }
-
-  created () {
-    this.initChartData()
   }
   
 }

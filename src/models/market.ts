@@ -29,3 +29,9 @@ export interface IMarketRecentModel {
     recent?: string
   }
 }
+
+export interface IValuationContent {
+  color?: string,
+  title?: string,
+  content?: string
+}

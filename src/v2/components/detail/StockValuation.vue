@@ -18,52 +18,86 @@
     
     <stock-valuation-chart 
       class="mt-2 ml-2 mr-2"
-      :height="150"
+      :height="100"
       v-if="!loaded"
     />
 
     <v-divider></v-divider>
 
       
-    <v-card-content class="d-flex">
-     <v-card 
-      height="418"
-      width="34%"
-      elevation="0"
-      outlined
-    >
-      <div class="valuation-label-1">
-        계산 방법 1 
-      </div>
-      
-      
-     </v-card>
-     <v-card
-      width="34%"
-      elevation="0"
-      outlined
-    >
-      <div class="valuation-label-2">
+    <v-card-content>
+
+      <!-- <v-card
+        class="ml-5 mr-5 mt-5 d-flex"
+        height="120"
+        rounded="xl"
+        elevation="0"
+        outlined
+        :key="i"
+        v-for="(valuation, i) in valuations"
+      >
+        <div class="valuation-label" :style="{'background-color': valuation.color}"></div>      
+        <div>
+          <div class="ml-3 mt-1 valuation-title" :style="{'color': valuation.color, }"> {{ valuation.title }}</div>
+          <v-card-text>
+            {{ valuation.content }}
+          </v-card-text>
+        </div>
+      </v-card> -->
+    <v-tabs v-model="tab" class="valuation-tabs">
+      <v-tabs-slider :color="colors[tab]" />
+      <v-tab active-class="valuation-active-donda">        
         돈다 지수
-      </div>
-     </v-card>
-     <v-card
-      width="34%"
-      elevation="0"
-      outlined
-    >
-      <div class="valuation-label-3">
-        방법 1
-      </div>
-     </v-card>
+      </v-tab>
+      <v-tab active-class="valuation-active-one">        
+        EPS-ROE
+      </v-tab>
+      <v-tab active-class="valuation-active-two">        
+        S-RIM
+      </v-tab>
+
+      <v-tab-item>
+        <v-card flat>
+          <v-card-text>
+            <p>
+              <strong>돈다</strong> 에서 자체적으로 계산한 주가 지수입니다.
+            </p>
+          </v-card-text>
+        </v-card>
+      </v-tab-item>
+
+      <v-tab-item>
+        <v-card flat class="valuation-one">
+          <v-card-text>
+            <p>
+              <strong>EPS</strong>와 <strong>ROE</strong>를 활용한 적정 주가 계산 공식입니다.
+            </p>
+          </v-card-text>
+        </v-card>
+      </v-tab-item>
+
+      <v-tab-item>
+        <v-card flat>
+          <v-card-text class="valuation-two">
+              <span>
+                <strong>사경인 회계사</strong>
+                <v-icon size="13" class="valuation-two-tootip">fa-solid fa-circle-question</v-icon>
+              </span>
+               에서 제시한 <strong>RIM 모델</strong>을 활용한 주가 계산 공식입니다.
+          </v-card-text>
+        </v-card>
+      </v-tab-item>
+    </v-tabs>
+
     </v-card-content>
   </v-card>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue, Watch } from 'vue-property-decorator'
 import StockValuationChart from '@/v2/components/detail/StockValuationChart.vue'
 import { namespace } from 'vuex-class'
+import { IValuationContent } from '@/models/market'
 
 const StockStoreModule = namespace('StockStore')
 
@@ -73,33 +107,84 @@ const StockStoreModule = namespace('StockStore')
   }
 })
 export default class StockValuation extends Vue {
+  
   @StockStoreModule.State('stockGraphDefaultLoaded')
   loaded!: boolean
-  
+
+  tab = 0
+  colors: string[] = ['#ff6384', '#994433', '#6495ed']
+
+  @Watch('tab')
+  watchTab() {
+    console.log(this.tab)
+  }
+
+  valuations: IValuationContent[] = [
+    {
+      color: '#ff6384',
+      title: '돈다 지수',
+      content: '내용'
+    },
+    {
+      color: '#994433',
+      title: '방법 1',
+      content: '내용'
+    },
+    {
+      color: '#111111',
+      title: '방법 2',
+      content: '내용'
+    },
+  ]  
 }
 
 </script>
 
 <style>
-.valuation-label-1 {
-  background-color: #40E0D0;
-  height: 30px;  
+.valuation-label {
+  max-height: 120px;    
+  min-height: 120px;    
   text-align: center;
-  line-height: 30px;
-  border-radius: 0px !important;  
+  border-radius: 25px;
+  border-top-right-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+  overflow: hidden;
+  width: 40px;
 }
-.valuation-label-2 {
-  background-color: rgb(255, 99, 132);
-  height: 30px;  
-  text-align: center;
-  line-height: 30px;
-  border-radius: 0px !important;  
+
+
+.valuation-active-donda {
+  font-weight: bold !important;
+  color: #ff6384 !important;  
 }
-.valuation-label-3 {
-  background-color: #943;
-  height: 30px;  
-  text-align: center;
-  line-height: 30px;
-  border-radius: 0px !important;  
+.valuation-active-one {
+  font-weight: bold !important;
+  color: #943 !important;
 }
+
+.valuation-active-two {
+  font-weight: bold !important;
+  color: #6495ed !important;
+}
+
+.valuation-title {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.valuation-two-tootip {
+  position: relative;
+  top: -5px;
+  right: 0px;
+}
+
+.valuation-one strong {
+  color: #994433;
+}
+
+.valuation-two strong {
+  color: #6495ed;
+}
+
+
 </style>

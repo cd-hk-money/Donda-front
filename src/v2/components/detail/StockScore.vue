@@ -22,27 +22,37 @@
     </v-card-subtitle>
     <v-row>
       <v-col cols="12" xl="7">
-        <v-carousel 
-          cycle
-          hide-delimiter-background
-          hide-delimiters
-          vertical
-          interval="5000"
-          height="100%"
-          v-model="carousel"
-          :show-arrows="false"
-          v-if="!loaded"
-        >
-          <v-carousel-item>
-            <stock-score-bar-chart :height="mobile ? 250 : 200" />
-          </v-carousel-item>
-          <v-carousel-item>
-            <stock-chart 
-              class="ml-5 mr-5 mt-10"              
-              :height="mobile ? 236 : 200"
-            />
-          </v-carousel-item>
-        </v-carousel>
+        <template v-if="!loaded && !graphLoaded">
+          <v-carousel 
+            cycle
+            hide-delimiter-background
+            hide-delimiters
+            vertical
+            interval="5000"
+            height="100%"
+            v-model="carousel"
+            :show-arrows="false"            
+          >
+            <v-carousel-item>
+              <stock-score-bar-chart 
+                :height="200" />
+            </v-carousel-item>
+            <v-carousel-item>
+              <stock-chart 
+                class="ml-5 mr-5 mt-10"              
+                :height="200" />
+                
+            </v-carousel-item>
+          </v-carousel>
+        </template>
+        <template v-else>
+          <div class="text-center stockinfo-progress-circular">
+            <v-progress-circular
+              indeterminate
+              color="#40E0D0"
+            ></v-progress-circular>
+          </div>
+        </template>
       </v-col>      
       <v-divider vertical></v-divider>
 
@@ -112,6 +122,9 @@ export default class StockScore extends Vue {
   @StockStoreModule.State('stockLoaded')
   loaded!: boolean
 
+  @StockStoreModule.State('stockGraphDefaultLoaded')
+  graphLoaded!: boolean
+
   @StockStoreModule.Action('getStockGraphDefault')
   getStockGraphDefault!: (name: string) => Promise<void>
 
@@ -125,9 +138,15 @@ export default class StockScore extends Vue {
 }
 </script>
 
-<style>
-  #date {
-    margin-left: 180px;
-    font-size: 13px;
-  }
+<style scoped>
+#date {
+  margin-left: 180px;
+  font-size: 13px;
+}
+
+.stockinfo-progress-circular {
+  top: 50%;
+  left: 30%;  
+  position: absolute;
+}
 </style>

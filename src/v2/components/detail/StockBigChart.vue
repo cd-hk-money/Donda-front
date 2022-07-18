@@ -102,10 +102,10 @@ export default class StockBigChart extends Vue {
       const y = scales['y-axis-0']        
       const min = chart.config.options.scales.xAxes[0].ticks.min
       const currentDatas = data.datasets[0].data.slice(chart.config.data.labels.indexOf(min))
-                
-      const startingPoint = meanStockData(currentDatas).toFixed(0).toLocaleString()
+      const meanStock = meanStockData(currentDatas) ?? 0
+      const startingPoint = meanStock.toFixed(0).toLocaleString() ?? 0
 
-      if(chart.data.datasets[0].fill) {
+      if(chart.data.datasets[0].fill && startingPoint > 0) {
         const gradientBorder = ctx.createLinearGradient(0, 0, 0, bottom)
         const shift = y.getPixelForValue(meanStockData(currentDatas)) / bottom        
 
@@ -371,6 +371,7 @@ export default class StockBigChart extends Vue {
     // 거래량 옵션이 설정되어있으면 애니메이션 삭제, 설정되어있으면 거래량 데이터 푸시
     else {      
       if(this.volume && this.chartOptions.scales.yAxes.length !== 2) {
+        console.log('re')
         const data = Object.values(this.stockGraphVolume)
         this.chartOptions.scales.yAxes.push({
           id: 'volume',
@@ -378,7 +379,7 @@ export default class StockBigChart extends Vue {
           position: 'right',
           ticks: {
             min: 0,
-            max: 10000000,
+            max: 100000000,
             display: false
           },
           gridLines: {

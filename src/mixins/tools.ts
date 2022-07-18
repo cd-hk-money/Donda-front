@@ -30,16 +30,19 @@ export function convertChartData(keys: string[], value: string[], label: string[
 }
 
 export function meanStockData(arg: number[]): number {
-  return arg.reduce((acc, cur, index) => acc + cur) / arg.length
+  if(arg.length === 0 ) return
+  return arg.reduce((acc, cur, index) => acc + cur) / arg.length ?? 0
 }
 
 export function maxStockData(arg: number[] | number): number {
   if(typeof arg === 'number') return 
-  return arg.reduce((acc, cur, index) => acc < cur ? cur : acc )
+  if(arg.length === 0 ) return
+  return arg.reduce((acc, cur, index) => acc < cur ? cur : acc ) ?? 0
 }
 
 export function minStockData(arg: number[] | number): number {
   if(typeof arg === 'number') return 
+  if(arg.length === 0 ) return
   return arg.reduce((acc, cur, index) => acc > cur ? cur : acc )
 }
 

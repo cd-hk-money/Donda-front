@@ -1,6 +1,5 @@
 <template>
     <v-card 
-      v-intersect="onIntersect"      
       class="ml-5 mr-5 mt-5"
       height="340"
       width="95%"
@@ -21,63 +20,71 @@
       <v-card-subtitle class="ml-5">
         각 보조지표의 수치를 보여줍니다.  
       </v-card-subtitle>
-    <v-responsive>
-      <v-carousel 
-        cycle
-        hide-delimiter-background
-        show-arrows-on-hover
-        hide-delimiters
-        interval="10000000"
-        height="280"
-        v-if="!loaded && isIntersecting"
-        >
-  
-        <v-carousel-item >          
-          <div class="d-flex justify-center align-center">
-            <v-card 
-              width="250"
-              height="250"
-              elevation="0"
-              class="d-flex justify-center align-center">
-              <stock-indicator-chart 
-                :chartData="indicator"
-                :height="250"      
-              />              
-            </v-card>      
-          </div>        
-        </v-carousel-item>
-  
-        <v-carousel-item>        
-          <div class="d-flex justify-center align-center">
-            <v-card 
-              width="250"
-              height="250"
-              elevation="0"
-              class="d-flex justify-center align-center"
-            >                                
-              <stock-indicator-bar-chart 
-                type="eps"
-                :chartData="indicator.eps"
-                :width="150"
-                :height="200"      
-              />              
-              <stock-indicator-bar-chart
-                type="bps"
-                :chartData="indicator.bps"
-                :width="150"
-                :height="200"      
-              />              
-              <stock-indicator-bar-chart 
-                type="roe"
-                :chartData="indicator.roe"
-                :width="150"
-                :height="200"      
-              />                          
-            </v-card>              
-          </div>          
-        </v-carousel-item>
-      </v-carousel>
-    </v-responsive>
+      <v-responsive>
+        <template v-if="!loaded">
+          <v-carousel 
+            cycle
+            hide-delimiter-background
+            show-arrows-on-hover
+            hide-delimiters
+            interval="10000000"
+            height="280"        
+          >
+            <v-carousel-item >          
+              <div class="d-flex justify-center align-center">
+                <v-card 
+                  width="250"
+                  height="250"
+                  elevation="0"
+                  class="d-flex justify-center align-center">
+                  <stock-indicator-chart 
+                    :chartData="indicator"
+                    :height="250"      
+                  />              
+                </v-card>      
+              </div>        
+            </v-carousel-item>
+      
+            <v-carousel-item>        
+              <div class="d-flex justify-center align-center">
+                <v-card 
+                  width="250"
+                  height="250"
+                  elevation="0"
+                  class="d-flex justify-center align-center"
+                >                                
+                  <stock-indicator-bar-chart 
+                    type="eps"
+                    :chartData="indicator.eps"
+                    :width="150"
+                    :height="200"      
+                  />              
+                  <stock-indicator-bar-chart
+                    type="bps"
+                    :chartData="indicator.bps"
+                    :width="150"
+                    :height="200"      
+                  />              
+                  <stock-indicator-bar-chart 
+                    type="roe"
+                    :chartData="indicator.roe"
+                    :width="150"
+                    :height="200"      
+                  />                          
+                </v-card>              
+              </div>          
+            </v-carousel-item>
+          </v-carousel>
+        </template>
+        <template v-else>
+          <div class="text-center stockinfo-progress-circular">
+            <v-progress-circular
+              indeterminate
+              color="#40E0D0"
+            ></v-progress-circular>
+          </div>
+        </template>
+      </v-responsive>
       <v-overlay 
         :value="overlay"
         opacity="0.88"
@@ -118,7 +125,6 @@ const StockStoreModule = namespace('StockStore')
 export default class StockIndicator extends Vue {
 
   overlay = false
-  isIntersecting: false
 
   @StockStoreModule.State('indicatorLoaded')
   loaded!: boolean
@@ -129,12 +135,17 @@ export default class StockIndicator extends Vue {
   @StockStoreModule.Action('getStockIndicator')
   readonly getStockIndicator!: (name: string) => Promise<void>
 
-  onIntersect (entries, observer) {
-    this.isIntersecting = entries[0].isIntersecting    
-  }
-
+  
   created () {
     this.getStockIndicator(this.$route.params.title)
   }
 }
 </script> 
+
+<style scoped>
+.stockinfo-progress-circular {
+  bottom: -100px;
+  left: 30%;
+
+}
+</style>

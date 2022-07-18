@@ -262,7 +262,8 @@ export default class MenuBar extends Vue {
       }
     },
     {
-      title: '알림 확인'
+      title: '알림 확인',
+      callback: () => { null }
     },
     {
       title: '알림 설정',

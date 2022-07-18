@@ -13,6 +13,8 @@
     <v-card-subtitle class="ml-5">
        종목 관련 뉴스를 보여줍니다.
     </v-card-subtitle>
+
+    <v-divider></v-divider>
     
     <v-card-text v-if="!loaded">
       <v-list two-line>
@@ -26,11 +28,15 @@
           <v-list-item-content>
             <v-list-item-title class="font-weight-bold"> {{ news.subject }} </v-list-item-title>
             <v-divider></v-divider>
-            
-            <v-list-item-subtitle>
-            </v-list-item-subtitle>            
-            <v-list-tile-content class="news-card-content"> {{ news.summary.split('|')[0].split('...')[0] + '...' }} </v-list-tile-content> 
-            <v-list-tile-action class="news-card-action"> {{ news.summary.split('|')[1].slice(0, 11) }} | {{ news.summary.split('|')[0].split('...')[1] }}</v-list-tile-action>
+                        
+            <v-list-item-content class="news-card-content"> 
+              {{ news.summary.split('|')[0].split('...')[0] + '...' }} 
+            </v-list-item-content> 
+            <v-list-item-action class="news-card-action">               
+              {{ news.summary.split('|')[1].slice(0, 11) }} /
+              {{ news.summary.split('|')[1].slice(11, 16) }} / 
+              {{ news.summary.split('|')[0].split('...').at(-1) }}
+            </v-list-item-action>
           </v-list-item-content>          
         </v-list-item>
       </v-list>
@@ -65,7 +71,7 @@ export default class StockNews extends Vue {
   async mounted() {    
     await this.getStockNews(this.$route.params.title)
   }
-  
+    
   onClickRedirect (url: string) {
     window.open(url, '_blank')
   }
@@ -76,12 +82,13 @@ export default class StockNews extends Vue {
 .news-card-action {
   position: absolute;
   right: 0px;
-  bottom: 3px;
+  bottom: -10px;
+  font-size: 13px;
   opacity: .7; 
 }
 
 .news-card-content {
- opacity: .8; 
+ opacity: .9; 
 }
 
 .news-list-item {

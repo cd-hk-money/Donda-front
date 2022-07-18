@@ -18,6 +18,9 @@ export default class StockChart extends Vue {
 
   @Prop({default: false})
   fill!: boolean
+
+  @Prop()
+  height!: number
   
   @Prop()
   chartData!: never
@@ -117,7 +120,8 @@ export default class StockChart extends Vue {
 
   renderLineChart () {    
     this.applyDefaultChartOptions()
-    this.renderChart(this.createChartData(), this.chartOptions)    
+    this.renderChart(this.createChartData(), this.chartOptions)  
+    console.log('rendered')  
   }
 
   mounted () {    
