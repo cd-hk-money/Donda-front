@@ -45,6 +45,7 @@
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator'
 import { IMenu } from '@/v2/pages/MenuBar.vue'
+import { mobileHeight } from '@/mixins/tools'
 
 import StockInfo from '@/v2/components/detail/StockInfo.vue'
 import StockChart from '@/v2/components/detail/Stock.vue'
@@ -92,8 +93,13 @@ export default class DetailV2 extends Vue {
     this.drawer = 0
   }
 
-  drawerChange (val) {
+  drawerChange (val: any) {    
+    if(this.$vuetify.breakpoint.name === 'xs') {
+      window.scrollTo(0, 1300)
+    }
     this.drawer = val
+    
+
   }
 
   forceRender() {
@@ -105,6 +111,7 @@ export default class DetailV2 extends Vue {
   }  
 
   created () {
+    window.scrollTo(0, 0)
     this.stockLoad(this.$route.params.title)
   }
 }

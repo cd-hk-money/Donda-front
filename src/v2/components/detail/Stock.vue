@@ -2,8 +2,8 @@
   <v-card     
     class="mt-8 ml-5 mr-5 mb-5"
     height="870"
-    rounded="xl"
-    width="95%"                  
+    outlined
+    width="94%"                  
   >
     <v-card-title>
       주가
@@ -121,7 +121,7 @@ export default class Stock extends Vue {
       icon: 'mdi-chart-bar',
       callback: () => this.changeChartOptions({
         volumeEnable: !this.getVolumeEnable()
-      }),
+      }),      
       enable: this.volumeEnable,
     },
     {
@@ -140,10 +140,10 @@ export default class Stock extends Vue {
     })         
   }
 
-  async mounted () {
+  mounted () {
     const title = this.$route.params.title
-    await this.getStockGraphDefault(title)  
-    await this.getStockGraphAll(title)
+    this.getStockGraphDefault(title)  
+    this.getStockGraphAll(title)
   }
   
 }

@@ -1,9 +1,9 @@
 <template>
   <v-card 
     class="ml-5 mr-5 mt-7"
-    :height="mobile ? 600 : 260"
+    :height="cardHeight"
     outlined    
-    width="95%"
+    width="94%"
   >
     <v-card-title class="ml-5">
       적정주가
@@ -117,6 +117,10 @@ export default class StockScore extends Vue {
 
   get mobile () {
     return mobileHeight(this.$vuetify.breakpoint.name) < 500
+  }
+
+  get cardHeight (): number {
+    return this.$vuetify.breakpoint.name === 'xs' ? 600 : 260
   }
 
   @StockStoreModule.State('stockLoaded')

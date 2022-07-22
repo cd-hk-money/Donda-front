@@ -18,7 +18,7 @@
     
     <stock-valuation-chart 
       class="mt-2 ml-2 mr-2"
-      :height="100"
+      :height="chartHeight"
       v-if="!loaded"
     />
 
@@ -140,6 +140,10 @@ export default class StockValuation extends Vue {
   roe = {
     date: ['3', '6', '9', '12'],
     datas: [1, 2, 3, 4]
+  }
+
+  get chartHeight (): number {
+    return this.$vuetify.breakpoint.name === 'xs' ? 350 : 100
   }
 
   @Watch('tab')

@@ -1,8 +1,8 @@
 <template>
   <v-card 
-    :class="['ml-5', mobile ? 'mt-15' : 'mt-5']"    
-    :height="mobile ? 410 : 240"
-    width="95%"
+    :class="['ml-5', mobile ? 'stock-info-mobile' : 'mt-5']"    
+    :height="mobile ? 240 : 240"
+    width="94%"
     outlined   
     elevation="0"    
   >    
@@ -118,8 +118,9 @@
                   width="auto"
                   max-height="100%"          
                   v-on="on"
+                  v-show="!mobile"
                 >          
-                  <v-sparkline 
+                  <v-sparkline                     
                     class="pl-2 pr-2 pt-2"
                     color="#40E0D0"
                     line-width="5"
@@ -226,5 +227,9 @@ export default class StockInfo extends Vue {
   left: 50%;
   right: 50%;
   position: absolute;
+}
+
+.stock-info-mobile {
+  margin-top: 100px;
 }
 </style>

@@ -2,7 +2,7 @@
     <v-card 
       class="ml-5 mr-5 mt-5"
       height="340"
-      width="95%"
+      width="94%"
       outlined
     >     
       <v-card-title class="ml-5">

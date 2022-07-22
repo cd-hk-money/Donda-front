@@ -145,9 +145,7 @@ export default class StockValuationChart extends Vue {
   }
 
   mounted () {    
-    this.renderLineChart()   
-    console.log('val chart load') 
-    
+    this.renderLineChart()       
   }
 }
 </script>
