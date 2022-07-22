@@ -50,10 +50,17 @@
         돈다 지수
       </v-tab>
       <v-tab active-class="valuation-active-one">        
-        EPS-ROE
+        <v-badge overlab color="grey" content="분기">
+          EPS-ROE
+        </v-badge>   
       </v-tab>
-      <v-tab active-class="valuation-active-two">        
-        S-RIM
+      <v-tab active-class="valuation-active-two">   
+        <v-badge overlab color="grey" content="분기">
+          S-RIM          
+        </v-badge>     
+      </v-tab>
+      <v-tab active-class="valuation-active-three">        
+        PER 방법
       </v-tab>
 
       <v-tab-item>
@@ -73,10 +80,11 @@
               <strong>EPS</strong>와 <strong>ROE</strong>를 활용한 적정 주가 계산 공식입니다.
             </p>
             <p class="text-h5 blue--text">
-              <math-jax :latex="'$$EPS = {순이익 \\over 주식수} = 1주당순이익$$'"/>
+              <!-- <math-jax :latex="'$$EPS = {순이익 \\over 주식수} = 1주당순이익$$'"/> -->
             </p>
             <p class="text-h5 blue--text">
-              <math-jax :latex="'$$ROE = {순이익 \\over 자기자본} = 자기자본이익률$$'"/>
+              <v-divider vertical></v-divider>
+              <!-- <math-jax :latex="'$$ROE = {순이익 \\over 자기자본} = 자기자본이익률$$'"/> -->
             </p>
             <div>              
             </div>            
@@ -94,6 +102,7 @@
                에서 제시한 <strong>RIM 모델</strong>을 활용한 주가 계산 공식입니다.
           </v-card-text>
         </v-card>
+        <v-divider vertical></v-divider>
       </v-tab-item>
     </v-tabs>
 
@@ -120,8 +129,18 @@ export default class StockValuation extends Vue {
   loaded!: boolean
 
   tab = 0
-  colors: string[] = ['#ff6384', '#994433', '#6495ed']
+  colors: string[] = ['#ff6384', '#994433', '#6495ed', '#800080']
   formula = '$$x = {-b \\pm \\sqrt{b^2-4ac} \\over 2a}.$$'
+
+  v = {
+    roe: [1,2,3,4,5,6,7,7,8,],    
+    's-rim': [1,2,3,4,5,8,9],
+  }
+
+  roe = {
+    date: ['3', '6', '9', '12'],
+    datas: [1, 2, 3, 4]
+  }
 
   @Watch('tab')
   watchTab() {
@@ -180,6 +199,11 @@ export default class StockValuation extends Vue {
   color: #6495ed !important;
 }
 
+.valuation-active-three {
+  font-weight: bold !important;
+  color: #800080 !important;
+}
+
 .valuation-title {
   font-weight: bold;
   font-size: 20px;
@@ -197,6 +221,10 @@ export default class StockValuation extends Vue {
 
 .valuation-two strong {
   color: #6495ed;
+}
+
+.valuation-three strong {
+  color: #800080;
 }
 
 

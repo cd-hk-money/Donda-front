@@ -19,7 +19,7 @@
     <v-card-text v-if="!loaded">
       <v-list two-line>
         <v-list-item 
-          class="mb-3 news-list-item"
+          class="mb-10 news-list-item"
           link          
           v-for="(news, i) in newses"
           :key="i"
@@ -29,10 +29,10 @@
             <v-list-item-title class="font-weight-bold"> {{ news.subject }} </v-list-item-title>
             <v-divider></v-divider>
                         
-            <v-list-item-content class="news-card-content"> 
+            <v-list-item-content class="news-card-content">               
               {{ news.summary.split('|')[0].split('...')[0] + '...' }} 
             </v-list-item-content> 
-            <v-list-item-action class="news-card-action">               
+            <v-list-item-action class="news-card-action mt-10 mr-3">               
               {{ news.summary.split('|')[1].slice(0, 11) }} /
               {{ news.summary.split('|')[1].slice(11, 16) }} / 
               {{ news.summary.split('|')[0].split('...').at(-1) }}
@@ -88,11 +88,11 @@ export default class StockNews extends Vue {
 }
 
 .news-card-content {
- opacity: .9; 
+ opacity: 1; 
 }
 
 .news-list-item {
-  height: 100px !important;
+  height: 120px !important;
 }
 </style>
 

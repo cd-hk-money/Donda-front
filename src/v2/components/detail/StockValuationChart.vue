@@ -69,7 +69,7 @@ export default class StockValuationChart extends Vue {
     }
 
     this.chartOptions.animation = {
-      duration: 2000,
+      duration: 500,
       easing: 'easeOutBounce'
     }
     
