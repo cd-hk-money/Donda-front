@@ -21,22 +21,14 @@ const END_LABEL_INDEX = 23
 })
 export default class StockFinanceLineChart extends Vue {
 
-  @Prop()
-  chartData!: null
-
-  @Prop()
-  type!: string
-
-  @Prop()
-  title!: string
+  @Prop() chartData!: null
+  @Prop() type!: string
+  @Prop() title!: string
 
   chartOptions: Chart.ChartOptions = {}
 
-  @StockStoreModule.Action('getStockStatementAll')
-  readonly getStockStatementAll!: (name: string) => Promise<void>
-
-  @StockStoreModule.State('statementAll')
-  statementAll!: ISimpleChartData
+  @StockStoreModule.Action('getStockStatementAll') readonly getStockStatementAll!: (name: string) => Promise<void>
+  @StockStoreModule.State('statementAll') statementAll!: ISimpleChartData
 
   applyDefaultOptions() {
     this.chartOptions.maintainAspectRatio = true

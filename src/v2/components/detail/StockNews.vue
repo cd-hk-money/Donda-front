@@ -50,26 +50,17 @@
 import { Component, Vue} from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 
-const NEWS_COUNT = 12
-
 const StockStoreModule = namespace('StockStore')
 
 @Component
 export default class StockNews extends Vue {
 
-  newsAll = [...new Array(NEWS_COUNT)].map((_, i) => `뉴스 ${i}`)
+  @StockStoreModule.State('newsLoaded') loaded!: boolean
+  @StockStoreModule.State('news') newses: any[]
+  @StockStoreModule.Action('getStockNews') getStockNews!: (name: string ) => Promise<void>
 
-  @StockStoreModule.State('newsLoaded')
-  loaded!: boolean
-
-  @StockStoreModule.Action('getStockNews')
-  getStockNews!: (name: string ) => Promise<void>
-
-  @StockStoreModule.State('news')
-  newses: any[]
-
-  async mounted() {    
-    await this.getStockNews(this.$route.params.title)
+  mounted() {    
+    this.getStockNews(this.$route.params.title)
   }
     
   onClickRedirect (url: string) {

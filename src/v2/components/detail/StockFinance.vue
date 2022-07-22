@@ -128,24 +128,13 @@ export default class StockFinance extends Vue {
   }
 
 
-  @StockStoreModule.State('statement')
-  statement!: ISimpleChartData
+  @StockStoreModule.State('statement') statement!: ISimpleChartData
+  @StockStoreModule.State('statementTypes') statementTypes!: string[]
+  @StockStoreModule.State('statementLoaded') loaded!: boolean
+  @StockStoreModule.State('statementAll') statementAll!: ISimpleChartData
 
-
-  @StockStoreModule.State('statementTypes')
-  statementTypes!: string[]
-
-  @StockStoreModule.State('statementLoaded')
-  loaded!: boolean
-
-  @StockStoreModule.State('statementAll')
-  statementAll!: ISimpleChartData
-
-  @StockStoreModule.Action('getStockStatement')
-  readonly getStockStatement!: (name: string) => Promise<void>
-
-  @StockStoreModule.Action('getStockStatementAll')
-  readonly getStockStatementAll!: (name: string) => Promise<void>
+  @StockStoreModule.Action('getStockStatement') readonly getStockStatement!: (name: string) => Promise<void>
+  @StockStoreModule.Action('getStockStatementAll') readonly getStockStatementAll!: (name: string) => Promise<void>
 
   created() {        
     this.getStockStatement(this.title).then(() => {

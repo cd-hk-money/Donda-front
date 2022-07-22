@@ -34,14 +34,10 @@
             :show-arrows="false"            
           >
             <v-carousel-item>
-              <stock-score-bar-chart 
-                :height="200" />
+              <stock-score-bar-chart :height="230" />
             </v-carousel-item>
             <v-carousel-item>
-              <stock-chart 
-                class="ml-5 mr-5 mt-10"              
-                :height="200" />
-                
+              <stock-chart :height="230" />                
             </v-carousel-item>
           </v-carousel>
         </template>
@@ -56,7 +52,7 @@
       </v-col>      
       <v-divider vertical></v-divider>
 
-      <v-col cols="12" xl="5" lg="5" sm="12" md="12" class="text-center align-center mt-7">
+      <v-col cols="12" xl="5" lg="5" sm="12" md="12" xs="12" class="text-center align-center mt-3">
         <div class="text-h4">20%</div>
         <div> 저평가 되었습니다.</div>
         <v-tooltip bottom>
@@ -112,30 +108,26 @@ const StockStoreModule = namespace('StockStore')
   }
 })
 export default class StockScore extends Vue {
+
+  // datas
   overlay = false
   carousel = 0
 
-  get mobile () {
-    return mobileHeight(this.$vuetify.breakpoint.name) < 500
-  }
+  // store
+  @StockStoreModule.State('stockLoaded') loaded!: boolean
+  @StockStoreModule.State('stockGraphDefaultLoaded') graphLoaded!: boolean
+  @StockStoreModule.Action('getStockGraphDefault') readonly getStockGraphDefault!: (name: string) => Promise<void>
 
-  get cardHeight (): number {
-    return this.$vuetify.breakpoint.name === 'xs' ? 600 : 260
-  }
+  // computed
+  get mobile () { return mobileHeight(this.$vuetify.breakpoint.name) < 500 }
+  get cardHeight (): number { return this.$vuetify.breakpoint.name === 'xs' ? 500 : 260 }
 
-  @StockStoreModule.State('stockLoaded')
-  loaded!: boolean
-
-  @StockStoreModule.State('stockGraphDefaultLoaded')
-  graphLoaded!: boolean
-
-  @StockStoreModule.Action('getStockGraphDefault')
-  getStockGraphDefault!: (name: string) => Promise<void>
-
+  // methods
   drawerChange () {
     this.$emit('drawerChange', 3)
   }
 
+  // hooks
   created () {
     this.getStockGraphDefault(this.$route.params.title)    
   }

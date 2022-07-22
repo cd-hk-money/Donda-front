@@ -24,7 +24,6 @@
       height="50"
       class="d-flex justify-end align-center"
     > 
-
       <v-btn
         v-for="(menu, i) in menus"
         :key="i"
@@ -67,20 +66,12 @@ const StockStoreModule = namespace('StockStore')
 })
 export default class Stock extends Vue {
   
-  @StockStoreModule.State('stock')
-  stock!: IStockModel
-
-  @StockStoreModule.State('stockGraphAllLoaded')
-  loaded!: boolean
-
-  @StockStoreModule.State('stockGraphAllFlag')
-  flag!: boolean
+  @StockStoreModule.State('stock') stock!: IStockModel
+  @StockStoreModule.State('stockGraphAllLoaded') loaded!: boolean
+  @StockStoreModule.State('stockGraphAllFlag') flag!: boolean  
   
-  @StockStoreModule.Action('getStockGraphAll')
-  getStockGraphAll!: (name: string) => Promise<void>
-
-  @StockStoreModule.Action('getStockGraphDefault')
-  getStockGraphDefault!: (name: string) => Promise<void>
+  @StockStoreModule.Action('getStockGraphAll') getStockGraphAll!: (name: string) => Promise<void>
+  @StockStoreModule.Action('getStockGraphDefault') getStockGraphDefault!: (name: string) => Promise<void>
   
   count = 20
   dateOverlay = false
@@ -91,9 +82,7 @@ export default class Stock extends Vue {
     const content = this.menus.find((menu: IMenu) => menu.title === 'gradient')
     content.enable = !content.enable
   }
-  getGradient () {
-    return this.gradientEnable
-  }
+  getGradient () { return this.gradientEnable }
 
   volumeEnable = false
   @Watch('volumeEnable')
@@ -102,9 +91,7 @@ export default class Stock extends Vue {
     content.enable = !content.enable
   }
 
-  getVolumeEnable () {
-    return this.volumeEnable
-  }
+  getVolumeEnable () { return this.volumeEnable }
   
   
   menus: IMenu[] = [    

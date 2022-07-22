@@ -16,16 +16,13 @@ const SUB_COLOR = 'rgb(255, 99, 132)'
 })
 export default class StockValuationChart extends Vue {
 
-  @Prop({default: false})
-  fill!: boolean
-  
-  @Prop()
-  chartData!: any
-
-  @StockStoreModule.State('stockGraphDefault')
-  stockGraphDefault!: any
-
   chartOptions: Chart.ChartOptions = {}
+  
+  @Prop({default: false}) fill!: boolean  
+  @Prop() chartData!: any
+
+  @StockStoreModule.State('stockGraphDefault') stockGraphDefault!: any
+
 
   // methods  
   renderChart!: (chartData: any, options: any) => any

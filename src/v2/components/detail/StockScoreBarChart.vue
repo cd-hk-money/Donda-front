@@ -20,14 +20,12 @@ const SUB_COLOR = 'rgb(255, 99, 132)'
 })
 export default class StockScoreBarChart extends Vue {
 
-  @Prop()
-  chartData!: null
-
-  @StockStoreModule.State('stock')
-  stock!: IStockModel
-  
   chartOptions: Chart.ChartOptions = {}
 
+  @Prop() chartData!: null
+
+  @StockStoreModule.State('stock') stock!: IStockModel
+  
   applyDefaultOptions() {
     this.chartOptions.maintainAspectRatio = true
     this.chartOptions.responsive = true

@@ -126,16 +126,11 @@ export default class StockIndicator extends Vue {
 
   overlay = false
 
-  @StockStoreModule.State('indicatorLoaded')
-  loaded!: boolean
+  @StockStoreModule.State('indicatorLoaded') loaded!: boolean
+  @StockStoreModule.State('indicator') indicator!: ISimpleChartData
 
-  @StockStoreModule.State('indicator')
-  indicator!: ISimpleChartData
+  @StockStoreModule.Action('getStockIndicator') readonly getStockIndicator!: (name: string) => Promise<void>
 
-  @StockStoreModule.Action('getStockIndicator')
-  readonly getStockIndicator!: (name: string) => Promise<void>
-
-  
   created () {
     this.getStockIndicator(this.$route.params.title)
   }

@@ -17,8 +17,7 @@ const SUB_COLOR = 'rgb(255, 99, 132)'
 })
 export default class StockIndicatorChart extends Vue {
   
-  @Prop({default: {}})
-  chartData!: ISimpleChartData
+  @Prop({default: {}}) chartData!: ISimpleChartData
 
   chartOptions: Chart.ChartOptions = {}
 

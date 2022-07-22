@@ -75,14 +75,9 @@ import { StockRecommendModel } from '@/models/stock'
 export default class StockSimilar extends Vue {
   overlay = false
 
-  @MarketStoreModule.State('recommend')
-  recommend!: StockRecommendModel[]
-
-  @MarketStoreModule.State('recommedLoaded')
-  loaded!: boolean
-
-  @MarketStoreModule.Action('getRecommend')
-  readonly getRecommend!: () => Promise<void>
+  @MarketStoreModule.State('recommend') recommend!: StockRecommendModel[]
+  @MarketStoreModule.State('recommedLoaded') loaded!: boolean
+  @MarketStoreModule.Action('getRecommend') readonly getRecommend!: () => Promise<void>
 
   created () {
     this.getRecommend().then(() => {

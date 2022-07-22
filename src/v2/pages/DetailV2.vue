@@ -70,10 +70,9 @@ import StockNews from '@/v2/components/detail/StockNews.vue'
 })
 export default class DetailV2 extends Vue { 
 
-  // 컴포넌트 로딩 변수
+  // Datas
   drawer = 0
-  componentKey = 1
-  
+  componentKey = 1  
   menus: IMenu[] = [
     {
       title: '주가',
@@ -93,13 +92,9 @@ export default class DetailV2 extends Vue {
     this.drawer = 0
   }
 
-  drawerChange (val: any) {    
-    if(this.$vuetify.breakpoint.name === 'xs') {
-      window.scrollTo(0, 1300)
-    }
+  drawerChange (val: any) {        
+    document.getElementById('stock-drawer').scrollIntoView()
     this.drawer = val
-    
-
   }
 
   forceRender() {

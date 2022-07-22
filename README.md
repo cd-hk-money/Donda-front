@@ -10,43 +10,15 @@
 📂store       - vuex store들을 정의합니다.
 
 📦src
+ ┣ 📂@types
+ ┃ ┣ 📂chartjs-plugin-zoom
+ ┃ ┃ ┗ 📜index.d.ts
+ ┃ ┣ 📂vue-mobile-detection
+ ┃ ┃ ┗ 📜index.d.ts
+ ┃ ┗ 📜index.d.ts
  ┣ 📂assets
  ┃ ┣ 📜logo.png
  ┃ ┗ 📜logo.svg
- ┣ 📂components
- ┃ ┣ 📂detail
- ┃ ┃ ┣ 📜DatePickers.vue
- ┃ ┃ ┣ 📜DetailChart.vue
- ┃ ┃ ┣ 📜LineChart.vue
- ┃ ┃ ┣ 📜StockAnalysis.vue
- ┃ ┃ ┣ 📜StockFinanceState.vue
- ┃ ┃ ┣ 📜StockFinanceStateChart.vue
- ┃ ┃ ┣ 📜StockInfo.vue
- ┃ ┃ ┗ 📜TermSelect.vue
- ┃ ┣ 📂market
- ┃ ┃ ┣ 📜MarketCarousel.vue
- ┃ ┃ ┣ 📜MarketChart.vue
- ┃ ┃ ┗ 📜MarketDesc.vue
- ┃ ┣ 📂news
- ┃ ┃ ┗ 📜NewsContent.vue
- ┃ ┣ 📂recommend
- ┃ ┃ ┗ 📜RecommentContent.vue
- ┃ ┣ 📂similar
- ┃ ┃ ┗ 📜SimilarContent.vue
- ┃ ┗ 📂translist
- ┃ ┃ ┣ 📜SortDialog.vue
- ┃ ┃ ┣ 📜TopScroll.vue
- ┃ ┃ ┗ 📜TransListContents.vue
- ┣ 📂layout
- ┃ ┣ 📜AppBar.vue
- ┃ ┣ 📜Error.vue
- ┃ ┣ 📜Market.vue
- ┃ ┣ 📜News.vue
- ┃ ┣ 📜Recommend.vue
- ┃ ┣ 📜SideBar.vue
- ┃ ┣ 📜Similar.vue
- ┃ ┣ 📜StockDetail.vue
- ┃ ┗ 📜TransList.vue
  ┣ 📂mixins
  ┃ ┣ 📜tools.ts
  ┃ ┗ 📜TopListMixin.vue
@@ -57,12 +29,6 @@
  ┃ ┣ 📜payload.ts
  ┃ ┣ 📜stock.ts
  ┃ ┗ 📜user.ts
- ┣ 📂pages
- ┃ ┣ 📜Change.vue
- ┃ ┣ 📜Detail.vue
- ┃ ┣ 📜doChart.vue
- ┃ ┣ 📜Home.vue
- ┃ ┗ 📜Trans.vue
  ┣ 📂plugins
  ┃ ┗ 📜vuetify.ts
  ┣ 📂routes
@@ -73,7 +39,48 @@
  ┃ ┣ 📜index.ts
  ┃ ┣ 📜InterestStore.ts
  ┃ ┣ 📜MarketStore.ts
- ┃ ┗ 📜StockStore.ts
+ ┃ ┣ 📜StockStore.ts
+ ┃ ┣ 📜StockStoreV2.ts
+ ┃ ┗ 📜UserStore.ts
+ ┣ 📂v2
+ ┃ ┣ 📂components
+ ┃ ┃ ┣ 📂detail
+ ┃ ┃ ┃ ┣ 📜Stock.vue
+ ┃ ┃ ┃ ┣ 📜StockBigChart.vue
+ ┃ ┃ ┃ ┣ 📜StockChart.vue
+ ┃ ┃ ┃ ┣ 📜StockDrawer.vue
+ ┃ ┃ ┃ ┣ 📜StockFinance.vue
+ ┃ ┃ ┃ ┣ 📜StockFinanceBarChart.vue
+ ┃ ┃ ┃ ┣ 📜StockFinanceLineChart.vue
+ ┃ ┃ ┃ ┣ 📜StockIndicator.vue
+ ┃ ┃ ┃ ┣ 📜StockIndicatorBarChart.vue
+ ┃ ┃ ┃ ┣ 📜StockIndicatorChart.vue
+ ┃ ┃ ┃ ┣ 📜StockInfo.vue
+ ┃ ┃ ┃ ┣ 📜StockMarcapChart.vue
+ ┃ ┃ ┃ ┣ 📜StockNews.vue
+ ┃ ┃ ┃ ┣ 📜StockScore.vue
+ ┃ ┃ ┃ ┣ 📜StockScoreBarChart.vue
+ ┃ ┃ ┃ ┣ 📜StockSimilar.vue
+ ┃ ┃ ┃ ┣ 📜StockSimilarContents.vue
+ ┃ ┃ ┃ ┣ 📜StockValuation.vue
+ ┃ ┃ ┃ ┗ 📜StockValuationChart.vue
+ ┃ ┃ ┣ 📂home
+ ┃ ┃ ┃ ┣ 📜Market.vue
+ ┃ ┃ ┃ ┣ 📜MarketChart.vue
+ ┃ ┃ ┃ ┣ 📜MarketDesc.vue
+ ┃ ┃ ┃ ┣ 📜MarketTrend.vue
+ ┃ ┃ ┃ ┗ 📜StockRecommend.vue
+ ┃ ┃ ┗ 📂rank
+ ┃ ┃ ┃ ┣ 📜RankComponent.vue
+ ┃ ┃ ┃ ┗ 📜RankContents.vue
+ ┃ ┗ 📂pages
+ ┃ ┃ ┣ 📜AppBar.vue
+ ┃ ┃ ┣ 📜DetailV2.vue
+ ┃ ┃ ┣ 📜HomeV2.vue
+ ┃ ┃ ┣ 📜InterestToggle.vue
+ ┃ ┃ ┣ 📜MenuBar.vue
+ ┃ ┃ ┣ 📜RankV2.vue
+ ┃ ┃ ┗ 📜SideBar.vue
  ┣ 📜App.vue
  ┣ 📜main.ts
  ┣ 📜shims-tsx.d.ts

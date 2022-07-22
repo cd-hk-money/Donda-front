@@ -19,8 +19,7 @@ const SUB_COLOR = 'rgb(255, 99, 132)'
 })
 export default class StockScoreBarChart extends Vue {
 
-  @Prop()
-  type!: string
+  @Prop() type!: string
 
   chartData!: IStockStatementBarChartModel
   chartOptions: Chart.ChartOptions = {}

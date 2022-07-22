@@ -25,7 +25,6 @@
     <v-divider></v-divider>
 
       
-    <v-card-content>
 
       <!-- <v-card
         class="ml-5 mr-5 mt-5 d-flex"
@@ -104,9 +103,16 @@
         </v-card>
         <v-divider vertical></v-divider>
       </v-tab-item>
+
+      <v-tab-item>
+        <v-card flat>
+          <v-card-text>
+            PER 방법.
+          </v-card-text>
+        </v-card>
+      </v-tab-item>
     </v-tabs>
 
-    </v-card-content>
   </v-card>
 </template>
 
@@ -125,13 +131,9 @@ const StockStoreModule = namespace('StockStore')
 })
 export default class StockValuation extends Vue {
   
-  @StockStoreModule.State('stockGraphDefaultLoaded')
-  loaded!: boolean
-
   tab = 0
   colors: string[] = ['#ff6384', '#994433', '#6495ed', '#800080']
   formula = '$$x = {-b \\pm \\sqrt{b^2-4ac} \\over 2a}.$$'
-
   v = {
     roe: [1,2,3,4,5,6,7,7,8,],    
     's-rim': [1,2,3,4,5,8,9],
@@ -142,13 +144,11 @@ export default class StockValuation extends Vue {
     datas: [1, 2, 3, 4]
   }
 
+  @StockStoreModule.State('stockGraphDefaultLoaded') loaded!: boolean
+
+
   get chartHeight (): number {
     return this.$vuetify.breakpoint.name === 'xs' ? 350 : 100
-  }
-
-  @Watch('tab')
-  watchTab() {
-    console.log(this.tab)
   }
 
   valuations: IValuationContent[] = [

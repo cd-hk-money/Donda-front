@@ -28,44 +28,22 @@ const zoomScale = 1
 })
 export default class StockBigChart extends Vue {
 
-  @Prop({default: false})
-  fill!: boolean
+  @Prop({default: false}) fill!: boolean
+  @Prop({default: 300}) height!: number    
+  @Prop() chartData!: never
+  @Prop({default: true}) gradient!: boolean
+  @Prop({default: false}) volume!: boolean
 
-  @Prop({default: 300})
-  height!: number
-    
-  @Prop()
-  chartData!: never
+  @StockStoreModule.State('stockGraphLength') count!: number
+  @StockStoreModule.State('stockGraphDefault') stockGraphDefault!: any
+  @StockStoreModule.State('stockGraphAll') stockGraphAll!: any
+  @StockStoreModule.State('stockGraphVolumeFlag') volumeFlag!: boolean
+  @StockStoreModule.State('stockGraphVolume') stockGraphVolume!: boolean
 
-  @Prop({default: true})
-  gradient!: boolean
-
-  @Prop({default: false})
-  volume!: boolean
-
-  @StockStoreModule.State('stockGraphLength')
-  count!: number
-
-  @StockStoreModule.State('stockGraphDefault')
-  stockGraphDefault!: any
-
-  @StockStoreModule.State('stockGraphAll')
-  stockGraphAll!: any
-
-  @StockStoreModule.Action('getStockGraphVolume')
-  getStockGraphVolume!: (name: string) => Promise<void>
-
-  @StockStoreModule.State('stockGraphVolumeFlag')
-  volumeFlag!: boolean
-
-  @StockStoreModule.State('stockGraphVolume')
-  stockGraphVolume!: boolean
-
-  @StockStoreModule.Mutation('updateState')
-  updateCount!: (payload: IUpdateStateModel) => void
+  @StockStoreModule.Action('getStockGraphVolume') getStockGraphVolume!: (name: string) => Promise<void>
+  @StockStoreModule.Mutation('updateState') updateCount!: (payload: IUpdateStateModel) => void
 
   tempCount = 20
-
 
   @Watch('count')
   watchCount() {
@@ -85,7 +63,7 @@ export default class StockBigChart extends Vue {
   getChartLabels () {
     return Object.keys(this.stockGraphAll)
   }  
-
+  
   getChartDatas (): number[] {
     return Object.values(this.stockGraphAll)
   }

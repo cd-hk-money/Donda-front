@@ -23,11 +23,10 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
   
 })
 export default class StockSimilarContent extends Vue {
-  @Prop()
-  title!: string
+
+  @Prop() title!: string  
+  @Prop() code!: number | string
   
-  @Prop()
-  code!: number | string
 }
 
 </script>

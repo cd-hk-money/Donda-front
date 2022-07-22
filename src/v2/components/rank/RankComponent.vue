@@ -190,11 +190,8 @@ export default class RankComponent extends Vue {
   @InterestStoreModule.State('bookmarked')
   bookmarked!: IInterestGroup[]
 
-  @Prop()
-  contents!: any
-
-  @Prop({default: ''})
-  title!: string  
+  @Prop() contents!: any
+  @Prop({default: ''}) title!: string  
 
   @Watch('contents')
   watchContents() {    
@@ -218,7 +215,7 @@ export default class RankComponent extends Vue {
         else if (key === 'changes_ratio') acc[key] = cur > 0 ? '+' + cur + '%' : cur + '%' 
         else acc[key] = cur        
         return acc    
-      },{})
+      }, new Object())
     )
   }
 

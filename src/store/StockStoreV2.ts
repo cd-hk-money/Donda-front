@@ -52,9 +52,9 @@ export default class StockStore extends VuexModule {
   public stockGraphAll = {}
   public stockGraphAllLoaded = false
 
+  // 거래량
   public stockGraphVolume = {}
-  public stockGraphVolumeLoaded = false
-  
+  public stockGraphVolumeLoaded = false  
   public stockGraphAllFlag = false
   public stockGraphVolumeFlag = false
 
@@ -72,6 +72,7 @@ export default class StockStore extends VuexModule {
   public indicator: ISimpleChartData = {}
   public indicatorTypes: string[] = []
 
+  // 뉴스
   public newsLoaded = false
   public news: any[] = []
 
@@ -83,7 +84,6 @@ export default class StockStore extends VuexModule {
       this[state[0]] = state[1]
     })        
   }
-  
   
   // Actions
   // 비동기 로직을 실행합니다.
@@ -102,7 +102,6 @@ export default class StockStore extends VuexModule {
         dailySimpleRanks: res.data,
         dailySimpleRanksLoaded: false
       })      
-
     } catch(e) {
       console.log(e)
     }
@@ -116,16 +115,12 @@ export default class StockStore extends VuexModule {
         stockLoaded: true
       })
 
-      console.log('start')
-
       const res = await axios.get(`/stock/${name}`, HEADER)
+
       this.context.commit('updateState', {
         stock: res.data,
         stockLoaded: false
       })
-
-      console.log('end')
-
     } catch(e) {
       console.log(e)
     }
@@ -145,7 +140,6 @@ export default class StockStore extends VuexModule {
         stockGraphDefault: res.data.origin,
         stockGraphDefaultLoaded: false
       })
-
     } catch(e) {
       console.log(e)
     }
@@ -167,7 +161,6 @@ export default class StockStore extends VuexModule {
         stockGraphAllLoaded: false,
         stockGraphAllFlag: true
       })
-
     } catch(e) {
       console.log(e)
     }
@@ -176,8 +169,7 @@ export default class StockStore extends VuexModule {
   // 종목 하나의 5년동안의 거래량 정보를 가져옵니다.
   @Action
   public async getStockGraphVolume(name: string): Promise<void> {
-    try {
-      
+    try {      
       const res = await axios.get(`/stock/${name}/years-volume`, HEADER)
       
       this.context.commit('updateState', {
@@ -185,14 +177,10 @@ export default class StockStore extends VuexModule {
         stockGraphVolumeLoaded: false,
         stockGraphVolumeFlag: true
       })
-
-
     } catch(e) {
       console.log(e)
     }
   }
-
-  
 
   // 종목 하나의 최근 4분기 보조지표를 가져옵니다.
   @Action
@@ -233,7 +221,6 @@ export default class StockStore extends VuexModule {
         statementAll: res.data.origin,
         statementAllLoaded: false
       })
-
     } catch (e) {
       console.log(e)
     }
@@ -258,12 +245,12 @@ export default class StockStore extends VuexModule {
         statement: convertChartData(keys, value, label),
         statementLoaded: false
       })
-
     } catch(e) {
       console.log(e)
     }
   }  
 
+  // 종목 하나의 관련 뉴스를 가져옵니다.
   @Action
   public async getStockNews(name: string): Promise<void> {
     try {
@@ -280,6 +267,5 @@ export default class StockStore extends VuexModule {
     } catch (e) {
       console.log(e)
     }
-  }
-  
+  }  
 }

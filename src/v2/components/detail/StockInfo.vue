@@ -86,56 +86,30 @@
   
       </v-list-item>
   
-      <v-card 
+      <v-sheet 
         elevation="0"
-        outlined
+        outlined        
         height="120"
-      >        
-        <v-divider></v-divider>    
-  
-        <v-row>
-          <v-col cols="12" xl="5" lg="5">
-            <v-card-title class="text-h5 font-weight-bold ml-5">
-              <span>{{ stock.close.toLocaleString()}} ₩</span>
-              <v-btn  
-                class="ml-3"
-                icon
-                right
-                x-small
-              ><v-icon>fa-solid fa-circle-info</v-icon>
-              </v-btn>
-            </v-card-title>
-  
-            <v-card-subtitle :class="['text-h6', 'font-weight-bold', 'ml-5', stock.changes > 0 ? 'red--text' : 'blue--text']">
-              <span>{{ stock.changes > 0 ? '+' + stock.changes : stock.changes }} ({{ stock.changes_ratio > 0 ? '+' + stock.changes_ratio : stock.changes_ratio}}%)</span>                        
-            </v-card-subtitle>                            
-          </v-col>
-          <v-col cols="12" xl="7" lg="7">
-            <v-tooltip bottom>
-              <template v-slot:activator="{on} ">
-                <v-sheet 
-                  class="mt-3 mr-5"
-                  width="auto"
-                  max-height="100%"          
-                  v-on="on"
-                  v-show="!mobile"
-                >          
-                  <v-sparkline                     
-                    class="pl-2 pr-2 pt-2"
-                    color="#40E0D0"
-                    line-width="5"
-                    smooth="100"
-                    auto-draw
-                    type="trend"
-                    :value="sparkLineValue"
-                  ></v-sparkline>              
-                </v-sheet>
-              </template>
-              <span>최근 1년간의 추이를 보여줍니다.</span>
-            </v-tooltip>
-          </v-col>
-        </v-row>
-      </v-card>
+      >                
+        <v-card-title class="text-h5 font-weight-bold ml-5">
+          <span>{{ stock.close.toLocaleString()}} ₩</span>
+          <v-btn  
+            class="ml-3"
+            icon
+            right
+            x-small
+          ><v-icon>fa-solid fa-circle-info</v-icon>
+          </v-btn>
+        </v-card-title>
+
+        <v-card-subtitle :class="['text-h6', 'font-weight-bold', 'ml-5', stock.changes > 0 ? 'red--text' : 'blue--text']">
+          <span>{{ stock.changes > 0 ? '+' + stock.changes : stock.changes }}₩ ({{ stock.changes_ratio > 0 ? '+' + stock.changes_ratio : stock.changes_ratio}}%)</span>                        
+        </v-card-subtitle>
+        
+        <div class="stock-info-date">
+          {{ stock.date }}
+        </div>
+      </v-sheet>
     </template>
     <template v-else>
       <div class="text-center stockinfo-progress-circular">
@@ -162,36 +136,23 @@ const InterestStoreModule = namespace('InterestStore')
 @Component
 export default class StockInfo extends Vue {
 
+
+  // datas
   dialog = false
   bookmarked = false
-  sparkLineValue =  [1,5,4,8,5,10,2,17]
+  
+  // StockStore
+  @StockStoreModule.State('stock') stock!: IStockModel
+  @StockStoreModule.State('stockLoaded') loaded!: boolean
+  @StockStoreModule.Action('getStock') getStock!: (name: string) => Promise<void>
 
-  @StockStoreModule.Action('getStock')
-  getStock!: (name: string) => Promise<void>
-
-  @StockStoreModule.State('stock')
-  stock!: IStockModel
-
-  @InterestStoreModule.Mutation('snackBarOpen')
-  snackBarOpen!: () => void
-
-  @StockStoreModule.State('stockLoaded')
-  loaded!: boolean
-
-  @InterestStoreModule.State('interestGroups')
-  interestGroups!: IInterestGroup[]
-
-  @InterestStoreModule.Mutation('addInterestGroupItem')
-  addInterestGroupItem!: (payload: {title: string, item: IInterestGroupItem}) => void
-
-  @InterestStoreModule.Mutation('initInterestGroup')
-  readonly initInterestGroup!: () => void
-
-  @InterestStoreModule.Mutation('removeInterestGroupItem')
-  removeInterestGroupItem!: (itemTitle: string) => void
-
-  @InterestStoreModule.State('snackBar')
-  snackBar!: boolean
+  // InterestStore
+  @InterestStoreModule.State('interestGroups') interestGroups!: IInterestGroup[]
+  @InterestStoreModule.State('snackBar') snackBar!: boolean
+  @InterestStoreModule.Mutation('snackBarOpen') snackBarOpen!: () => void
+  @InterestStoreModule.Mutation('addInterestGroupItem') addInterestGroupItem!: (payload: {title: string, item: IInterestGroupItem}) => void
+  @InterestStoreModule.Mutation('initInterestGroup') readonly initInterestGroup!: () => void
+  @InterestStoreModule.Mutation('removeInterestGroupItem') removeInterestGroupItem!: (itemTitle: string) => void
 
   activeBookmarking (group: IInterestGroup, stock: IStockModel): void {
     this.addInterestGroupItem({
@@ -218,6 +179,7 @@ export default class StockInfo extends Vue {
       
   async created () {    
     await this.getStock(this.$route.params.title)
+    console.log(this.stock)
   }  
 }
 </script>
@@ -230,6 +192,13 @@ export default class StockInfo extends Vue {
 }
 
 .stock-info-mobile {
-  margin-top: 100px;
+  margin-top: 75px;
+}
+
+.stock-info-date {
+  position: absolute;
+  bottom: -5px;
+  right: 13px;
+  opacity: .5;
 }
 </style>

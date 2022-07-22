@@ -1,5 +1,6 @@
 <template>
   <v-carousel 
+    id="stock-drawer"
     cycle
     interval="500000000"
     hide-delimiter-background
@@ -53,12 +54,12 @@ import StockValuation from '@/v2/components/detail/StockValuation.vue'
 })
 export default class StockDrawer extends Vue {
 
-  @Prop()
-  drawer!: number
-
+  // datas
   fab = false
   componentKey = 0
 
+  @Prop() drawer!: number
+  
   drawerChange(select: number) {
     this.$emit('drawerChange', select)
   }

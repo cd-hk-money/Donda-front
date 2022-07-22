@@ -162,17 +162,10 @@ export default class StockRecommend extends Vue {
   model = null
   overlay = false
 
-  @MarketStoreModule.State('recommend')
-  recommend!: StockRecommendModel[]
-
-  @MarketStoreModule.State('recommedLoaded')
-  loaded!: boolean
-
-  @MarketStoreModule.Action('getRecommend')
-  readonly getRecommend!: () => Promise<void>
-
-  @MarketStoreModule.Getter('recommendArray')
-  recommendArray!: any
+  @MarketStoreModule.State('recommend') recommend!: StockRecommendModel[]
+  @MarketStoreModule.State('recommedLoaded') loaded!: boolean
+  @MarketStoreModule.Action('getRecommend') readonly getRecommend!: () => Promise<void>
+  @MarketStoreModule.Getter('recommendArray') recommendArray!: any
 
   get mobile () {
     return mobileHeight(this.$vuetify.breakpoint.name) < 500
