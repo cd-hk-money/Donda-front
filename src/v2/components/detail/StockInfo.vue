@@ -118,7 +118,10 @@
           color="#40E0D0"
         ></v-progress-circular>
       </div>
+
     </template>
+
+    <!-- Delete SparkLine -->
   </v-card>
 </template>
 
