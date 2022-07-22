@@ -22,9 +22,9 @@
         </span>
       </template>
       <!-- 종목 코드 -->
-      <template v-slot:[`item.name`]="{ item }">        
+      <template v-slot:[`item.title`]="{ item }">        
         <span class="text-h5">
-          {{ item.name }}
+          {{ item.title }}
         </span>
         <span class="text-h6 grey--text">
           {{ item.code }}

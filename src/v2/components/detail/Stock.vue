@@ -69,7 +69,7 @@ export default class Stock extends Vue {
   @StockStoreModule.State('stock') stock!: IStockModel
   @StockStoreModule.State('stockGraphAllLoaded') loaded!: boolean
   @StockStoreModule.State('stockGraphAllFlag') flag!: boolean  
-  
+
   @StockStoreModule.Action('getStockGraphAll') getStockGraphAll!: (name: string) => Promise<void>
   @StockStoreModule.Action('getStockGraphDefault') getStockGraphDefault!: (name: string) => Promise<void>
   

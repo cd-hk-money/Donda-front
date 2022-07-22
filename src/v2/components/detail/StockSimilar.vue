@@ -29,7 +29,7 @@
         :key="i"
       >
         <stock-similar-content 
-          :title="content.name"
+          :title="content.title"
           :code="content.code"
         />
       </div>

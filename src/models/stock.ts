@@ -1,8 +1,9 @@
+export interface SingleStock {
+  title: string
+  code: string
+}
 
-//
-export interface StockSimpleModel {
- title: string
- code: string
+export interface StockSimpleModel extends SingleStock { 
  stock?: number 
 }
 
@@ -45,7 +46,7 @@ export interface IMarketRank {
   volume: IMarketRanksContents[]
 }
 
-export interface IMarketRanksContents {
+export interface IMarketRanksContents extends SingleStock {
   code: string
   title: string
   stock: number
@@ -55,9 +56,7 @@ export interface IMarketRanksContents {
 
 
 // 임시. 
-export interface StockRankModel {
-  title: string
-  code: string
+export interface StockRankModel extends SingleStock {  
   close: number
   change: number
   changeRatio: string
@@ -80,9 +79,7 @@ export interface LineChartModel {
 }
 
 
-export interface StockRecommendModel {
-  code: string
-  name: string
+export interface StockRecommendModel extends SingleStock {  
   close: number
   changes_ratio: number
 }

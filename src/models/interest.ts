@@ -1,4 +1,4 @@
-import { StockSimpleModel } from './stock'
+import { StockSimpleModel, SingleStock } from './stock'
 
 export interface InterestGroupsModel {  
   interestList: InterestGroupModel[],
@@ -21,18 +21,13 @@ interface IInterestGroup {
   item: IInterestGroupItem[]
 }
 
-interface IInterestGroupItem {
-  title: string
-  code: string
+interface IInterestGroupItem extends SingleStock {
+  id?: number
 }
 
-interface IUserInterestGroupItem {
-  title: string
-  code: string
+interface IUserInterestGroupItem extends SingleStock {  
   alarm: boolean
 }
-
-
 
 export {
   IInterestGroup,
