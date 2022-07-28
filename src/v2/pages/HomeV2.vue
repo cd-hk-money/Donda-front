@@ -1,5 +1,6 @@
 <template>
   <div>
+    <home-nav /> 
     <v-row>
       <v-col cols="12" xl="12" lg="12" md="12" sm="12">
         <market />    
@@ -22,12 +23,14 @@ import { Component, Vue } from 'vue-property-decorator'
 import Market from '@/v2/components/home/Market.vue'
 import MarketTrend from '@/v2/components/home/MarketTrend.vue'
 import StockRecommend from '@/v2/components/home/StockRecommend.vue'
+import HomeNav from '@/v2/components/home/HomeNav.vue'
 
 @Component({
   components: {
     Market,
     MarketTrend,
     StockRecommend,
+    HomeNav
   }
 })
 export default class HomeV2 extends Vue {
