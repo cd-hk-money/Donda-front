@@ -1,19 +1,18 @@
 <template>
-  <div>
-    <home-nav /> 
-    <v-row>
-      <v-col cols="12" xl="12" lg="12" md="12" sm="12">
-        <market />    
-      </v-col>
-    </v-row>
-    <v-row>
+  <div>    
+    <v-row class="mt-2">
       <v-col cols="12" xl="4" lg="4">
+        <home-nav />               
+
         <market-trend />                
       </v-col>
       <v-col cols="12" xl="8" lg="8">
         <stock-recommend />      
       </v-col>
     </v-row>
+
+    <!-- <market />     -->
+
   </div>
 </template>
 

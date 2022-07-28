@@ -2,7 +2,7 @@
   <v-card
     height="400"
     :width="isMobile ? '' : '94%'"    
-    :class="[isMobile ? 'ml-5 mr-5' : 'ml-5 mr-5']"
+    class="ml-5 mr-5 mt-5"
     elevation="0"
     outlined
   >
@@ -86,7 +86,6 @@
 </template>
 
 <script lang="ts">
-import { mobileHeight } from '@/mixins/tools'
 import { Component, Prop, Vue } from 'vue-property-decorator'
 
 @Component
