@@ -1,8 +1,8 @@
 <template>
   <v-card 
-    :class="['ml-5', mobile ? 'stock-info-mobile' : 'mt-5']"    
-    :height="mobile ? 240 : 240"
-    width="94%"
+    :class="['ml-5 mr-5', mobile ? 'stock-info-mobile mr-15' : 'mt-5']"    
+    height="240"
+    width="465"
     outlined   
     elevation="0"    
   >    
@@ -144,6 +144,7 @@ export default class StockInfo extends Vue {
   dialog = false
   bookmarked = false
   
+  
   // StockStore
   @StockStoreModule.State('stock') stock!: IStockModel
   @StockStoreModule.State('stockLoaded') loaded!: boolean
@@ -179,7 +180,7 @@ export default class StockInfo extends Vue {
   get mobile () {
     return mobileHeight(this.$vuetify.breakpoint.name) < 500
   }
-      
+        
   async created () {    
     await this.getStock(this.$route.params.title)
     console.log(this.stock)
@@ -194,8 +195,8 @@ export default class StockInfo extends Vue {
   position: absolute;
 }
 
-.stock-info-mobile {
-  margin-top: 75px;
+.stock-info-mobile {  
+  margin-top: 75px;  
 }
 
 .stock-info-date {

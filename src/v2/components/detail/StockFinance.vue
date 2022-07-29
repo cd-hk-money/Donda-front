@@ -19,7 +19,7 @@
     >    
       <v-card
         height="266.5"
-        :width="height > 500 ? 327.8 : 500"
+        :width="height > 500 ? 322.9 : 500"
         outlined
         v-for="(type, index) in statementTypes.slice(0, 9)"
         :key="index"
@@ -132,7 +132,6 @@ export default class StockFinance extends Vue {
   @StockStoreModule.State('statementTypes') statementTypes!: string[]
   @StockStoreModule.State('statementLoaded') loaded!: boolean
   @StockStoreModule.State('statementAll') statementAll!: ISimpleChartData
-
   @StockStoreModule.Action('getStockStatement') readonly getStockStatement!: (name: string) => Promise<void>
   @StockStoreModule.Action('getStockStatementAll') readonly getStockStatementAll!: (name: string) => Promise<void>
 

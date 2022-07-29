@@ -9,25 +9,23 @@
     <v-card-title class="text-h4 font-weight-bold ml-5">
       시장 동향
       <v-btn
-          icon      
-          large
-          @click="overlay = !overlay"
-        >
-          <v-icon>fa-solid fa-circle-info</v-icon>
-        </v-btn>
+        icon      
+        large
+        @click="overlay = !overlay"
+      >
+        <v-icon>fa-solid fa-circle-info</v-icon>
+      </v-btn>
     </v-card-title>
     <v-card-subtitle class="ml-5">
       현재 시장 동향을 알아보세요.
     </v-card-subtitle>
 
     <v-divider></v-divider>
-    <v-carousel
-      :continuous="false"
+    <v-carousel      
       cycle
       :show-arrows="false"
       hide-delimiter-background
-      hide-delimiters
-      delimiter-icon="mdi-minus"
+      hide-delimitersS    
       height="94%"          
       elevation="3"
     >
@@ -90,6 +88,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator'
 
 @Component
 export default class MarketTrend extends Vue {
+  
   // 오버레이 유무
   overlay = false
   

@@ -1,8 +1,8 @@
 <template>
     <v-card 
-      class="ml-5 mr-5 mt-5"
+      class="ml-5 mt-5"
       height="340"
-      width="94%"
+      width="465"            
       outlined
     >     
       <v-card-title class="ml-5">
@@ -33,7 +33,7 @@
             <v-carousel-item >          
               <div class="d-flex justify-center align-center">
                 <v-card 
-                  width="250"
+                  width="465"
                   height="250"
                   elevation="0"
                   class="d-flex justify-center align-center">
@@ -126,9 +126,12 @@ export default class StockIndicator extends Vue {
 
   overlay = false
 
+  get width () {
+    return this.$vuetify.breakpoint.name === 'xs' ? 465 : 465
+  }
+
   @StockStoreModule.State('indicatorLoaded') loaded!: boolean
   @StockStoreModule.State('indicator') indicator!: ISimpleChartData
-
   @StockStoreModule.Action('getStockIndicator') readonly getStockIndicator!: (name: string) => Promise<void>
 
   created () {

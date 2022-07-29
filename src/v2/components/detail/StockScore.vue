@@ -3,7 +3,7 @@
     class="ml-5 mr-5 mt-7"
     :height="cardHeight"
     outlined    
-    width="94%"
+    width="465"    
   >
     <v-card-title class="ml-5">
       적정주가

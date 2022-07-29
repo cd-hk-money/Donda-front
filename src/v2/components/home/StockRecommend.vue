@@ -67,11 +67,11 @@
         <v-divider></v-divider>    
 
         <v-row>
-          <v-col cols="12" xl="5" lg="5">
+          <v-col cols="12" xl="6" lg="6">
             <v-card-title class="text-h5 font-weight-bold ml-5">
-              <span> {{ item.close }} ₩</span>
+              <span> {{ item.close.toLocaleString() }} ₩</span>
               <v-btn  
-                class="ml-3"
+                class="ml-1"
                 icon
                 right
                 x-small
@@ -84,7 +84,7 @@
             </v-card-subtitle>                                              
           </v-col>
 
-          <v-col cols="12" xl="7" lg="7">
+          <v-col cols="12" xl="6" lg="6">
             <v-tooltip bottom>
               <template v-slot:activator="{on} ">
                 <v-sheet 

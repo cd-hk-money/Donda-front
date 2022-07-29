@@ -1,9 +1,8 @@
 <template>
   <v-card     
-    class="mt-8 ml-5 mr-5 mb-5"
-    height="870"
+    class="mt-5 ml-5 mr-5 mb-5"    
     outlined
-    width="94%"                  
+    :width="width"                  
   >
     <v-card-title>
       주가
@@ -41,7 +40,7 @@
     <v-divider></v-divider>
     <v-card-text v-if="!loaded">
       <stock-big-chart   
-        :height="200"        
+        :height="174"        
         :gradient="gradientEnable"
         :volume="volumeEnable"
       />        
@@ -66,34 +65,35 @@ const StockStoreModule = namespace('StockStore')
 })
 export default class Stock extends Vue {
   
-  @StockStoreModule.State('stock') stock!: IStockModel
-  @StockStoreModule.State('stockGraphAllLoaded') loaded!: boolean
-  @StockStoreModule.State('stockGraphAllFlag') flag!: boolean  
-
-  @StockStoreModule.Action('getStockGraphAll') getStockGraphAll!: (name: string) => Promise<void>
-  @StockStoreModule.Action('getStockGraphDefault') getStockGraphDefault!: (name: string) => Promise<void>
-  
   count = 20
   dateOverlay = false
 
+  get width (): string | number { 
+    return this.$vuetify.breakpoint.name === 'xs' ? 465 : '94%'
+  }
+
+  @StockStoreModule.State('stock') stock!: IStockModel
+  @StockStoreModule.State('stockGraphAllLoaded') loaded!: boolean
+  @StockStoreModule.State('stockGraphAllFlag') flag!: boolean  
+  @StockStoreModule.Action('getStockGraphAll') getStockGraphAll!: (name: string) => Promise<void>
+  @StockStoreModule.Action('getStockGraphDefault') getStockGraphDefault!: (name: string) => Promise<void>
+  
   gradientEnable = true
+  getGradient () { return this.gradientEnable }
   @Watch('gradientEnable')
   watchGradient () {
     const content = this.menus.find((menu: IMenu) => menu.title === 'gradient')
     content.enable = !content.enable
   }
-  getGradient () { return this.gradientEnable }
 
   volumeEnable = false
   @Watch('volumeEnable')
+  getVolumeEnable () { return this.volumeEnable }
   watchVolume () {
     const content = this.menus.find((menu: IMenu) => menu.title === 'volume')
     content.enable = !content.enable
   }
 
-  getVolumeEnable () { return this.volumeEnable }
-  
-  
   menus: IMenu[] = [    
     {
       title: 'dateFicker',
