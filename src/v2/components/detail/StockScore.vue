@@ -34,10 +34,10 @@
             :show-arrows="false"            
           >
             <v-carousel-item>
-              <stock-score-bar-chart :height="230" />
+              <stock-score-bar-chart :height="230" class="mt-8"/>
             </v-carousel-item>
             <v-carousel-item>
-              <stock-chart :height="230" />                
+              <stock-chart :height="230" class="mt-8"/>                
             </v-carousel-item>
           </v-carousel>
         </template>

@@ -1,6 +1,6 @@
 <template>
   <v-card
-    height="400"
+    height="420"
     :width="isMobile ? '' : '94%'"    
     class="ml-5 mr-5 mt-5"
     elevation="0"
@@ -25,7 +25,7 @@
       cycle
       :show-arrows="false"
       hide-delimiter-background
-      hide-delimitersS    
+      hide-delimiters    
       height="94%"          
       elevation="3"
     >
@@ -33,10 +33,7 @@
         v-for="(slide, i) in sparklines"
         :key="i"
       >
-        <v-sheet
-          height="100%"
-          rounded="xl"
-        >
+        <v-sheet height="100%">
           <v-row
             class="fill-height"
             align="center"
@@ -110,3 +107,7 @@ export default class MarketTrend extends Vue {
 
 }
 </script>
+
+<style scoped>
+
+</style>

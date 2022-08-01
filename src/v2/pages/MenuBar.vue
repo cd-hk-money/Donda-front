@@ -17,7 +17,7 @@
       >
       
         <v-btn 
-          @click.stop="mini = !mini"
+          @click.stop="foldMenu()"
           elevation="0"
           icon                 
           class="ml-2"
@@ -371,10 +371,7 @@ export default class MenuBar extends Vue {
 
   // PASSWORD 숨김 여부
   passwordShow = false
-
-  // 메뉴 펼침 여부
-  menuToggle = true
-
+  
   // 
   mini = true
 
@@ -431,11 +428,19 @@ export default class MenuBar extends Vue {
   }
 
   expandState(state: string) {
-    this[state] = !this[state]
+    this[state] = !this[state]    
   }
 
   setState(state: string, value: any) {
     this[state] = value
+  }
+
+  foldMenu() {
+    this.mini = !this.mini
+    this.expand = false
+    this.userExpand = false
+    this.alramConfig = false
+
   }
 
   updateState(payload: IUpdateStateModel) {

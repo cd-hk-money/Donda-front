@@ -1,6 +1,5 @@
 <template>
-  <v-sheet 
-    :class="[height < 500 ? 'mt-15' : 'mt-5']"           
+  <v-sheet           
     permanent                    
     :height="height < 500 ? 'auto' : 'auto'"
   >

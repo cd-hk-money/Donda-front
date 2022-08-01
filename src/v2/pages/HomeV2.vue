@@ -2,16 +2,13 @@
   <div>    
     <v-row class="mt-2">
       <v-col cols="12" xl="4" lg="4">
-        <home-nav />               
+        <market />
         <market-trend />                
       </v-col>
       <v-col cols="12" xl="8" lg="8">
         <stock-recommend />      
       </v-col>
-    </v-row>
-
-    <!-- <market />     -->
-
+    </v-row>        
   </div>
 </template>
 
