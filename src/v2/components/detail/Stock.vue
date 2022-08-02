@@ -2,6 +2,7 @@
   <v-card     
     class="mt-5 ml-5 mr-5 mb-5"    
     outlined
+    height="100%"
     :width="width"                  
   >
     <v-card-title>

@@ -15,15 +15,16 @@
 
     <v-divider></v-divider>
 
-    <v-btn-toggle v-model="toggle_exclusive" tile multiple>
-      <v-btn v-for="i in 4" :key="i">
-        {{ i }}
+    <v-btn-toggle v-model="toggle_exclusive" tile multiple class="valuation-btn-toggle">
+      <v-btn v-for="(valuation, i) in valuations" :key="i" :color="valuation.color" small>
+        <span class="white--text"> {{ valuation.title }} </span>
       </v-btn>
     </v-btn-toggle>
     
     <stock-valuation-chart 
       class="mt-2 ml-2 mr-2"
       :height="chartHeight"
+      :legend="toggle_exclusive"
       v-if="!loaded"
     />
 
@@ -139,7 +140,7 @@ const StockStoreModule = namespace('StockStore')
 export default class StockValuation extends Vue {
   
   tab = 0
-  toggle_exclusive = []
+  toggle_exclusive = [0, 1, 2, 3]
   colors: string[] = ['#ff6384', '#994433', '#6495ed', '#800080']
   formula = '$$x = {-b \\pm \\sqrt{b^2-4ac} \\over 2a}.$$'
   v = {
@@ -156,10 +157,15 @@ export default class StockValuation extends Vue {
 
 
   get chartHeight (): number {
-    return this.$vuetify.breakpoint.name === 'xs' ? 350 : 100
+    return this.$vuetify.breakpoint.name === 'xs' ? 200 : 100
   }
 
   valuations: IValuationContent[] = [
+    {
+      color: '#40E0D0',
+      title: '현재 주가',
+      content: '내용'
+    },
     {
       color: '#ff6384',
       title: '돈다 지수',
@@ -171,7 +177,7 @@ export default class StockValuation extends Vue {
       content: '내용'
     },
     {
-      color: '#111111',
+      color: '#6495ed',
       title: '방법 2',
       content: '내용'
     },
@@ -237,6 +243,12 @@ export default class StockValuation extends Vue {
 
 .valuation-three strong {
   color: #800080;
+}
+
+.valuation-btn-toggle {
+  position: absolute;
+  right: 0px;
+  top: 58px;
 }
 
 

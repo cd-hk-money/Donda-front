@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator'
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 import { mixins, Line } from 'vue-chartjs-typescript'
 import { transparentize } from '@/mixins/tools'
 import Chart from 'chart.js'
@@ -17,15 +17,71 @@ const SUB_COLOR = 'rgb(255, 99, 132)'
 export default class StockValuationChart extends Vue {
 
   chartOptions: Chart.ChartOptions = {}
-  
+
+  @Prop() legend!: number[]
   @Prop({default: false}) fill!: boolean  
   @Prop() chartData!: any
 
   @StockStoreModule.State('stockGraphDefault') stockGraphDefault!: any
 
 
-  // methods  
+  @Watch('legend')
+  watchLegend () {
+    this.renderLineChart()
+  }
+  
   renderChart!: (chartData: any, options: any) => any
+
+   chartDatasets (legend) {
+    const datasets = [
+      {
+        label: '현재주가',
+        data : Object.values(this.stockGraphDefault),
+        fill: this.fill,
+        borderColor: MAIN_COLOR,
+        // backgroundColor: transparentize(MAIN_COLOR, 0.8),
+        borderWidth: 2,
+        radius: 0,
+        pointStyple: 'rectRounded',
+        tension: .4
+      },
+      {
+        label: '돈다 지수',
+        data : (Object.values(this.stockGraphDefault) as number[]).map((value: number) => value * 1.005),
+        fill: this.fill,
+        borderColor: SUB_COLOR,
+        // backgroundColor: transparentize(SUB_COLOR, 0.8),
+        borderWidth: 2,
+        radius: 0,
+        pointStyple: 'rectRounded',
+        tension: .4
+      },
+      {
+        label: 'EPS-ROE',
+        data : (Object.values(this.stockGraphDefault) as number[]).map((value: number) => value * 1.010),
+        fill: this.fill,
+        borderColor: '#943',
+        // backgroundColor: transparentize(SUB_COLOR, 0.8),
+        borderWidth: 2,
+        radius: 0,
+        pointStyple: 'rectRounded',
+        tension: .4
+      },        
+      {
+        label: 'S-RIM',
+        data : (Object.values(this.stockGraphDefault) as number[]).map((value: number) => value * 1.050),
+        fill: this.fill,
+        borderColor: '#6495ed',
+        // backgroundColor: transparentize(SUB_COLOR, 0.8),
+        borderWidth: 2,
+        radius: 0,
+        pointStyple: 'rectRounded',
+        tension: .4
+      }         
+    ]
+
+    return datasets.filter((_ , i) => legend.includes(i))
+  }
 
   applyDefaultChartOptions () {
 
@@ -38,6 +94,10 @@ export default class StockValuationChart extends Vue {
     this.chartOptions.plugins = {      
       crosshair: false
     }  
+
+    this.chartOptions.legend = {
+      display: false
+    }
     
     this.chartOptions.scales = {
       xAxes: [{
@@ -87,52 +147,7 @@ export default class StockValuationChart extends Vue {
   createChartData() {
     return {
       labels: Object.keys(this.stockGraphDefault).map((date: string) => date.substr(5)),
-      datasets: [
-        {
-          label: '현재주가',
-          data : Object.values(this.stockGraphDefault),
-          fill: this.fill,
-          borderColor: MAIN_COLOR,
-          // backgroundColor: transparentize(MAIN_COLOR, 0.8),
-          borderWidth: 2,
-          radius: 0,
-          pointStyple: 'rectRounded',
-          tension: .4
-        },
-        {
-          label: '돈다 지수',
-          data : (Object.values(this.stockGraphDefault) as number[]).map((value: number) => value * 1.005),
-          fill: this.fill,
-          borderColor: SUB_COLOR,
-          // backgroundColor: transparentize(SUB_COLOR, 0.8),
-          borderWidth: 2,
-          radius: 0,
-          pointStyple: 'rectRounded',
-          tension: .4
-        },
-        {
-          label: 'EPS-ROE',
-          data : (Object.values(this.stockGraphDefault) as number[]).map((value: number) => value * 1.010),
-          fill: this.fill,
-          borderColor: '#943',
-          // backgroundColor: transparentize(SUB_COLOR, 0.8),
-          borderWidth: 2,
-          radius: 0,
-          pointStyple: 'rectRounded',
-          tension: .4
-        },        
-        {
-          label: 'S-RIM',
-          data : (Object.values(this.stockGraphDefault) as number[]).map((value: number) => value * 1.050),
-          fill: this.fill,
-          borderColor: '#6495ed',
-          // backgroundColor: transparentize(SUB_COLOR, 0.8),
-          borderWidth: 2,
-          radius: 0,
-          pointStyple: 'rectRounded',
-          tension: .4
-        }     
-      ]
+      datasets: this.chartDatasets(this.legend)
     }
   }
 

@@ -120,7 +120,7 @@ export default class StockScore extends Vue {
 
   // computed
   get mobile () { return mobileHeight(this.$vuetify.breakpoint.name) < 500 }
-  get cardHeight (): number { return this.$vuetify.breakpoint.name === 'xs' ? 500 : 260 }
+  get cardHeight (): number { return this.$vuetify.breakpoint.name === 'xs' ? 520 : 260 }
 
   // methods
   drawerChange () {

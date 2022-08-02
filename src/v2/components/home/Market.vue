@@ -1,8 +1,8 @@
 <template>    
   <v-card          
     height="450"
-    :width="isMobile ? '' : '94%'"
-    class="ml-5 mr-5"
+    :width="isMobile ? 460 : '94%'"    
+    :class="['ml-5 mr-5', isMobile ? 'mt-14' : '']"
     elevation="0"         
     outlined
   >
@@ -42,7 +42,7 @@
             @changeRequestDate="changeRequestDate"            
             :type="marketType" />                   
           <market-chart   
-            class="ml-2"
+            class="mt-2"
             :mobile="false"
             :fill="fill"                        
             :height="195"

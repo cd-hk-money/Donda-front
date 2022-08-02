@@ -2,7 +2,7 @@
   <v-card
     class="ml-5 mr-5 align-center justify-center overflow-y-auto"
     :height="mobile ? 950 : 890"
-    width="auto"
+    :width="mobile ? 460 : '94%'"
     elevation="0"
     outlined
     v-if="!loaded"

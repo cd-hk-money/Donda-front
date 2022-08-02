@@ -1,7 +1,7 @@
 <template>
   <v-card
     height="420"
-    :width="isMobile ? '' : '94%'"    
+    :width="mobile ? 460 : '94%'"
     class="ml-5 mr-5 mt-5"
     elevation="0"
     outlined
@@ -103,7 +103,7 @@ export default class MarketTrend extends Vue {
     },
   ]
 
-  get isMobile () { return this.$vuetify.breakpoint.name === 'xs'}  
+  get mobile () { return this.$vuetify.breakpoint.name === 'xs'}    
 
 }
 </script>

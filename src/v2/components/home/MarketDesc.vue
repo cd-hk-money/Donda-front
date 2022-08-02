@@ -1,12 +1,13 @@
 <template>
   <v-card elevation="0">
     <v-card-text>      
-        <span class="text-h3 font-weight-bold ml-5">
+        <span class="text-h4 font-weight-bold ml-5">
           {{ type.toUpperCase() }} 
         </span>
 
         <span class="mr-5">
-          <v-btn               
+          <v-btn    
+            small           
             icon
             absolute
           >

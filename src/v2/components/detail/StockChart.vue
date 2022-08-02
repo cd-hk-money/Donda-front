@@ -32,7 +32,7 @@ export default class StockChart extends Vue {
     this.chartOptions.maintainAspectRatio = true
     this.chartOptions.responsive = true
     this.chartOptions.legend = {
-      display: false
+      display: true
     }
 
     this.chartOptions.plugins = {      
@@ -89,6 +89,7 @@ export default class StockChart extends Vue {
       labels: Object.keys(this.stockGraphDefault).map((date: string) => date.substr(5)),
       datasets: [
         {
+          label: '현재 주가',
           data : Object.values(this.stockGraphDefault),
           fill: this.fill,
           borderColor: MAIN_COLOR,
@@ -99,6 +100,7 @@ export default class StockChart extends Vue {
           tension: .4
         },
         {
+          label: '적정 주가',
           data : (Object.values(this.stockGraphDefault) as number[]).map((value: number) => value * 1.005),
           fill: this.fill,
           borderColor: SUB_COLOR,

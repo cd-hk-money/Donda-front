@@ -5,7 +5,7 @@
         <market />
         <market-trend />                
       </v-col>
-      <v-col cols="12" xl="8" lg="8">
+      <v-col cols="12" xl="8" lg="8" sm="12">
         <stock-recommend />      
       </v-col>
     </v-row>        
