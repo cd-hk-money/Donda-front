@@ -1,9 +1,10 @@
 <template>
-  <div id="scroll-target">
+  <v-row>
     <v-card     
       class="mt-5 menu"
       elevation="0"      
       outlined
+      width="100%"
     >
       <v-card-title class="text-h4 d-flex justify-center font-weight-bold">
         {{ rankTitle[model] }} TOP 10
@@ -105,7 +106,7 @@
         <v-icon>mdi-arrow-up</v-icon>
       </v-btn>
     </transition>
-  </div>
+  </v-row>
 </template>
 
 <script lang="ts">
@@ -143,14 +144,9 @@ export default class RankV2 extends Vue {
   // 초기 라디오 값
   radioValue: any = '시가총액'
 
-  @StockStoreModule.State('dailySimpleRanks')
-  dailySimpleRanks!: IMarketRank
-
-  @StockStoreModule.State('dailySimpleRanksLoaded')
-  loaded!: boolean
-
-  @StockStoreModule.Action('getDailySimpleRanks')  
-  readonly getDailySimpleRanks!: () => Promise<void>
+  @StockStoreModule.State('dailySimpleRanks') dailySimpleRanks!: IMarketRank
+  @StockStoreModule.State('dailySimpleRanksLoaded') loaded!: boolean
+  @StockStoreModule.Action('getDailySimpleRanks') readonly getDailySimpleRanks!: () => Promise<void>
 
 
   toTop() {
@@ -187,6 +183,6 @@ export default class RankV2 extends Vue {
 <style>
 .menu {
   margin-left: 80px;
-  margin-right: 40px;
+  margin-right: 60px;
 }
 </style>
