@@ -4,8 +4,7 @@
     height="885"
     width="94%"
     rounded="xl"
-    elevation="1"
-    
+    elevation="1"    
   >
     <v-card-title class="ml-5">
       NEWS

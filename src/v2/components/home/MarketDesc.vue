@@ -1,91 +1,77 @@
 <template>
-  <v-card    
-    elevation="0"    
-    max-height="20%"
-    min-height="20%"    
-  >
+  <v-card elevation="0">
     <v-card-text>      
-      <v-row>        
-        <v-col cols="12" xl="8" lg="8" md="7" :class="[mobile ? 'mt-5' : '']">
-          <span class="text-h3 font-weight-bold">
-            {{ type.toUpperCase() }} 
-          </span>
+        <span class="text-h3 font-weight-bold ml-5">
+          {{ type.toUpperCase() }} 
+        </span>
 
-          <span class="mr-5">
-            <v-btn               
-              icon
-              absolute
-            >
-              <v-icon>fa-solid fa-circle-info</v-icon>  
-            </v-btn>
-          </span>
-
-          <span class="ml-5 text-h3">
-            {{ desc.close }}
-          </span>           
-
-          <span :class="['text-h4', color] ">
-            {{ desc.changes > 0 ? '+' + (desc.changes * 100).toFixed(2):(desc.changes * 100).toFixed(2)}} %
-          </span>               
-        </v-col>            
-
-        <v-col cols="12" xl="4" lg="4" md="5">    
-          <div v-if="!mobile">
-            <span class="text-h7 ml-12">
-              갱신일 : {{ desc.recent }}
-            </span>     
-  
-            <v-tooltip
-              v-for="menu in menus"
-              :key="menu.icon"
-              bottom
-            >
-              <template v-slot:activator="{on, attrs}">
-                <v-btn
-                  v-model="menu.enable"
-                  class="mx-1"
-                  elevation="0"
-                  small
-                  tile
-                  v-on="on"
-                  v-bind="attrs"
-                  @click="menu.callback"
-                >
-                    <v-icon>{{ menu.icon }}</v-icon>
-                </v-btn>
-              </template>
-              <span>{{ menu.tooltip }}</span>
-            </v-tooltip>
-          </div>      
-
-          <v-speed-dial            
+        <span class="mr-5">
+          <v-btn               
+            icon
             absolute
-            v-model="dial"
-            right
-            top
-            direction="bottom"
-            transition="slide-y-reverse-transition"
           >
-            <template v-slot:activator>
-              <v-btn                        
-                class="mx-1"     
-                elevation="0"                          
+            <v-icon>fa-solid fa-circle-info</v-icon>  
+          </v-btn>
+        </span>
+
+        <span class="ml-5 text-h4">
+          {{ desc.close }}
+        </span>           
+
+        <span :class="['text-h4', color] ">
+          {{ desc.changes > 0 ? '+' + (desc.changes * 100).toFixed(2):(desc.changes * 100).toFixed(2)}} %
+        </span>               
+
+        <div v-if="!mobile">              
+          <!-- <v-tooltip
+            v-for="menu in menus"
+            :key="menu.icon"
+            bottom
+          >
+            <template v-slot:activator="{on, attrs}">
+              <v-btn
+                v-model="menu.enable"
+                class="mx-1"
+                elevation="0"
                 small
+                tile
+                v-on="on"
+                v-bind="attrs"
+                @click="menu.callback"
               >
-                <v-icon>fa-regular fa-calendar</v-icon>
-              </v-btn>                          
+                  <v-icon>{{ menu.icon }}</v-icon>
+              </v-btn>
             </template>
-              <v-btn                
-                v-for="item in dateTooltips"
-                :key="item.icon"                   
-                small
-                @click="item.callback"
-              >
-                {{ item.title }}
-              </v-btn>            
-          </v-speed-dial>            
-        </v-col>          
-      </v-row>
+            <span>{{ menu.tooltip }}</span>
+          </v-tooltip> -->
+        </div>      
+
+        <!-- <v-speed-dial            
+          absolute
+          v-model="dial"
+          right
+          top
+          direction="bottom"
+          transition="slide-y-reverse-transition"
+        >
+          <template v-slot:activator>
+            <v-btn                        
+              class="mx-1"     
+              elevation="0"                          
+              small
+            >
+              <v-icon>fa-regular fa-calendar</v-icon>
+            </v-btn>                          
+          </template>
+            <v-btn                
+              v-for="item in dateTooltips"
+              :key="item.icon"                   
+              small
+              @click="item.callback"
+            >
+              {{ item.title }}
+            </v-btn>            
+        </v-speed-dial>             -->
     </v-card-text>      
     <v-divider></v-divider>  
   </v-card>

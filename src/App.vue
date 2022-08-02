@@ -1,19 +1,16 @@
 <template>
-  <v-app id="inspire">     
-    <v-main>       
-      <v-row>
-        <v-col cols="12" xl="10" lg="10">
-          <transition name="slide-fade" mode="out-in">
-            <router-view />      
-            </transition>
-          </v-col>
-          <v-col cols="12" xl="2" lg="2">
-              <menu-bar />   
-              <side-bar />              
-          </v-col>
-      </v-row>
+  <v-app>     
+    <v-main>               
+      <div class="d-flex">
+        <transition name="slide-fade" mode="out-in">
+          <router-view />      
+        </transition>  
+        <div>
+          <menu-bar />             
+        </div>
+      </div>
     </v-main>
-    <v-snackbar   
+    <!-- <v-snackbar   
       v-model="snackBar"
     >
       그룹 추가 성공
@@ -27,7 +24,7 @@
           닫기
         </v-btn>
       </template>
-    </v-snackbar>
+    </v-snackbar> -->
   </v-app>
 </template>
 
@@ -60,8 +57,11 @@ export default class App extends Vue {
     return window.pageXOffset
   }
 
-  @StockStoreModule.Action('todayMarket')
-  private readonly requestTodayMarket!: () => void
+  get btnIcon () {
+    return this.menuToggle ? 'mdi-arrow-expand-right' : 'mdi-arrow-expand-left'
+  }
+
+  menuToggle = true
 
   @MarketStoreModule.Action('getTodayMarket')
   readonly getTodayMarket!: () => Promise<void>
@@ -140,6 +140,16 @@ html {
 .slide-fade-leave-to {
   transform: translateX(-10px);
   opacity: 0;
+}
+
+.menu-toggle-btn {
+  position: fixed;
+  right: 10px;
+}
+
+body {
+  min-height: 100%;
+  overflow: hidden;
 }
 
 </style>

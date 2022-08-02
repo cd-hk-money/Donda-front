@@ -3,7 +3,7 @@
     class="ml-5 mr-5 mt-7"
     :height="cardHeight"
     outlined    
-    width="94%"
+    width="465"    
   >
     <v-card-title class="ml-5">
       적정주가
@@ -34,10 +34,10 @@
             :show-arrows="false"            
           >
             <v-carousel-item>
-              <stock-score-bar-chart :height="230" />
+              <stock-score-bar-chart :height="230" class="mt-8"/>
             </v-carousel-item>
             <v-carousel-item>
-              <stock-chart :height="230" />                
+              <stock-chart :height="230" class="mt-8"/>                
             </v-carousel-item>
           </v-carousel>
         </template>
