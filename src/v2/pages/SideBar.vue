@@ -1,118 +1,109 @@
 <template>
-  <div class="mr-10">
-    <v-navigation-drawer 
-      :class="['ml-5', height < 500 ? 'mt-15' : 'mt-5']"     
-      permanent             
-      width="100%" 
-      :height="height < 500 ? 'auto' : 'auto'"
-    >
-      <v-card    
-        height="auto"
-        width="100%"        
-        outlined        
-      >
-        <v-list-item>
-          <v-list-item-content>
-            <v-list-item-title class="text-h7 text font-weight-bold">
-              내 관심종목 그룹
-            </v-list-item-title>
-            <v-list-item-subtitle>
-              이준하
-            </v-list-item-subtitle>
-          </v-list-item-content>
-        </v-list-item>
+  <v-sheet           
+    permanent                    
+    :height="height < 500 ? 'auto' : 'auto'"
+  >
+    <v-card outlined>
+      <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title class="text-h7 text font-weight-bold">
+            내 관심종목 그룹
+          </v-list-item-title>
+          <v-list-item-subtitle>
+            이준하
+          </v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
 
-        <v-divider></v-divider>
+      <v-divider></v-divider>
 
-        <v-list two-line>
-          <v-list-group
-            active-class="secondary" 
-            :value="true"
-            v-for="(item, i) in itemsV2"
-            :key="i"
-            v-model="item.active"          
-            append-icon='mdi-chevron-down'
+      <v-list two-line>
+        <v-list-group
+          active-class="secondary" 
+          :value="true"
+          v-for="(item, i) in itemsV2"
+          :key="i"
+          v-model="item.active"          
+          append-icon='mdi-chevron-down'
+        >
+          <template v-slot:activator>
+            <v-list-item-content>              
+              <v-list-item-title v-text="item.title"></v-list-item-title>
+            </v-list-item-content>
+          </template> 
+
+          <v-list-item
+            v-for="(child, i) in item.items"
+            :key="i"              
+            link
+            replace
+            :to="`/detail/${child.title}`"
           >
-            <template v-slot:activator>
-              <v-list-item-content>              
-                <v-list-item-title v-text="item.title"></v-list-item-title>
-              </v-list-item-content>
-            </template> 
+            <v-list-item-content >
+              <v-list-item-title v-text="child.title"></v-list-item-title>
 
-            <v-list-item
-              v-for="(child, i) in item.items"
-              :key="i"              
-              link
-              replace
-              :to="`/detail/${child.title}`"
-            >
-              <v-list-item-content >
-                <v-list-item-title v-text="child.title"></v-list-item-title>
+              <v-list-item-subtitle v-text="child.subtitle"></v-list-item-subtitle>
+            </v-list-item-content>
 
-                <v-list-item-subtitle v-text="child.subtitle"></v-list-item-subtitle>
-              </v-list-item-content>
-
-              <v-list-item-action>
-                <v-btn 
-                  x-small
-                  icon                  
-                >
-                  <v-icon>fa-regular fa-x</v-icon>
-                </v-btn>
-              </v-list-item-action>                    
-            </v-list-item> 
-          </v-list-group>
-
-          <v-speed-dial 
-            fixed
-            v-model="fab"
-            right
-            top
-            direction="bottom"
-            open-on-hover
-            transition="scale-transition"
-          >
-            <template v-slot:activator>
-              <v-btn
-                elevation="0"
+            <v-list-item-action>
+              <v-btn 
                 x-small
-                v-model="fab"              
-                fab
+                icon                  
               >
-                <v-icon v-if="fab">
-                  mdi-close
-                </v-icon>
-                <v-icon v-else>
-                  mdi-dots-vertical
-                </v-icon>
+                <v-icon>fa-regular fa-x</v-icon>
+              </v-btn>
+            </v-list-item-action>                    
+          </v-list-item> 
+        </v-list-group>
+
+        <v-speed-dial             
+          v-model="fab"     
+          absolute
+          top
+          right
+          direction="bottom"
+          open-on-hover
+          transition="scale-transition"
+        >
+          <template v-slot:activator>
+            <v-btn
+              elevation="0"
+              x-small
+              v-model="fab"              
+              fab
+            >
+              <v-icon v-if="fab">
+                mdi-close
+              </v-icon>
+              <v-icon v-else>
+                mdi-dots-vertical
+              </v-icon>
+            </v-btn>
+          </template>
+          <v-tooltip
+            v-for="menu in menus"
+            :key="menu.icon"
+            left
+          >
+            <template v-slot:activator="{ on, attrs}">
+              <v-btn
+                v-on="on"
+                v-bind="attrs"
+                :color="menu.color"
+                fab
+                dark
+                x-small
+                @click="menu.callback"
+              >
+                <v-icon>{{ menu.icon }}</v-icon>
               </v-btn>
             </template>
-            <v-tooltip
-              v-for="menu in menus"
-              :key="menu.icon"
-              left
-            >
-              <template v-slot:activator="{ on, attrs}">
-                <v-btn
-                  v-on="on"
-                  v-bind="attrs"
-                  :color="menu.color"
-                  fab
-                  dark
-                  x-small
-                  @click="menu.callback"
-                >
-                  <v-icon>{{ menu.icon }}</v-icon>
-                </v-btn>
-              </template>
-              <span>{{ menu.tooltip }}</span>
-            </v-tooltip>
-          </v-speed-dial>        
+            <span>{{ menu.tooltip }}</span>
+          </v-tooltip>
+        </v-speed-dial>        
       </v-list>        
     </v-card>
-  </v-navigation-drawer>    
-
-  </div>
+  </v-sheet>    
 </template>
 
 <script lang="ts">

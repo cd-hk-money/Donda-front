@@ -20,17 +20,11 @@ const MAIN_COLOR = '#40E0D0'
   mixins: [reactiveProp],
 })
 export default class LineChart extends Vue {
-  @Prop()
-  type!: string
-
-  @Prop()
-  chartData!: null
-
-  @Prop()
-  fill!: boolean
-
-  @Prop()
-  mobile!: boolean
+  @Prop() type!: string
+  @Prop() chartData!: null
+  @Prop() fill!: boolean
+  @Prop() mobile!: boolean
+  @Prop() height: number
 
   @Prop({default: function () { return {} }})
   options!: object
@@ -41,40 +35,8 @@ export default class LineChart extends Vue {
   @MarketStoreModule.State('requestDate')
   requestDate!: number
 
-  dottedLine = {
-    id: 'dottedLine',
-    beforeDatasetsDraw(chart, args, pluginOptions) {
-      const {ctx, data, chartArea: {left, right}, width, scales} = chart
-      const x = scales['x-axis-0']
-      const y = scales['y-axis-0']
-
-      const startingPoint = data.datasets[0].data[0]
-
-      ctx.save()
-      ctx.beginPath()
-      ctx.lineWidth = 2
-      ctx.setLineDash([5, 7])
-      ctx.strokeStyle = 'rgba(102, 102, 102, 0.2)'
-      ctx.moveTo(left, y.getPixelForValue(startingPoint))
-      ctx.lineTo(right, y.getPixelForValue(startingPoint))
-      ctx.stroke()
-      ctx.closePath()
-      ctx.setLineDash([])
-
-      ctx.beginPath()
-      ctx.fillStyle = 'rgba(102, 102, 102, 0.9)'
-      ctx.fillRect(0, y.getPixelForValue(startingPoint) - 10, left, 20)
-      ctx.closePath()
-
-      ctx.font = '15px sans-serif'
-      ctx.fillStyle = 'white'
-      ctx.textBaseline = 'middle'
-      ctx.textAlign = 'center'
-      ctx.fillText(startingPoint.toLocaleString() + '₩', left / 2, y.getPixelForValue(startingPoint))
-    }
-  }
   
-  renderChart!: (chartData: any, options: any) => any    
+  renderChart!: (chartData: any, options: any) => HTMLCanvasElement    
 
   chartOptions: Chart.ChartOptions = {}
 
@@ -117,19 +79,21 @@ export default class LineChart extends Vue {
           drawTicks: false
         },        
         ticks: {       
-          fontSize: this.mobile ? 14 : 20,     
-          maxTicksLimit: 15,   
-          lineHeight: 1                                                 
+          fontSize: 13,               
+          fontStyle: 'normal',          
+          maxRotation: 0,
+          maxTicksLimit: 10,             
         },
         scaleLabel: {
-          fontSize: 20
+          fontSize: 15
         }
       }],
       yAxes: [{
         ticks: {
           callback: function(value: string) {return value.toLocaleString()},
-          fontSize: 20,    
-          maxTicksLimit: 3,
+          fontSize: 15,              
+          maxTicksLimit: 3, 
+          padding: 18,                   
           display: !this.mobile            
         },
         gridLines: {
@@ -145,15 +109,16 @@ export default class LineChart extends Vue {
     }
 
     this.chartOptions.plugins = {      
-      crosshair: false
+      zoom
     }  
     
     this.chartOptions.tooltips = {
       enabled: true,
-      titleFontSize: 25,
+      titleFontSize: 15,
+      backgroundColor: '#666',
       titleFontColor: MAIN_COLOR,
-      bodyFontSize: 40,
-      cornerRadius: 10,
+      bodyFontSize: 25,
+      cornerRadius: 7,
       displayColors: false,
       callbacks: {
         label: (tooltipItem) => tooltipItem.yLabel as string,        
@@ -173,7 +138,7 @@ export default class LineChart extends Vue {
           fill: fill,        
           borderColor: MAIN_COLOR,
           backgroundColor: transparentize(MAIN_COLOR, 0.8),
-          borderWidth: 5,                 
+          borderWidth: 3,                 
           radius: this.requestDate > 150 ? 0 : 0,
           pointStyle: 'rectRounded',
           tension: .4,          
@@ -186,7 +151,7 @@ export default class LineChart extends Vue {
 
   renderLineChart() {
     this.applyDefaultOptions()
-    this.renderChart(this.createChartData(this.type, this.requestDate, this.fill), this.chartOptions)    
+    const chart = this.renderChart(this.createChartData(this.type, this.requestDate, this.fill), this.chartOptions)    
   }
 
   mounted() {            

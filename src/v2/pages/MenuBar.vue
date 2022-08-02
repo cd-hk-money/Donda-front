@@ -1,18 +1,32 @@
 <template>
   <div class="mr-10">
     <v-navigation-drawer        
-      :class="[mobile ? '' : 'ml-5 mt-5']"
-      bottom         
-      permanent
+      :class="[mobile ? '' : 'ml-5 mt-5']"      
+      permanent            
       :fixed="mobile"
       :width="mobile ? '100%' : '110%'"
-      :height="mobile ? '72' : '110%'"
+      :height="mobile ? '72' : '100%'"      
+      :mini-variant.sync="mini"
     >
-      <v-card       
+      
+      <v-card                       
         width="100%"
-        class="d-flex justify-space-between mr-5"        
+        class="d-flex justify-space-between align-center"        
+        height="60"        
         outlined
       >
+      
+        <v-btn 
+          @click.stop="foldMenu()"
+          elevation="0"
+          icon                 
+          class="ml-2"
+        >
+          <v-icon>
+            {{ btnIcon }}
+          </v-icon>
+        </v-btn>
+
         <v-tooltip 
           v-for="(menu, i) in menus"
           :key="i"
@@ -25,10 +39,10 @@
               :content="badge"
               :value="badge"
               overlap
-              offset-y="30"
+              offset-y="20"
             >
               <v-btn          
-                class="ml-1 mt-3"
+                class="ml-1"
                 v-on="on"
                 v-bind="attrs"
                 large
@@ -44,7 +58,7 @@
           </div>
           <div v-else>
             <v-btn          
-              class="ml-1 mt-3"
+              class="ml-1"
               v-on="on"
               v-bind="attrs"
               large
@@ -65,10 +79,10 @@
           color="grey"        
           :value="darkMode"          
           @change="toggleDarkMode"         
-          class="ml-2 pt-1 mb-1"      
+          class="ml-2"      
           inset
         ></v-switch>
-      </v-card>
+      </v-card>      
               
       <v-expand-transition>
         <v-card             
@@ -185,7 +199,7 @@
         </v-card>
             
       </v-expand-transition>
-
+      <side-bar v-if="!mini" />
     </v-navigation-drawer>
     <v-dialog v-model="loginDialog" height="300" width="300" v-if="!logined">
       <v-card height="350" width="300" opacity-100 elevation="">
@@ -232,6 +246,7 @@ import { mobileHeight } from '@/mixins/tools'
 import { IUserAccount } from '@/models/user'
 import { IUpdateStateModel } from '@/models/payload'
 import { IInterestGroup, IInterestGroupItem, InterestGroupModel, IUserInterestGroupItem } from '@/models/interest'
+import SideBar from '@/v2/pages/SideBar.vue'
 
 const MarketStoreModule = namespace('MarketStore')
 const StockStoreModule = namespace('StockStore')
@@ -250,7 +265,11 @@ export interface IMenu {
   title?: string | undefined
 }
 
-@Component
+@Component({
+  components: {
+    SideBar
+  }
+})
 export default class MenuBar extends Vue {
 
   userMenu: IMenu[] = [
@@ -352,10 +371,18 @@ export default class MenuBar extends Vue {
 
   // PASSWORD 숨김 여부
   passwordShow = false
+  
+  // 
+  mini = true
 
   // 다크모드 스위치
   get switchLabel () {
     return this.darkMode ? 'light' : 'dark'
+  }
+
+  // 메뉴 펼침 여부 버튼 아이콘
+  get btnIcon () {
+    return this.mini ? 'mdi-arrow-expand-right' : 'mdi-arrow-expand-left'
   }
 
   get mobile () {
@@ -363,34 +390,17 @@ export default class MenuBar extends Vue {
   }
 
   
-  @MarketStoreModule.State('searchTable')
-  searchTable!: StockSimpleModel[]
+  @MarketStoreModule.State('searchTable') searchTable!: StockSimpleModel[]
+  @UserStoreModule.Action('tryLogin') login!: (payload: IUserAccount) => Promise<void>
+  @StockStoreModule.Action('getStock') getStock!: (name: string) => Promise<void>
 
-  @StockStoreModule.Action('getStock')
-  getStock!: (name: string) => Promise<void>
-
-  @UserStoreModule.Action('tryLogin')
-  login!: (payload: IUserAccount) => Promise<void>
-
-  @InterestStoreModule.State('interestGroups')
-  interestGroups!: IInterestGroup[]
-
-  @InterestStoreModule.State('userInterests')
-  userInterests!: IUserInterestGroupItem[]
-
-  @InterestStoreModule.Mutation('userInterestUpdate')
-  userInterestUpdate!: () => void
-
-  @InterestStoreModule.State('userInerestAlarms')
-  userInerestAlarms!: () =>void
-
-  @InterestStoreModule.Mutation('changeUserInterestAlram')
-  changeUserInterestAlram!: (payload: number) => void
+  @InterestStoreModule.State('interestGroups') interestGroups!: IInterestGroup[]
+  @InterestStoreModule.State('userInterests') userInterests!: IUserInterestGroupItem[]
+  @InterestStoreModule.State('userInerestAlarms') userInerestAlarms!: () =>void
+  @InterestStoreModule.Mutation('userInterestUpdate') userInterestUpdate!: () => void
+  @InterestStoreModule.Mutation('changeUserInterestAlram') changeUserInterestAlram!: (payload: number) => void
 
   
-
-
-
   @Watch("search")
   watchSearch(val: unknown) {
     if(!val) return
@@ -418,11 +428,19 @@ export default class MenuBar extends Vue {
   }
 
   expandState(state: string) {
-    this[state] = !this[state]
+    this[state] = !this[state]    
   }
 
   setState(state: string, value: any) {
     this[state] = value
+  }
+
+  foldMenu() {
+    this.mini = !this.mini
+    this.expand = false
+    this.userExpand = false
+    this.alramConfig = false
+
   }
 
   updateState(payload: IUpdateStateModel) {
@@ -456,9 +474,6 @@ export default class MenuBar extends Vue {
   alramChange(i) {
     this.changeUserInterestAlram(i)
   } 
-
-
-
 
 }
 </script>

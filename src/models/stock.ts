@@ -1,6 +1,7 @@
 export interface SingleStock {
-  title: string
+  title?: string
   code: string
+  name?: string
 }
 
 export interface StockSimpleModel extends SingleStock { 
@@ -46,9 +47,7 @@ export interface IMarketRank {
   volume: IMarketRanksContents[]
 }
 
-export interface IMarketRanksContents extends SingleStock {
-  code: string
-  title: string
+export interface IMarketRanksContents extends SingleStock {  
   stock: number
   initialize?: number
 }

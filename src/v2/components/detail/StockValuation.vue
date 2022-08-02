@@ -15,6 +15,11 @@
 
     <v-divider></v-divider>
 
+    <v-btn-toggle v-model="toggle_exclusive" tile multiple>
+      <v-btn v-for="i in 4" :key="i">
+        {{ i }}
+      </v-btn>
+    </v-btn-toggle>
     
     <stock-valuation-chart 
       class="mt-2 ml-2 mr-2"
@@ -24,7 +29,9 @@
 
     <v-divider></v-divider>
 
-      
+  
+
+    
 
       <!-- <v-card
         class="ml-5 mr-5 mt-5 d-flex"
@@ -132,6 +139,7 @@ const StockStoreModule = namespace('StockStore')
 export default class StockValuation extends Vue {
   
   tab = 0
+  toggle_exclusive = []
   colors: string[] = ['#ff6384', '#994433', '#6495ed', '#800080']
   formula = '$$x = {-b \\pm \\sqrt{b^2-4ac} \\over 2a}.$$'
   v = {

@@ -1,11 +1,11 @@
 <template>
   <v-row>
-    <v-col cols="12" xl="4" lg="4">        
+    <v-col cols="12" xl="3" lg="4" md="4">        
       <stock-info :keys="componentKey + 1"/>           
       <stock-score @drawerChange="drawerChange" :keys="componentKey + 3"/>     
       <stock-indicator :keys="componentKey + 2"/>    
     </v-col>    
-    <v-col cols="12" xl="8" lg="8">
+    <v-col cols="12" xl="9" lg="8">
       <stock-drawer 
         :keys="componentKey + 4"
         @drawerChange="drawerChange" :drawer="drawer" 

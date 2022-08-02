@@ -1,7 +1,7 @@
 <template>    
   <v-card
-    class="ml-5 mr-5 align-center justify-center"
-    :height="mobile ? 950 : 400"
+    class="ml-5 mr-5 align-center justify-center overflow-y-auto"
+    :height="mobile ? 950 : 890"
     width="auto"
     elevation="0"
     outlined
@@ -19,13 +19,99 @@
         </v-btn>
     </v-card-title>    
 
-    <v-card-subtitle class="ml-5">
-      추천 종목을 확인 해 보세요.
+    <v-card-subtitle class="ml-5 d-flex justify-space-between">
+      <span>추천 종목을 확인 해 보세요.</span>      
+      <span>갱신일 : 2022-07-27 </span>      
     </v-card-subtitle>
 
     <v-divider></v-divider>
 
-    <v-carousel 
+    <v-sheet class="d-flex justify-center flex-wrap">      
+      <v-card           
+        v-for="(item, i) in recommend" 
+        :key="i"
+        class="mt-5 ml-5 mr-5"
+        height="240"
+        width="450"
+        outlined
+        elevation="0"
+        link
+        :to="`/detail/${item.name}`"
+      >
+        <v-list-item three-line>
+          <v-list-item-content>
+            <div class="mb-4">
+              KOSPI
+            </div>
+            <v-list-item-title class="text-h4 font-weight-bold m-1 ml-5">
+              <span>{{ item.name }}</span>                        
+              <v-tooltip right>
+                <template v-slot:activator="{on}">
+                  <v-icon v-on="on" size="30" class="ml-5" color="red">fa-solid fa-arrow-trend-up</v-icon>
+                </template>
+                <span class="red--text font-weight-bold">상승</span> 
+                <span> 추세입니다.</span>
+              </v-tooltip>
+            </v-list-item-title>
+            <v-list-item-subtitle class="text-h5 mb-1 ml-6">
+              {{ item.code }}
+            </v-list-item-subtitle>
+          </v-list-item-content>
+          <v-list-item-avatar>
+            <v-btn icon x-large>
+              <v-icon size="40">mdi-bookmark-outline</v-icon>
+            </v-btn>
+          </v-list-item-avatar>                              
+        </v-list-item>
+
+        <v-divider></v-divider>    
+
+        <v-row>
+          <v-col cols="12" xl="6" lg="6">
+            <v-card-title class="text-h5 font-weight-bold ml-5">
+              <span> {{ item.close.toLocaleString() }} ₩</span>
+              <v-btn  
+                class="ml-1"
+                icon
+                right
+                x-small
+              ><v-icon>fa-solid fa-circle-info</v-icon>
+              </v-btn>
+            </v-card-title>
+
+            <v-card-subtitle :class="['text-h6', 'font-weight-bold', 'ml-5',  item.changes_ratio > 0 ? 'red--text' : 'blue--text']">
+              <span> {{ item.changes_ratio > 0 ? '+' : ''}}{{ item.changes_ratio }} %</span>                        
+            </v-card-subtitle>                                              
+          </v-col>
+
+          <v-col cols="12" xl="6" lg="6">
+            <v-tooltip bottom>
+              <template v-slot:activator="{on} ">
+                <v-sheet 
+                  class="mt-3 mr-5"
+                  width="auto"
+                  max-height="100%"          
+                  v-on="on"
+                >          
+                  <v-sparkline 
+                    class="pl-2 pr-2 pt-2"
+                    color="#40E0D0"
+                    line-width="5"
+                    smooth="100"
+                    auto-draw
+                    type="trend"
+                    :value="sparkLineValue"
+                  ></v-sparkline>              
+                </v-sheet>
+              </template>
+              <span>최근 1년간의 추이를 보여줍니다.</span>
+            </v-tooltip>
+          </v-col>
+        </v-row>
+      </v-card>
+    </v-sheet>
+
+    <!-- <v-carousel 
       hide-delimiter-background
       hide-delimiters
       show-arrows-on-hover
@@ -47,8 +133,8 @@
               class="mt-5 ml-5 mr-5"
               height="100%"
               width="94%"
-              rounded="xl"
-              elevation="2"
+              outlined
+              elevation="0"
               link
               :to="`/detail/${item.name}`"
             >
@@ -126,7 +212,7 @@
           </v-col>
         </v-row>
       </v-carousel-item>
-    </v-carousel>
+    </v-carousel> -->
 
     <v-overlay 
       :value="overlay"
@@ -167,7 +253,7 @@ export default class StockRecommend extends Vue {
   @MarketStoreModule.Action('getRecommend') readonly getRecommend!: () => Promise<void>
   @MarketStoreModule.Getter('recommendArray') recommendArray!: any
 
-  get mobile () {
+  get mobile () {    
     return mobileHeight(this.$vuetify.breakpoint.name) < 500
   }  
     

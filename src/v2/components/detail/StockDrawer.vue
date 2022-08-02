@@ -8,6 +8,7 @@
     :show-arrows="false"
     height="100%"
     vertical
+    :max-width="width"
     v-model="drawer"
 >    
     <v-carousel-item>
@@ -41,6 +42,7 @@ import StockSimilar from '@/v2/components/detail/StockSimilar.vue'
 import StockNews from '@/v2/components/detail/StockNews.vue'
 import StockFinance from '@/v2/components/detail/StockFinance.vue'
 import StockValuation from '@/v2/components/detail/StockValuation.vue'
+import { mobileHeight } from '@/mixins/tools' 
 
 
 @Component({
@@ -58,10 +60,18 @@ export default class StockDrawer extends Vue {
   fab = false
   componentKey = 0
 
+  get width () {
+    return this.$vuetify.breakpoint.name === 'xs' ? 465 : '94%'
+  }
+
   @Prop() drawer!: number
   
   drawerChange(select: number) {
     this.$emit('drawerChange', select)
+  }
+
+  get mobile () {
+    return this.$vuetify.breakpoint.name === 'xs'
   }
 
   forceRender() {
