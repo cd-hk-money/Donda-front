@@ -34,10 +34,10 @@
             :show-arrows="false"            
           >
             <v-carousel-item>
-              <stock-score-bar-chart :height="230" class="mt-8"/>
+              <stock-score-bar-chart :height="230" class="mt-4"/>
             </v-carousel-item>
             <v-carousel-item>
-              <stock-chart :height="230" class="mt-8"/>                
+              <stock-chart :height="230" class="mt-4"/>                
             </v-carousel-item>
           </v-carousel>
         </template>
@@ -49,8 +49,7 @@
             ></v-progress-circular>
           </div>
         </template>
-      </v-col>      
-      <v-divider vertical></v-divider>
+      </v-col>            
 
       <v-col cols="12" xl="5" lg="5" sm="12" md="12" xs="12" class="text-center align-center mt-3">
         <div class="text-h4">20%</div>

@@ -41,7 +41,7 @@
     <v-divider></v-divider>
     <v-card-text v-if="!loaded">
       <stock-big-chart   
-        :height="174"        
+        :height="169"        
         :gradient="gradientEnable"
         :volume="volumeEnable"
       />        

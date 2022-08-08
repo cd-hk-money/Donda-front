@@ -1,100 +1,103 @@
 <template>    
-  <v-card
-    class="ml-5 mr-5 align-center justify-center overflow-y-auto"
-    :height="mobile ? 950 : 890"
-    :width="mobile ? 460 : '94%'"
-    elevation="0"
-    outlined
-    v-if="!loaded"
-  >
-    <v-card-title             
-      class="text-h4 font-weight-bold ml-5">
-      추천 종목
-        <v-btn
-          icon      
-          large
-          @click="overlay = !overlay"
+  <div>
+    <v-card
+      class="ml-5 mr-5 align-center justify-center"
+      :width="mobile ? 460 : '94%'"
+      elevation="0"
+      outlined
+    >
+      <v-card-title             
+        class="text-h4 font-weight-bold ml-5">
+        추천 종목
+          <v-btn
+            icon      
+            large
+            @click="overlay = !overlay"
+          >
+            <v-icon>fa-solid fa-circle-info</v-icon>
+          </v-btn>
+      </v-card-title>    
+
+      <v-card-subtitle class="ml-5 d-flex justify-space-between">
+        <span>추천 종목을 확인 해 보세요.</span>      
+        <span>갱신일 : 2022-07-27 </span>      
+      </v-card-subtitle>
+    </v-card>
+    <v-card
+      class="ml-5 mr-5 align-center justify-center overflow-y-auto"
+      :height="mobile ? 640 : 790"
+      :width="mobile ? 460 : '94%'"
+      elevation="0"
+      outlined
+      v-if="!loaded"
+    >    
+      <v-card class="d-flex justify-center flex-wrap">      
+        <v-card           
+          v-for="(item, i) in recommend" 
+          :key="i"
+          class="mt-5 ml-5 mr-5"
+          height="236"
+          width="450"
+          outlined
+          elevation="0"
+          link
+          :to="`/detail/${item.name}`"
         >
-          <v-icon>fa-solid fa-circle-info</v-icon>
-        </v-btn>
-    </v-card-title>    
-
-    <v-card-subtitle class="ml-5 d-flex justify-space-between">
-      <span>추천 종목을 확인 해 보세요.</span>      
-      <span>갱신일 : 2022-07-27 </span>      
-    </v-card-subtitle>
-
-    <v-divider></v-divider>
-
-    <v-sheet class="d-flex justify-center flex-wrap">      
-      <v-card           
-        v-for="(item, i) in recommend" 
-        :key="i"
-        class="mt-5 ml-5 mr-5"
-        height="240"
-        width="450"
-        outlined
-        elevation="0"
-        link
-        :to="`/detail/${item.name}`"
-      >
-        <v-list-item three-line>
-          <v-list-item-content>
-            <div class="mb-4">
-              KOSPI
-            </div>
-            <v-list-item-title class="text-h4 font-weight-bold m-1 ml-5">
-              <span>{{ item.name }}</span>                        
-              <v-tooltip right>
-                <template v-slot:activator="{on}">
-                  <v-icon v-on="on" size="30" class="ml-5" color="red">fa-solid fa-arrow-trend-up</v-icon>
-                </template>
-                <span class="red--text font-weight-bold">상승</span> 
-                <span> 추세입니다.</span>
-              </v-tooltip>
-            </v-list-item-title>
-            <v-list-item-subtitle class="text-h5 mb-1 ml-6">
-              {{ item.code }}
-            </v-list-item-subtitle>
-          </v-list-item-content>
-          <v-list-item-avatar>
-            <v-btn icon x-large>
-              <v-icon size="40">mdi-bookmark-outline</v-icon>
-            </v-btn>
-          </v-list-item-avatar>                              
-        </v-list-item>
-
-        <v-divider></v-divider>    
-
-        <v-row>
-          <v-col cols="12" xl="6" lg="6">
-            <v-card-title class="text-h5 font-weight-bold ml-5">
-              <span> {{ item.close.toLocaleString() }} ₩</span>
-              <v-btn  
-                class="ml-1"
-                icon
-                right
-                x-small
-              ><v-icon>fa-solid fa-circle-info</v-icon>
+          <v-list-item three-line>
+            <v-list-item-content>
+              <div class="mb-4">
+                KOSPI
+              </div>
+              <v-list-item-title class="text-h4 font-weight-bold m-1 ml-5">
+                <span>{{ item.name }}</span>                        
+                <v-tooltip right>
+                  <template v-slot:activator="{on}">
+                    <v-icon v-on="on" size="30" class="ml-5" color="red">fa-solid fa-arrow-trend-up</v-icon>
+                  </template>
+                  <span class="red--text font-weight-bold">상승</span> 
+                  <span> 추세입니다.</span>
+                </v-tooltip>
+              </v-list-item-title>
+              <v-list-item-subtitle class="text-h5 mb-1 ml-6">
+                {{ item.code }}
+              </v-list-item-subtitle>
+            </v-list-item-content>
+            <v-list-item-avatar>
+              <v-btn icon x-large>
+                <v-icon size="40">mdi-bookmark-outline</v-icon>
               </v-btn>
-            </v-card-title>
+            </v-list-item-avatar>                              
+          </v-list-item>
 
-            <v-card-subtitle :class="['text-h6', 'font-weight-bold', 'ml-5',  item.changes_ratio > 0 ? 'red--text' : 'blue--text']">
-              <span> {{ item.changes_ratio > 0 ? '+' : ''}}{{ item.changes_ratio }} %</span>                        
-            </v-card-subtitle>                                              
-          </v-col>
+          <v-divider></v-divider>    
 
-          <v-col cols="12" xl="6" lg="6">
+          <div class="d-flex">
+            <div>
+              <v-card-title class="text-h5 font-weight-bold ml-5">
+                <span> {{ item.close.toLocaleString() }} ₩</span>
+                <v-btn  
+                  class="ml-1"
+                  icon
+                  right
+                  x-small
+                ><v-icon>fa-solid fa-circle-info</v-icon>
+                </v-btn>
+              </v-card-title>
+  
+              <v-card-subtitle :class="['text-h6', 'font-weight-bold', 'ml-5',  item.changes_ratio > 0 ? 'red--text' : 'blue--text']">
+                <span> {{ item.changes_ratio > 0 ? '+' : ''}}{{ item.changes_ratio }} %</span>                        
+              </v-card-subtitle>                                              
+            </div>
+
             <v-tooltip bottom>
               <template v-slot:activator="{on} ">
-                <v-sheet 
-                  class="mt-3 mr-5"
-                  width="auto"
-                  max-height="100%"          
+                <v-sheet                                 
+                  width="280"  
+                  height="100%"                            
                   v-on="on"
                 >          
                   <v-sparkline 
-                    class="pl-2 pr-2 pt-2"
+                    class="pl-2 pr-2 pt-2 "
                     color="#40E0D0"
                     line-width="5"
                     smooth="100"
@@ -106,131 +109,133 @@
               </template>
               <span>최근 1년간의 추이를 보여줍니다.</span>
             </v-tooltip>
-          </v-col>
-        </v-row>
+          </div>
+
+        </v-card>
       </v-card>
-    </v-sheet>
 
-    <!-- <v-carousel 
-      hide-delimiter-background
-      hide-delimiters
-      show-arrows-on-hover
-      :height="mobile ? 850 : 400"
-      cycle
-      vertical
-    >
-      <v-carousel-item
-        v-for="(content, i) in recommendArray"
-        :key="i"
+      <!-- <v-carousel 
+        hide-delimiter-background
+        hide-delimiters
+        show-arrows-on-hover
+        :height="mobile ? 850 : 400"
+        cycle
+        vertical
       >
-        <v-row class="d-flex justify-center align-center">
-          <v-col
-            v-for="(item, j) in content"
-            :key="j"
-            cols="12" xl="6" ml="6"
-          >
-            <v-card           
-              class="mt-5 ml-5 mr-5"
-              height="100%"
-              width="94%"
-              outlined
-              elevation="0"
-              link
-              :to="`/detail/${item.name}`"
+        <v-carousel-item
+          v-for="(content, i) in recommendArray"
+          :key="i"
+        >
+          <v-row class="d-flex justify-center align-center">
+            <v-col
+              v-for="(item, j) in content"
+              :key="j"
+              cols="12" xl="6" ml="6"
             >
-              <v-list-item three-line>
-                <v-list-item-content>
-                  <div class="mb-4">
-                    KOSPI
-                  </div>
-                  <v-list-item-title class="text-h4 font-weight-bold m-1 ml-5">
-                    <span>{{ item.name }}</span>                        
-                    <v-tooltip right>
-                      <template v-slot:activator="{on}">
-                        <v-icon v-on="on" size="30" class="ml-5" color="red">fa-solid fa-arrow-trend-up</v-icon>
-                      </template>
-                      <span class="red--text font-weight-bold">상승</span> 
-                      <span> 추세입니다.</span>
-                    </v-tooltip>
-                  </v-list-item-title>
-                  <v-list-item-subtitle class="text-h5 mb-1 ml-6">
-                    {{ item.code }}
-                  </v-list-item-subtitle>
-                </v-list-item-content>
-                <v-list-item-avatar>
-                  <v-btn icon x-large>
-                    <v-icon size="40">mdi-bookmark-outline</v-icon>
-                  </v-btn>
-                </v-list-item-avatar>                              
-              </v-list-item>
-
-              <v-divider></v-divider>    
-
-              <v-row>
-                <v-col cols="12" xl="5" lg="5">
-                  <v-card-title class="text-h5 font-weight-bold ml-5">
-                    <span> {{ item.close }} ₩</span>
-                    <v-btn  
-                      class="ml-3"
-                      icon
-                      right
-                      x-small
-                    ><v-icon>fa-solid fa-circle-info</v-icon>
+              <v-card           
+                class="mt-5 ml-5 mr-5"
+                height="100%"
+                width="94%"
+                outlined
+                elevation="0"
+                link
+                :to="`/detail/${item.name}`"
+              >
+                <v-list-item three-line>
+                  <v-list-item-content>
+                    <div class="mb-4">
+                      KOSPI
+                    </div>
+                    <v-list-item-title class="text-h4 font-weight-bold m-1 ml-5">
+                      <span>{{ item.name }}</span>                        
+                      <v-tooltip right>
+                        <template v-slot:activator="{on}">
+                          <v-icon v-on="on" size="30" class="ml-5" color="red">fa-solid fa-arrow-trend-up</v-icon>
+                        </template>
+                        <span class="red--text font-weight-bold">상승</span> 
+                        <span> 추세입니다.</span>
+                      </v-tooltip>
+                    </v-list-item-title>
+                    <v-list-item-subtitle class="text-h5 mb-1 ml-6">
+                      {{ item.code }}
+                    </v-list-item-subtitle>
+                  </v-list-item-content>
+                  <v-list-item-avatar>
+                    <v-btn icon x-large>
+                      <v-icon size="40">mdi-bookmark-outline</v-icon>
                     </v-btn>
-                  </v-card-title>
+                  </v-list-item-avatar>                              
+                </v-list-item>
 
-                  <v-card-subtitle :class="['text-h6', 'font-weight-bold', 'ml-5',  item.changes_ratio > 0 ? 'red--text' : 'blue--text']">
-                    <span> {{ item.changes_ratio > 0 ? '+' : ''}}{{ item.changes_ratio }} %</span>                        
-                  </v-card-subtitle>                                              
-                </v-col>
+                <v-divider></v-divider>    
 
-                <v-col cols="12" xl="7" lg="7">
-                  <v-tooltip bottom>
-                    <template v-slot:activator="{on} ">
-                      <v-sheet 
-                        class="mt-3 mr-5"
-                        width="auto"
-                        max-height="100%"          
-                        v-on="on"
-                      >          
-                        <v-sparkline 
-                          class="pl-2 pr-2 pt-2"
-                          color="#40E0D0"
-                          line-width="5"
-                          smooth="100"
-                          auto-draw
-                          type="trend"
-                          :value="sparkLineValue"
-                        ></v-sparkline>              
-                      </v-sheet>
-                    </template>
-                    <span>최근 1년간의 추이를 보여줍니다.</span>
-                  </v-tooltip>
-                </v-col>
-              </v-row>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-carousel-item>
-    </v-carousel> -->
+                <v-row>
+                  <v-col cols="12" xl="5" lg="5">
+                    <v-card-title class="text-h5 font-weight-bold ml-5">
+                      <span> {{ item.close }} ₩</span>
+                      <v-btn  
+                        class="ml-3"
+                        icon
+                        right
+                        x-small
+                      ><v-icon>fa-solid fa-circle-info</v-icon>
+                      </v-btn>
+                    </v-card-title>
 
-    <v-overlay 
-      :value="overlay"
-      absolute
-      opacity="0.88"
-    >
-      <div>
-        추천 종목 기준에 대해, 어떤 기업을 선택하면 좋은지에 대해 설명
-      </div>
-      <div class="d-flex justify-center">
-        <v-btn 
-          bottom
-          @click="overlay = false">
-          닫기
-        </v-btn>
-      </div>
-    </v-overlay>
-  </v-card>
+                    <v-card-subtitle :class="['text-h6', 'font-weight-bold', 'ml-5',  item.changes_ratio > 0 ? 'red--text' : 'blue--text']">
+                      <span> {{ item.changes_ratio > 0 ? '+' : ''}}{{ item.changes_ratio }} %</span>                        
+                    </v-card-subtitle>                                              
+                  </v-col>
+
+                  <v-col cols="12" xl="7" lg="7">
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{on} ">
+                        <v-sheet 
+                          class="mt-3 mr-5"
+                          width="auto"
+                          max-height="100%"          
+                          v-on="on"
+                        >          
+                          <v-sparkline 
+                            class="pl-2 pr-2 pt-2"
+                            color="#40E0D0"
+                            line-width="5"
+                            smooth="100"
+                            auto-draw
+                            type="trend"
+                            :value="sparkLineValue"
+                          ></v-sparkline>              
+                        </v-sheet>
+                      </template>
+                      <span>최근 1년간의 추이를 보여줍니다.</span>
+                    </v-tooltip>
+                  </v-col>
+                </v-row>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-carousel-item>
+      </v-carousel> -->
+
+      <v-overlay 
+        :value="overlay"
+        absolute
+        opacity="0.88"
+      >
+        <div>
+          추천 종목 기준에 대해, 어떤 기업을 선택하면 좋은지에 대해 설명
+        </div>
+        <div class="d-flex justify-center">
+          <v-btn 
+            bottom
+            @click="overlay = false">
+            닫기
+          </v-btn>
+        </div>
+      </v-overlay>
+    </v-card>
+  </div>
+  
 </template>
 
 <script lang="ts">

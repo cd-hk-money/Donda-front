@@ -61,7 +61,7 @@ export default class StockDrawer extends Vue {
   componentKey = 0
 
   get width () {
-    return this.$vuetify.breakpoint.name === 'xs' ? 465 : '94%'
+    return this.$vuetify.breakpoint.name === 'xs' ? 465 : '100%'
   }
 
   @Prop() drawer!: number

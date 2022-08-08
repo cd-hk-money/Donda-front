@@ -221,6 +221,7 @@
             :type="passwordShow ? 'text' : 'password'"
             @click:append="passwordShow = !passwordShow"
             v-model="password" />
+
           <v-btn 
             block 
             outlined 
@@ -386,7 +387,12 @@ export default class MenuBar extends Vue {
   }
 
   get mobile () {
-    return mobileHeight(this.$vuetify.breakpoint.name) < 500
+    return this.$vuetify.breakpoint.name === 'xs'
+  }
+
+  @Watch('mobile')
+  watchMobile(prev) {    
+    if(this.mobile) this.mini = false
   }
 
   
@@ -468,6 +474,7 @@ export default class MenuBar extends Vue {
 
   mounted () {    
     this.userInterestUpdate()    
+    if(this.mobile) this.mini = false
   } 
 
   

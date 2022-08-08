@@ -101,8 +101,38 @@
             <span>{{ menu.tooltip }}</span>
           </v-tooltip>
         </v-speed-dial>        
-      </v-list>        
+      </v-list>     
+
+      <v-btn block @click="dialog = true" v-if="!dialog">
+        <v-icon>mdi-plus</v-icon>
+      </v-btn>   
+      <v-text-field 
+        v-else @blur="dialog = false" class="ml-3 mr-3"
+        label="관심종목 그룹명"
+        v-model="groupName"
+        outlined
+        clearable
+        @keydown.enter="addgroup(groupName)"
+      >
+
+      </v-text-field>
     </v-card>
+    <!-- <v-dialog v-model="dialog" height="350" width="300" absolute>
+      <v-card elevation="" height="350" width="300" outlined>
+        <v-card-title>
+          관심종목 그룹 추가
+        </v-card-title>
+
+        <v-divider></v-divider>
+        
+        <v-card-text>
+
+        </v-card-text>
+
+
+      </v-card>
+    </v-dialog> -->
+
   </v-sheet>    
 </template>
 
@@ -125,6 +155,9 @@ export default class SideBar extends Vue {
 
   // 그룹 편집메뉴 선택 다이어로그 
   fab = false
+  groupName = ''
+
+  dialog = false
 
   // 디폴트 관심종목 그룹
   items = [
@@ -240,14 +273,21 @@ export default class SideBar extends Vue {
     }
   ]
    
-  @InterestStoreModule.State('interestGroups')
-  interestGroups!: IInterestGroup[]
-
-  @InterestStoreModule.Mutation('initInterestGroup')
-  readonly initInterestGroup!: () => void
+  @InterestStoreModule.State('interestGroups') interestGroups!: IInterestGroup[]
+  @InterestStoreModule.Mutation('initInterestGroup') readonly initInterestGroup!: () => void
+  @InterestStoreModule.Mutation('addGroup') readonly addGroup!: (group: any) => void
 
   created () {
     this.initInterestGroup()    
+  }
+
+  addgroup (groupName) {
+    this.addGroup({
+      title: groupName,
+      item: []
+    })
+
+    this.groupName = ''
   }
 }
 </script>

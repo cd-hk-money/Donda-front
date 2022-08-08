@@ -13,27 +13,7 @@ export default class InterestStore extends VuexModule {
     {
       title: '관심종목 그룹2',
       item: []
-    },
-    {
-      title: '관심종목 그룹3',
-      item: []
-    },
-    {
-      title: '관심종목 그룹4',
-      item: []
-    },
-    {
-      title: '관심종목 그룹5',
-      item: []
-    },
-    {
-      title: '관심종목 그룹6',
-      item: []
-    },
-    {
-      title: '관심종목 그룹7',
-      item: []
-    },
+    }
   ]
 
   public userInterests: IUserInterestGroupItem[] = []
@@ -42,6 +22,11 @@ export default class InterestStore extends VuexModule {
   @Mutation
   public snackBarClose() {
     this.snackBar = this.snackBar = false
+  }
+
+  @Mutation
+  public addGroup (group) {
+    this.interestGroups.push(group)
   }
 
   @Mutation

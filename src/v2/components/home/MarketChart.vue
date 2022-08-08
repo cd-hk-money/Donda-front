@@ -138,7 +138,7 @@ export default class LineChart extends Vue {
           fill: fill,        
           borderColor: MAIN_COLOR,
           backgroundColor: transparentize(MAIN_COLOR, 0.8),
-          borderWidth: 3,                 
+          borderWidth: 3.5,                 
           radius: this.requestDate > 150 ? 0 : 0,
           pointStyle: 'rectRounded',
           tension: .4,          

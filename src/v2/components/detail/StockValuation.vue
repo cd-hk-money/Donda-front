@@ -3,8 +3,8 @@
     class="mt-5 ml-5 mr-5 mb-5"
     height="885"
     outlined
-    elevation="0"
-    width="95%"                  
+    elevation="0"                
+    :width="mobile ? 460 : '94%'"
   >
     <v-card-title>
       적정 주가?
@@ -29,11 +29,6 @@
     />
 
     <v-divider></v-divider>
-
-  
-
-    
-
       <!-- <v-card
         class="ml-5 mr-5 mt-5 d-flex"
         height="120"
@@ -160,6 +155,10 @@ export default class StockValuation extends Vue {
     return this.$vuetify.breakpoint.name === 'xs' ? 200 : 100
   }
 
+  get mobile () {
+    return this.$vuetify.breakpoint.name === 'xs'
+  }
+
   valuations: IValuationContent[] = [
     {
       color: '#40E0D0',
@@ -247,8 +246,8 @@ export default class StockValuation extends Vue {
 
 .valuation-btn-toggle {
   position: absolute;
-  right: 0px;
-  top: 58px;
+  right: 0;  
+  top: 87px;
 }
 
 

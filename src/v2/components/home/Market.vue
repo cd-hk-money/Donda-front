@@ -34,15 +34,14 @@
       <v-carousel-item                
         v-for="(marketType, i) in marketTypes"
         :key="i"                
-      >          
-      
+      >                
         <v-card height="auto">
           <market-desc 
             @fillChange="onFill"
             @changeRequestDate="changeRequestDate"            
             :type="marketType" />                   
           <market-chart   
-            class="mt-2"
+            class="mt-5"
             :mobile="false"
             :fill="fill"                        
             :height="195"
@@ -66,7 +65,6 @@ import MarketChart from '@/v2/components/home/MarketChart.vue'
 // models
 import { IMarketRecentModel } from '@/models/market'
 import { mobileHeight } from '@/mixins/tools'
-
 
 const MarketStoreModule = namespace('MarketStore')
 
