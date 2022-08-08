@@ -41,15 +41,13 @@ export default class InterestStore extends VuexModule {
   }
 
   @Mutation
-  public removeInterestGroup(title: string) {
+  public removeInterestGroup(title: string) {    
     try {
-      this.interestGroups.filter((group: IInterestGroup) => {
-        group.title !== title
-      })
+      this.interestGroups = this.interestGroups.filter((group: IInterestGroup) => group.title !== title)
     } catch (e) {
       console.log('그룹 삭제 실패')
       throw e
-    }
+    }    
   }
 
   @Mutation

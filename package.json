@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@kiyoaki_w/vue-context": "^1.0.3",
     "@kurkle/color": "^0.1.9",
     "@sashke-er/chartjs-plugin-crosshair": "^1.1.4",
     "@types/chart.js": "^2.9.37",

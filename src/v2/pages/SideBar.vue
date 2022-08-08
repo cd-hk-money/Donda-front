@@ -17,18 +17,24 @@
 
       <v-divider></v-divider>
 
-      <v-list two-line>
-        <v-list-group
-          active-class="secondary" 
-          :value="true"
-          v-for="(item, i) in itemsV2"
-          :key="i"
+      <v-list         
+        v-for="(item, i) in itemsV2"
+        :key="i"      
+      >
+        <v-list-group          
+          :value="true"          
           v-model="item.active"          
-          append-icon='mdi-chevron-down'
+          :append-icon="groupIcon"
+          @contextmenu.prevent="showContextMenu(item.title)"                 
         >
           <template v-slot:activator>
             <v-list-item-content>              
               <v-list-item-title v-text="item.title"></v-list-item-title>
+              <div v-if="groupIcon === ''">          
+                <v-icon>
+                  mdi-delete
+                </v-icon>
+              </div>
             </v-list-item-content>
           </template> 
 
@@ -53,10 +59,10 @@
                 <v-icon>fa-regular fa-x</v-icon>
               </v-btn>
             </v-list-item-action>                    
-          </v-list-item> 
+          </v-list-item>           
         </v-list-group>
 
-        <v-speed-dial             
+        <!-- <v-speed-dial             
           v-model="fab"     
           absolute
           top
@@ -100,7 +106,7 @@
             </template>
             <span>{{ menu.tooltip }}</span>
           </v-tooltip>
-        </v-speed-dial>        
+        </v-speed-dial>         -->        
       </v-list>     
 
       <v-btn block @click="dialog = true" v-if="!dialog">
@@ -156,7 +162,7 @@ export default class SideBar extends Vue {
   // 그룹 편집메뉴 선택 다이어로그 
   fab = false
   groupName = ''
-
+  groupIcon = 'mdi-chevron-down'
   dialog = false
 
   // 디폴트 관심종목 그룹
@@ -220,6 +226,10 @@ export default class SideBar extends Vue {
     },    
   ]
 
+  $refs!: {
+    kiContext: any
+  }
+
   // 관심종목 그룹
   get itemsV2 () {
     return this.interestGroups.map((group: IInterestGroup) => ({
@@ -272,14 +282,12 @@ export default class SideBar extends Vue {
       }
     }
   ]
-   
+     
   @InterestStoreModule.State('interestGroups') interestGroups!: IInterestGroup[]
   @InterestStoreModule.Mutation('initInterestGroup') readonly initInterestGroup!: () => void
   @InterestStoreModule.Mutation('addGroup') readonly addGroup!: (group: any) => void
-
-  created () {
-    this.initInterestGroup()    
-  }
+  @InterestStoreModule.Mutation('removeInterestGroup') readonly removeGroup!: (title: string) => void
+  
 
   addgroup (groupName) {
     this.addGroup({
@@ -289,5 +297,14 @@ export default class SideBar extends Vue {
 
     this.groupName = ''
   }
+
+  showContextMenu (title){
+    this.removeGroup(title)       
+  }
+
+  created () {
+    this.initInterestGroup()    
+  }
+
 }
 </script>

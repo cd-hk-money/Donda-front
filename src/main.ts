@@ -5,6 +5,7 @@ import vuetify from './plugins/vuetify'
 import VueRouter from 'vue-router'
 import router from './routes'
 import MathJax, { initMathJax, renderByMathjax } from 'mathjax-vue'
+import kiContext from '@kiyoaki_w/vue-context'
 
 function onMathJaxReady() {
   const el = document.getElementById('elementId')
@@ -14,7 +15,7 @@ function onMathJaxReady() {
 initMathJax({}, onMathJaxReady)
 
 Vue.use(MathJax)
-
+Vue.use(kiContext)
 Vue.config.productionTip = false
 Vue.use(VueRouter)
 
