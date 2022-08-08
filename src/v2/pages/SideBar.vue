@@ -61,55 +61,10 @@
             </v-list-item-action>                    
           </v-list-item>           
         </v-list-group>
-
-        <!-- <v-speed-dial             
-          v-model="fab"     
-          absolute
-          top
-          right
-          direction="bottom"
-          open-on-hover
-          transition="scale-transition"
-        >
-          <template v-slot:activator>
-            <v-btn
-              elevation="0"
-              x-small
-              v-model="fab"              
-              fab
-            >
-              <v-icon v-if="fab">
-                mdi-close
-              </v-icon>
-              <v-icon v-else>
-                mdi-dots-vertical
-              </v-icon>
-            </v-btn>
-          </template>
-          <v-tooltip
-            v-for="menu in menus"
-            :key="menu.icon"
-            left
-          >
-            <template v-slot:activator="{ on, attrs}">
-              <v-btn
-                v-on="on"
-                v-bind="attrs"
-                :color="menu.color"
-                fab
-                dark
-                x-small
-                @click="menu.callback"
-              >
-                <v-icon>{{ menu.icon }}</v-icon>
-              </v-btn>
-            </template>
-            <span>{{ menu.tooltip }}</span>
-          </v-tooltip>
-        </v-speed-dial>         -->        
       </v-list>     
-
-      <v-btn block @click="dialog = true" v-if="!dialog">
+      
+      <v-btn  block @click="dialog = true" v-if="!dialog">
+        그룹 추가
         <v-icon>mdi-plus</v-icon>
       </v-btn>   
       <v-text-field 
@@ -119,26 +74,8 @@
         outlined
         clearable
         @keydown.enter="addgroup(groupName)"
-      >
-
-      </v-text-field>
-    </v-card>
-    <!-- <v-dialog v-model="dialog" height="350" width="300" absolute>
-      <v-card elevation="" height="350" width="300" outlined>
-        <v-card-title>
-          관심종목 그룹 추가
-        </v-card-title>
-
-        <v-divider></v-divider>
-        
-        <v-card-text>
-
-        </v-card-text>
-
-
-      </v-card>
-    </v-dialog> -->
-
+      />      
+    </v-card>    
   </v-sheet>    
 </template>
 
@@ -288,7 +225,6 @@ export default class SideBar extends Vue {
   @InterestStoreModule.Mutation('addGroup') readonly addGroup!: (group: any) => void
   @InterestStoreModule.Mutation('removeInterestGroup') readonly removeGroup!: (title: string) => void
   
-
   addgroup (groupName) {
     this.addGroup({
       title: groupName,
@@ -298,9 +234,7 @@ export default class SideBar extends Vue {
     this.groupName = ''
   }
 
-  showContextMenu (title){
-    this.removeGroup(title)       
-  }
+  showContextMenu (title: string) { this.removeGroup(title) }
 
   created () {
     this.initInterestGroup()    
