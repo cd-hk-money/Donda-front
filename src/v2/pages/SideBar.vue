@@ -97,73 +97,10 @@ const InterestStoreModule = namespace('InterestStore')
 })
 export default class SideBar extends Vue {
 
-  // 그룹 편집메뉴 선택 다이어로그 
   fab = false
   groupName = ''
   groupIcon = 'mdi-chevron-down'
   dialog = false
-
-  // 디폴트 관심종목 그룹
-  items = [
-    {
-      action: 'mdi-ticket',
-      active: false,
-      items: [
-        {
-          subtitle: '000000',
-          title: '관심종목1',
-        },
-        {
-          subtitle: '000111',
-          title: '관심종목2',
-        },
-        {
-          subtitle: '000222',
-          title: '관심종목3',
-        },        
-      ],
-      title: '관심종목 그룹1'
-    },
-    {
-      action: 'mdi-ticket',
-      active: false,
-      items: [
-        {
-          subtitle: '068290',
-          title: '삼성출판사',
-        },
-        {
-          subtitle: '000111',
-          title: '관심종목2',
-        },
-        {
-          subtitle: '000222',
-          title: '관심종목3',
-        },        
-      ],
-      title: '관심종목 그룹2'
-    },  
-    {
-      action: 'mdi-ticket',
-      active: false,
-      items: [
-        {
-          subtitle: '000000',
-          title: '관심종목1',
-        },
-        {
-          subtitle: '000111',
-          title: '관심종목2',
-        },
-        {
-          subtitle: '000222',
-          title: '관심종목3',
-        },        
-      ],
-      title: '관심종목 그룹3'
-    },    
-  ]
-
   $refs!: {
     kiContext: any
   }

@@ -168,7 +168,7 @@
         <v-card          
           v-show="alramConfig"
           width="100%"          
-          height="300"
+          height="auto"
           elevation="0"
           outlined
         >
@@ -187,7 +187,7 @@
               </v-list-item-content>
 
               <v-list-item-action>
-                <v-btn icon @click="alramChange(i)">
+                <v-btn icon @click="alramChange(list, i)">
                   <v-icon color="grey lighten-1">
                     {{ list.alarm ? 'mdi-alarm-light' : 'mdi-alarm-light-outline'}}
                   </v-icon>
@@ -478,7 +478,7 @@ export default class MenuBar extends Vue {
   } 
 
   
-  alramChange(i) {
+  alramChange(list: IUserInterestGroupItem, i: number) {
     this.changeUserInterestAlram(i)
   } 
 

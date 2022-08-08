@@ -10,10 +10,10 @@
           </div>
       </div>
     </v-main>
-    <!-- <v-snackbar   
+    <v-snackbar   
       v-model="snackBar"
     >
-      그룹 추가 성공
+      {{ snackMessage}}
       <template v-slot:action="{ attrs }">
         <v-btn
           color="blue"
@@ -24,7 +24,7 @@
           닫기
         </v-btn>
       </template>
-    </v-snackbar> -->
+    </v-snackbar>
   </v-app>
 </template>
 
@@ -53,6 +53,9 @@ const InterestStoreModule = namespace('InterestStore')
 export default class App extends Vue {
 
   timeout = 2000
+  menuToggle = true
+  isMobile = isMobile()
+
   get height() {
     return window.pageXOffset
   }
@@ -61,27 +64,16 @@ export default class App extends Vue {
     return this.menuToggle ? 'mdi-arrow-expand-right' : 'mdi-arrow-expand-left'
   }
 
-  menuToggle = true
 
-  @MarketStoreModule.Action('getTodayMarket')
-  readonly getTodayMarket!: () => Promise<void>
-
-  @MarketStoreModule.Action('getSearchTable')
-  readonly getSearchTable!: () => Promise<void>
+  @MarketStoreModule.Action('getTodayMarket') readonly getTodayMarket!: () => Promise<void>
+  @MarketStoreModule.Action('getSearchTable') readonly getSearchTable!: () => Promise<void>
   
-  @StockStoreModule.Action('getDailySimpleRanks')
-  readonly getDailySimpleRanks!: () => Promise<void>
-
-  @StockStoreModule.State('dailySimpleRanksloaded')
-  rankLoaded!: boolean
-
-  @InterestStoreModule.State('snackBar')
-  snackBar!: boolean
-
-  @InterestStoreModule.Mutation('snackBarClose')
-  snackBarClose!: () => void
-
-  isMobile = isMobile()
+  @StockStoreModule.Action('getDailySimpleRanks') readonly getDailySimpleRanks!: () => Promise<void>
+  @StockStoreModule.State('dailySimpleRanksloaded') rankLoaded!: boolean
+  
+  @InterestStoreModule.State('snackBar') snackBar!: boolean
+  @InterestStoreModule.Mutation('snackBarClose') snackBarClose!: () => void
+  @InterestStoreModule.State('snackMessage') snackMessage!: string
 
   created () {
     this.getDailySimpleRanks()  

@@ -112,6 +112,7 @@ export default class InterestStore extends VuexModule {
   @Mutation
   public changeUserInterestAlram(payload: number) {
     this.userInterests[payload].alarm = !this.userInterests[payload].alarm
+    this.snackBarOpen()
   }
   
 }
