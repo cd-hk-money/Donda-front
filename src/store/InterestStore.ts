@@ -5,6 +5,7 @@ import { IInterestGroupItem, IInterestGroup, IUserInterestGroupItem  } from "@/m
 export default class InterestStore extends VuexModule {
   public snackBar = false
   public bookmarked: string[] = []
+  public snackMessage!: string
   public interestGroups: IInterestGroup[] = [
     {
       title: '관심종목 그룹1',
@@ -111,8 +112,10 @@ export default class InterestStore extends VuexModule {
 
   @Mutation
   public changeUserInterestAlram(payload: number) {
-    this.userInterests[payload].alarm = !this.userInterests[payload].alarm
+    this.userInterests[payload].alarm = !this.userInterests[payload].alarm    
     this.snackBarOpen()
+
+    // snackbar
   }
   
 }
