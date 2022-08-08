@@ -257,13 +257,13 @@ const InterestStoreModule = namespace('InterestStore')
 export interface IMenu {
   icon?: string,
   tooltip?: string,
-  color?: string | undefined
-  link?: boolean | undefined
-  to?: string | undefined
-  callback?(): boolean | any | undefined,
-  tile?: boolean | undefined
+  color?: string
+  link?: boolean 
+  to?: string 
+  callback?(): boolean | any ,
+  tile?: boolean 
   enable?: boolean
-  title?: string | undefined
+  title?: string 
 }
 
 @Component({

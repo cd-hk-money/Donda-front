@@ -72,6 +72,7 @@
         label="관심종목 그룹명"
         v-model="groupName"
         outlined
+        autofocus
         clearable
         @keydown.enter="addgroup(groupName)"
       />      
