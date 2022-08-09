@@ -5,7 +5,7 @@ import { IInterestGroupItem, IInterestGroup, IUserInterestGroupItem  } from "@/m
 export default class InterestStore extends VuexModule {
   public snackBar = false
   public bookmarked: string[] = []
-  public snackMessage!: string
+  public snackBarMessage!: string
   public interestGroups: IInterestGroup[] = [
     {
       title: '관심종목 그룹1',
@@ -31,7 +31,8 @@ export default class InterestStore extends VuexModule {
   }
 
   @Mutation
-  public snackBarOpen() {
+  public snackBarOpen(message: string) {
+    this.snackBarMessage = message ?? ''
     this.snackBar = this.snackBar = true
   }
 
@@ -49,6 +50,9 @@ export default class InterestStore extends VuexModule {
       console.log('그룹 삭제 실패')
       throw e
     }    
+
+    console.log(this)
+    // this.context.commit('snackBarOpen', title)
   }
 
   @Mutation
@@ -113,7 +117,6 @@ export default class InterestStore extends VuexModule {
   @Mutation
   public changeUserInterestAlram(payload: number) {
     this.userInterests[payload].alarm = !this.userInterests[payload].alarm    
-    this.snackBarOpen()
 
     // snackbar
   }

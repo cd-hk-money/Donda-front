@@ -10,10 +10,8 @@
           </div>
       </div>
     </v-main>
-    <v-snackbar   
-      v-model="snackBar"
-    >
-      {{ snackMessage}}
+    <v-snackbar v-show="snackBar">
+      {{ snackBarMessage }}
       <template v-slot:action="{ attrs }">
         <v-btn
           color="blue"
@@ -64,7 +62,6 @@ export default class App extends Vue {
     return this.menuToggle ? 'mdi-arrow-expand-right' : 'mdi-arrow-expand-left'
   }
 
-
   @MarketStoreModule.Action('getTodayMarket') readonly getTodayMarket!: () => Promise<void>
   @MarketStoreModule.Action('getSearchTable') readonly getSearchTable!: () => Promise<void>
   
@@ -73,7 +70,7 @@ export default class App extends Vue {
   
   @InterestStoreModule.State('snackBar') snackBar!: boolean
   @InterestStoreModule.Mutation('snackBarClose') snackBarClose!: () => void
-  @InterestStoreModule.State('snackMessage') snackMessage!: string
+  @InterestStoreModule.State('snackBarMessage') snackBarMessage!: string
 
   created () {
     this.getDailySimpleRanks()  

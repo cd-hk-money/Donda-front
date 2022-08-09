@@ -25,7 +25,7 @@
           :value="true"          
           v-model="item.active"          
           :append-icon="groupIcon"
-          @contextmenu.prevent="showContextMenu(item.title)"                 
+          @contextmenu.prevent="openDialog(item)"                 
         >
           <template v-slot:activator>
             <v-list-item-content>              
@@ -64,7 +64,7 @@
       </v-list>     
       
       <v-btn  block @click="dialog = true" v-if="!dialog">
-        그룹 추가
+        관심종목 그룹 추가
         <v-icon>mdi-plus</v-icon>
       </v-btn>   
       <v-text-field 
@@ -76,7 +76,44 @@
         clearable
         @keydown.enter="addgroup(groupName)"
       />      
-    </v-card>    
+    </v-card> 
+    <v-dialog 
+      max-width="35vh"                   
+      max-height="150"
+      v-model="removeDialog"      
+      overlay-opacity="0.2"      
+    >
+      <v-card outlined>
+        <v-card-title> 관심종목 그룹 삭제 </v-card-title>
+
+        <v-divider></v-divider>
+
+        <v-card-subtitle class="pt-3 text-center">
+          {{ dialogTitle }} 을(를) 삭제하시겠습니까? 
+          <div class="red--text" style="{font-size: 8px}">
+            하위 항목은 전부 삭제됩니다.
+          </div>
+        </v-card-subtitle>
+        
+        <v-card-text class="d-flex justify-center">          
+          <v-btn
+            color="error"
+            text
+            @click="[removeDialog = false, removeGroup(dialogTitle)]"
+          >
+            예
+          </v-btn>
+          <v-btn
+            color="primary"
+            text
+            @click="removeDialog = false"
+          >
+            아니오
+          </v-btn>
+        </v-card-text>
+
+      </v-card>
+    </v-dialog>
   </v-sheet>    
 </template>
 
@@ -98,6 +135,8 @@ const InterestStoreModule = namespace('InterestStore')
 export default class SideBar extends Vue {
 
   fab = false
+  removeDialog = false
+  dialogTitle = ''
   groupName = ''
   groupIcon = 'mdi-chevron-down'
   dialog = false
@@ -170,6 +209,11 @@ export default class SideBar extends Vue {
     })
 
     this.groupName = ''
+  }
+
+  openDialog (item: any) {
+    this.removeDialog = true
+    this.dialogTitle = item.title
   }
 
   showContextMenu (title: string) { this.removeGroup(title) }
