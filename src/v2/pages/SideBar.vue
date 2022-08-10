@@ -74,10 +74,13 @@
         outlined
         autofocus
         clearable
-        @keydown.enter="addgroup(groupName)"
+        @keydown.enter="[addgroup(groupName), updateState({
+          snackBarMessage: '관심종목 그룹 추가 완료',
+          snackBar: true
+        })]"
       />      
     </v-card> 
-    <v-dialog 
+  <v-dialog 
       max-width="35vh"                   
       max-height="150"
       v-model="removeDialog"      
@@ -99,7 +102,10 @@
           <v-btn
             color="error"
             text
-            @click="[removeDialog = false, removeGroup(dialogTitle)]"
+            @click="[removeDialog = false, removeGroup(dialogTitle), updateState({
+              snackBarMessage: '관심종목 그룹 삭제 완료',
+              snackBar: true
+            })]"
           >
             예
           </v-btn>
@@ -124,6 +130,7 @@ import { namespace } from 'vuex-class'
 import { isMobile } from '@/mixins/tools'
 import { IMenu } from '@/v2/pages/MenuBar.vue'
 import { IInterestGroup, IInterestGroupItem } from '@/models/interest'
+import { IUpdateStateModel } from '@/models/payload'
 
 const InterestStoreModule = namespace('InterestStore')
 
@@ -196,11 +203,13 @@ export default class SideBar extends Vue {
       }
     }
   ]
-     
+      
   @InterestStoreModule.State('interestGroups') interestGroups!: IInterestGroup[]
   @InterestStoreModule.Mutation('initInterestGroup') readonly initInterestGroup!: () => void
   @InterestStoreModule.Mutation('addGroup') readonly addGroup!: (group: any) => void
   @InterestStoreModule.Mutation('removeInterestGroup') readonly removeGroup!: (title: string) => void
+  @InterestStoreModule.Mutation('updateState') readonly updateState!: (payload: IUpdateStateModel) => void
+  
   
   addgroup (groupName) {
     this.addGroup({

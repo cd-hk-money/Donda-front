@@ -9,20 +9,22 @@
             <menu-bar />             
           </div>
       </div>
+      <v-snackbar v-model="snackBar">
+        {{ snackBarMessage }}
+        <template v-slot:action="{ attrs }">
+          <v-btn
+            color="error"
+            text
+            v-bind="attrs"
+            @click="updateState({
+              snackBar: false
+            })"
+          >
+            닫기
+          </v-btn>
+        </template>
+      </v-snackbar>
     </v-main>
-    <v-snackbar v-show="snackBar">
-      {{ snackBarMessage }}
-      <template v-slot:action="{ attrs }">
-        <v-btn
-          color="blue"
-          text
-          v-bind="attrs"
-          @click="snackBarClose"
-        >
-          닫기
-        </v-btn>
-      </template>
-    </v-snackbar>
   </v-app>
 </template>
 
@@ -34,6 +36,7 @@ import { isMobile } from '@/mixins/tools'
 import SideBar from '@/v2/pages/SideBar.vue'
 import MenuBar from '@/v2/pages/MenuBar.vue'
 import InterestToggle from '@/v2/pages/InterestToggle.vue'
+import { IUpdateStateModel } from './models/payload'
 
 // v2
 
@@ -71,6 +74,7 @@ export default class App extends Vue {
   @InterestStoreModule.State('snackBar') snackBar!: boolean
   @InterestStoreModule.Mutation('snackBarClose') snackBarClose!: () => void
   @InterestStoreModule.State('snackBarMessage') snackBarMessage!: string
+  @InterestStoreModule.Mutation('updateState') readonly updateState!: (payload: IUpdateStateModel) => void
 
   created () {
     this.getDailySimpleRanks()  

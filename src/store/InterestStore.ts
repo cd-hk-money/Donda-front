@@ -1,3 +1,4 @@
+import { IUpdateStateModel } from '@/models/payload';
 import { Module, VuexModule, Mutation } from "vuex-module-decorators";
 import { IInterestGroupItem, IInterestGroup, IUserInterestGroupItem  } from "@/models/interest";
 
@@ -18,8 +19,14 @@ export default class InterestStore extends VuexModule {
   ]
 
   public userInterests: IUserInterestGroupItem[] = []
-  
 
+  @Mutation
+  public updateState(payload: IUpdateStateModel) {
+    Object.entries(payload).forEach(state => {
+      this[state[0]] = state[1]
+    })
+  }
+  
   @Mutation
   public snackBarClose() {
     this.snackBar = this.snackBar = false
@@ -50,9 +57,6 @@ export default class InterestStore extends VuexModule {
       console.log('그룹 삭제 실패')
       throw e
     }    
-
-    console.log(this)
-    // this.context.commit('snackBarOpen', title)
   }
 
   @Mutation
