@@ -18,7 +18,7 @@
             v-bind="attrs"
             @click="updateState({
               snackBar: false
-            })"
+            })"            
           >
             닫기
           </v-btn>
@@ -38,8 +38,6 @@ import MenuBar from '@/v2/pages/MenuBar.vue'
 import InterestToggle from '@/v2/pages/InterestToggle.vue'
 import { IUpdateStateModel } from './models/payload'
 
-// v2
-
 const StockStoreModule = namespace('StockStore')
 const MarketStoreModule = namespace('MarketStore')
 const InterestStoreModule = namespace('InterestStore')
@@ -56,11 +54,7 @@ export default class App extends Vue {
   timeout = 2000
   menuToggle = true
   isMobile = isMobile()
-
-  get height() {
-    return window.pageXOffset
-  }
-
+  
   get btnIcon () {
     return this.menuToggle ? 'mdi-arrow-expand-right' : 'mdi-arrow-expand-left'
   }

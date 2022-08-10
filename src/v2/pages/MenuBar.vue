@@ -17,7 +17,12 @@
       >
       
         <v-btn 
-          @click.stop="foldMenu()"
+          @click.stop="[
+            mini = !mini,
+            expand = false,
+            userExpand = false,
+            alramConfig = false 
+          ]"
           elevation="0"
           icon                 
           class="ml-2"
@@ -133,33 +138,7 @@
             </v-btn>
           </div>
           
-        <v-divider></v-divider>
-          
-          <!-- <v-list
-            subheader
-            two-line
-          >
-            <v-list-item
-              v-for="(list, i) in userInterests"
-              :key="i"
-            >
-              <v-list-item-content>
-                <v-list-item-title v-text="list.title"></v-list-item-title>
-
-                <v-list-item-subtitle v-text="list.code"></v-list-item-subtitle>                
-              </v-list-item-content>
-
-              <v-list-item-action>
-                <v-btn icon @click="alramChange(i)">
-                  <v-icon color="grey lighten-1">
-                    {{ list.alarm ? 'mdi-alarm-light' : 'mdi-alarm-light-outline'}}
-                  </v-icon>
-                </v-btn>
-            
-              </v-list-item-action>              
-            </v-list-item>               
-          </v-list> -->
-          
+          <v-divider></v-divider>
 
         </v-card>
       </v-expand-transition>
@@ -187,7 +166,7 @@
               </v-list-item-content>
 
               <v-list-item-action>
-                <v-btn icon @click="alramChange(list, i)">
+                <v-btn icon @click="changeUserInterestAlram(i)">
                   <v-icon color="grey lighten-1">
                     {{ list.alarm ? 'mdi-alarm-light' : 'mdi-alarm-light-outline'}}
                   </v-icon>
@@ -195,6 +174,24 @@
             
               </v-list-item-action>              
             </v-list-item>               
+          </v-list>
+        </v-card>
+            
+      </v-expand-transition>
+
+      <v-expand-transition>
+        <v-card          
+          v-show="alramCheck"
+          width="100%"          
+          height="auto"
+          elevation="0"
+          outlined
+        >
+          <v-list
+            subheader
+            two-line
+          >
+            
           </v-list>
         </v-card>
             
@@ -276,18 +273,24 @@ export default class MenuBar extends Vue {
   userMenu: IMenu[] = [
     {
       title: '로그아웃',
-      callback: () => {
+      callback: () => {        
         this.expandState('logined')
         this.setState('alramConfig', false)
       }
     },
     {
       title: '알림 확인',
-      callback: () => { null }
+      callback: () => {
+        this.setState('alramConfig', false)
+        this.expandState('alramCheck')
+      }
     },
     {
       title: '알림 설정',
-      callback: () => this.expandState('alramConfig')
+      callback: () => {
+        this.setState('alramCheck', false)
+        this.expandState('alramConfig')
+      }
     }    
   ]
 
@@ -357,6 +360,9 @@ export default class MenuBar extends Vue {
   // 알림 설정 확장
   alramConfig = false
 
+  // 알림 확인 확장
+  alramCheck = false
+
   // 다크모드
   darkMode = false
 
@@ -395,14 +401,13 @@ export default class MenuBar extends Vue {
     if(this.mobile) this.mini = false
   }
 
-  
   @MarketStoreModule.State('searchTable') searchTable!: StockSimpleModel[]
   @UserStoreModule.Action('tryLogin') login!: (payload: IUserAccount) => Promise<void>
   @StockStoreModule.Action('getStock') getStock!: (name: string) => Promise<void>
 
   @InterestStoreModule.State('interestGroups') interestGroups!: IInterestGroup[]
   @InterestStoreModule.State('userInterests') userInterests!: IUserInterestGroupItem[]
-  @InterestStoreModule.State('userInerestAlarms') userInerestAlarms!: () =>void
+  @InterestStoreModule.State('userInerestAlarms') userInerestAlarms!: () => void
   @InterestStoreModule.Mutation('userInterestUpdate') userInterestUpdate!: () => void
   @InterestStoreModule.Mutation('changeUserInterestAlram') changeUserInterestAlram!: (payload: number) => void
 
@@ -412,8 +417,6 @@ export default class MenuBar extends Vue {
     if(!val) return
     val && val !== this.searchTable && this.querySelections(val)
   }  
-
-  
 
   querySelections(val: any) {
     let timeout=  0
@@ -439,14 +442,6 @@ export default class MenuBar extends Vue {
 
   setState(state: string, value: any) {
     this[state] = value
-  }
-
-  foldMenu() {
-    this.mini = !this.mini
-    this.expand = false
-    this.userExpand = false
-    this.alramConfig = false
-
   }
 
   updateState(payload: IUpdateStateModel) {
@@ -475,11 +470,6 @@ export default class MenuBar extends Vue {
   mounted () {    
     this.userInterestUpdate()    
     if(this.mobile) this.mini = false
-  } 
-
-  
-  alramChange(list: IUserInterestGroupItem, i: number) {
-    this.changeUserInterestAlram(i)
   } 
 
 }

@@ -159,11 +159,6 @@ export default class RankV2 extends Vue {
     this.btnShow = scrollTop > 1500 ? true : false
   }
  
-  created () {
-    this.getDailySimpleRanks().then(() => {
-      console.log(this.dailySimpleRanks)
-    })
-  }
 
 
   get mobile () {
@@ -172,6 +167,12 @@ export default class RankV2 extends Vue {
 
   changeAmount (amount) {
     this.amount = amount
+  }
+
+  created () {
+    this.getDailySimpleRanks().then(() => {
+      console.log(this.dailySimpleRanks)
+    })
   }
 
   mounted () {

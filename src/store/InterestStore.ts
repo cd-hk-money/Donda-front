@@ -7,6 +7,7 @@ export default class InterestStore extends VuexModule {
   public snackBar = false
   public bookmarked: string[] = []
   public snackBarMessage!: string
+  public userInterests: IUserInterestGroupItem[] = []
   public interestGroups: IInterestGroup[] = [
     {
       title: '관심종목 그룹1',
@@ -18,7 +19,18 @@ export default class InterestStore extends VuexModule {
     }
   ]
 
-  public userInterests: IUserInterestGroupItem[] = []
+  get computedInterestStore () {
+    return this.interestGroups.map((group: IInterestGroup) => ({
+      title: group.title,
+      action: 'mdi-ticket',
+      active: false,
+      items: group.item.map((item: IInterestGroupItem) => ({
+        title: item.title,
+        subtitle: item.code
+      }))
+    })) 
+  }
+
 
   @Mutation
   public updateState(payload: IUpdateStateModel) {
@@ -26,6 +38,7 @@ export default class InterestStore extends VuexModule {
       this[state[0]] = state[1]
     })
   }
+  
   
   @Mutation
   public snackBarClose() {
