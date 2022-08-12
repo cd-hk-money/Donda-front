@@ -37,7 +37,7 @@ export default class StockStore extends VuexModule {
     open: 0,
     high: 0,
     low: 0,
-  amount: 0,
+    amount: 0,
     marcap: 0,
     stocks: 0,    
   }

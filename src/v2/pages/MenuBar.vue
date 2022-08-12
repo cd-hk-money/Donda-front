@@ -187,10 +187,7 @@
           elevation="0"
           outlined
         >
-          <v-list
-            subheader
-            two-line
-          >
+          <v-list subheader two-line>
             
           </v-list>
         </v-card>
@@ -273,23 +270,23 @@ export default class MenuBar extends Vue {
   userMenu: IMenu[] = [
     {
       title: '로그아웃',
-      callback: () => {        
+      callback: () => {
         this.expandState('logined')
-        this.setState('alramConfig', false)
-      }
+        this.updateData({ alramConfig: false, alramCheck: false })
+      }      
     },
     {
       title: '알림 확인',
       callback: () => {
-        this.setState('alramConfig', false)
         this.expandState('alramCheck')
+        this.updateData({ alramConfig: false })
       }
     },
     {
       title: '알림 설정',
       callback: () => {
-        this.setState('alramCheck', false)
         this.expandState('alramConfig')
+        this.updateData({ alramCheck: false })
       }
     }    
   ]
@@ -307,9 +304,7 @@ export default class MenuBar extends Vue {
       icon: 'mdi-account',
       tooltip: '내 계정',
       callback: () => {
-        this.updateState({
-          badge: 0
-        })
+        this.updateData({ badge: 0 })
         this.expandState('loginDialog')
         this.expandState('userExpand')
       }
@@ -359,6 +354,7 @@ export default class MenuBar extends Vue {
 
   // 알림 설정 확장
   alramConfig = false
+  getAlramconfig = () => this.alramConfig
 
   // 알림 확인 확장
   alramCheck = false
@@ -444,7 +440,7 @@ export default class MenuBar extends Vue {
     this[state] = value
   }
 
-  updateState(payload: IUpdateStateModel) {
+  updateData(payload: IUpdateStateModel) {
     Object.entries(payload).forEach((state) => {
       this[state[0]] = state[1]
     })        

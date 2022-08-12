@@ -36,7 +36,9 @@
             <template v-slot:activator="{ on, attrs }">
               <v-btn icon x-large
                 v-on="on"
-                @click="bookmarked ? removeBookmarking : null"
+                @click="bookmarked 
+                ? [bookmarked = false, removeInterestGroupItem(stock.name)]
+                : null"
                 v-bind="attrs"
               >
                 <v-icon size="40">{{ bookmarked ? 'mdi-bookmark' : 'mdi-bookmark-outline' }}</v-icon>
@@ -58,7 +60,18 @@
                 <v-list-item 
                   :key="group.title"
                   v-for="group in interestGroups"
-                  @click="activeBookmarking(group, stock)"
+                  @click="[
+                    addInterestGroupItem({
+                      title: group.title,
+                      item: {
+                        title: stock.name,
+                        code: stock.code
+                      }
+                    }),
+                    dialog = false,
+                    bookmarked = true,
+                    snackBarOpen()                    
+                  ]"
                 >
                   <v-list-item-content>
                     <v-list-item-title class="ml-2">
@@ -158,24 +171,6 @@ export default class StockInfo extends Vue {
   @InterestStoreModule.Mutation('initInterestGroup') readonly initInterestGroup!: () => void
   @InterestStoreModule.Mutation('removeInterestGroupItem') removeInterestGroupItem!: (itemTitle: string) => void
 
-  activeBookmarking (group: IInterestGroup, stock: IStockModel): void {
-    this.addInterestGroupItem({
-      title: group.title,
-      item: {
-        title: stock.name,
-        code: stock.code
-      }
-    })
-
-    this.dialog = false
-    this.bookmarked = true    
-    this.snackBarOpen()
-  }
-
-  removeBookmarking () {    
-    this.bookmarked = false
-    this.removeInterestGroupItem(this.stock.name)
-  }
 
   get mobile () {
     return mobileHeight(this.$vuetify.breakpoint.name) < 500

@@ -159,8 +159,6 @@ export default class RankV2 extends Vue {
     this.btnShow = scrollTop > 1500 ? true : false
   }
  
-
-
   get mobile () {
     return mobileHeight(this.$vuetify.breakpoint.name) < 500
   }

@@ -99,7 +99,7 @@ export default class Stock extends Vue {
     {
       title: 'dateFicker',
       icon: 'mdi-calendar-expand-horizontal',
-      callback: () => this.changeChartOptions({
+      callback: () => this.updateData({
 
       }),
       enable: false
@@ -107,7 +107,7 @@ export default class Stock extends Vue {
     {
       title: 'volume',
       icon: 'mdi-chart-bar',
-      callback: () => this.changeChartOptions({
+      callback: () => this.updateData({
         volumeEnable: !this.getVolumeEnable()
       }),      
       enable: this.volumeEnable,
@@ -115,14 +115,14 @@ export default class Stock extends Vue {
     {
       title: 'gradient',
       icon: 'mdi-gradient-vertical',
-      callback: () => this.changeChartOptions({
+      callback: () => this.updateData({
         gradientEnable: !this.getGradient()
       }),
       enable: this.gradientEnable,
     },        
   ]
 
-  changeChartOptions(payload) {
+  updateData(payload) {
     Object.entries(payload).forEach(state => {
       this[state[0]] = state[1]
     })         

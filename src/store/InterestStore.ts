@@ -8,16 +8,7 @@ export default class InterestStore extends VuexModule {
   public bookmarked: string[] = []
   public snackBarMessage!: string
   public userInterests: IUserInterestGroupItem[] = []
-  public interestGroups: IInterestGroup[] = [
-    {
-      title: '관심종목 그룹1',
-      item: []
-    },
-    {
-      title: '관심종목 그룹2',
-      item: []
-    }
-  ]
+  public interestGroups: IInterestGroup[] = []
 
   get computedInterestStore () {
     return this.interestGroups.map((group: IInterestGroup) => ({
@@ -88,14 +79,20 @@ export default class InterestStore extends VuexModule {
   public addInterestGroupItem(payload: {title: string, item: IInterestGroupItem}) {    
     try {
       this.userInterests = []
-      this.interestGroups.find(group => group.title === payload.title).item.push(payload.item)
-      this.bookmarked.push(payload.item.title)             
-      this.interestGroups.forEach((interestGroup: IInterestGroup) => {
-        interestGroup.item.forEach((item: IInterestGroupItem) =>  this.userInterests.push({
-          ...item,
-          alarm: false
-        }))
-      })
+      this.interestGroups
+        .find(group => group.title === payload.title).item
+        .push(payload.item)
+
+      this.bookmarked
+        .push(payload.item.title)      
+
+      this.interestGroups
+        .forEach((interestGroup: IInterestGroup) => {
+          interestGroup.item.forEach((item: IInterestGroupItem) =>  this.userInterests.push({
+            ...item,
+            alarm: false
+          }))
+        })
 
       this.userInterests = [...new Set(this.userInterests)]
       console.log(this.userInterests)

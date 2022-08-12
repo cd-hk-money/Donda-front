@@ -30,7 +30,6 @@
 
 import { Component, Vue, Watch } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
-
 import { IMarketRank } from '@/models/stock'
 
 const StockStoreModule = namespace('StockStore')
