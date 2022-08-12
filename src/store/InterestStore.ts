@@ -8,7 +8,7 @@ export default class InterestStore extends VuexModule {
   public bookmarked: string[] = []
   public snackBarMessage!: string
   public userInterests: IUserInterestGroupItem[] = []
-  public interestGroups: IInterestGroup[] = []
+  public interestGroups: IInterestGroup[] = []  
 
   get computedInterestStore () {
     return this.interestGroups.map((group: IInterestGroup) => ({
@@ -104,10 +104,17 @@ export default class InterestStore extends VuexModule {
   }
 
   @Mutation
-  public removeInterstGroupItem(itemTitle: string) {    
-    this.interestGroups.forEach((group: IInterestGroup) => {
-      group.item.filter((item: IInterestGroupItem) => item.title !== itemTitle)
-    })
+  public removeInterstGroupItem({groupTitle, itemTitle}: {groupTitle: string, itemTitle: string}) {    
+    const group = 
+      this.interestGroups
+      .find((group: IInterestGroup) => group.title === groupTitle)    
+
+    group.item = 
+      group?.item
+      .filter((item: IInterestGroupItem) => item.title !== itemTitle)        
+
+    this.bookmarked =
+      this.bookmarked.filter((v: string) => v !== itemTitle)    
   }
 
   @Mutation

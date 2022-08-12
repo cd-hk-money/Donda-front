@@ -37,11 +37,11 @@
               <v-btn icon x-large
                 v-on="on"
                 @click="bookmarked 
-                ? [bookmarked = false, removeInterestGroupItem(stock.name)]
+                ? removeInterestGroupItem(stock.name)
                 : null"
                 v-bind="attrs"
               >
-                <v-icon size="40">{{ bookmarked ? 'mdi-bookmark' : 'mdi-bookmark-outline' }}</v-icon>
+                <v-icon size="40">{{ isBookmarked ? 'mdi-bookmark' : 'mdi-bookmark-outline' }}</v-icon>
               </v-btn>
             </template>
   
@@ -68,9 +68,11 @@
                         code: stock.code
                       }
                     }),
-                    dialog = false,
-                    bookmarked = true,
-                    snackBarOpen()                    
+                    dialog = false,                    
+                    updateState({
+                      snackBarMessage: `${stock.name}이(가) ${group.title}에 추가되었습니다.`,
+                      snackBar: true
+                    }),                                     
                   ]"
                 >
                   <v-list-item-content>
@@ -142,6 +144,7 @@
 import { Component, Vue } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 
+import { IUpdateStateModel } from '@/models/payload';
 import { IStockModel } from '@/models/stock'
 import { IInterestGroup, IInterestGroupItem } from '@/models/interest'
 import { mobileHeight } from '@/mixins/tools'
@@ -152,12 +155,14 @@ const InterestStoreModule = namespace('InterestStore')
 @Component
 export default class StockInfo extends Vue {
 
-
   // datas
   dialog = false
-  bookmarked = false
-  
-  
+  // bookmarked = false
+
+  get isBookmarked () {
+    return this.bookmarked.find((v: string) => v === this.stock.name)
+  }
+    
   // StockStore
   @StockStoreModule.State('stock') stock!: IStockModel
   @StockStoreModule.State('stockLoaded') loaded!: boolean
@@ -166,11 +171,12 @@ export default class StockInfo extends Vue {
   // InterestStore
   @InterestStoreModule.State('interestGroups') interestGroups!: IInterestGroup[]
   @InterestStoreModule.State('snackBar') snackBar!: boolean
+  @InterestStoreModule.State('bookmarked') bookmarked!: string[]
   @InterestStoreModule.Mutation('snackBarOpen') snackBarOpen!: () => void
   @InterestStoreModule.Mutation('addInterestGroupItem') addInterestGroupItem!: (payload: {title: string, item: IInterestGroupItem}) => void
   @InterestStoreModule.Mutation('initInterestGroup') readonly initInterestGroup!: () => void
   @InterestStoreModule.Mutation('removeInterestGroupItem') removeInterestGroupItem!: (itemTitle: string) => void
-
+  @InterestStoreModule.Mutation('updateState') updateState!: (payload: IUpdateStateModel) => void
 
   get mobile () {
     return mobileHeight(this.$vuetify.breakpoint.name) < 500

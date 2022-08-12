@@ -43,10 +43,12 @@
 
           <v-list-item
             v-for="(child, i) in item.items"
-            :key="i"              
-            link
-            replace
-            :to="`/detail/${child.title}`"
+            :key="i"                          
+            @click.left="$router.push(`/detail/${child.title}`)"            
+            @contextmenu.prevent="removeInterstGroupItem({
+              groupTitle: item.title,
+              itemTitle: child.title
+            })"           
           >
             <v-list-item-content >
               <v-list-item-title v-text="child.title"></v-list-item-title>
@@ -54,7 +56,7 @@
               <v-list-item-subtitle v-text="child.subtitle"></v-list-item-subtitle>
             </v-list-item-content>
 
-            <v-list-item-action>
+            <v-list-item-action class="v-list-item-action-close">
               <v-btn 
                 x-small
                 icon                  
@@ -166,6 +168,8 @@ export default class SideBar extends Vue {
   @InterestStoreModule.Mutation('addGroup') readonly addGroup!: (group: any) => void
   @InterestStoreModule.Mutation('removeInterestGroup') readonly removeGroup!: (title: string) => void
   @InterestStoreModule.Mutation('updateState') readonly updateState!: (payload: IUpdateStateModel) => void
+  @InterestStoreModule.Mutation('removeInterstGroupItem') readonly removeInterstGroupItem!: ({groupTitle, itemTitle}: {groupTitle: string, itemTitle: string}) => void
+
   
   created () {
     this.initInterestGroup()    
@@ -173,3 +177,11 @@ export default class SideBar extends Vue {
 
 }
 </script>
+
+<style scoped>
+.v-list-item-action-close {
+  z-index: 100 !important;
+}
+
+
+</style>
