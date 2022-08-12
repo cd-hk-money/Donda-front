@@ -24,6 +24,8 @@
           </v-btn>
         </template>
       </v-snackbar>
+
+      <side-bar v-show="mobile"/>
     </v-main>
   </v-app>
 </template>
@@ -57,6 +59,10 @@ export default class App extends Vue {
   
   get btnIcon () {
     return this.menuToggle ? 'mdi-arrow-expand-right' : 'mdi-arrow-expand-left'
+  }
+
+  get mobile () {
+     return this.$vuetify.breakpoint.name === 'xs'
   }
 
   @MarketStoreModule.Action('getTodayMarket') readonly getTodayMarket!: () => Promise<void>

@@ -35,10 +35,7 @@
           >
             <template v-slot:activator="{ on, attrs }">
               <v-btn icon x-large
-                v-on="on"
-                @click="bookmarked 
-                ? removeInterestGroupItem(stock.name)
-                : null"
+                v-on="on"                
                 v-bind="attrs"
               >
                 <v-icon size="40">{{ isBookmarked ? 'mdi-bookmark' : 'mdi-bookmark-outline' }}</v-icon>
@@ -155,9 +152,7 @@ const InterestStoreModule = namespace('InterestStore')
 @Component
 export default class StockInfo extends Vue {
 
-  // datas
   dialog = false
-  // bookmarked = false
 
   get isBookmarked () {
     return this.bookmarked.find((v: string) => v === this.stock.name)
@@ -172,19 +167,17 @@ export default class StockInfo extends Vue {
   @InterestStoreModule.State('interestGroups') interestGroups!: IInterestGroup[]
   @InterestStoreModule.State('snackBar') snackBar!: boolean
   @InterestStoreModule.State('bookmarked') bookmarked!: string[]
-  @InterestStoreModule.Mutation('snackBarOpen') snackBarOpen!: () => void
   @InterestStoreModule.Mutation('addInterestGroupItem') addInterestGroupItem!: (payload: {title: string, item: IInterestGroupItem}) => void
-  @InterestStoreModule.Mutation('initInterestGroup') readonly initInterestGroup!: () => void
+  
   @InterestStoreModule.Mutation('removeInterestGroupItem') removeInterestGroupItem!: (itemTitle: string) => void
   @InterestStoreModule.Mutation('updateState') updateState!: (payload: IUpdateStateModel) => void
 
-  get mobile () {
-    return mobileHeight(this.$vuetify.breakpoint.name) < 500
+  get mobile () { 
+    return this.$vuetify.breakpoint.name === 'xs' 
   }
         
   async created () {    
-    await this.getStock(this.$route.params.title)
-    console.log(this.stock)
+    await this.getStock(this.$route.params.title)    
   }  
 }
 </script>

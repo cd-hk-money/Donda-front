@@ -103,8 +103,8 @@ export default class InterestStore extends VuexModule {
     }
   }
 
-  @Mutation
-  public removeInterstGroupItem({groupTitle, itemTitle}: {groupTitle: string, itemTitle: string}) {    
+  @Mutation  
+  public removeInterestGroupItem({groupTitle, itemTitle}: {groupTitle: string, itemTitle: string}) {    
     const group = 
       this.interestGroups
       .find((group: IInterestGroup) => group.title === groupTitle)    

@@ -2,21 +2,22 @@
   <div class="mr-10">
     <v-navigation-drawer        
       :class="[mobile ? '' : 'ml-5 mt-5']"      
-      permanent            
+      permanent                  
       :fixed="mobile"
       :width="mobile ? '100%' : '110%'"
-      :height="mobile ? '72' : '100%'"      
+      height="60"      
       :mini-variant.sync="mini"
-    >
-      
+    >      
       <v-card                       
         width="100%"
+        elevation="0"
         class="d-flex justify-space-between align-center"        
         height="60"        
         outlined
       >
       
         <v-btn 
+          v-show="!mobile"
           @click.stop="[
             mini = !mini,
             expand = false,
@@ -38,14 +39,31 @@
           bottom
         >
           <template v-slot:activator="{on, attrs }">
-          <div v-if="i === 1">            
-            <v-badge
-              color="error"
-              :content="badge"
-              :value="badge"
-              overlap
-              offset-y="20"
-            >
+            <div v-if="i === 1">            
+              <v-badge
+                color="error"
+                :content="badge"
+                :value="badge"
+                overlap
+                offset-y="20"
+              >
+                <v-btn          
+                  class="ml-1"
+                  v-on="on"
+                  v-bind="attrs"
+                  large
+                  rounded
+                  icon                  
+                  :link="menu.link"
+                  :to="menu.to"
+                  @click="menu.callback"            
+                >
+                  <v-icon>{{ menu.icon }}</v-icon>
+                </v-btn>
+              </v-badge>
+            </div>
+
+            <div v-else>
               <v-btn          
                 class="ml-1"
                 v-on="on"
@@ -59,23 +77,7 @@
               >
                 <v-icon>{{ menu.icon }}</v-icon>
               </v-btn>
-            </v-badge>
-          </div>
-          <div v-else>
-            <v-btn          
-              class="ml-1"
-              v-on="on"
-              v-bind="attrs"
-              large
-              rounded
-              icon                  
-              :link="menu.link"
-              :to="menu.to"
-              @click="menu.callback"            
-            >
-              <v-icon>{{ menu.icon }}</v-icon>
-            </v-btn>
-          </div>
+            </div>
           </template>
           <span>{{ menu.tooltip }}</span>
         </v-tooltip>
@@ -87,14 +89,15 @@
           class="ml-2"      
           inset
         ></v-switch>
-      </v-card>      
-              
+      </v-card>  
+          
       <v-expand-transition>
         <v-card             
           v-show="expand"
           width="100%"
           height="80"
           elevation="0"
+          outlined
         >
           <v-card-text>
             <v-autocomplete    
@@ -151,10 +154,7 @@
           elevation="0"
           outlined
         >
-          <v-list
-            subheader
-            two-line
-          >
+          <v-list subheader two-line>
             <v-list-item
               v-for="(list, i) in userInterests"
               :key="i"
@@ -188,12 +188,20 @@
           outlined
         >
           <v-list subheader two-line>
-            
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-title v-text="'유니트론텍'"></v-list-item-title>                
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-title v-text="'유니트론텍'"></v-list-item-title>                
+              </v-list-item-content>
+            </v-list-item>
           </v-list>
         </v-card>
             
-      </v-expand-transition>
-      <side-bar v-if="!mini" />
+      </v-expand-transition>            
     </v-navigation-drawer>
     <v-dialog v-model="loginDialog" height="300" width="300" v-if="!logined">
       <v-card height="350" width="300" opacity-100 elevation="">
@@ -228,7 +236,7 @@
         <v-divider></v-divider>
       </v-card>      
     </v-dialog>    
-    
+    <side-bar v-if="!mini" :class="[mobile ? '' : 'ml-5 mt-5']"  />
   </div>
 </template>
 
@@ -304,9 +312,9 @@ export default class MenuBar extends Vue {
       icon: 'mdi-account',
       tooltip: '내 계정',
       callback: () => {
-        this.updateData({ badge: 0 })
+        this.updateData({ badge: 0, alramConfig: false, alramCheck: false })
         this.expandState('loginDialog')
-        this.expandState('userExpand')
+        this.expandState('userExpand')        
       }
     },
     {      
