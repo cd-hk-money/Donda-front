@@ -1,11 +1,12 @@
 import { IUpdateStateModel } from '@/models/payload';
 import { Module, VuexModule, Mutation } from "vuex-module-decorators";
-import { IInterestGroupItem, IInterestGroup, IUserInterestGroupItem  } from "@/models/interest";
+import { IInterestGroupItem, IInterestGroup, IUserInterestGroupItem, IUserAlram  } from "@/models/interest";
 
 @Module({namespaced: true})
 export default class InterestStore extends VuexModule {
   public snackBar = false
   public bookmarked: string[] = []
+  public alrams: IUserAlram[] = []  
   public snackBarMessage!: string
   public userInterests: IUserInterestGroupItem[] = []
   public interestGroups: IInterestGroup[] = []  
@@ -44,7 +45,7 @@ export default class InterestStore extends VuexModule {
   @Mutation
   public snackBarOpen(message: string) {
     this.snackBarMessage = message ?? ''
-    this.snackBar = this.snackBar = true
+    this.snackBar = true
   }
 
   @Mutation

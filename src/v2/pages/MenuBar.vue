@@ -4,8 +4,8 @@
       :class="[mobile ? '' : 'ml-5 mt-5']"      
       permanent                  
       :fixed="mobile"
-      :width="mobile ? '100%' : '110%'"
-      height="60"      
+      :width="mobile ? '100%' : '110%'"      
+      max-height="80"
       :mini-variant.sync="mini"
     >      
       <v-card                       
@@ -14,8 +14,7 @@
         class="d-flex justify-space-between align-center"        
         height="60"        
         outlined
-      >
-      
+      >      
         <v-btn 
           v-show="!mobile"
           @click.stop="[
@@ -122,20 +121,22 @@
 
       <v-expand-transition>
         <v-card
-          v-if="logined"
-          v-show="userExpand"
-          width="100%"
-          height="38"
-          elevation="0"
-          outlined
+          v-if="logined && userExpand"          
+          width="100%"          
+          elevation="0"          
         >
           <div class="d-flex">
             <v-btn 
-              elevation="0"
-              width="33%"
+              v-for="(menu, i) in userMenu"              
               :key="i"
-              v-for="(menu, i) in userMenu"
-              @click="menu.callback"
+              :class="menu.enable ? 'userMenu-active' : ''"       
+              elevation="0"       
+              width="33%"              
+              @click="[
+                menu.callback(),
+                userMenu.forEach(menu => menu.enable = false),
+                menu.enable = true                
+              ]"
             >
               {{ menu.title }}
             </v-btn>
@@ -181,24 +182,39 @@
 
       <v-expand-transition>
         <v-card          
-          v-show="alramCheck"
+          v-show="alramCheck && logined && alramItems.length !== 0"
           width="100%"          
           height="auto"
           elevation="0"
           outlined
         >
-          <v-list subheader two-line>
-            <v-list-item>
-              <v-list-item-content>
-                <v-list-item-title v-text="'유니트론텍'"></v-list-item-title>                
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item>
-              <v-list-item-content>
-                <v-list-item-title v-text="'유니트론텍'"></v-list-item-title>                
-              </v-list-item-content>
-            </v-list-item>
-          </v-list>
+            <v-list subheader two-line v-show="alramCheck && logined && alramItems.length !== 0">            
+              <transition-group name="slide">
+                <v-list-item 
+                  v-for="(alram, i) in alramItems" :key="i"
+                  @click.left="[
+                    alramItems.splice(i, 1),
+                    $router.push(`/detail/${alram.title}`)
+                  ]"                       
+                  @contextmenu.prevent="alramItems.splice(i, 1)"             
+                >
+                  <v-list-item-content>                
+                    <span>
+                      {{ alram.title}}
+                    </span>
+                    <v-list-item-subtitle>
+                      {{ alramTypeObj[alram.type] }}
+                    </v-list-item-subtitle>                
+                  </v-list-item-content>
+
+                  <v-list-item-action >
+                    <div v-if="alram.value" :class="alram.value > 0 ? 'red--text' : 'blue--text'">
+                      {{ alram.value > 0 ? '+' : '' }}{{ alram.value }} %
+                    </div>
+                  </v-list-item-action>
+                </v-list-item>
+              </transition-group>
+            </v-list>
         </v-card>
             
       </v-expand-transition>            
@@ -248,7 +264,7 @@ import { namespace } from 'vuex-class'
 import { mobileHeight } from '@/mixins/tools'
 import { IUserAccount } from '@/models/user'
 import { IUpdateStateModel } from '@/models/payload'
-import { IInterestGroup, IInterestGroupItem, InterestGroupModel, IUserInterestGroupItem } from '@/models/interest'
+import { IInterestGroup, IInterestGroupItem, InterestGroupModel, IUserAlram, IUserInterestGroupItem } from '@/models/interest'
 import SideBar from '@/v2/pages/SideBar.vue'
 
 const MarketStoreModule = namespace('MarketStore')
@@ -275,6 +291,11 @@ export interface IMenu {
 })
 export default class MenuBar extends Vue {
 
+  alramTypeObj = {
+    'close': '종가 변동',
+    'volume': '거래량 변동'
+  }
+
   userMenu: IMenu[] = [
     {
       title: '로그아웃',
@@ -284,14 +305,16 @@ export default class MenuBar extends Vue {
       }      
     },
     {
-      title: '알림 확인',
-      callback: () => {
+      title: '알림 확인',      
+      enable: false,
+      callback: () => {        
         this.expandState('alramCheck')
-        this.updateData({ alramConfig: false })
+        this.updateData({ alramConfig: false })        
       }
     },
     {
       title: '알림 설정',
+      enable: false,
       callback: () => {
         this.expandState('alramConfig')
         this.updateData({ alramCheck: false })
@@ -312,9 +335,10 @@ export default class MenuBar extends Vue {
       icon: 'mdi-account',
       tooltip: '내 계정',
       callback: () => {
-        this.updateData({ badge: 0, alramConfig: false, alramCheck: false })
         this.expandState('loginDialog')
         this.expandState('userExpand')        
+        this.expandState('alramCheck')
+        this.updateData({alramConfig: false })
       }
     },
     {      
@@ -337,6 +361,22 @@ export default class MenuBar extends Vue {
         }        
       }
     },
+  ]
+
+
+  getAlramItems = () => this.alramItems
+  alramItems: IUserAlram[] = [
+    {
+      title: '유니트론텍',
+      type: 'close',      
+      value: 30
+    },
+    {
+      title: '휴젤',
+      type: 'volume',
+      value: -10
+    },
+
   ]
 
   // 검색창
@@ -373,8 +413,11 @@ export default class MenuBar extends Vue {
   // 로그인 유무
   logined = true
 
-  // 알림 뱃지 개수
-  badge = 10
+  // 알림 뱃지 개수  
+  get badge () {
+    return this.alramItems.length
+  }
+
 
   // ID, PASSWORD
   id =''
@@ -414,6 +457,7 @@ export default class MenuBar extends Vue {
   @InterestStoreModule.State('userInerestAlarms') userInerestAlarms!: () => void
   @InterestStoreModule.Mutation('userInterestUpdate') userInterestUpdate!: () => void
   @InterestStoreModule.Mutation('changeUserInterestAlram') changeUserInterestAlram!: (payload: number) => void
+  @InterestStoreModule.Mutation('snackBarOpen') snackBarOpen!: (message: string) => void
 
   
   @Watch("search")
@@ -441,7 +485,8 @@ export default class MenuBar extends Vue {
   }
 
   expandState(state: string) {
-    this[state] = !this[state]    
+    this[state] = !this[state]
+    console.log('update' + state + ' ' + this[state])    
   }
 
   setState(state: string, value: any) {
@@ -483,4 +528,26 @@ export default class MenuBar extends Vue {
 ::-webkit-scrollbar {
   width: 0px;
 }
+
+.userMenu-active {
+  background-color: white;
+}
+
+.slide-leave-active {
+  position: absolute;
+  width: 100%;
+  animation: slide-out 0.4s ease-out forwards;
+  transition: opacity 0.2s;
+  opacity: 0;
+}
+
+@keyframes slide-out {
+  from {
+    transform: translateX(0px);
+  }
+  to {
+    transform: translateX(350px);
+  }
+}
+
 </style>

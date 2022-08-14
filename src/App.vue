@@ -18,7 +18,10 @@
             v-bind="attrs"
             @click="updateState({
               snackBar: false
-            })"            
+            })"     
+            @blur="updateState({
+              snackBar: false
+            })"       
           >
             닫기
           </v-btn>
@@ -74,7 +77,7 @@ export default class App extends Vue {
   @InterestStoreModule.State('snackBar') snackBar!: boolean
   @InterestStoreModule.Mutation('snackBarClose') snackBarClose!: () => void
   @InterestStoreModule.State('snackBarMessage') snackBarMessage!: string
-  @InterestStoreModule.Mutation('updateState') readonly updateState!: (payload: IUpdateStateModel) => void
+  @InterestStoreModule.Mutation('updateState') updateState!: (payload: IUpdateStateModel) => void
 
   created () {
     this.getDailySimpleRanks()  
