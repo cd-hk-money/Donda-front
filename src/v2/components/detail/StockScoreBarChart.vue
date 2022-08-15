@@ -6,7 +6,7 @@ import Chart from 'chart.js'
 import { mixins, Bar } from 'vue-chartjs-typescript'
 
 import { transparentize } from '@/mixins/tools'
-import { IStockModel } from '@/models/stock'
+import { IStockEvaluationModel, IStockModel } from '@/models/stock'
 
 const { reactiveProp } = mixins
 const StockStoreModule = namespace('StockStore')
@@ -25,6 +25,7 @@ export default class StockScoreBarChart extends Vue {
   @Prop() chartData!: null
 
   @StockStoreModule.State('stock') stock!: IStockModel
+  @StockStoreModule.Getter('stockEvaluationDailyLast') stockEvaluationDailyLast!: string
   
   applyDefaultOptions() {
     this.chartOptions.maintainAspectRatio = true
@@ -90,7 +91,7 @@ export default class StockScoreBarChart extends Vue {
       datasets: [
         {
           type: 'bar',
-          data : [this.stock.close, this.stock.close * 1.2],
+          data : [this.stock.close, this.stockEvaluationDailyLast],
           fill: true,
           borderColor: [MAIN_COLOR, SUB_COLOR],        
           backgroundColor: [transparentize(MAIN_COLOR, 0.8) ,transparentize(SUB_COLOR, 0.8)],
@@ -108,6 +109,7 @@ export default class StockScoreBarChart extends Vue {
 
   renderBarChart() {
     this.applyDefaultOptions()
+    console.log(this.stockEvaluationDailyLast)
     this.renderChart(this.createChartData(), this.chartOptions)
   }
 

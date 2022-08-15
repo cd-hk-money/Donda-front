@@ -433,6 +433,8 @@ export default class StockBigChart extends Vue {
       plugins: [this.dottedLine, this.myCrossHair]
     }    
 
+    console.log(options)
+
     this.chart = new Chart(canvas, options)        
     this.chart.canvas.addEventListener('mousewheel', e => {      
       this.myZoom(this.chart, e)

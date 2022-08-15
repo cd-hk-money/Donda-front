@@ -58,6 +58,7 @@ import { IMenu } from '@/v2/pages/MenuBar.vue'
 import StockBigChart from '@/v2/components/detail/StockBigChart.vue'
 
 const StockStoreModule = namespace('StockStore')
+const MarketStoreModule = namespace('MarketStore')
 
 @Component({
   components: {
@@ -78,6 +79,8 @@ export default class Stock extends Vue {
   @StockStoreModule.State('stockGraphAllFlag') flag!: boolean  
   @StockStoreModule.Action('getStockGraphAll') getStockGraphAll!: (name: string) => Promise<void>
   @StockStoreModule.Action('getStockGraphDefault') getStockGraphDefault!: (name: string) => Promise<void>
+
+  @MarketStoreModule.State('codeTitleMapping') codeTitleMapping!: any
   
   gradientEnable = true
   getGradient () { return this.gradientEnable }
@@ -129,9 +132,9 @@ export default class Stock extends Vue {
   }
 
   mounted () {
-    const title = this.$route.params.title
-    this.getStockGraphDefault(title)  
-    this.getStockGraphAll(title)
+    const code = this.$route.params.title    
+    this.getStockGraphDefault(code)  
+    this.getStockGraphAll(code)
   }
   
 }

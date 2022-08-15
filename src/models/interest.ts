@@ -36,7 +36,9 @@ interface IUserAlram {
   title: string,        // 종목명
   type: AlramType,      // 알림 타입
   contents?: string,     // 알림 내용
-  value?: number | string         // 변동값
+  origin?: number,       // 전날 값
+  rate?: number | string         // 변동률
+  value?: number,        // 변동값
 
 }
 

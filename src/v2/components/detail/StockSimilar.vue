@@ -80,9 +80,7 @@ export default class StockSimilar extends Vue {
   @MarketStoreModule.Action('getRecommend') readonly getRecommend!: () => Promise<void>
 
   created () {
-    this.getRecommend().then(() => {
-      console.log(this.recommend)
-    })
+    this.getRecommend()
   }
   
   

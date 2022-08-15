@@ -50,6 +50,7 @@ import { Component, Vue} from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 
 const StockStoreModule = namespace('StockStore')
+const MarketStoreModule = namespace('MarketStore')
 
 @Component
 export default class StockNews extends Vue {
@@ -58,8 +59,11 @@ export default class StockNews extends Vue {
   @StockStoreModule.State('news') newses: any[]
   @StockStoreModule.Action('getStockNews') getStockNews!: (name: string ) => Promise<void>
 
+  @MarketStoreModule.State('codeTitleMapping') codeTitleMapping!: any
+
   mounted() {    
-    this.getStockNews(this.$route.params.title)
+    const code = this.codeTitleMapping[this.$route.params.title]
+    this.getStockNews(code)
   }
     
   onClickRedirect (url: string) {

@@ -41,7 +41,7 @@
           outlined
           elevation="0"
           link
-          :to="`/detail/${item.name}`"
+          :to="`/detail/${codeTitleMapping[item.name]}`"
         >
           <v-list-item three-line>
             <v-list-item-content>
@@ -255,6 +255,7 @@ export default class StockRecommend extends Vue {
 
   @MarketStoreModule.State('recommend') recommend!: StockRecommendModel[]
   @MarketStoreModule.State('recommedLoaded') loaded!: boolean
+  @MarketStoreModule.State('codeTitleMapping') codeTitleMapping!: any
   @MarketStoreModule.Action('getRecommend') readonly getRecommend!: () => Promise<void>
   @MarketStoreModule.Getter('recommendArray') recommendArray!: any
 

@@ -1,6 +1,6 @@
 import { Module, VuexModule, Action, Mutation } from "vuex-module-decorators";
 import axios from "axios";
-import { IMarketRank , IStockModel, ISimpleChartData } from "@/models/stock";
+import { IMarketRank , IStockModel, ISimpleChartData, IStockEvaluationModel } from "@/models/stock";
 import { IUpdateStateModel } from "@/models/payload";
 
 import { convertChartData } from "@/mixins/tools";
@@ -44,39 +44,59 @@ export default class StockStore extends VuexModule {
   // 주가 그래프 인덱스 저장
   public stockGraphLength = 20
 
+
   // 종목 하나의 2주 그래프정보
   public stockGraphDefaultLoaded = false
   public stockGraphDefault = {}
+
 
   // 종목 하나의 5년치 그래프정보
   public stockGraphAll = {}
   public stockGraphAllLoaded = false
 
-  public stockEvaluation!: any
+  // 종목 하나의 분기 적정주가
+  public stockEvaluation = {}
   public stockEvaluationLoaded = false
+
+  // 종목 하나의 일간 적정주가
+  public stockEvaluationDaily: IStockEvaluationModel = {
+    value: [],
+    date: []
+  }
+  public stockEvaluationDailyLoaded = false
+  get stockEvaluationDailyLast (): string {
+    return this.stockEvaluationDaily?.value.slice(-1)[0]
+  }
+
+
   // 거래량
   public stockGraphVolume = {}
   public stockGraphVolumeLoaded = false  
   public stockGraphAllFlag = false
   public stockGraphVolumeFlag = false
 
+
   // 종목 하나의 재무제표
   public statementLoaded = false
   public statement: ISimpleChartData = {}
   public statementTypes: string[] = []
 
+
   // 종목 하나의 5년치 재무제표
   public statementAllLoaded = false
   public statementAll: ISimpleChartData = {}  
+
   
   // 종목 하나의 4분기 보조지표
   public indicatorLoaded = false
   public indicator: ISimpleChartData = {}
   public indicatorTypes: string[] = []
 
+
   // 뉴스
   public newsLoaded = false
   public news: any[] = []
+
 
   // Mutations
   // state를 초기화합니다.
@@ -168,26 +188,54 @@ export default class StockStore extends VuexModule {
     }
   }
 
+
+  // 종목 하나의 적정주가 정보들을 가져옵니다.
   @Action
   public async getStockEvaluation(stockCode: string): Promise<void> {
     try {
       this.context.commit('updateState', {
-        stockEvaluationLoaed: true
+        stockEvaluationLoaded: true
       })
-
-      const res = await axios.get(`/stock/${stockCode}/evaluation`)
-
-      console.log(res)
-
+      
+      const res = await axios.get(`/stock/${stockCode}/evaluation`, HEADER)
+      
       this.context.commit('updateState', {
-        stockEvaluation: res.data
-      })
+        stockEvaluation: res.data,        
+        stockEvaluationLoaded: false
+      })      
+      
+
+      console.log(this.stockEvaluation)
 
 
     } catch (e) {
       console.log(e)
     }
   }
+
+  @Action
+  public async getStockEvaluationDaily(stockCode: string): Promise<void> {
+    try {
+
+      this.context.commit('updateState', {
+        stockEvaluationDailyLoaded: true
+      })
+
+      const res = await axios.get(`/stock/${stockCode}/evaluation/daily`, HEADER)
+      console.log(res.data)
+
+      this.context.commit('updateState', {
+        stockEvaluationDaily: res.data,
+        stockEvaluationDailyLoaded: false
+      })
+
+    } catch (e) {
+      console.log(e)
+    }
+  }
+  
+
+  // 
 
   // 종목 하나의 5년동안의 거래량 정보를 가져옵니다.
   @Action
@@ -251,13 +299,13 @@ export default class StockStore extends VuexModule {
 
   // 종목 하나의 모든항목 재무제표 4분기를 가져옵니다.
   @Action
-  public async getStockStatement(name: string): Promise<void> {
+  public async getStockStatement(code: string): Promise<void> {
     try {
       this.context.commit('updateState', {
         statementLoaded: true
       })
 
-      const res = await axios.get(`/stock/${name}/statement`, HEADER)
+      const res = await axios.get(`/stock/${code}/statement`, HEADER)
 
       const label = Object.keys(res.data)
       const value = Object.values(res.data) as string[]                        

@@ -123,6 +123,11 @@ export interface IStockStatementModel {
   revenue?: IStockStatementBarChartModel  
 }
 
+export interface IStockEvaluationModel {
+  date: string[],
+  value: string[]
+}
+
 export interface IStockLineChartModel {
   [date: string]: number
 }

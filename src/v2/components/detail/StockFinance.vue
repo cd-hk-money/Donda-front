@@ -89,6 +89,7 @@ import { ISimpleChartData } from '@/models/stock'
 // import StockFinanceChart from '@/v2/components/detail/StockFinanceChart.vue'
 
 const StockStoreModule = namespace('StockStore')
+const MarketStoreModule = namespace('MarketStore')
 
 @Component({
   components: {
@@ -135,10 +136,13 @@ export default class StockFinance extends Vue {
   @StockStoreModule.Action('getStockStatement') readonly getStockStatement!: (name: string) => Promise<void>
   @StockStoreModule.Action('getStockStatementAll') readonly getStockStatementAll!: (name: string) => Promise<void>
 
-  created() {        
-    this.getStockStatement(this.title).then(() => {
-      this.getStockStatementAll(this.title)
-    })
+  @MarketStoreModule.State('codeTitleMapping') codeTitleMapping!: any
+
+  async created() {        
+    const code = this.$route.params.title
+  
+    await this.getStockStatement(code)
+    await this.getStockStatementAll(code)    
   }
   
 }

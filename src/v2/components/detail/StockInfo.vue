@@ -146,6 +146,8 @@ import { IStockModel } from '@/models/stock'
 import { IInterestGroup, IInterestGroupItem } from '@/models/interest'
 import { mobileHeight } from '@/mixins/tools'
 
+
+const MarketStoreModule = namespace('MarketStore')
 const StockStoreModule = namespace('StockStore')
 const InterestStoreModule = namespace('InterestStore')
 
@@ -157,6 +159,9 @@ export default class StockInfo extends Vue {
   get isBookmarked () {
     return this.bookmarked.find((v: string) => v === this.stock.name)
   }
+
+  // MarketStore
+  @MarketStoreModule.State('codeTitleMapping') codeTitleMapping!: any
     
   // StockStore
   @StockStoreModule.State('stock') stock!: IStockModel
@@ -167,8 +172,7 @@ export default class StockInfo extends Vue {
   @InterestStoreModule.State('interestGroups') interestGroups!: IInterestGroup[]
   @InterestStoreModule.State('snackBar') snackBar!: boolean
   @InterestStoreModule.State('bookmarked') bookmarked!: string[]
-  @InterestStoreModule.Mutation('addInterestGroupItem') addInterestGroupItem!: (payload: {title: string, item: IInterestGroupItem}) => void
-  
+  @InterestStoreModule.Mutation('addInterestGroupItem') addInterestGroupItem!: (payload: {title: string, item: IInterestGroupItem}) => void  
   @InterestStoreModule.Mutation('removeInterestGroupItem') removeInterestGroupItem!: (itemTitle: string) => void
   @InterestStoreModule.Mutation('updateState') updateState!: (payload: IUpdateStateModel) => void
 
@@ -177,7 +181,8 @@ export default class StockInfo extends Vue {
   }
         
   async created () {    
-    await this.getStock(this.$route.params.title)    
+    const code = this.$route.params.title
+    await this.getStock(code)    
   }  
 }
 </script>

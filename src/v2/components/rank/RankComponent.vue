@@ -153,6 +153,7 @@ const TABLE_TYPE = ['rank', 'date', 'code', 'name', 'market', 'close', 'changes'
 const moneyType = ['close', 'open', 'high', 'low', 'marcap', 'changes']
 
 const InterestStoreModule = namespace('InterestStore')
+const MarketStoreModule = namespace('MarketStore')
 
 @Component({
   components: {
@@ -187,8 +188,8 @@ export default class RankComponent extends Vue {
     { text: '', value: 'bookmarked'}
   ]
 
-  @InterestStoreModule.State('bookmarked')
-  bookmarked!: IInterestGroup[]
+  @InterestStoreModule.State('bookmarked') bookmarked!: IInterestGroup[]
+  @MarketStoreModule.State('codeTitleMapping') codeTitleMapping!: any
 
   @Prop() contents!: any
   @Prop({default: ''}) title!: string  
@@ -220,7 +221,8 @@ export default class RankComponent extends Vue {
   }
 
   rowClick (target, event) {
-    this.$router.push(`/detail/${target.name}`)
+    const code = this.codeTitleMapping[target.name]
+    this.$router.push(`/detail/${code}`)
   }
 
   subContent(title: string, content: number) {

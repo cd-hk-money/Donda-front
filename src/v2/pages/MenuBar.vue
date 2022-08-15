@@ -194,7 +194,7 @@
                   v-for="(alram, i) in alramItems" :key="i"
                   @click.left="[
                     alramItems.splice(i, 1),
-                    $router.push(`/detail/${alram.title}`)
+                    $router.push(`/detail/${codeTitleMapping[alram.title]}`)
                   ]"                       
                   @contextmenu.prevent="alramItems.splice(i, 1)"             
                 >
@@ -208,8 +208,18 @@
                   </v-list-item-content>
 
                   <v-list-item-action >
-                    <div v-if="alram.value" :class="alram.value > 0 ? 'red--text' : 'blue--text'">
-                      {{ alram.value > 0 ? '+' : '' }}{{ alram.value }} %
+                    <div v-if="alram.rate" :class="alram.rate > 0 ? 'red--text' : 'blue--text'">
+                      <span class="alram-type">
+                        {{alramTypeObj[alram.type].split(' ')[0]}}
+                      </span>
+                      <span class="">
+                        {{ alram.origin.toLocaleString() }}
+                      </span>
+                      <span class="alram-value mr-3">
+                        ({{ alram.value - alram.origin > 0 ? '+' : ''  }}{{ alram.value - alram.origin }})
+
+                      </span>
+                      {{ alram.rate > 0 ? '+' : '' }}{{ alram.rate }} %
                     </div>
                   </v-list-item-action>
                 </v-list-item>
@@ -369,12 +379,16 @@ export default class MenuBar extends Vue {
     {
       title: '유니트론텍',
       type: 'close',      
-      value: 30
+      origin: 1600,
+      value: 2000,
+      rate: 30
     },
     {
       title: '휴젤',
       type: 'volume',
-      value: -10
+      origin: 9000,
+      value: 5000,
+      rate: -40
     },
 
   ]
@@ -449,6 +463,7 @@ export default class MenuBar extends Vue {
   }
 
   @MarketStoreModule.State('searchTable') searchTable!: StockSimpleModel[]
+  @MarketStoreModule.State('codeTitleMapping') codeTitleMapping!: any
   @UserStoreModule.Action('tryLogin') login!: (payload: IUserAccount) => Promise<void>
   @StockStoreModule.Action('getStock') getStock!: (name: string) => Promise<void>
 
@@ -511,7 +526,7 @@ export default class MenuBar extends Vue {
     this.expandState('expand')
 
     this.getStock(item).then(() => {
-      this.$router.push(`/detail/${item}`)
+      this.$router.push(`/detail/${this.codeTitleMapping[item]}`)
     });    
     (document.activeElement as HTMLElement).blur()      
   }
@@ -532,6 +547,16 @@ export default class MenuBar extends Vue {
 .userMenu-active {
   background-color: white;
 }
+
+.alram-type {
+  font-size: 14px;
+}
+
+.alram-value {
+  font-size: 14px;
+}
+
+
 
 .slide-leave-active {
   position: absolute;

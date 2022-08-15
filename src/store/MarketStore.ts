@@ -23,6 +23,7 @@ export default class MarketStore extends VuexModule {
   // 자동 완성을 위한 모든 종목의 종목명과 코드
   public searchTableLoaded = false  
   public searchTable!: StockSimpleModel[]
+  public codeTitleMapping = {}
 
   // 주식 시장
   public marketLoaded = false  
@@ -37,7 +38,6 @@ export default class MarketStore extends VuexModule {
   get recommendArray () {
     return division(this.recommend, 2)
   }
-  
 
   @Mutation updateRequestDate(payload: number) {    
     if(payload < 2) {
@@ -192,16 +192,23 @@ export default class MarketStore extends VuexModule {
         searchTableLoaded: true
       })
       const res = await axios.get('/krx', HEADER)
-
-      console.log(res.data)
+      
 
       this.context.commit('updateState', {
         searchTable: Object.entries(res.data).map((stock: any) => ({
           code: stock[0],
           title: stock[1]
         })),
+        codeTitleMapping: Object.keys(res.data).reduce((acc, k) => {
+          const v = res.data[k]
+          acc[v] = [...(acc[res.data] || []), k]
+          return acc
+        }, {}),
         searchTableLoaded: false
       })      
+
+      
+      
     } catch (e) {
       console.log(e)
     }

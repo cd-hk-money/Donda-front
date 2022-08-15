@@ -4,7 +4,7 @@
     height="885"
     outlined
     elevation="0"                
-    :width="mobile ? 460 : '94%'"
+    :width="isMobile ? 460 : '94%'"
   >
     <v-card-title>
       적정 주가?
@@ -20,13 +20,14 @@
         <span class="white--text"> {{ valuation.title }} </span>
       </v-btn>
     </v-btn-toggle>
+    <div v-if="!loaded && !evalLoaded && !allLoaded">
+      <stock-valuation-chart 
+        class="mt-2 ml-2 mr-2"
+        :height="isMobile ? 250 : 100"
+        :legend="toggle_exclusive"        
+      />
+    </div>
     
-    <stock-valuation-chart 
-      class="mt-2 ml-2 mr-2"
-      :height="chartHeight"
-      :legend="toggle_exclusive"
-      v-if="!loaded"
-    />
 
     <v-divider></v-divider>
       <!-- <v-card
@@ -148,17 +149,6 @@ export default class StockValuation extends Vue {
     datas: [1, 2, 3, 4]
   }
 
-  @StockStoreModule.State('stockGraphDefaultLoaded') loaded!: boolean
-
-
-  get chartHeight (): number {
-    return this.$vuetify.breakpoint.name === 'xs' ? 200 : 100
-  }
-
-  get mobile () {
-    return this.$vuetify.breakpoint.name === 'xs'
-  }
-
   valuations: IValuationContent[] = [
     {
       color: '#40E0D0',
@@ -172,15 +162,34 @@ export default class StockValuation extends Vue {
     },
     {
       color: '#994433',
-      title: '방법 1',
+      title: 'EPS-ROE',
       content: '내용'
     },
     {
       color: '#6495ed',
-      title: '방법 2',
+      title: 'S-RIM',
       content: '내용'
     },
   ]  
+
+  @StockStoreModule.State('stockGraphDefaultLoaded') loaded!: boolean
+  @StockStoreModule.State('stockGraphAllLoaded') allLoaded!: boolean
+  @StockStoreModule.State('stockEvaluation') stockEvaluation!: any
+  @StockStoreModule.State('stockEvaluationLoaded') evalLoaded!: boolean
+  @StockStoreModule.Action('getStockEvaluation') getStockEvaluation!: (stockCode: string) => Promise<void>
+  
+  get chartHeight (): number {
+    return this.$vuetify.breakpoint.name === 'xs' ? 200 : 100
+  }
+
+  get isMobile () {
+    return this.$vuetify.breakpoint.name === 'xs'
+  }
+
+  mounted () {
+    this.getStockEvaluation(this.$route.params.title)    
+  }
+
 }
 
 </script>
