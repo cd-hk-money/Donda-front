@@ -52,6 +52,8 @@ export default class StockStore extends VuexModule {
   public stockGraphAll = {}
   public stockGraphAllLoaded = false
 
+  public stockEvaluation!: any
+  public stockEvaluationLoaded = false
   // 거래량
   public stockGraphVolume = {}
   public stockGraphVolumeLoaded = false  
@@ -162,6 +164,27 @@ export default class StockStore extends VuexModule {
         stockGraphAllFlag: true
       })
     } catch(e) {
+      console.log(e)
+    }
+  }
+
+  @Action
+  public async getStockEvaluation(stockCode: string): Promise<void> {
+    try {
+      this.context.commit('updateState', {
+        stockEvaluationLoaed: true
+      })
+
+      const res = await axios.get(`/stock/${stockCode}/evaluation`)
+
+      console.log(res)
+
+      this.context.commit('updateState', {
+        stockEvaluation: res.data
+      })
+
+
+    } catch (e) {
       console.log(e)
     }
   }
