@@ -330,6 +330,8 @@ export default class StockStore extends VuexModule {
       })
 
       const res = await axios.get(`/stock/${name}/news`)
+
+      console.log(res.data)
       
       this.context.commit('updateState', {
         news: res.data,
