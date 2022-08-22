@@ -180,8 +180,8 @@ export default class StockBigChart extends Vue {
 
       // y virtual value
       ctx.beginPath()
-        ctx.fillStyle = 'rgba(132, 132, 132, 1)'
-        ctx.fillRect(0, lineY - 10, left, 20)
+      ctx.fillStyle = 'rgba(132, 132, 132, 1)'
+      ctx.fillRect(0, lineY - 10, left, 20)
       ctx.closePath()
 
       ctx.fillStyle = 'white'
@@ -196,10 +196,13 @@ export default class StockBigChart extends Vue {
       // x virtual value
       ctx.beginPath()
       ctx.fillStyle = 'rgba(132, 132, 132, 1)'
-      ctx.fillRect(lineX - (textWidth / 2) , bottom, 90, 20)
+      ctx.fillRect(lineX - (textWidth / 2) , bottom, 90, 20)      
       ctx.closePath()      
-      ctx.fillStyle = 'white'      
-      ctx.fillText(chart.data.labels[chart.data.labels.length - x.getValueForPixel(lineX)], lineX, bottom + 10)
+      ctx.fillStyle = 'white'         
+
+      const yText = this.getLabel()
+            
+      ctx.fillText(yText, lineX, bottom + 10)
     },
     afterDraw: function(chart, e) {      
       if(e.y > chart.chartArea.bottom || e.y < chart.chartArea.top || e.x < chart.chartArea.left || e.x > chart.chartArea.right) {
@@ -209,6 +212,10 @@ export default class StockBigChart extends Vue {
         this.drawTraceLine(chart);
       }
     }
+  }
+
+  getLabel () {
+    return this.yLabel
   }
 
   
@@ -271,7 +278,10 @@ export default class StockBigChart extends Vue {
         cornerRadius: 10,
         displayColors: false,
         callbacks: {
-          label: (tooltipItem) => (tooltipItem.yLabel as string).toLocaleString() + ' ₩',        
+          label: (tooltipItem) => {
+            this.yLabel = tooltipItem.label            
+            return (tooltipItem.yLabel as string).toLocaleString() + ' ₩'
+          },        
         }
       },
 
@@ -307,6 +317,8 @@ export default class StockBigChart extends Vue {
       }
     }
   }
+
+  yLabel: string
   
   public createChartData(): any {    
     const labels = this.getChartLabels()
