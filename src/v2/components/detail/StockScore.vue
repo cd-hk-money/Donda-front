@@ -55,7 +55,12 @@
         <div class="text-h4">
           {{ scorePer.score }} %
         </div>
-        <div> {{ scorePer.text }} 되었습니다.</div>
+        <div> 
+          <span :class="scorePer.colorClass">
+            {{ scorePer.text }}
+          </span>
+           되었습니다.
+        </div>
         <v-tooltip bottom>
           <template v-slot:activator="{ on, attrs }">
             <v-btn  
@@ -105,7 +110,8 @@ const MarketStoreModule = namespace('MarketStore')
 
 type ScoreType = {
   score: string,
-  text: string
+  text: string,
+  colorClass: string
 }
 
 @Component({
@@ -137,17 +143,20 @@ export default class StockScore extends Vue {
 
   // computed
   get mobile () { return mobileHeight(this.$vuetify.breakpoint.name) < 500 }
-  get cardHeight (): number { return this.$vuetify.breakpoint.name === 'xs' ? 520 : 260 }
+  get cardHeight (): number { return this.$vuetify.breakpoint.name === 'xs' ? 520 : 260 }  
   get scorePer () : ScoreType {    
     const [close, valuation] = [this.stock.close, Number(Number(this.stockEvaluationDailyLast).toFixed())]
-    const text = close > valuation ? '고평가': '저평가'    
-    const score = close > valuation ? 
+    const isHighVal = close > valuation
+    const text = isHighVal ? '고평가': '저평가'    
+    const score = isHighVal ? 
       (valuation / close * 100).toFixed()
       :(close / valuation * 100).toFixed()
+    const colorClass = isHighVal ? 'red--text' : 'blue--text'
         
     return {
       score,
-      text
+      text,
+      colorClass
     }
   }
 
