@@ -9,7 +9,13 @@
             <menu-bar />             
           </div>
       </div>
-      <v-snackbar v-model="snackBar">
+      <v-snackbar 
+        v-model="SnackBar" timeout="3000"
+        @blur="updateState({
+          snackBar: false,
+          snackBarMessage: ''
+        })"  
+      >
         {{ snackBarMessage }}
         <template v-slot:action="{ attrs }">
           <v-btn
@@ -17,11 +23,9 @@
             text
             v-bind="attrs"
             @click="updateState({
-              snackBar: false
-            })"     
-            @blur="updateState({
-              snackBar: false
-            })"       
+              snackBar: false,
+              snackBarMessage: ''
+            })"          
           >
             닫기
           </v-btn>
@@ -66,6 +70,16 @@ export default class App extends Vue {
 
   get mobile () {
      return this.$vuetify.breakpoint.name === 'xs'
+  }
+
+  get SnackBar () {
+    return this.snackBar
+  }
+
+  set SnackBar (value) {
+    this.updateState({
+      snackBar: value
+    })
   }
 
   @MarketStoreModule.Action('getTodayMarket') readonly getTodayMarket!: () => Promise<void>

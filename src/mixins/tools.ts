@@ -13,12 +13,25 @@ export function isMobile(): boolean | any {
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent); 
 }
 
-// 색상의 투명도를 조절합니다.
+/**
+ * 
+ * @param value 색상
+ * @param opacity 투명도 
+ * @returns 투명도가 적용된 그라데이션 색상
+ */
 export function transparentize(value: string | number[] | Color, opacity?: number) {
   const alpha = opacity === undefined ? 0.5 : 1 - opacity;
   return colorLib(value).alpha(alpha).rgbString();
 }
 
+
+/**
+ * 
+ * @param keys 
+ * @param value 
+ * @param label 
+ * @returns 
+ */
 export function convertChartData(keys: string[], value: string[], label: string[]): ISimpleChartData {
   return keys.reduce((acc: any, cur: string, index: number) => {        
     acc[keys[index]] = {
