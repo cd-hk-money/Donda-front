@@ -52,8 +52,10 @@
       </v-col>            
 
       <v-col cols="12" xl="5" lg="5" sm="12" md="12" xs="12" class="text-center align-center mt-3">
-        <div class="text-h4">20%</div>
-        <div> 저평가 되었습니다.</div>
+        <div class="text-h4">
+          {{ scorePer.score }} %
+        </div>
+        <div> {{ scorePer.text }} 되었습니다.</div>
         <v-tooltip bottom>
           <template v-slot:activator="{ on, attrs }">
             <v-btn  
@@ -101,6 +103,11 @@ import { IStockModel } from '@/models/stock'
 const StockStoreModule = namespace('StockStore')
 const MarketStoreModule = namespace('MarketStore')
 
+type ScoreType = {
+  score: string,
+  text: string
+}
+
 @Component({
   components: {
     StockScoreBarChart,
@@ -113,18 +120,36 @@ export default class StockScore extends Vue {
   overlay = false
   carousel = 0
 
-  // store
+  
   @StockStoreModule.State('stockLoaded') loaded!: boolean
   @StockStoreModule.State('stockGraphDefaultLoaded') graphLoaded!: boolean
   @StockStoreModule.State('getStockEvaluationDaily') evalLoaded!: boolean
   @StockStoreModule.State('stockEvaluationDailyLoaded') dailyLoaded!: boolean
+  @StockStoreModule.State('stock') stock!: IStockModel
+
+  @StockStoreModule.Getter('stockEvaluationDailyLast') stockEvaluationDailyLast!: string
+
   @StockStoreModule.Action('getStockGraphDefault') readonly getStockGraphDefault!: (name: string) => Promise<void>
   @StockStoreModule.Action('getStockEvaluationDaily') getStockEvaluationDaily!: (stockCode: string) => Promise<void>
+
   @MarketStoreModule.State('codeTitleMapping') codeTitleMapping!: any
+
 
   // computed
   get mobile () { return mobileHeight(this.$vuetify.breakpoint.name) < 500 }
   get cardHeight (): number { return this.$vuetify.breakpoint.name === 'xs' ? 520 : 260 }
+  get scorePer () : ScoreType {    
+    const [close, valuation] = [this.stock.close, Number(Number(this.stockEvaluationDailyLast).toFixed())]
+    const text = close > valuation ? '고평가': '저평가'    
+    const score = close > valuation ? 
+      (valuation / close * 100).toFixed()
+      :(close / valuation * 100).toFixed()
+        
+    return {
+      score,
+      text
+    }
+  }
 
   // methods
   drawerChange () {
@@ -133,7 +158,9 @@ export default class StockScore extends Vue {
 
   // hooks
   created () {
-    const code = this.$route.params.title
+    const code = this.$route.params.title    
+
+
     this.getStockGraphDefault(code)    
     this.getStockEvaluationDaily(code)
   }

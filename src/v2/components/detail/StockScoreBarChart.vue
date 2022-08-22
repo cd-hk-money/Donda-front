@@ -91,7 +91,7 @@ export default class StockScoreBarChart extends Vue {
       datasets: [
         {
           type: 'bar',
-          data : [this.stock.close, this.stockEvaluationDailyLast],
+          data : [this.stock.close, Number(this.stockEvaluationDailyLast).toFixed()],
           fill: true,
           borderColor: [MAIN_COLOR, SUB_COLOR],        
           backgroundColor: [transparentize(MAIN_COLOR, 0.8) ,transparentize(SUB_COLOR, 0.8)],
