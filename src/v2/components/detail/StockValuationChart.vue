@@ -186,7 +186,7 @@ export default class StockValuationChart extends Vue {
 
   @Watch('legend')
   watchLegend () {
-    this.renderLineChart()
+    this.createChart()
   }
   
   renderChart!: (chartData: any, options: any) => any
@@ -286,7 +286,7 @@ export default class StockValuationChart extends Vue {
     }
 
     this.chartOptions.animation = {
-      duration: 2000,
+      duration: 800,
       easing: 'easeInOutQuint'
     }
     
@@ -341,23 +341,15 @@ export default class StockValuationChart extends Vue {
   }
 
   createChart() {
-
-
-
-    const canvas = document.getElementById('evalChart') as HTMLCanvasElement
+    const canvas = document.getElementById('evalChart') as HTMLCanvasElement    
     this.applyDefaultChartOptions()
     const options = {
       data: this.createChartData(),
-      options: this.chartOptions,
-      plugins: [myCrossHair]
+      options: this.chartOptions,      
     }    
 
-    this.chart = new Chart(canvas, options as Chart.ChartConfiguration)        
+    this.chart = new Chart(canvas, options as Chart.ChartConfiguration).update()            
 
-  }
-
-  renderLineChart () {    
-    this.createChart()
   }
 
   mounted () {          
@@ -366,7 +358,7 @@ export default class StockValuationChart extends Vue {
         Object.entries(this.stockGraphAll).filter((v, _) => (v[0] as string).substr(0, 7) === k)[0][1]        
       )
     
-    this.renderLineChart()         
+    this.createChart()         
   }
 }
 </script>
