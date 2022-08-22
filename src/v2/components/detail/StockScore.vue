@@ -22,7 +22,7 @@
     </v-card-subtitle>
     <v-row>
       <v-col cols="12" xl="7">
-        <template v-if="!loaded && !graphLoaded && !evalLoaded">
+        <template v-if="!loaded && !graphLoaded && !evalLoaded && !dailyLoaded">
           <v-carousel 
             cycle
             hide-delimiter-background
@@ -117,6 +117,7 @@ export default class StockScore extends Vue {
   @StockStoreModule.State('stockLoaded') loaded!: boolean
   @StockStoreModule.State('stockGraphDefaultLoaded') graphLoaded!: boolean
   @StockStoreModule.State('getStockEvaluationDaily') evalLoaded!: boolean
+  @StockStoreModule.State('stockEvaluationDailyLoaded') dailyLoaded!: boolean
   @StockStoreModule.Action('getStockGraphDefault') readonly getStockGraphDefault!: (name: string) => Promise<void>
   @StockStoreModule.Action('getStockEvaluationDaily') getStockEvaluationDaily!: (stockCode: string) => Promise<void>
   @MarketStoreModule.State('codeTitleMapping') codeTitleMapping!: any

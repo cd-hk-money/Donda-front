@@ -108,8 +108,7 @@ export default class StockScoreBarChart extends Vue {
   renderChart!: (chartData: any, options: any) => any
 
   renderBarChart() {
-    this.applyDefaultOptions()
-    console.log(this.stockEvaluationDailyLast)
+    this.applyDefaultOptions()    
     this.renderChart(this.createChartData(), this.chartOptions)
   }
 
