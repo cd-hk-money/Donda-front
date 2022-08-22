@@ -1,17 +1,17 @@
 <script lang="ts">
 
 import { Component, Vue, Prop } from 'vue-property-decorator'
-
 import Chart from 'chart.js'
 import { mixins, Bar } from 'vue-chartjs-typescript'
-
 import { transparentize } from '@/mixins/tools'
-import { IStockStatementBarChartModel } from '@/models/stock'
+import { IStockModel, IStockStatementBarChartModel } from '@/models/stock'
+import { namespace } from 'vuex-class'
 
 const { reactiveProp } = mixins
-
 const MAIN_COLOR = '#40E0D0'
 const SUB_COLOR = 'rgb(255, 99, 132)'
+const StockStoreModule = namespace('StockStore')
+
 
 @Component({
   extends: Bar,
@@ -19,19 +19,15 @@ const SUB_COLOR = 'rgb(255, 99, 132)'
 })
 export default class StockScoreBarChart extends Vue {
 
-  @Prop() type!: string
+  @Prop() type!: string  
+  @StockStoreModule.State('stock') stock!: IStockModel
 
   chartData!: IStockStatementBarChartModel
   chartOptions: Chart.ChartOptions = {}
 
   applyDefaultOptions() {
     this.chartOptions.maintainAspectRatio = true
-    this.chartOptions.responsive = true
-    
-    this.chartOptions.legend = {
-      display: false
-    }
-
+    this.chartOptions.responsive = true      
     this.chartOptions.plugins = {
       crosshair: false
     }
@@ -69,11 +65,12 @@ export default class StockScoreBarChart extends Vue {
     
     this.chartOptions.tooltips = {      
       enabled: true,
-      titleFontSize: 15,
+      titleFontSize: 14,
       titleFontColor: MAIN_COLOR,
-      bodyFontSize: 20,
-      cornerRadius: 10,
-      displayColors: false,      
+      bodyFontSize: 12,
+      cornerRadius: 12,
+      displayColors: false,        
+      mode: 'index',
     }  
   }
 
@@ -84,7 +81,7 @@ export default class StockScoreBarChart extends Vue {
       datasets: [
         {
           type: 'bar',
-          label: this.type,
+          label: this.stock.name,
           data : [...this.chartData.value].reverse(),
           fill: true,
           borderColor: MAIN_COLOR,        
@@ -95,8 +92,8 @@ export default class StockScoreBarChart extends Vue {
         },
         {
           type: 'line',
-          label: this.type,
-          data : [...this.chartData.value].reverse().map((value: number) => value * Math.random() + 0.5),
+          label: this.type + '업종 평균',
+          data : [...this.chartData.value].reverse().map((value: number) => (value * Math.random() + 0.5).toFixed()),
           fill: false,
           borderColor: SUB_COLOR,        
           backgroundColor: transparentize(SUB_COLOR, 0.9),

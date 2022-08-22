@@ -116,8 +116,7 @@ export default class StockChart extends Vue {
 
   renderLineChart () {    
     this.applyDefaultChartOptions()
-    this.renderChart(this.createChartData(), this.chartOptions)  
-    console.log('rendered')  
+    this.renderChart(this.createChartData(), this.chartOptions)      
   }
 
   mounted () {    

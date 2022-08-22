@@ -21,7 +21,7 @@
         각 보조지표의 수치를 보여줍니다.  
       </v-card-subtitle>
       <v-responsive>
-        <template v-if="!loaded">
+        <template v-if="!loaded && !stockLoaded">
           <v-carousel 
             cycle
             hide-delimiter-background
@@ -56,20 +56,20 @@
                   <stock-indicator-bar-chart 
                     type="eps"
                     :chartData="indicator.eps"
-                    :width="150"
-                    :height="200"      
+                    :width="140"
+                    :height="235"      
                   />              
                   <stock-indicator-bar-chart
                     type="bps"
                     :chartData="indicator.bps"
-                    :width="150"
-                    :height="200"      
+                    :width="140"
+                    :height="235"      
                   />              
                   <stock-indicator-bar-chart 
                     type="roe"
                     :chartData="indicator.roe"
-                    :width="150"
-                    :height="200"      
+                    :width="140"
+                    :height="235"      
                   />                          
                 </v-card>              
               </div>          
@@ -131,6 +131,7 @@ export default class StockIndicator extends Vue {
   }
 
   @StockStoreModule.State('indicatorLoaded') loaded!: boolean
+  @StockStoreModule.State('stockLoaded') stockLoaded!: boolean
   @StockStoreModule.State('indicator') indicator!: ISimpleChartData
   @StockStoreModule.Action('getStockIndicator') readonly getStockIndicator!: (name: string) => Promise<void>
 

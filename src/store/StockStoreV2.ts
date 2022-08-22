@@ -68,7 +68,6 @@ export default class StockStore extends VuexModule {
     return this.stockEvaluationDaily?.value.slice(-1)[0]
   }
 
-
   // 거래량
   public stockGraphVolume = {}
   public stockGraphVolumeLoaded = false  
