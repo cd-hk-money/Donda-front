@@ -4,7 +4,8 @@
     width="94%"
     height="150"    
     rounded="xl"
-    elevation="1"
+    elevation="1"                    
+    @click="pushDetail"
   >
     <v-card-title class="font-weight-bold">      
       {{ name }}
@@ -19,13 +20,19 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator' 
 
-@Component({
-  
-})
+@Component
 export default class StockSimilarContent extends Vue {
 
   @Prop() name!: string  
   @Prop() code!: number | string
+
+  created () {
+    console.log(this.$route.params.title)
+  }
+
+  pushDetail () {
+    this.$router.push(`/detail/${this.code}`)  
+  }
   
 }
 

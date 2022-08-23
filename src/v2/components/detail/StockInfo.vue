@@ -179,7 +179,8 @@ export default class StockInfo extends Vue {
     return this.$vuetify.breakpoint.name === 'xs' 
   }
         
-  async created () {    
+  async mounted () {    
+    console.log('다시')
     const code = this.$route.params.title
     await this.getStock(code)    
   }  

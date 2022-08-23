@@ -45,7 +45,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue} from 'vue-property-decorator'
+import { Component, Vue, Watch} from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 
 const StockStoreModule = namespace('StockStore')
@@ -60,9 +60,17 @@ export default class StockNews extends Vue {
 
   @MarketStoreModule.State('codeTitleMapping') codeTitleMapping!: any
 
+  @Watch('$route')
+  watchRoute() {            
+    this.getNews()
+  }  
+
   mounted() {    
-    const code = this.codeTitleMapping[this.$route.params.title]
-    this.getStockNews(code)
+    this.getNews()
+  }
+
+  getNews () {  
+    this.getStockNews(this.$route.params.title)
   }
     
   onClickRedirect (url: string) {

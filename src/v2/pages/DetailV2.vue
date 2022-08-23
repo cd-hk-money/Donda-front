@@ -1,13 +1,12 @@
 <template>
-  <v-row>
+  <v-row :keys="componentKey">
     <v-col cols="12" xl="3" lg="4" md="4">        
-      <stock-info :keys="componentKey + 1"/>           
-      <stock-score @drawerChange="drawerChange" :keys="componentKey + 3"/>     
-      <stock-indicator :keys="componentKey + 2"/>    
+      <stock-info/>           
+      <stock-score @drawerChange="drawerChange"/>     
+      <stock-indicator/>    
     </v-col>    
     <v-col cols="12" xl="9" lg="8">
-      <stock-drawer 
-        :keys="componentKey + 4"
+      <stock-drawer         
         @drawerChange="drawerChange" :drawer="drawer" 
       />
       <v-menu
@@ -44,9 +43,9 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator'
-import { IMenu } from '@/v2/pages/MenuBar.vue'
-import { mobileHeight } from '@/mixins/tools'
+import { namespace } from 'vuex-class'
 
+import { IMenu } from '@/v2/pages/MenuBar.vue'
 import StockInfo from '@/v2/components/detail/StockInfo.vue'
 import StockChart from '@/v2/components/detail/Stock.vue'
 import StockFinance from '@/v2/components/detail/StockFinance.vue'
@@ -55,6 +54,8 @@ import StockDrawer from '@/v2/components/detail/StockDrawer.vue'
 import StockIndicator from '@/v2/components/detail/StockIndicator.vue'
 import StockSimilar from '@/v2/components/detail/StockSimilar.vue'
 import StockNews from '@/v2/components/detail/StockNews.vue'
+
+const StockStoreModule = namespace('StockStore')
 
 @Component({
   components: {
@@ -88,8 +89,10 @@ export default class DetailV2 extends Vue {
     }
   ]
 
+  @StockStoreModule.Action('getStock') getStock!: (name: string) => Promise<void>
+
   stockLoad(title: string) {    
-    this.drawer = 0
+    this.drawer = 0        
   }
 
   drawerChange (val: any) {        
@@ -101,8 +104,9 @@ export default class DetailV2 extends Vue {
     this.componentKey += 1
   }
   @Watch('$route')
-  watchRoute() {    
-   this.stockLoad(this.$route.params.title)
+  watchRoute() {        
+    this.drawer = 0
+    this.getStock(this.$route.params.title)   
   }  
 
   created () {
