@@ -5,14 +5,16 @@
       permanent                  
       :fixed="mobile"
       :width="mobile ? '100%' : '110%'"      
-      max-height="80"
+      max-height="80"      
+      height="auto"
       :mini-variant.sync="mini"
     >      
       <v-card                       
         width="100%"
         elevation="0"
         class="d-flex justify-space-between align-center"        
-        height="60"        
+        height="60"  
+        max-height="80"      
         outlined
       >      
         <v-btn 
@@ -94,7 +96,7 @@
         <v-card             
           v-show="expand"
           width="100%"
-          height="80"
+          max-height="80"
           elevation="0"
           outlined
         >
@@ -151,7 +153,7 @@
         <v-card          
           v-show="alramConfig"
           width="100%"          
-          height="auto"
+          max-height="auto"
           elevation="0"
           outlined
         >

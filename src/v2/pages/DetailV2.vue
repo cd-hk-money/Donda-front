@@ -6,9 +6,7 @@
       <stock-indicator/>    
     </v-col>    
     <v-col cols="12" xl="9" lg="8">
-      <stock-drawer         
-        @drawerChange="drawerChange" :drawer="drawer" 
-      />
+      <stock-drawer @drawerChange="drawerChange" :drawer="drawer"/>
       <v-menu
         open-on-hover
         offset-y
@@ -84,12 +82,14 @@ export default class DetailV2 extends Vue {
       callback: () => this.drawerChange(1)
     },
     {
-      title: '추천종목',
+      title: '유사종목 및 뉴스',
       callback: () => this.drawerChange(2)
     }
   ]
 
   @StockStoreModule.Action('getStock') getStock!: (name: string) => Promise<void>
+  @StockStoreModule.Action('getStockGraphAll') getStockGraphAll!: (name: string) => Promise<void>
+  @StockStoreModule.Action('getStockGraphDefault') getStockGraphDefault!: (name: string) => Promise<void>
 
   stockLoad(title: string) {    
     this.drawer = 0        
@@ -106,7 +106,10 @@ export default class DetailV2 extends Vue {
   @Watch('$route')
   watchRoute() {        
     this.drawer = 0
-    this.getStock(this.$route.params.title)   
+    const code = this.$route.params.title
+    this.getStock(code)   
+    this.getStockGraphAll(code)
+    this.getStockGraphDefault(code)
   }  
 
   created () {

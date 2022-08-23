@@ -1,8 +1,8 @@
 <template>
   <v-card 
     class="mt-5 ml-5 mr-5 overflow-y-auto stock-similar"
-    height="885"
-    width="94%"
+    height="885"    
+    :width="width"
     outlined
     elevation="1"
   >  
@@ -28,7 +28,8 @@
         v-for="(content, i) in recommend"
         :key="i"
       >
-        <stock-similar-content 
+        <stock-similar-content
+          :content="content" 
           :name="content.name"
           :code="content.code"
         />
@@ -79,25 +80,40 @@ export default class StockSimilar extends Vue {
   @MarketStoreModule.State('recommedLoaded') loaded!: boolean
   @MarketStoreModule.Action('getRecommend') readonly getRecommend!: () => Promise<void>
 
+  get width (): string | number { 
+    return this.$vuetify.breakpoint.name === 'xs' ? 465 : '94%'
+  }
+
   async created () {
-    await this.getRecommend()
-    console.log(this.recommend)
+    await this.getRecommend()    
   }
 
 }
 </script>
 <style>
 
-.stock-similar::-webkit-scrollbar {
-  width: 0px;
+.stock-similar {
+  transition: all .3s ease;  
 }
-.stock-similar:hover::-webkit-scrollbar {
-  width: 4px;
+
+.stock-similar:hover {
+  color: rgba(64, 224, 208, 1);
+}
+
+.stock-similar::-webkit-scrollbar-thumb,
+.stock-similar::-webkit-scrollbar {    
+  width: 4px;    
+  transition: all 1s;    
+  background-clip: padding-box;
+}
+
+*::-webkit-scrollbar-thumb {        
+  box-shadow: inset 0 0 0 10px;
 }
 
 .stock-similar::-webkit-scrollbar-thumb {
-  height: 20%; 
-  background: #40E0D0; 
+  height: 30%; /* 스크롤바의 길이 */
+  background: rgb(64, 224, 208); /* 스크롤바의 색상 */  
   border-radius: 10px;
 }
 

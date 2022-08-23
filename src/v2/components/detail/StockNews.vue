@@ -79,19 +79,36 @@ export default class StockNews extends Vue {
 }
 </script>
 
-<style>
-.stock-news::-webkit-scrollbar {    
-  width: 0px;    
-  transition: all 1s;  
+<style style="scss">
+.stock-news {
+  transition: all .3s ease;  
 }
 
-.stock-news:hover::-webkit-scrollbar{  
-  width: 4px;  
+.stock-news:hover {
+  color: rgba(64, 224, 208, 1);
 }
+
+.stock-news::-webkit-scrollbar-thumb,
+.stock-news::-webkit-scrollbar {    
+  width: 4px;    
+  transition: all 1s;    
+  background-clip: padding-box;
+}
+
+*::-webkit-scrollbar-thumb {        
+  box-shadow: inset 0 0 0 10px;
+}
+
+/* .stock-news:hover::-webkit-scrollbar-thumb,
+.stock-news:hover::-webkit-scrollbar{  
+  transition: all 1s;  
+  transition-timing-function: ease;
+  width: 4px;  
+} */
 
 .stock-news::-webkit-scrollbar-thumb {
   height: 30%; /* 스크롤바의 길이 */
-  background: #40E0D0; /* 스크롤바의 색상 */  
+  background: rgb(64, 224, 208); /* 스크롤바의 색상 */  
   border-radius: 10px;
 }
 .news-card-action {
@@ -107,8 +124,7 @@ export default class StockNews extends Vue {
 }
 
 .news-list-item {
-  height: 120px !important;
-  width: 500px;
+  height: 120px !important;    
 }
 </style>
 

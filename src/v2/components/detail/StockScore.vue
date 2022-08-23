@@ -126,7 +126,7 @@ export default class StockScore extends Vue {
   overlay = false
   carousel = 0
 
-  
+  // store
   @StockStoreModule.State('stockLoaded') loaded!: boolean
   @StockStoreModule.State('stockGraphDefaultLoaded') graphLoaded!: boolean
   @StockStoreModule.State('getStockEvaluationDaily') evalLoaded!: boolean
@@ -142,24 +142,33 @@ export default class StockScore extends Vue {
 
 
   // computed
-  get mobile () { return mobileHeight(this.$vuetify.breakpoint.name) < 500 }
-  get cardHeight (): number { return this.$vuetify.breakpoint.name === 'xs' ? 520 : 260 }  
+  get mobile () { 
+    return mobileHeight(this.$vuetify.breakpoint.name) < 500 
+  }
+
+  get cardHeight (): number { 
+    return this.$vuetify.breakpoint.name === 'xs' ? 520 : 260 
+  }  
+
   get scorePer () : ScoreType {    
     const [close, valuation] = [this.stock.close, Number(Number(this.stockEvaluationDailyLast).toFixed())]
     const isHighVal = close > valuation
+
+    const score = isHighVal ? (valuation / close * 100).toFixed() :(close / valuation * 100).toFixed()
     const text = isHighVal ? '고평가': '저평가'    
-    const score = isHighVal ? 
-      (valuation / close * 100).toFixed()
-      :(close / valuation * 100).toFixed()
     const colorClass = isHighVal ? 'red--text' : 'blue--text'
         
     return { score, text, colorClass }
   }
 
+
+
   // methods
   drawerChange () {
     this.$emit('drawerChange', 3)
   }
+
+
 
   // hooks
   created () {

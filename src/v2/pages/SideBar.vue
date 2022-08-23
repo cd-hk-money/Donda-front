@@ -1,9 +1,10 @@
 <template>
   <v-navigation-drawer 
     permanent     
-    :width="mobile ? '92%' : '100%'"         
+    width="100%"      
+    height="100"
     :class="mobile ? 'ml-5 mt-5' : ''"
-    bottom
+    v-show="!mobile"    
   >
     <v-sheet           
       permanent      

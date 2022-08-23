@@ -64,18 +64,15 @@ export default class StockDrawer extends Vue {
     return this.$vuetify.breakpoint.name === 'xs' ? 465 : '100%'
   }
 
+  get mobile () {
+    return this.$vuetify.breakpoint.name === 'xs'
+  }
+
   @Prop() drawer!: number
   
   drawerChange(select: number) {
     this.$emit('drawerChange', select)
   }
 
-  get mobile () {
-    return this.$vuetify.breakpoint.name === 'xs'
-  }
-
-  forceRender() {
-    this.componentKey += 1
-  }
 }
 </script>

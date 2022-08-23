@@ -9,13 +9,13 @@ import { IUpdateStateModel } from '@/models/payload'
 import { division } from '@/mixins/tools'
 
 
-const HEADER = {
-    headers: {
-      'Content-Type': 'text/plain;charset=utf-8'
-    }
-  }
-
 const URL = ''
+const HEADER = {
+  headers: {
+    'Content-Type': 'text/plain;charset=utf-8'
+  }
+}
+
 
 @Module({namespaced: true})
 export default class MarketStore extends VuexModule {
@@ -25,6 +25,7 @@ export default class MarketStore extends VuexModule {
   public searchTable!: StockSimpleModel[]
   public codeTitleMapping = {}
 
+
   // 주식 시장
   public marketLoaded = false  
   public marketChart!: IMarketChartModel  
@@ -32,12 +33,14 @@ export default class MarketStore extends VuexModule {
   public requestDate = 20
   public stockRequestDate = 20
 
+
   // 종목 추천 정보
   public recommendLoaded = false
   public recommend: StockRecommendModel[] = []
   get recommendArray () {
     return division(this.recommend, 2)
   }
+
 
   @Mutation updateRequestDate(payload: number) {    
     if(payload < 2) {

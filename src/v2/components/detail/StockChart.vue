@@ -21,25 +21,19 @@ export default class StockChart extends Vue {
   @Prop() chartData!: never
 
   @StockStoreModule.State('stockGraphDefault') stockGraphDefault!: any
-
-  chartOptions: Chart.ChartOptions = {}
-
+  
   // methods  
   renderChart!: (chartData: any, options: any) => any
-
-  applyDefaultChartOptions () {
-
-    this.chartOptions.maintainAspectRatio = true
-    this.chartOptions.responsive = true
-    this.chartOptions.legend = {
+  chartOptions: Chart.ChartOptions = {
+    maintainAspectRatio: true,
+    responsive: true,
+    legend: {
       display: true
-    }
-
-    this.chartOptions.plugins = {      
+    },
+    plugins: {
       crosshair: false
-    }  
-
-    this.chartOptions.scales = {
+    },
+    scales: {
       xAxes: [{
         gridLines: {
           display: false
@@ -56,21 +50,19 @@ export default class StockChart extends Vue {
       yAxes: [{
         ticks: {
           display: false,
-          callback: function(value: string) {return value.toLocaleString()},
+          callback: (value: string) => value.toLocaleString(),
           fontSize: 20,
         },
         gridLines: {
           display: false
         }
-      }]
-    }
-
-    this.chartOptions.animation = {
+      }],      
+    },
+    animation: {
       duration: 2000,
       easing: 'easeOutBounce'
-    }
-    
-    this.chartOptions.tooltips = {
+    },
+    tooltips: {
       enabled: false,
       intersect: false,
       titleFontSize: 10,
@@ -81,8 +73,10 @@ export default class StockChart extends Vue {
       callbacks: {
         label: (tooltipItem) => tooltipItem.yLabel as string,        
       }
-    }  
+    }
+
   }
+
 
   createChartData() {
     return {
@@ -114,8 +108,7 @@ export default class StockChart extends Vue {
     }
   }
 
-  renderLineChart () {    
-    this.applyDefaultChartOptions()
+  renderLineChart () {        
     this.renderChart(this.createChartData(), this.chartOptions)      
   }
 

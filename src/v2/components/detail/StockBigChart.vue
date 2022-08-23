@@ -28,23 +28,32 @@ const zoomScale = 1
 })
 export default class StockBigChart extends Vue {
 
-  @Prop({default: false}) fill!: boolean
-  @Prop({default: 300}) height!: number    
-  @Prop() chartData!: never
-  @Prop({default: true}) gradient!: boolean
-  @Prop({default: false}) volume!: boolean
+  // datas
+  chart!: Chart
+  tempCount = 20
+  chartOptions: Chart.ChartOptions = {}
+  yLabel: string
 
+
+  // props
+  @Prop({default: false}) fill!: boolean | undefined
+  @Prop({default: 300}) height!: number | undefined    
+  @Prop() chartData!: never
+  @Prop({default: true}) gradient!: boolean | undefined
+  @Prop({default: false}) volume!: boolean | undefined
+
+
+  // stores
   @StockStoreModule.State('stockGraphLength') count!: number
   @StockStoreModule.State('stockGraphDefault') stockGraphDefault!: any
   @StockStoreModule.State('stockGraphAll') stockGraphAll!: any
   @StockStoreModule.State('stockGraphVolumeFlag') volumeFlag!: boolean
   @StockStoreModule.State('stockGraphVolume') stockGraphVolume!: boolean
-
   @StockStoreModule.Action('getStockGraphVolume') getStockGraphVolume!: (name: string) => Promise<void>
   @StockStoreModule.Mutation('updateState') updateCount!: (payload: IUpdateStateModel) => void
 
-  tempCount = 20
 
+  // watches
   @Watch('count')
   watchCount() {
     this.renderingChart()
@@ -60,6 +69,8 @@ export default class StockBigChart extends Vue {
     this.renderingChart()
   }
 
+
+  // methods
   getChartLabels () {
     return Object.keys(this.stockGraphAll)
   }  
@@ -67,9 +78,11 @@ export default class StockBigChart extends Vue {
   getChartDatas (): number[] {
     return Object.values(this.stockGraphAll)
   }
-  
-  chartOptions: Chart.ChartOptions = {}
 
+  getLabel () {
+    return this.yLabel
+  }
+  
 
   // 현재 그래프 날짜 간격의 평균 주가를 기준으로 dash 선을 생성
   dottedLine = {
@@ -213,11 +226,6 @@ export default class StockBigChart extends Vue {
       }
     }
   }
-
-  getLabel () {
-    return this.yLabel
-  }
-
   
   applyDefaultChartOptions (): void {
     const labels = this.getChartLabels()
@@ -317,10 +325,8 @@ export default class StockBigChart extends Vue {
       }
     }
   }
-
-  yLabel: string
-  
-  public createChartData(): any {    
+    
+  createChartData(): any {    
     const labels = this.getChartLabels()
     const data = this.getChartDatas()
     return {      
@@ -395,7 +401,7 @@ export default class StockBigChart extends Vue {
   }
 
   // 마우스 휠에 대응하는 zoom 이벤트 콜백
-  myZoom (chart, e) {
+  myZoom (chart: Chart, e) {
     const labels = this.getChartLabels()
     const datas = this.getChartDatas()
 
@@ -446,9 +452,7 @@ export default class StockBigChart extends Vue {
       options: this.chartOptions,
       plugins: [this.dottedLine, this.myCrossHair]
     }    
-
-    console.log(options)
-
+    
     this.chart = new Chart(canvas, options)        
     this.chart.canvas.addEventListener('mousewheel', e => {      
       this.myZoom(this.chart, e)
@@ -464,8 +468,8 @@ export default class StockBigChart extends Vue {
     this.chart.update()
   }
 
-  chart!: Chart
 
+  // hooks
   mounted () {        
     this.renderingChart()
   }
