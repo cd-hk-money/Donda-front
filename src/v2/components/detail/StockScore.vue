@@ -153,11 +153,7 @@ export default class StockScore extends Vue {
       :(close / valuation * 100).toFixed()
     const colorClass = isHighVal ? 'red--text' : 'blue--text'
         
-    return {
-      score,
-      text,
-      colorClass
-    }
+    return { score, text, colorClass }
   }
 
   // methods
@@ -168,8 +164,6 @@ export default class StockScore extends Vue {
   // hooks
   created () {
     const code = this.$route.params.title    
-
-
     this.getStockGraphDefault(code)    
     this.getStockEvaluationDaily(code)
   }

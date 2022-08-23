@@ -1,13 +1,13 @@
 <template>
   <v-card   
     class="ml-5 mr-5 mb-5 mt-5"
-    width="410"
-    height="200"
+    width="94%"
+    height="150"    
     rounded="xl"
     elevation="1"
   >
     <v-card-title class="font-weight-bold">      
-      {{ title }}
+      {{ name }}
     </v-card-title>      
     <v-card-subtitle>       
       {{ code }}
@@ -24,7 +24,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 })
 export default class StockSimilarContent extends Vue {
 
-  @Prop() title!: string  
+  @Prop() name!: string  
   @Prop() code!: number | string
   
 }

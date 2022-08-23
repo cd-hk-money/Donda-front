@@ -356,12 +356,14 @@ export default class StockBigChart extends Vue {
       this.getStockGraphVolume(this.$route.params.title).then(() => {
         this.createChart(chartData)
       })
+
+      return
     } 
+    
   
     // 거래량 옵션이 설정되어있으면 애니메이션 삭제, 설정되어있으면 거래량 데이터 푸시
     else {      
-      if(this.volume && this.chartOptions.scales.yAxes.length !== 2) {
-        console.log('re')
+      if(this.volume && this.chartOptions.scales.yAxes.length !== 2) {        
         const data = Object.values(this.stockGraphVolume)
         this.chartOptions.scales.yAxes.push({
           id: 'volume',
@@ -384,7 +386,7 @@ export default class StockBigChart extends Vue {
           yAxisID: 'volume',
           backgroundColor: transparentize(MAIN_COLOR, 0.8)
         })
-        this.createChart(chartData)
+        this.createChart(chartData)        
       }
       else {
         this.createChart(chartData)

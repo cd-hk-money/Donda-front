@@ -81,7 +81,7 @@ export default class StockScoreBarChart extends Vue {
       datasets: [
         {
           type: 'bar',
-          label: this.stock.name,
+          label: '     ' + this.stock.name,
           data : [...this.chartData.value].reverse(),
           fill: true,
           borderColor: MAIN_COLOR,        

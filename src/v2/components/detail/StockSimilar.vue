@@ -1,9 +1,9 @@
 <template>
   <v-card 
-    class="mt-5 ml-5 mr-5"
+    class="mt-5 ml-5 mr-5 overflow-y-auto stock-similar"
     height="885"
     width="94%"
-    rounded="xl"
+    outlined
     elevation="1"
   >  
     <v-card-title class="ml-5">
@@ -25,11 +25,11 @@
 
     <v-card-text v-if="!loaded">
       <div 
-        v-for="(content, i) in recommend.slice(0, 3)"
+        v-for="(content, i) in recommend"
         :key="i"
       >
         <stock-similar-content 
-          :title="content.title"
+          :name="content.name"
           :code="content.code"
         />
       </div>
@@ -79,10 +79,26 @@ export default class StockSimilar extends Vue {
   @MarketStoreModule.State('recommedLoaded') loaded!: boolean
   @MarketStoreModule.Action('getRecommend') readonly getRecommend!: () => Promise<void>
 
-  created () {
-    this.getRecommend()
+  async created () {
+    await this.getRecommend()
+    console.log(this.recommend)
   }
-  
-  
+
 }
 </script>
+<style>
+
+.stock-similar::-webkit-scrollbar {
+  width: 0px;
+}
+.stock-similar:hover::-webkit-scrollbar {
+  width: 4px;
+}
+
+.stock-similar::-webkit-scrollbar-thumb {
+  height: 20%; 
+  background: #40E0D0; 
+  border-radius: 10px;
+}
+
+</style>

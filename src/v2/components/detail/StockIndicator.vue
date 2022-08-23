@@ -51,24 +51,24 @@
                   width="250"
                   height="250"
                   elevation="0"
-                  class="d-flex justify-center align-center"
+                  class="d-flex justify-center align-center mr-2"
                 >                                
                   <stock-indicator-bar-chart 
                     type="eps"
                     :chartData="indicator.eps"
-                    :width="140"
+                    :width="130"
                     :height="235"      
                   />              
                   <stock-indicator-bar-chart
                     type="bps"
                     :chartData="indicator.bps"
-                    :width="140"
+                    :width="130"
                     :height="235"      
                   />              
                   <stock-indicator-bar-chart 
                     type="roe"
                     :chartData="indicator.roe"
-                    :width="140"
+                    :width="130"
                     :height="235"      
                   />                          
                 </v-card>              

@@ -1,9 +1,8 @@
 <template>
   <v-card 
-    class="mt-5 ml-5 overflow-y-auto"
+    class="mt-5 ml-5 overflow-auto stock-news"
     height="885"
-    width="94%"
-    rounded="xl"
+    width="94%"    
     elevation="1"    
   >
     <v-card-title class="ml-5">
@@ -73,9 +72,23 @@ export default class StockNews extends Vue {
 </script>
 
 <style>
+.stock-news::-webkit-scrollbar {    
+  width: 0px;    
+  transition: all 1s;  
+}
+
+.stock-news:hover::-webkit-scrollbar{  
+  width: 4px;  
+}
+
+.stock-news::-webkit-scrollbar-thumb {
+  height: 30%; /* 스크롤바의 길이 */
+  background: #40E0D0; /* 스크롤바의 색상 */  
+  border-radius: 10px;
+}
 .news-card-action {
   position: absolute;
-  right: 0px;
+  right: 5px;
   bottom: -10px;
   font-size: 13px;
   opacity: .7; 
@@ -87,6 +100,7 @@ export default class StockNews extends Vue {
 
 .news-list-item {
   height: 120px !important;
+  width: 500px;
 }
 </style>
 

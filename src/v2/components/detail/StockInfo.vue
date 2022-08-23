@@ -144,7 +144,6 @@ import { namespace } from 'vuex-class'
 import { IUpdateStateModel } from '@/models/payload';
 import { IStockModel } from '@/models/stock'
 import { IInterestGroup, IInterestGroupItem } from '@/models/interest'
-import { mobileHeight } from '@/mixins/tools'
 
 
 const MarketStoreModule = namespace('MarketStore')

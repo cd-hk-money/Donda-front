@@ -295,7 +295,7 @@ export default class StockValuationChart extends Vue {
       intersect: false,
       titleFontSize: 25,
       bodyFontSize: 14,       
-      mode: 'index',         
+      mode: 'index',
       // bodyAlign: 'left',
       // bodyFontColor: [MAIN_COLOR, SUB_COLOR, '#943', '#6495ed'],
       // callbacks: {
