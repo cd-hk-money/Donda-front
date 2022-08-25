@@ -99,8 +99,7 @@ export default class InterestStore extends VuexModule {
           }))
         })
 
-      this.userInterests = [...new Set(this.userInterests)]
-      console.log(this.userInterests)
+      this.userInterests = [...new Set(this.userInterests)]      
 
     } catch (e) {
       console.log('아이템 추가 실패')
@@ -120,6 +119,10 @@ export default class InterestStore extends VuexModule {
 
     this.bookmarked =
       this.bookmarked.filter((v: string) => v !== itemTitle)    
+    
+    this.userInterests 
+      = this.userInterests.filter((userInterest) => userInterest.title !== itemTitle)
+
   }
 
   @Mutation
@@ -142,9 +145,15 @@ export default class InterestStore extends VuexModule {
 
   @Mutation
   public changeUserInterestAlram(payload: number) {
-    this.userInterests[payload].alarm = !this.userInterests[payload].alarm    
+    this.userInterests[payload].alarm = !this.userInterests[payload].alarm        
+  }
 
-    // snackbar
+  @Mutation
+  public setUserInterestAlarm(code: string) {    
+    const item = this.userInterests.find((userInterest: IUserInterestGroupItem) => userInterest.code === code)
+    if(!item) return
+
+    item.alarm = !item.alarm    
   }
   
 }

@@ -2,7 +2,7 @@
   <v-navigation-drawer 
     permanent     
     width="100%"          
-    :class="mobile ? 'ml-5 mt-5' : ''"
+    :class="mobile ? 'ml-5 mt-5' : ''"    
     v-show="!mobile"    
   >
     <v-sheet           
@@ -27,9 +27,9 @@
           v-for="(item, i) in computedInterestStore"
           :key="i"      
         >
-          <v-list-group          
-            :value="true"          
-            v-model="item.active"          
+          <v-list-group         
+            active-class="cyan--text text--darken-1"  
+            :value="true"                      
             :append-icon="groupIcon"
             @contextmenu.prevent="[
               removeDialog = true,
@@ -55,32 +55,27 @@
               <v-list-item-content                 
                 class="interest-item-content"
                 @click.left="$router.push(`/detail/${child.subtitle}`)"
-              >
-              
-                <v-list-item-title v-text="child.title"></v-list-item-title>
-  
+              >              
+                <v-list-item-title v-text="child.title"></v-list-item-title>  
                 <v-list-item-subtitle v-text="child.subtitle"></v-list-item-subtitle>
               </v-list-item-content>
   
               <v-list-item-action class="v-list-item-action-close">
                 <div class="d-flex">
                   <v-btn 
+                    @click="setUserInterestAlarm(child.subtitle)"
                     class="mr-4"
-                    @click="removeInterestGroupItem({
-                      groupTitle: item.title,
-                      itemTitle: child.title
-                    })"
-                    x-small
-                    icon                  
+                    small
+                    icon                                    
                   >
-                    <v-icon>fa-regular fa-x</v-icon>
+                    <v-icon>{{ isAlarmed(child.subtitle) ? 'mdi-alarm-light' : 'mdi-alarm-light-outline' }}</v-icon>
                   </v-btn>
                   <v-btn 
                     @click="removeInterestGroupItem({
                       groupTitle: item.title,
                       itemTitle: child.title
                     })"
-                    x-small
+                    small
                     icon                  
                   >
                     <v-icon>fa-regular fa-x</v-icon>
@@ -171,7 +166,7 @@
 import { Component, Vue} from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 
-import { IInterestGroup } from '@/models/interest'
+import { IInterestGroup, IUserInterestGroupItem } from '@/models/interest'
 import { IUpdateStateModel } from '@/models/payload'
 
 const InterestStoreModule = namespace('InterestStore')
@@ -192,13 +187,20 @@ export default class SideBar extends Vue {
   @InterestStoreModule.Mutation('addGroup') readonly addGroup!: (group: any) => void
   @InterestStoreModule.Mutation('removeInterestGroup') readonly removeGroup!: (title: string) => void
   @InterestStoreModule.Mutation('updateState') readonly updateState!: (payload: IUpdateStateModel) => void
-  @InterestStoreModule.Mutation('removeInterestGroupItem') readonly removeInterestGroupItem!: ({groupTitle, itemTitle}: {groupTitle: string, itemTitle: string}) => void
+  @InterestStoreModule.Mutation('removeInterestGroupItem') readonly removeInterestGroupItem!: ({groupTitle, itemTitle}: {groupTitle: string, itemTitle: string}) => void  
+  @InterestStoreModule.Mutation('setUserInterestAlarm') setUserInterestAlarm!: (code: string) => void
+  @InterestStoreModule.State('userInterests') userInterests!: IUserInterestGroupItem[]
 
   get mobile () {
     return this.$vuetify.breakpoint.name === 'xs'
   }
 
-  
+  isAlarmed (code: string): boolean {        
+    return this.userInterests
+                .find((interest: IUserInterestGroupItem) => code === interest.code)
+                ?.alarm || false
+  }
+    
   created () {
     this.initInterestGroup()    
   }
@@ -206,7 +208,7 @@ export default class SideBar extends Vue {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .v-list-item-action-close {  
   display: flex;
   z-index: 100 !important;
@@ -214,10 +216,12 @@ export default class SideBar extends Vue {
 
 
 .interest-item {
-  transition: background-color .2s ease-out;  
+  opacity: .7;
+  transition: all .2s ease-out;  
 }
 .interest-item:hover {
-  background-color: rgb(31, 59, 81);       
+  color: #00ACC1 !important;
+  opacity: 1;      
 }
 
 .interest-item-content:hover {

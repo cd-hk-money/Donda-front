@@ -5,6 +5,7 @@
       permanent                  
       :fixed="mobile"
       :width="mobile ? '100%' : '110%'"      
+      max-width="100%"
       max-height="80"      
       height="auto"
       :mini-variant.sync="mini"
@@ -23,7 +24,8 @@
             mini = !mini,
             expand = false,
             userExpand = false,
-            alramConfig = false 
+            alramConfig = false ,
+            alramCheck = false
           ]"
           elevation="0"
           icon                 
@@ -170,7 +172,7 @@
 
               <v-list-item-action>
                 <v-btn icon @click="changeUserInterestAlram(i)">
-                  <v-icon color="grey lighten-1">
+                  <v-icon>
                     {{ list.alarm ? 'mdi-alarm-light' : 'mdi-alarm-light-outline'}}
                   </v-icon>
                 </v-btn>
@@ -183,9 +185,8 @@
       </v-expand-transition>
 
       <v-expand-transition>
-        <v-card          
-          v-show="alramCheck && logined && alramItems.length !== 0"
-          width="100%"          
+        <v-card                  
+          v-show="alramCheck && logined && alramItems.length !== 0"                             
           height="auto"
           elevation="0"
           outlined
@@ -214,14 +215,13 @@
                       <span class="alram-type">
                         {{alramTypeObj[alram.type].split(' ')[0]}}
                       </span>
-                      <span class="">
-                        {{ alram.origin.toLocaleString() }}
+                      <span>
+                        {{ alram.origin.toLocaleString() }}₩
                       </span>
-                      <span class="alram-value mr-3">
-                        ({{ alram.value - alram.origin > 0 ? '+' : ''  }}{{ alram.value - alram.origin }})
-
+                      <span class="alram-value mr-1">
+                        {{ alram.value - alram.origin > 0 ? '+' : ''  }}{{ alram.value - alram.origin }}₩
+                        ({{ alram.rate > 0 ? '+' : '' }}{{ alram.rate }} %)
                       </span>
-                      {{ alram.rate > 0 ? '+' : '' }}{{ alram.rate }} %
                     </div>
                   </v-list-item-action>
                 </v-list-item>
