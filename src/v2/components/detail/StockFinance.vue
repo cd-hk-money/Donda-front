@@ -128,7 +128,6 @@ export default class StockFinance extends Vue {
     return mobileHeight(this.$vuetify.breakpoint.name)
   }
 
-
   @StockStoreModule.State('statement') statement!: ISimpleChartData
   @StockStoreModule.State('statementTypes') statementTypes!: string[]
   @StockStoreModule.State('statementLoaded') loaded!: boolean

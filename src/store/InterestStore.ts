@@ -4,6 +4,8 @@ import { IInterestGroupItem, IInterestGroup, IUserInterestGroupItem, IUserAlram 
 
 @Module({namespaced: true})
 export default class InterestStore extends VuexModule {
+
+  // States
   public snackBar = false
   public bookmarked: string[] = []
   public alrams: IUserAlram[] = []  
@@ -11,6 +13,7 @@ export default class InterestStore extends VuexModule {
   public userInterests: IUserInterestGroupItem[] = []
   public interestGroups: IInterestGroup[] = []  
 
+  // Getters
   get computedInterestStore () {
     return this.interestGroups.map((group: IInterestGroup) => ({
       title: group.title,
@@ -24,6 +27,7 @@ export default class InterestStore extends VuexModule {
   }
 
 
+  // Mutations
   @Mutation
   public updateState(payload: IUpdateStateModel) {
     Object.entries(payload).forEach(state => {

@@ -162,12 +162,10 @@ export default class StockScore extends Vue {
   }
 
 
-
   // methods
   drawerChange () {
     this.$emit('drawerChange', 3)
   }
-
 
 
   // hooks

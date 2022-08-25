@@ -1,8 +1,7 @@
 <template>
   <v-navigation-drawer 
     permanent     
-    width="100%"      
-    height="100"
+    width="100%"          
     :class="mobile ? 'ml-5 mt-5' : ''"
     v-show="!mobile"    
   >
@@ -49,27 +48,45 @@
             </template> 
   
             <v-list-item
+              class="interest-item"
               v-for="(child, i) in item.items"
-              :key="i"                          
-              @click.left="$router.push(`/detail/${child.title}`)"            
-              @contextmenu.prevent="removeInterestGroupItem({
-                groupTitle: item.title,
-                itemTitle: child.title
-              })"           
+              :key="i"                                                      
             >
-              <v-list-item-content >
+              <v-list-item-content                 
+                class="interest-item-content"
+                @click.left="$router.push(`/detail/${child.subtitle}`)"
+              >
+              
                 <v-list-item-title v-text="child.title"></v-list-item-title>
   
                 <v-list-item-subtitle v-text="child.subtitle"></v-list-item-subtitle>
               </v-list-item-content>
   
               <v-list-item-action class="v-list-item-action-close">
-                <v-btn 
-                  x-small
-                  icon                  
-                >
-                  <v-icon>fa-regular fa-x</v-icon>
-                </v-btn>
+                <div class="d-flex">
+                  <v-btn 
+                    class="mr-4"
+                    @click="removeInterestGroupItem({
+                      groupTitle: item.title,
+                      itemTitle: child.title
+                    })"
+                    x-small
+                    icon                  
+                  >
+                    <v-icon>fa-regular fa-x</v-icon>
+                  </v-btn>
+                  <v-btn 
+                    @click="removeInterestGroupItem({
+                      groupTitle: item.title,
+                      itemTitle: child.title
+                    })"
+                    x-small
+                    icon                  
+                  >
+                    <v-icon>fa-regular fa-x</v-icon>
+                  </v-btn>
+
+                </div>
               </v-list-item-action>                    
             </v-list-item>           
           </v-list-group>
@@ -104,7 +121,7 @@
         />      
       </v-card> 
   
-    <v-dialog 
+      <v-dialog 
         max-width="35vh"                   
         max-height="150"
         v-model="removeDialog"      
@@ -132,8 +149,7 @@
                 updateState({
                   snackBarMessage: '관심종목 그룹 삭제 완료',
                   snackBar: true
-                })
-              ]"
+                })]"
             > 예
             </v-btn>
   
@@ -191,8 +207,21 @@ export default class SideBar extends Vue {
 </script>
 
 <style scoped>
-.v-list-item-action-close {
+.v-list-item-action-close {  
+  display: flex;
   z-index: 100 !important;
+}
+
+
+.interest-item {
+  transition: background-color .2s ease-out;  
+}
+.interest-item:hover {
+  background-color: rgb(31, 59, 81);       
+}
+
+.interest-item-content:hover {
+  cursor: pointer;
 }
 
 

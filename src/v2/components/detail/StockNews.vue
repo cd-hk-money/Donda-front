@@ -99,18 +99,12 @@ export default class StockNews extends Vue {
   box-shadow: inset 0 0 0 10px;
 }
 
-/* .stock-news:hover::-webkit-scrollbar-thumb,
-.stock-news:hover::-webkit-scrollbar{  
-  transition: all 1s;  
-  transition-timing-function: ease;
-  width: 4px;  
-} */
-
 .stock-news::-webkit-scrollbar-thumb {
   height: 30%; /* 스크롤바의 길이 */
   background: rgb(64, 224, 208); /* 스크롤바의 색상 */  
   border-radius: 10px;
 }
+
 .news-card-action {
   position: absolute;
   right: 5px;

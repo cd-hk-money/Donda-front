@@ -74,7 +74,6 @@ export default class StockChart extends Vue {
         label: (tooltipItem) => tooltipItem.yLabel as string,        
       }
     }
-
   }
 
 
