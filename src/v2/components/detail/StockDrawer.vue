@@ -19,6 +19,10 @@
       <stock-finance :key="componentKey" />
     </v-carousel-item>
 
+    <v-carousel-item>      
+      <stock-valuation/>
+    </v-carousel-item>
+
     <v-carousel-item>
       <v-row>
         <v-col cols="12" xl="6" lg="6" sm="12">
@@ -29,9 +33,11 @@
         </v-col>
       </v-row>
     </v-carousel-item>
-    <v-carousel-item>      
-      <stock-valuation/>
+
+    <v-carousel-item>
+      <stock-indicator-detail />
     </v-carousel-item>
+
   </v-carousel>
 </template>
 
@@ -42,6 +48,7 @@ import StockSimilar from '@/v2/components/detail/StockSimilar.vue'
 import StockNews from '@/v2/components/detail/StockNews.vue'
 import StockFinance from '@/v2/components/detail/StockFinance.vue'
 import StockValuation from '@/v2/components/detail/StockValuation.vue'
+import StockIndicatorDetail from './StockIndicatorDetail.vue'
 import { mobileHeight } from '@/mixins/tools' 
 
 
@@ -51,7 +58,8 @@ import { mobileHeight } from '@/mixins/tools'
     StockSimilar,
     StockNews,
     StockFinance,
-    StockValuation
+    StockValuation,
+    StockIndicatorDetail
   }
 })
 export default class StockDrawer extends Vue {

@@ -1,6 +1,6 @@
 import { Module, VuexModule, Action, Mutation } from "vuex-module-decorators";
 import axios from "axios";
-import { IMarketRank , IStockModel, ISimpleChartData, IStockEvaluationModel } from "@/models/stock";
+import { IMarketRank , IStockModel, ISimpleChartData, IStockEvaluationModel, IStockIndicatorSectorModel } from "@/models/stock";
 import { IUpdateStateModel } from "@/models/payload";
 
 import { convertChartData } from "@/mixins/tools";
@@ -90,6 +90,11 @@ export default class StockStore extends VuexModule {
   public indicatorLoaded = false
   public indicator: ISimpleChartData = {}
   public indicatorTypes: string[] = []
+
+  // 종목 하나의 관련섹터 보조지표
+  public indicatorSectorLoaded = false
+  public indicatorSector: IStockIndicatorSectorModel
+  public indicatorSectorDaily!: any
 
 
   // 뉴스
@@ -273,6 +278,28 @@ export default class StockStore extends VuexModule {
       })
 
     } catch(e) {
+      console.log(e)
+    }
+  }
+
+
+  @Action
+  public async getIndicatorSector(code: string): Promise<void> {
+    try {      
+
+      this.context.commit('updateState', {
+        indicatorSectorLoaded: true
+      })
+
+      const res = await axios.get(`/stock/${code}/sector`)      
+      console.log(res.data)
+          
+      this.context.commit('updateState', {
+        indicatorSector: res.data,
+        indicatorSectorLoaded: false
+      })
+
+    } catch (e) {
       console.log(e)
     }
   }

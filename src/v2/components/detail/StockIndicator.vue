@@ -20,88 +20,97 @@
       <v-card-subtitle class="ml-5">
         각 보조지표의 수치를 보여줍니다.  
       </v-card-subtitle>
-      <v-responsive>
-        <template v-if="!loaded && !stockLoaded">
-          <v-carousel 
-            cycle
-            hide-delimiter-background
-            show-arrows-on-hover
-            hide-delimiters
-            interval="10000000"
-            height="280"        
-          >
-            <v-carousel-item >          
-              <div class="d-flex justify-center align-center">
-                <v-card 
-                  width="465"
-                  height="250"
-                  elevation="0"
-                  class="d-flex justify-center align-center">
-                  <stock-indicator-chart 
-                    :chartData="indicator"
-                    :height="250"      
-                  />              
-                </v-card>      
-              </div>        
-            </v-carousel-item>
-      
-            <v-carousel-item>        
-              <div class="d-flex justify-center align-center">
-                <v-card 
-                  width="250"
-                  height="250"
-                  elevation="0"
-                  class="d-flex justify-center align-center mr-2"
-                >                                
-                  <stock-indicator-bar-chart 
-                    type="eps"
-                    :chartData="indicator.eps"
-                    :width="130"
-                    :height="235"      
-                  />              
-                  <stock-indicator-bar-chart
-                    type="bps"
-                    :chartData="indicator.bps"
-                    :width="130"
-                    :height="235"      
-                  />              
-                  <stock-indicator-bar-chart 
-                    type="roe"
-                    :chartData="indicator.roe"
-                    :width="130"
-                    :height="235"      
-                  />                          
-                </v-card>              
-              </div>          
-            </v-carousel-item>
-          </v-carousel>
-        </template>
-        <template v-else>
-          <div class="text-center stockinfo-progress-circular">
-            <v-progress-circular
-              indeterminate
-              color="#40E0D0"
-            ></v-progress-circular>
+
+      <v-row>
+        <v-col cols="12" xl="7">
+          <template v-if="!loaded && !stockLoaded">
+            <v-carousel 
+              cycle
+              hide-delimiter-background
+              show-arrows-on-hover
+              hide-delimiters
+              interval="10000000"
+              height="280"        
+            >
+              <v-carousel-item >          
+                <div class="d-flex justify-center align-center">
+                  <v-card 
+                    width="465"
+                    height="250"
+                    elevation="0"
+                    class="d-flex justify-center align-center">
+                    <stock-indicator-chart 
+                      :chartData="indicator"
+                      :height="250"      
+                    />              
+                  </v-card>      
+                </div>        
+              </v-carousel-item>
+        
+              <v-carousel-item>        
+                <div class="d-flex justify-center align-center">
+                  <v-card 
+                    width="250"
+                    height="250"
+                    elevation="0"
+                    class="d-flex justify-center align-center mr-2"
+                  >                                
+                    <stock-indicator-bar-chart 
+                      type="eps"
+                      :chartData="indicator.eps"
+                      :width="130"
+                      :height="235"      
+                    />              
+                    <stock-indicator-bar-chart
+                      type="bps"
+                      :chartData="indicator.bps"
+                      :width="130"
+                      :height="235"      
+                    />              
+                    <stock-indicator-bar-chart 
+                      type="roe"
+                      :chartData="indicator.roe"
+                      :width="130"
+                      :height="235"      
+                    />                          
+                  </v-card>              
+                </div>          
+              </v-carousel-item>
+            </v-carousel>
+          </template>
+          <template v-else>
+            <div class="text-center stockinfo-progress-circular">
+              <v-progress-circular
+                indeterminate
+                color="#40E0D0"
+              ></v-progress-circular>
+            </div>
+          </template>
+        </v-col>  
+        <v-col cols="12" xl="5" lg="5" sm="12" md="12" xs="12" class="text-center align-center mt-3">
+          <div class="text-h4">
+            
           </div>
-        </template>
-      </v-responsive>
-      <v-overlay 
-        :value="overlay"
-        opacity="0.88"
-        absolute
-        height="300"
-      >
-        <div>
-          각 보조지표의 의미는 무엇인가?
-        </div>
-        <div class="d-flex justify-center">
-          <v-btn 
-            bottom
-            @click="overlay = false">
-            닫기
-          </v-btn>
-        </div>
-      </v-overlay>
+          <div> 
+            <span>
+              
+            </span>            
+          </div>
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn  
+                v-on="on"
+                v-bind="attrs"
+                class="ml-1"
+                icon         
+                @click="drawerChange"
+              ><v-icon>fa-solid fa-circle-question</v-icon>              
+              </v-btn>
+            </template>
+            <span>자세히..</span>
+          </v-tooltip>
+        </v-col>
+      </v-row>
     </v-card>
 </template>
 
@@ -112,7 +121,7 @@ import { namespace } from 'vuex-class'
 import StockIndicatorChart from '@/v2/components/detail/StockIndicatorChart.vue'
 import StockIndicatorBarChart from './StockIndicatorBarChart.vue'
 
-import { ISimpleChartData } from '@/models/stock'
+import { ISimpleChartData, IStockIndicatorSectorModel } from '@/models/stock'
 
 const StockStoreModule = namespace('StockStore')
 
@@ -130,13 +139,29 @@ export default class StockIndicator extends Vue {
     return this.$vuetify.breakpoint.name === 'xs' ? 465 : 465
   }
 
+
+  // state
   @StockStoreModule.State('indicatorLoaded') loaded!: boolean
   @StockStoreModule.State('stockLoaded') stockLoaded!: boolean
   @StockStoreModule.State('indicator') indicator!: ISimpleChartData
-  @StockStoreModule.Action('getStockIndicator') readonly getStockIndicator!: (name: string) => Promise<void>
+  @StockStoreModule.State('indicatorSector') indicatorSector!: IStockIndicatorSectorModel
 
-  created () {
-    this.getStockIndicator(this.$route.params.title)
+
+  // action
+  @StockStoreModule.Action('getStockIndicator') readonly getStockIndicator!: (name: string) => Promise<void>
+  @StockStoreModule.Action('getIndicatorSector') readonly getIndicatorSector!: (code: string) => Promise<void>
+
+
+    // methods
+  drawerChange () {
+    this.$emit('drawerChange', 4)
+  }
+  
+  async created () {
+    const code = this.$route.params.title
+    await this.getStockIndicator(code)
+    await this.getIndicatorSector(code)
+    console.log(this.indicatorSector)
   }
 }
 </script> 

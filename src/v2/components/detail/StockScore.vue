@@ -7,14 +7,6 @@
   >
     <v-card-title class="ml-5">
       적정주가
-      <v-btn  
-        class="ml-3"
-        icon
-        right
-        x-small
-        @click="overlay = true"
-      ><v-icon>fa-solid fa-circle-question</v-icon>
-      </v-btn>      
     </v-card-title>
 
     <v-card-subtitle class="ml-5">
@@ -53,7 +45,10 @@
 
       <v-col cols="12" xl="5" lg="5" sm="12" md="12" xs="12" class="text-center align-center mt-3">
         <div class="text-h4">
-          {{ scorePer.score }} %
+          <span :class="scorePer.colorClass">
+            {{ scorePer.score }} 
+          </span>
+          %
         </div>
         <div> 
           <span :class="scorePer.colorClass">
@@ -69,30 +64,13 @@
               class="ml-1"
               icon         
               @click="drawerChange"     
-            ><v-icon>fa-solid fa-circle-info</v-icon>
+            ><v-icon>fa-solid fa-circle-question</v-icon>
             </v-btn>
           </template>
           <span>자세히..</span>
         </v-tooltip>
       </v-col>
     </v-row>
-    <v-overlay 
-      :value="overlay"
-      opacity="0.88"
-      absolute
-      height="300"
-    >
-      <div>
-        주가 계산 방법에 대한 설명..
-      </div>
-      <div class="d-flex justify-center">
-        <v-btn 
-          bottom
-          @click="overlay = false">
-          닫기
-        </v-btn>
-      </div>
-    </v-overlay>
   </v-card>      
 </template>
 
@@ -109,8 +87,8 @@ const StockStoreModule = namespace('StockStore')
 const MarketStoreModule = namespace('MarketStore')
 
 type ScoreType = {
-  score: string,
-  text: string,
+  score: string
+  text: string
   colorClass: string
 }
 
@@ -154,7 +132,7 @@ export default class StockScore extends Vue {
     const [close, valuation] = [this.stock.close, Number(Number(this.stockEvaluationDailyLast).toFixed())]
     const isHighVal = close > valuation
 
-    const score = isHighVal ? (valuation / close * 100).toFixed() :(close / valuation * 100).toFixed()
+    const score = isHighVal ? (valuation / close * 100).toFixed() : (close / valuation * 100).toFixed()
     const text = isHighVal ? '고평가': '저평가'    
     const colorClass = isHighVal ? 'red--text' : 'blue--text'
         

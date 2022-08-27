@@ -109,6 +109,25 @@ export interface IStockStatementBarChartModel {
   value: number[]
 }
 
+
+
+// indicator
+export interface IStockIndicatorModel {
+  [indicatorType: string]: {
+    date: string[]
+    value: number[]
+  }
+}
+
+export interface IStockIndicatorSectorModel {
+  date: string[]
+  sector_eps?: number[]
+  sector_bps?: number[]
+  sector_roe?: number[]
+}
+
+
+// statement
 export interface IStockStatementModel {
   asset?: IStockStatementBarChartModel
   cash?: IStockStatementBarChartModel

@@ -30,7 +30,7 @@ export default class StockIndicatorChart extends Vue {
 
     this.chartOptions.responsive = true
     this.chartOptions.legend = {
-      display: false,      
+      display: true,      
     }
 
     this.chartOptions.plugins = {
@@ -87,7 +87,7 @@ export default class StockIndicatorChart extends Vue {
           pointHoverBorderColor: 'rgb(255, 99, 132)'
         },
         {
-          label: this.stock.name,
+          label: '업종 평균',
           data: [
             (this.chartData?.bps.value[0]/20 + 100).toFixed(),
             (this.chartData?.roe.value[0] + 100).toFixed(),

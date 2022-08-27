@@ -3,7 +3,7 @@
     <v-col cols="12" xl="3" lg="4" md="4">        
       <stock-info/>           
       <stock-score @drawerChange="drawerChange"/>     
-      <stock-indicator/>    
+      <stock-indicator @drawerChange="drawerChange"/>    
     </v-col>    
     <v-col cols="12" xl="9" lg="8">
       <stock-drawer @drawerChange="drawerChange" :drawer="drawer"/>
