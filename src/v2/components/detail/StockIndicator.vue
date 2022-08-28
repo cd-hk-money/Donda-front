@@ -6,15 +6,7 @@
       outlined
     >     
       <v-card-title class="ml-5">
-        보조 지표
-        <v-btn  
-          class="ml-3"
-          icon
-          right
-          x-small
-          @click="overlay = true"
-        ><v-icon>fa-solid fa-circle-question</v-icon>
-        </v-btn>
+        보조 지표        
       </v-card-title>
   
       <v-card-subtitle class="ml-5">
@@ -22,8 +14,8 @@
       </v-card-subtitle>
 
       <v-row>
-        <v-col cols="12" xl="7">
-          <template v-if="!loaded && !stockLoaded">
+        <v-col cols="12" xl="8">
+          <template v-if="!loaded && !stockLoaded && !sectorLoaded">
             <v-carousel 
               cycle
               hide-delimiter-background
@@ -35,15 +27,16 @@
               <v-carousel-item >          
                 <div class="d-flex justify-center align-center">
                   <v-card 
-                    width="465"
+                    width="500"
                     height="250"
                     elevation="0"
-                    class="d-flex justify-center align-center">
-                    <stock-indicator-chart 
+                    class="d-flex justify-center align-center ml-3"
+                  >
+                    <stock-indicator-chart                       
                       :chartData="indicator"
-                      :height="250"      
-                    />              
-                  </v-card>      
+                      :height="230"      
+                    />         
+                  </v-card>
                 </div>        
               </v-carousel-item>
         
@@ -60,7 +53,7 @@
                       :chartData="indicator.eps"
                       :width="130"
                       :height="235"      
-                    />              
+                    />     
                     <stock-indicator-bar-chart
                       type="bps"
                       :chartData="indicator.bps"
@@ -87,7 +80,7 @@
             </div>
           </template>
         </v-col>  
-        <v-col cols="12" xl="5" lg="5" sm="12" md="12" xs="12" class="text-center align-center mt-3">
+        <v-col cols="12" xl="4" lg="5" sm="12" md="12" xs="12" class="text-center align-center mt-3">
           <div class="text-h4">
             
           </div>
@@ -121,7 +114,7 @@ import { namespace } from 'vuex-class'
 import StockIndicatorChart from '@/v2/components/detail/StockIndicatorChart.vue'
 import StockIndicatorBarChart from './StockIndicatorBarChart.vue'
 
-import { ISimpleChartData, IStockIndicatorSectorModel } from '@/models/stock'
+import { ISimpleChartData, IStockIndicatorSectorDailyModel, IStockIndicatorSectorModel } from '@/models/stock'
 
 const StockStoreModule = namespace('StockStore')
 
@@ -142,9 +135,11 @@ export default class StockIndicator extends Vue {
 
   // state
   @StockStoreModule.State('indicatorLoaded') loaded!: boolean
+  @StockStoreModule.State('indicatorSectorLoaded') sectorLoaded!: boolean
   @StockStoreModule.State('stockLoaded') stockLoaded!: boolean
   @StockStoreModule.State('indicator') indicator!: ISimpleChartData
   @StockStoreModule.State('indicatorSector') indicatorSector!: IStockIndicatorSectorModel
+  @StockStoreModule.State('indicatorSectorDaily') indicatorSectorDaily!: IStockIndicatorSectorDailyModel
 
 
   // action
@@ -152,7 +147,7 @@ export default class StockIndicator extends Vue {
   @StockStoreModule.Action('getIndicatorSector') readonly getIndicatorSector!: (code: string) => Promise<void>
 
 
-    // methods
+  // methods
   drawerChange () {
     this.$emit('drawerChange', 4)
   }
@@ -161,7 +156,7 @@ export default class StockIndicator extends Vue {
     const code = this.$route.params.title
     await this.getStockIndicator(code)
     await this.getIndicatorSector(code)
-    console.log(this.indicatorSector)
+    
   }
 }
 </script> 

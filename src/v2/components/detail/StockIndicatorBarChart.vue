@@ -20,6 +20,7 @@ const StockStoreModule = namespace('StockStore')
 export default class StockScoreBarChart extends Vue {
 
   @Prop() type!: string  
+  @Prop() sector!: number[]
   @StockStoreModule.State('stock') stock!: IStockModel
 
   chartData!: IStockStatementBarChartModel
@@ -81,23 +82,23 @@ export default class StockScoreBarChart extends Vue {
       datasets: [
         {
           type: 'bar',
-          label: '     ' + this.stock.name,
-          data : [...this.chartData.value].reverse(),
+          label: this.stock.name,
+          data: [...this.chartData.value].reverse(),
           fill: true,
           borderColor: MAIN_COLOR,        
-          backgroundColor: transparentize(MAIN_COLOR, 0.9),
-          borderWidth: 2,
+          backgroundColor: transparentize(MAIN_COLOR, 0.6),
+          borderWidth: 5,
           radius: 4,
           tension: .4,               
         },
         {
           type: 'line',
           label: this.type + '업종 평균',
-          data : [...this.chartData.value].reverse().map((value: number) => (value * Math.random() + 0.5).toFixed()),
+          data : this.sector,
           fill: false,
           borderColor: SUB_COLOR,        
-          backgroundColor: transparentize(SUB_COLOR, 0.9),
-          borderWidth: 3,
+          backgroundColor: transparentize(SUB_COLOR, 0.2),
+          borderWidth: 5,
           radius: 4,          
           tension: .4,                      
         }
@@ -114,6 +115,7 @@ export default class StockScoreBarChart extends Vue {
 
   mounted () {
     this.renderBarChart()
+    console.log(this.sector)
   }
 }
 </script>

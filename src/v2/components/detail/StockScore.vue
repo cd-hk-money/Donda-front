@@ -142,7 +142,7 @@ export default class StockScore extends Vue {
 
   // methods
   drawerChange () {
-    this.$emit('drawerChange', 3)
+    this.$emit('drawerChange', 2)
   }
 
 

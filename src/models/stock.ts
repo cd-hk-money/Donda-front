@@ -101,9 +101,12 @@ export interface IStockModel {
   pbr?: number
 }
 
+
+// chart
 export interface ISimpleChartData {
   [type: string]: IStockStatementBarChartModel
 }
+
 export interface IStockStatementBarChartModel {
   date: string[] 
   value: number[]
@@ -124,6 +127,14 @@ export interface IStockIndicatorSectorModel {
   sector_eps?: number[]
   sector_bps?: number[]
   sector_roe?: number[]
+}
+
+export interface IStockIndicatorSectorDailyModel {
+  [date: string]: {
+    per: number
+    pbr: number
+    psr: number
+  }
 }
 
 

@@ -83,7 +83,7 @@ export default class DetailV2 extends Vue {
     },
     {
       title: '유사종목 및 뉴스',
-      callback: () => this.drawerChange(2)
+      callback: () => this.drawerChange(3)
     }
   ]
 

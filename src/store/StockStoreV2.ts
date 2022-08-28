@@ -1,6 +1,6 @@
 import { Module, VuexModule, Action, Mutation } from "vuex-module-decorators";
 import axios from "axios";
-import { IMarketRank , IStockModel, ISimpleChartData, IStockEvaluationModel, IStockIndicatorSectorModel } from "@/models/stock";
+import { IMarketRank , IStockModel, ISimpleChartData, IStockEvaluationModel, IStockIndicatorSectorModel, IStockIndicatorSectorDailyModel } from "@/models/stock";
 import { IUpdateStateModel } from "@/models/payload";
 
 import { convertChartData } from "@/mixins/tools";
@@ -94,7 +94,7 @@ export default class StockStore extends VuexModule {
   // 종목 하나의 관련섹터 보조지표
   public indicatorSectorLoaded = false
   public indicatorSector: IStockIndicatorSectorModel
-  public indicatorSectorDaily!: any
+  public indicatorSectorDaily: IStockIndicatorSectorDailyModel
 
 
   // 뉴스
@@ -207,11 +207,7 @@ export default class StockStore extends VuexModule {
         stockEvaluation: res.data,        
         stockEvaluationLoaded: false
       })      
-      
-
-      console.log(this.stockEvaluation)
-
-
+            
     } catch (e) {
       console.log(e)
     }
@@ -238,9 +234,6 @@ export default class StockStore extends VuexModule {
     }
   }
   
-
-  // 
-
   // 종목 하나의 5년동안의 거래량 정보를 가져옵니다.
   @Action
   public async getStockGraphVolume(name: string): Promise<void> {
@@ -283,21 +276,29 @@ export default class StockStore extends VuexModule {
   }
 
 
+  /**
+   * @param code 종목 정보
+   * @description 종복 하나의 보조 지표를 가져옵니다.
+   */
   @Action
   public async getIndicatorSector(code: string): Promise<void> {
     try {      
-
       this.context.commit('updateState', {
         indicatorSectorLoaded: true
       })
 
-      const res = await axios.get(`/stock/${code}/sector`)      
-      console.log(res.data)
+      const multiRes = await axios
+                .all([axios.get(`/stock/${code}/sector`), axios.get(`/stock/${code}/sector/daily`)])                
+                                            
+      const [indicatorSector, indicatorSectorDaily] = multiRes.map(v=> v.data)      
           
       this.context.commit('updateState', {
-        indicatorSector: res.data,
+        indicatorSector,
+        indicatorSectorDaily,
         indicatorSectorLoaded: false
       })
+
+      console.log(indicatorSector, indicatorSectorDaily)
 
     } catch (e) {
       console.log(e)
@@ -356,8 +357,6 @@ export default class StockStore extends VuexModule {
       })
 
       const res = await axios.get(`/stock/${name}/news`)
-
-      console.log(res.data)
       
       this.context.commit('updateState', {
         news: res.data,
@@ -367,4 +366,5 @@ export default class StockStore extends VuexModule {
       console.log(e)
     }
   }  
+
 }
