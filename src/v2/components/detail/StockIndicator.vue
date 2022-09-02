@@ -40,7 +40,7 @@
                 </div>        
               </v-carousel-item>
         
-              <v-carousel-item>        
+              <!-- <v-carousel-item>        
                 <div class="d-flex justify-center align-center">
                   <v-card 
                     width="250"
@@ -68,7 +68,7 @@
                     />                          
                   </v-card>              
                 </div>          
-              </v-carousel-item>
+              </v-carousel-item> -->
             </v-carousel>
           </template>
           <template v-else>

@@ -83,7 +83,9 @@
 
     </v-sheet>    
 
+
     <v-divider></v-divider>
+
 
     <v-sheet 
       class="stock-indicator-detail-content"
@@ -94,7 +96,7 @@
       </v-card-title>
 
       <v-card-subtitle :class="['text-h6', getStrongFontColorClass]">
-        <strong>R</strong>eturn <strong>O</strong>n <strong>E</strong>quity, ROE : 자기자본이익률
+        <strong>R</strong>eturn <strong>O</strong>n <strong>E</strong>quity, ROE | 자기자본이익률
       </v-card-subtitle>
 
       <v-card-text :class="['grey--text', getStrongFontColorClass]">
@@ -111,21 +113,23 @@
             :height="100"      
           />
         </v-card>
-      </v-expand-transition>
+      </v-expand-transition>      
     </v-sheet>    
+
 
     <v-divider></v-divider>
 
+
     <v-sheet 
       class="stock-indicator-detail-content"
-      @click="expandRoe = !expandRoe"
+      @click="expandPsr = !expandPsr"
     >
       <v-card-title class="text-h4 stock-indicator-detail-content-title">
         PSR
       </v-card-title>
 
       <v-card-subtitle :class="['text-h6', getStrongFontColorClass]">
-        <strong>P</strong>rice <strong>S</strong>elling <strong>R</strong>atio, PSR : 주가매출액비율
+        <strong>P</strong>rice <strong>S</strong>elling <strong>R</strong>atio, PSR | 주가매출액비율
       </v-card-subtitle>
 
       <v-card-text :class="['grey--text', getStrongFontColorClass]">
@@ -134,9 +138,9 @@
       </v-card-text>
 
       <v-expand-transition>
-        <v-card v-if="expandRoe">
+        <v-card v-if="expandPsr">
           <stock-indicator-bar-chart 
-            type="ROE"
+            type="PSR"
             :chartData="indicators.roe"   
             :sector="indicatorSector.sector_roe"
             :height="100"      
@@ -176,7 +180,8 @@ export default class StockIndicatorDetail extends Vue {
 
   expandEps = false
   expandBps = false
-  expandRoe = false
+  expandRoe = false  
+  expandPsr = false
  
   get isMobile() {
     return this.$vuetify.breakpoint.name === 'xs'
@@ -208,11 +213,11 @@ export default class StockIndicatorDetail extends Vue {
   }
 
   created () {
-    // 
+    const dates = console.log(Object.keys(this.indicatorSectorDaily))
+    const values = console.log(Object.values(this.indicatorSectorDaily))
+
+    console.log(dates, values)
   }
-
-  
-
 }
 </script>
 

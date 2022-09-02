@@ -14,17 +14,11 @@
     </v-card-subtitle>    
 
     <v-divider></v-divider>
-
-    <v-btn-toggle v-model="toggle_exclusive" tile multiple class="valuation-btn-toggle">
-      <v-btn v-for="(valuation, i) in valuations" :key="i" :color="valuation.color" small>
-        <span class="white--text"> {{ valuation.title }} </span>
-      </v-btn>
-    </v-btn-toggle>
+    
     <div v-if="!loaded && !evalLoaded && !allLoaded">
       <stock-valuation-chart 
         class="mt-2 ml-2 mr-2"
-        :height="isMobile ? 250 : 100"
-        :legend="toggle_exclusive"        
+        :height="isMobile ? 250 : 100"        
       />
     </div>
     

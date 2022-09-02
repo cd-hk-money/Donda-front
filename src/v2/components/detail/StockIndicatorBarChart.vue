@@ -90,6 +90,8 @@ export default class StockScoreBarChart extends Vue {
           borderWidth: 5,
           radius: 4,
           tension: .4,               
+          barThickness: 180,
+          minBarLength: 60
         },
         {
           type: 'line',

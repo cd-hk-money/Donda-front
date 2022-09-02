@@ -172,8 +172,7 @@ export default class StockValuationChart extends Vue {
   get donda () {
     return this.close.map(k => Number(k) * 1.050)
   }
-
-  @Prop() legend!: number[]
+  
   @Prop({default: false}) fill!: boolean  
   @Prop() chartData!: any
   @Prop() height: number
@@ -182,17 +181,13 @@ export default class StockValuationChart extends Vue {
   @StockStoreModule.State('stockGraphAll') stockGraphAll!: any
   @StockStoreModule.State('stockEvaluation') stockEvaluation!: any
   @StockStoreModule.Action('getStockEvaluation') getStockEvaluation!: (stockCode: string) => Promise<void>
-
-
-  @Watch('legend')
-  watchLegend () {
-    this.createChart()
-  }
   
   renderChart!: (chartData: any, options: any) => any
 
-   chartDatasets (legend) {
-    const datasets = [
+  
+
+  get chartDatasets () {
+    return [
       {
         type: 'line',
         label: '현재주가',
@@ -235,29 +230,22 @@ export default class StockValuationChart extends Vue {
         radius: 0,
         pointStyple: 'rectRounded',
       }
-
     ]
-
-    return datasets.filter((_ , i) => legend.includes(i))
   }
 
   applyDefaultChartOptions () {
 
     this.chartOptions.maintainAspectRatio = true
     this.chartOptions.responsive = true
-    // this.chartOptions.legend = {
-    //   display: false
-    // }
+    this.chartOptions.legend = {
+      display: true
+    }
 
     this.chartOptions.plugins = {      
       'dottedLine': false,
       'myCrosshair': false,
       'mycrosshair': false,
     }  
-
-    this.chartOptions.legend = {
-      display: false
-    }
     
     this.chartOptions.scales = {
       xAxes: [{
@@ -266,8 +254,7 @@ export default class StockValuationChart extends Vue {
         },
         ticks: {
           display: true,
-          // fontSize: 20,
-          // maxTicksLimit: 8
+          
         },
         scaleLabel: {
           // fontSize: 20
@@ -336,7 +323,7 @@ export default class StockValuationChart extends Vue {
   createChartData() {
     return {
       labels: [...this.stockEvaluation.date.reverse()],
-      datasets: this.chartDatasets(this.legend)
+      datasets: this.chartDatasets
     }
   }
 

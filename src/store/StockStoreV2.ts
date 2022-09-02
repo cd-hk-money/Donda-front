@@ -297,8 +297,8 @@ export default class StockStore extends VuexModule {
         indicatorSectorDaily,
         indicatorSectorLoaded: false
       })
-
-      console.log(indicatorSector, indicatorSectorDaily)
+      
+      console.log(Object.entries(indicatorSectorDaily))
 
     } catch (e) {
       console.log(e)

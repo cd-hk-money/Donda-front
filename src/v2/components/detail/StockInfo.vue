@@ -104,7 +104,7 @@
         height="120"
       >                
         <v-card-title class="text-h5 font-weight-bold ml-5">
-          <span>{{ stock.close.toLocaleString()}} ₩</span>
+          <span>₩ {{ stock.close.toLocaleString()}} </span>
           <v-btn  
             class="ml-3"
             icon
