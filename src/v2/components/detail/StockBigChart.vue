@@ -359,11 +359,11 @@ export default class StockBigChart extends Vue {
         
     // 거래량이 로딩되지 않았다면, 로딩
     if(!this.volumeFlag) { 
-      this.getStockGraphVolume(this.$route.params.title).then(() => {
+      console.log('volume..')
+      this.getStockGraphVolume(this.$route.params.title).then(() => {        
         this.createChart(chartData)
       })
-
-      return
+      
     } 
     
   
@@ -440,12 +440,12 @@ export default class StockBigChart extends Vue {
 
   }
 
-  createChart(chartData: object) {                    
-    
+  createChart(chartData: object) {                
+            
     if(this.chart) {
       this.chart.destroy()      
     }    
-    
+        
     const canvas = document.getElementById('lineChart') as HTMLCanvasElement
     const options = {
       data: chartData,

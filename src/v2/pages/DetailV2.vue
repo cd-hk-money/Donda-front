@@ -13,14 +13,16 @@
       >
         <template v-slot:activator="{ on, attrs}">
           <v-btn 
-            elevation="5"
-            small
-            absolute
+            elevation="5"            
+            x-large
+            outlined
+            fixed
             bottom
+            right
             fab          
             v-on="on"
             v-bind="attrs"
-            class="mb-15 ml-10"
+            class="mb-3 mr-5"
           ><v-icon>mdi-menu</v-icon>
           </v-btn>  
         </template>
@@ -71,7 +73,7 @@ export default class DetailV2 extends Vue {
 
   // Datas
   drawer = 0
-  componentKey = 1  
+componentKey = 1 
   menus: IMenu[] = [
     {
       title: '주가',

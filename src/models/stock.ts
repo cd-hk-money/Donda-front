@@ -131,9 +131,9 @@ export interface IStockIndicatorSectorModel {
 
 export interface IStockIndicatorSectorDailyModel {
   [date: string]: {
-    per: number
-    pbr: number
-    psr: number
+    per: number | undefined
+    pbr: number | undefined
+    psr: number | undefined
   }
 }
 
@@ -163,6 +163,30 @@ export interface IStockLineChartModel {
 }
 
 
+
+/**
+ * `/stock/${name}/indicator`
+ */
+export interface IStockIndicatorModelV2 {
+
+  // 분기 보조지표
+  quarter: {
+    [date: string]: {
+      eps: number | undefined
+      bps: number | undefined
+      roe: number | undefined
+    }
+  }
+
+  // 일일 보조지표
+  daily: {
+    [date: string]: {
+      per: number | undefined
+      pbr: number | undefined
+      psr: number | undefined
+    }
+  }
+}
 
 
 

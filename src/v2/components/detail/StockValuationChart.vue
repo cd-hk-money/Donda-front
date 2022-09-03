@@ -166,7 +166,7 @@ function crosshairPoint(chart, mousemove) {
 export default class StockValuationChart extends Vue {
 
   chart = {}
-  chartOptions: Chart.ChartOptions = {}
+  // chartOptions: Chart.ChartOptions = {}
   close: string[] = []
 
   get donda () {
@@ -183,9 +183,7 @@ export default class StockValuationChart extends Vue {
   @StockStoreModule.Action('getStockEvaluation') getStockEvaluation!: (stockCode: string) => Promise<void>
   
   renderChart!: (chartData: any, options: any) => any
-
   
-
   get chartDatasets () {
     return [
       {
@@ -232,92 +230,60 @@ export default class StockValuationChart extends Vue {
       }
     ]
   }
+  
+  get chartOptions (): Chart.ChartOptions {
+    return {
+      maintainAspectRatio: true,
+      responsive: true,
 
-  applyDefaultChartOptions () {
+      legend: {
+        display: true
+      },
 
-    this.chartOptions.maintainAspectRatio = true
-    this.chartOptions.responsive = true
-    this.chartOptions.legend = {
-      display: true
+      plugins: {      
+        'dottedLine': false,
+        'myCrosshair': false,
+        'mycrosshair': false,
+      },
+
+      scales: {
+        xAxes: [{
+          gridLines: {
+            display: false
+          },
+          ticks: {
+            display: true,
+            
+          },
+          scaleLabel: {
+            // fontSize: 20
+          }        
+        }],
+        yAxes: [{
+          ticks: {
+            display: true,     
+            maxTicksLimit: 5,
+            callback: ctx => ctx.toLocaleString()
+          },
+          gridLines: {
+            display: false
+          }
+        }]
+      },
+
+      animation: {
+        duration: 800,
+        easing: 'easeInOutQuint'
+      },
+
+      tooltips: {
+        enabled: true,
+        intersect: false,
+        titleFontSize: 25,
+        bodyFontSize: 14,       
+        mode: 'index'
+      }
     }
-
-    this.chartOptions.plugins = {      
-      'dottedLine': false,
-      'myCrosshair': false,
-      'mycrosshair': false,
-    }  
-    
-    this.chartOptions.scales = {
-      xAxes: [{
-        gridLines: {
-          display: false
-        },
-        ticks: {
-          display: true,
-          
-        },
-        scaleLabel: {
-          // fontSize: 20
-        }        
-      }],
-      yAxes: [{
-        ticks: {
-          display: true,     
-          maxTicksLimit: 5,
-          callback: ctx => ctx.toLocaleString()
-        },
-        gridLines: {
-          display: false
-        }
-      }]
-    }
-
-    this.chartOptions.animation = {
-      duration: 800,
-      easing: 'easeInOutQuint'
-    }
-    
-    this.chartOptions.tooltips = {
-      enabled: true,
-      intersect: false,
-      titleFontSize: 25,
-      bodyFontSize: 14,       
-      mode: 'index',
-      // bodyAlign: 'left',
-      // bodyFontColor: [MAIN_COLOR, SUB_COLOR, '#943', '#6495ed'],
-      // callbacks: {
-      //   label: _ => '',
-      //   afterBody: k => {          
-      //     const index = this.stockEvaluation?.date.indexOf(k[0].label)
-      //     console.log(
-      //       this.close[index],
-      //       this.donda[index],
-      //       this.stockEvaluation['proper-price'][index],
-      //       this.stockEvaluation['S-rim'][index],
-      //     )
-      //     return [
-      //       '현재 주가 : ' + this.close[index].toLocaleString(),
-      //       '돈다 지수 : ' + this.donda[index].toLocaleString(),
-      //       'EPS-ROS :' + this.stockEvaluation['proper-price'][index].toLocaleString(),
-      //       'S-RIM :' + this.stockEvaluation['S-rim'][index].toLocaleString(),
-      //     ]
-      //   }
-      // }
-      
-      // titleFontSize: 10,
-      // titleFontColor: MAIN_COLOR,
-      // bodyFontSize: 20,
-      // cornerRadius: 10,
-      // displayColors: false,
-      // // callbacks: {
-      // //   label: (tooltipItem, i) => {
-      // //     console.log(tooltipItem.xLabel )
-      // //     return ''
-      // //   },        
-      // //   afterBody: (tooltipItem) => 'ss',
-      // //   footer: (s) => 'z'
-      // // }
-    }  
   }
 
   createChartData() {
@@ -328,8 +294,7 @@ export default class StockValuationChart extends Vue {
   }
 
   createChart() {
-    const canvas = document.getElementById('evalChart') as HTMLCanvasElement    
-    this.applyDefaultChartOptions()
+    const canvas = document.getElementById('evalChart') as HTMLCanvasElement        
     const options = {
       data: this.createChartData(),
       options: this.chartOptions,      

@@ -11,8 +11,7 @@
     </v-card-title>
     <v-card-subtitle>
       어떻게 적정 주가를 산출 했을까요?
-    </v-card-subtitle>    
-
+    </v-card-subtitle>
     <v-divider></v-divider>
     
     <div v-if="!loaded && !evalLoaded && !allLoaded">

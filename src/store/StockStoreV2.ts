@@ -260,6 +260,8 @@ export default class StockStore extends VuexModule {
 
       const res = await axios.get(`/stock/${name}/indicator`, HEADER)
 
+      console.log(res.data)
+
       const label = Object.keys(res.data).slice(0, 4)      
       const value = Object.values(res.data).slice(0, 4) as string[]  
       const keys = Object.keys(value[0][0]).slice(1)
@@ -291,6 +293,8 @@ export default class StockStore extends VuexModule {
                 .all([axios.get(`/stock/${code}/sector`), axios.get(`/stock/${code}/sector/daily`)])                
                                             
       const [indicatorSector, indicatorSectorDaily] = multiRes.map(v=> v.data)      
+
+      console.log(indicatorSectorDaily)
           
       this.context.commit('updateState', {
         indicatorSector,
@@ -298,8 +302,9 @@ export default class StockStore extends VuexModule {
         indicatorSectorLoaded: false
       })
       
-      console.log(Object.entries(indicatorSectorDaily))
-
+      const psrs = Object.values(indicatorSectorDaily as IStockIndicatorSectorDailyModel).map(v => v[0].psr)      
+      
+            
     } catch (e) {
       console.log(e)
     }

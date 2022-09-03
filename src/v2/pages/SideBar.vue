@@ -1,7 +1,7 @@
 <template>
   <v-navigation-drawer 
     permanent     
-    width="100%"          
+    :width="mobile ? '100%' : '350' "          
     :class="mobile ? 'ml-5 mt-5' : ''"    
     v-show="!mobile"    
   >

@@ -4,14 +4,13 @@
       :class="[mobile ? '' : 'ml-5 mt-5']"      
       permanent                  
       :fixed="mobile"
-      :width="mobile ? '100%' : '110%'"      
-      max-width="100%"
+      :width="mobile ? '100%' : '350'"      
+      min-width="120%"
       max-height="80"      
       height="auto"
       :mini-variant.sync="mini"
     >      
-      <v-card                       
-        width="100%"
+      <v-card                               
         elevation="0"
         class="d-flex justify-space-between align-center"        
         height="60"  
@@ -126,7 +125,7 @@
       <v-expand-transition>
         <v-card
           v-if="logined && userExpand"          
-          width="100%"          
+          max-width="100%"          
           elevation="0"          
         >
           <div class="d-flex">
@@ -189,7 +188,7 @@
           v-show="alramCheck && logined && alramItems.length !== 0"                             
           height="auto"
           elevation="0"
-          outlined
+          outlined          
         >
             <v-list subheader two-line v-show="alramCheck && logined && alramItems.length !== 0">            
               <transition-group name="slide">
@@ -350,7 +349,8 @@ export default class MenuBar extends Vue {
         this.expandState('loginDialog')
         this.expandState('userExpand')        
         this.expandState('alramCheck')
-        this.updateData({alramConfig: false })
+        this.getState('alramCheck') ? this.updateData({alramCheck: false}) : this.updateData({alramCheck: true})
+        this.updateData({alramConfig: false})        
       }
     },
     {      
@@ -464,6 +464,17 @@ export default class MenuBar extends Vue {
     if(this.mobile) this.mini = false
   }
 
+  @Watch('$route', { immediate: true, deep: true })
+   onUrlChange(newVal: any) {
+    if(newVal.fullPath.includes('detail')) {
+      setTimeout(() => {
+        this.setState('mini', false)        
+      }, 100)      
+    }
+    
+  }
+
+
   @MarketStoreModule.State('searchTable') searchTable!: StockSimpleModel[]
   @MarketStoreModule.State('codeTitleMapping') codeTitleMapping!: any
   @UserStoreModule.Action('tryLogin') login!: (payload: IUserAccount) => Promise<void>
@@ -504,6 +515,10 @@ export default class MenuBar extends Vue {
   expandState(state: string) {
     this[state] = !this[state]
     console.log('update' + state + ' ' + this[state])    
+  }
+
+  getState(state: string) {
+    return this[state]
   }
 
   setState(state: string, value: any) {

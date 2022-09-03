@@ -15,12 +15,13 @@
 
       <v-row>
         <v-col cols="12" xl="8">
-          <template v-if="!loaded && !stockLoaded && !sectorLoaded">
+          <template v-if="!loaded && !stockLoaded && !sectorLoaded && !indicatorSectorLoaded">
             <v-carousel 
               cycle
               hide-delimiter-background
               show-arrows-on-hover
               hide-delimiters
+              :show-arrows="false"
               interval="10000000"
               height="280"        
             >
@@ -33,7 +34,8 @@
                     class="d-flex justify-center align-center ml-3"
                   >
                     <stock-indicator-chart                       
-                      :chartData="indicator"
+                      :chartData="indicatorChartData"
+                      :sector="indicatorSectorChartData"
                       :height="230"      
                     />         
                   </v-card>
@@ -80,14 +82,18 @@
             </div>
           </template>
         </v-col>  
+        
         <v-col cols="12" xl="4" lg="5" sm="12" md="12" xs="12" class="text-center align-center mt-3">
-          <div class="text-h4">
-            
+          <div class="text-h4 mt-4">
+            <span :class="compareIndicator.colorClass">
+            {{ compareIndicator.score }} 
+          </span> %
           </div>
-          <div> 
-            <span>
-              
-            </span>            
+          <div>             
+            <span :class="compareIndicator.colorClass">
+            {{ compareIndicator.text }}
+          </span>
+           입니다.
           </div>
           <v-tooltip bottom>
             <template v-slot:activator="{ on, attrs }">
@@ -132,13 +138,46 @@ export default class StockIndicator extends Vue {
     return this.$vuetify.breakpoint.name === 'xs' ? 465 : 465
   }
 
+  get indicatorScore () {    
+    return this.indicatorSector
+  }
 
+  get indicatorChartData () {
+    return {
+      eps: this.indicator.eps.value[0],
+      bps: this.indicator.bps.value[0],
+      roe: this.indicator.roe.value[0]
+    }
+  }
+
+  get indicatorSectorChartData () {
+    return {
+      eps: this.indicatorSector.sector_eps[3],
+      bps: this.indicatorSector.sector_bps[3],
+      roe: this.indicatorSector.sector_roe[3],      
+    }
+  }
+
+  get compareIndicator () {
+    const origin = this.indicatorChartData.eps + this.indicatorChartData.bps / 20 + this.indicatorChartData.roe
+    const sector = this.indicatorSectorChartData.eps + this.indicatorSectorChartData.bps / 20 + this.indicatorSectorChartData.roe
+    const isHighVal = origin > sector
+
+    const score = isHighVal ? (origin / sector * 100).toFixed(1) : (sector / origin * 100).toFixed(1)
+    const text = isHighVal ? '평균 이상' : '평균 이하'
+    const colorClass = isHighVal ? 'red--text' : 'blue--text'
+    
+    return { score, text, colorClass }
+
+  }
+  
   // state
   @StockStoreModule.State('indicatorLoaded') loaded!: boolean
   @StockStoreModule.State('indicatorSectorLoaded') sectorLoaded!: boolean
-  @StockStoreModule.State('stockLoaded') stockLoaded!: boolean
+  @StockStoreModule.State('stockLoaded') stockLoaded!: boolean  
   @StockStoreModule.State('indicator') indicator!: ISimpleChartData
   @StockStoreModule.State('indicatorSector') indicatorSector!: IStockIndicatorSectorModel
+  @StockStoreModule.State('indicatorSectorLoaded') indicatorSectorLoaded!: boolean
   @StockStoreModule.State('indicatorSectorDaily') indicatorSectorDaily!: IStockIndicatorSectorDailyModel
 
 
@@ -155,8 +194,10 @@ export default class StockIndicator extends Vue {
   async created () {
     const code = this.$route.params.title
     await this.getStockIndicator(code)
-    await this.getIndicatorSector(code)
+    await this.getIndicatorSector(code)  
     
+    console.log(this.indicator)
+    console.log(this.indicatorSector)
   }
 }
 </script> 

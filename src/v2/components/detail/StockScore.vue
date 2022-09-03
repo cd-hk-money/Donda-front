@@ -47,8 +47,7 @@
         <div class="text-h4">
           <span :class="scorePer.colorClass">
             {{ scorePer.score }} 
-          </span>
-          %
+          </span> %          
         </div>
         <div> 
           <span :class="scorePer.colorClass">
