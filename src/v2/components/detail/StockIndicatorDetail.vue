@@ -19,7 +19,6 @@
     <v-divider></v-divider>
 
 
-
     <!-- EPS -->
     <v-sheet 
       class="stock-indicator-detail-content" 
@@ -29,7 +28,7 @@
           EPS        
         <v-chip small class="ml-3"> 분기 </v-chip>
         <v-chip small class="ml-3">
-          <v-tooltip right>
+          <v-tooltip top>
             <template v-slot:activator="{on}">
               <v-icon 
                 v-on="on"
@@ -127,7 +126,7 @@
         BPS
         <v-chip small class="ml-3"> 분기 </v-chip>
         <v-chip small class="ml-3"> 
-          <v-tooltip right>
+          <v-tooltip top>
             <template v-slot:activator="{on}">
               <v-icon 
                 v-on="on"
@@ -218,7 +217,7 @@
         ROE
         <v-chip small class="ml-3"> 분기 </v-chip>
         <v-chip small class="ml-3">
-          <v-tooltip right>
+          <v-tooltip top>
             <template v-slot:activator="{on}">
               <v-icon 
                 v-on="on"

@@ -13,6 +13,7 @@ const { reactiveProp } = mixins
 const StockStoreModule = namespace('StockStore')
 const MAIN_COLOR = '#40E0D0'
 const SUB_COLOR = 'rgb(255, 99, 132)'
+
 const myCrossHair = {
   id: 'myCrosshair',
   afterInit: function(chart) {
@@ -165,8 +166,7 @@ function crosshairPoint(chart, mousemove) {
 })
 export default class StockValuationChart extends Vue {
 
-  chart = {}
-  // chartOptions: Chart.ChartOptions = {}
+  chart = {}  
   close: string[] = []
 
   get donda () {
@@ -181,9 +181,7 @@ export default class StockValuationChart extends Vue {
   @StockStoreModule.State('stockGraphAll') stockGraphAll!: any
   @StockStoreModule.State('stockEvaluation') stockEvaluation!: any
   @StockStoreModule.Action('getStockEvaluation') getStockEvaluation!: (stockCode: string) => Promise<void>
-  
-  renderChart!: (chartData: any, options: any) => any
-  
+      
   get chartDatasets () {
     return [
       {
@@ -288,7 +286,7 @@ export default class StockValuationChart extends Vue {
 
   createChartData() {
     return {
-      labels: [...this.stockEvaluation.date.reverse()],
+      labels: this.stockEvaluation.date,
       datasets: this.chartDatasets
     }
   }
@@ -301,7 +299,6 @@ export default class StockValuationChart extends Vue {
     }    
 
     this.chart = new Chart(canvas, options as Chart.ChartConfiguration).update()            
-
   }
 
   mounted () {          
