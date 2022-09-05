@@ -5,6 +5,7 @@
     outlined
     elevation="0"                
     :width="isMobile ? 460 : '94%'"
+    v-if="!loaded && !evalLoaded && !allLoaded && !dailyLoaded"
   >
     <v-card-title>
       적정 주가?
@@ -12,19 +13,11 @@
     <v-card-subtitle>
       어떻게 적정 주가를 산출 했을까요?
     </v-card-subtitle>
-    <v-divider></v-divider>
-    
-    <!-- <div v-if="!loaded && !evalLoaded && !allLoaded">
-      <stock-valuation-chart 
-        class="mt-2 ml-2 mr-2"
-        :height="isMobile ? 250 : 50"        
-      />
-    </div> -->
-    
+
 
     <v-divider></v-divider>
 
-
+            
     <!-- 돈다 지수 -->
     <v-sheet 
       class="stock-indicator-detail-content" 
@@ -58,6 +51,7 @@
         <v-card v-if="expandDonda">
           <stock-valuation-single-chart 
             label="돈다 지수"
+            :dates="dates"
             :chartData="chartDatas.donda"
             :height="100"
           />
@@ -80,7 +74,7 @@
       @click="expandEpsRoe = !expandEpsRoe"      
     >
       <v-card-title class="text-h4 stock-indicator-detail-content-title">        
-          EPS-ROE
+          EPS-ROE 방법
         <v-chip small class="ml-3"> 분기 </v-chip>
         <v-chip small class="ml-3">
           <v-tooltip top>
@@ -97,7 +91,7 @@
       </v-card-title>
       
       <v-card-text :class="['grey--text', getStrongFontColorClass]">
-        <strong>EPS</strong>
+        보조지표 <strong>EPS</strong>
         <btn-badge>
           <template v-slot:text>
             <div class="text-h6 cyan--text font-weight-bold"><strong>EPS</strong> | 주당 순이익</div>
@@ -121,6 +115,7 @@
         <v-card v-if="expandEpsRoe">
           <stock-valuation-single-chart 
             label="EPS-ROE"
+            :dates="dates"
             :chartData="chartDatas.epsroe"
             :height="100"
           />
@@ -143,7 +138,7 @@
       @click="expandSrim = !expandSrim"      
     >
       <v-card-title class="text-h4 stock-indicator-detail-content-title">        
-          S-RIM
+          S-RIM 방법
         <v-chip small class="ml-3"> 분기 </v-chip>
         <v-chip small class="ml-3">
           <v-tooltip top>
@@ -181,6 +176,7 @@
         <v-card v-if="expandSrim">
           <stock-valuation-single-chart 
             label="S-RIM"
+            :dates="dates"
             :chartData="chartDatas.srim"
             :height="100"
           />
@@ -193,6 +189,61 @@
         </v-card>        
       </v-expand-transition>
     </v-sheet>  
+
+
+    <v-divider></v-divider>
+
+    
+    <v-sheet 
+      class="stock-indicator-detail-content" 
+      @click="expandPer = !expandPer"      
+    >
+      <v-card-title class="text-h4 stock-indicator-detail-content-title">        
+          PER 방법     
+        <v-chip small class="ml-3">
+          <v-tooltip top>
+            <template v-slot:activator="{on}">
+              <v-icon 
+                v-on="on"
+                :color="per.iconColor"                  
+              >{{ per.icon }}</v-icon>        
+            </template>          
+            <span>{{ per.text }}</span>          
+          </v-tooltip>
+        </v-chip>
+        
+      </v-card-title>
+      
+      <v-card-text :class="['grey--text', getStrongFontColorClass]">        
+        보조지표 <strong>PER</strong>
+        <btn-badge>
+          <template v-slot:text>
+            <div class="text-h6 cyan--text font-weight-bold"><strong>PER</strong></div>            
+            현재 주가를 <strong>당기순이익</strong>을 <strong>유통 주식수</strong>로 나눈 <strong>EPS</strong>로 나눈 값을 의미합니다.
+          </template>
+        </btn-badge>
+        을 활용한 주가 계산 공식입니다.
+        
+      </v-card-text>
+
+      <v-expand-transition>
+        <v-card v-if="expandPer">
+          <stock-valuation-single-chart 
+            label="PER"
+            :dates="stockEvaluationDaily.date"
+            :chartData="stockEvaluationDaily.value"
+            :height="100"
+          />
+
+          <v-divider></v-divider>
+
+          <v-card-text class='grey--text mt-1'>            
+               
+          </v-card-text>
+        </v-card>        
+      </v-expand-transition>
+    </v-sheet>
+
 
     <!-- 돈다 지수 -->
     <!-- <strong>돈다</strong> 에서 자체적으로 계산한 주가 지수입니다. -->
@@ -221,8 +272,18 @@ import { IValuationContent } from '@/models/market'
 import StockValuationChart from '@/v2/components/detail/StockValuationChart.vue'
 import StockValuationSingleChart from '@/v2/components/detail/StockValuationSingleChart.vue'
 import BtnBadge from '@/v2/components/vuetify/BtnBadge.vue'
+import { IStockEvaluationModel, IStockModel } from '@/models/stock'
 
 const StockStoreModule = namespace('StockStore')
+
+type ValuationContentType = {
+  origin?: any
+  valuation?: any
+  text: string | undefined
+  colorClass: string | undefined
+  icon: string | undefined
+  iconColor: string | undefined
+}
 
 @Component({
   components: {
@@ -232,19 +293,15 @@ const StockStoreModule = namespace('StockStore')
   }
 })
 export default class StockValuation extends Vue {
-  
-  tab = 0
+    
   toggle_exclusive = [0, 1, 2, 3]
   colors: string[] = ['#ff6384', '#994433', '#6495ed', '#800080']
   formula = '$$x = {-b \\pm \\sqrt{b^2-4ac} \\over 2a}.$$'
-  v = {
-    roe: [1,2,3,4,5,6,7,7,8,],    
-    's-rim': [1,2,3,4,5,8,9],
-  }
-
+  
   expandDonda = false
   expandEpsRoe = false 
   expandSrim = false
+  expandPer = false
 
   roe = {
     date: ['3', '6', '9', '12'],
@@ -274,20 +331,32 @@ export default class StockValuation extends Vue {
     },
   ]  
 
+  @StockStoreModule.State('stock') stock!: IStockModel
   @StockStoreModule.State('stockGraphDefaultLoaded') loaded!: boolean
   @StockStoreModule.State('stockGraphAllLoaded') allLoaded!: boolean
-  @StockStoreModule.State('stockEvaluation') stockEvaluation!: any
+  @StockStoreModule.State('stockEvaluationDailyLoaded') dailyLoaded!: boolean
   @StockStoreModule.State('stockEvaluationLoaded') evalLoaded!: boolean
+
+  @StockStoreModule.State('stockEvaluation') stockEvaluation!: any
+  @StockStoreModule.State('stockEvaluationDaily') stockEvaluationDaily!: IStockEvaluationModel
   @StockStoreModule.State('stockGraphAll') stockGraphAll!: any
+
+  @StockStoreModule.Getter('stockEvaluationDailyLast') stockEvaluationDailyLast!: string
+
   @StockStoreModule.Action('getStockEvaluation') getStockEvaluation!: (stockCode: string) => Promise<void>
+  @StockStoreModule.Action('getStockEvaluationDaily') getStockEvaluationDaily!: (stockCode: string) => Promise<void>
   
   get chartHeight (): number {
     return this.$vuetify.breakpoint.name === 'xs' ? 200 : 100
   }
 
+  get dates (): string[] {
+    return this.stockEvaluation.date
+  }
+
   get closes () {
     return this.stockEvaluation?.date
-          .map(k => Object.entries(this.stockGraphAll).filter((v, _) => (v[0] as string).substr(0, 7) === k)[0][1])
+            .map(k => Object.entries(this.stockGraphAll).filter((v, _) => (v[0] as string).substr(0, 7) === k)[0][1])
   }
 
   get donda () {
@@ -310,7 +379,25 @@ export default class StockValuation extends Vue {
     }
   }
 
-  getValuation (valuationType: string) {
+  get per (): ValuationContentType {
+    const isHighVal = this.stock.close > Number(this.stockEvaluationDailyLast)        
+    return {
+      text: isHighVal ? '더 낮은 주가로 예측됩니다.' : '더 높은 주가로 예측됩니다.',
+      colorClass : isHighVal ? 'sector' : '',
+      icon: isHighVal ? 'fa-solid fa-arrow-trend-down' : 'fa-solid fa-arrow-trend-up',
+      iconColor: isHighVal ? 'blue' : 'red'
+    }
+  }
+  
+  get isMobile () {
+    return this.$vuetify.breakpoint.name === 'xs'
+  }
+
+  get getStrongFontColorClass () {
+    return this.$vuetify.theme.dark ? 'strong-white' : 'strong-black'
+  }
+
+  getValuation (valuationType: string): ValuationContentType {
     const origin = this.closes.at(-1)
     const valuation = this.chartDatas[valuationType].at(-1)
     const isHighVal = origin > valuation
@@ -322,21 +409,11 @@ export default class StockValuation extends Vue {
       icon: isHighVal ? 'fa-solid fa-arrow-trend-down' : 'fa-solid fa-arrow-trend-up',
       iconColor: isHighVal ? 'blue' : 'red'
     }
-
   }
 
-  get isMobile () {
-    return this.$vuetify.breakpoint.name === 'xs'
-  }
-
-  get getStrongFontColorClass () {
-    return this.$vuetify.theme.dark ? 'strong-white' : 'strong-black'
-  }
-
-  async mounted () {
+  async mounted () {    
     await this.getStockEvaluation(this.$route.params.title)    
-    console.log(this.donda)
-    console.log(this.closes)
+    this.expandDonda = true
   }
 
 }

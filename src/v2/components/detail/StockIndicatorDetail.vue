@@ -472,6 +472,10 @@ export default class StockIndicatorDetail extends Vue {
     return this.$vuetify.theme.dark ? 'strong-white' : 'strong-black'
   }
 
+  mounted () {
+    this.expandEps = true
+  }
+
 }
 </script>
 
@@ -526,7 +530,7 @@ strong {
 
 .stock-indicator-detail-content:hover {
   cursor: pointer;
-  opacity: 1;
+  opacity: 1;  
 } 
 
 
@@ -536,6 +540,7 @@ strong {
 .stock-indicator-detail-content:hover .strong-black strong
  {
   color: rgb(64, 224, 208) !important;
+  
 } 
 
 .stock-indicator-detail-content:hover .strong-white .sector,

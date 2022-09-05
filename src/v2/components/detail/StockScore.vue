@@ -132,7 +132,7 @@ export default class StockScore extends Vue {
     const isHighVal = close > valuation
 
     const score = isHighVal ? (valuation / close * 100).toFixed() : (close / valuation * 100).toFixed()
-    const text = isHighVal ? '고평가': '저평가'    
+    const text = isHighVal ? '고평가': '저평가'
     const colorClass = isHighVal ? 'red--text' : 'blue--text'
         
     return { score, text, colorClass }

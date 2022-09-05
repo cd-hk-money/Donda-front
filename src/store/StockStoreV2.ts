@@ -63,6 +63,7 @@ export default class StockStore extends VuexModule {
     value: [],
     date: []
   }
+
   public stockEvaluationDailyLoaded = false
   get stockEvaluationDailyLast (): string {
     return this.stockEvaluationDaily?.value.slice(-1)[0]
@@ -207,7 +208,7 @@ export default class StockStore extends VuexModule {
         stockEvaluation: res.data,        
         stockEvaluationLoaded: false
       })      
-            
+          
     } catch (e) {
       console.log(e)
     }

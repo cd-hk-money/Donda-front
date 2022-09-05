@@ -30,11 +30,12 @@ export default class StockValuationSingleChart extends Vue {
   @Prop() chartData!: any
   @Prop() height: number | string
   @Prop({default: 'undefined'}) label!: string
+  @Prop({default: []}) dates!: string[]
 
   @StockStoreModule.State('stockGraphDefault') stockGraphDefault!: any
   @StockStoreModule.State('stockGraphAll') stockGraphAll!: any
   @StockStoreModule.State('stockEvaluation') stockEvaluation!: any
-  @StockStoreModule.Action('getStockEvaluation') getStockEvaluation!: (stockCode: string) => Promise<void>
+  @StockStoreModule.Action('getStockEvaluation') getStockEvaluation!: (stockCode: string) => Promise<void>  
 
   get chartDatasets () {
     return [
@@ -121,11 +122,10 @@ export default class StockValuationSingleChart extends Vue {
 
   createChart() {
     const canvas = document.getElementById(this.label) as HTMLCanvasElement        
+    const labels = this.dates
+    const datasets = this.chartDatasets
     const options = {
-      data: {
-        labels: this.stockEvaluation.date,
-        datasets: this.chartDatasets
-      },
+      data: { labels, datasets },
       options: this.chartOptions,      
     }    
 
@@ -133,11 +133,14 @@ export default class StockValuationSingleChart extends Vue {
   }
 
   mounted () {          
-    this.close =
-      this.stockEvaluation?.date.map(k => 
-        Object.entries(this.stockGraphAll).filter((v, _) => (v[0] as string).substr(0, 7) === k)[0][1]        
-      )
-    
+    this.close = 
+      this.label !== 'PER' 
+      ? this.stockEvaluation?.date
+          .map(k => Object.entries(this.stockGraphAll).filter((v, _) => (v[0] as string).substr(0, 7) === k)[0][1])
+      : Object
+          .values(this.stockGraphAll)
+          .slice(Object.values(this.stockGraphAll).length - this.dates.length, )
+            
     this.createChart()         
   }
 
