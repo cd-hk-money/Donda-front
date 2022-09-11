@@ -87,7 +87,11 @@ export default class StockValuationSingleChart extends Vue {
           },
           ticks: {
             display: true,
-            
+            maxTicksLimit: 15,
+            padding: 10,
+            fontStyle: 'normal',          
+            maxRotation: 0,            
+
           },
           scaleLabel: {
             // fontSize: 20
@@ -114,6 +118,7 @@ export default class StockValuationSingleChart extends Vue {
         enabled: true,
         intersect: false,
         titleFontSize: 25,
+        titleFontColor: MAIN_COLOR,
         bodyFontSize: 14,       
         mode: 'index'
       }

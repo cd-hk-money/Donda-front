@@ -98,6 +98,8 @@
               <strong :class="epsMean.colorClass">{{ epsMean.text }}</strong>
               <v-icon :color="epsMean.iconColor" size="20" class="ml-2">{{ epsMean.icon}}</v-icon>
             </div>          
+
+            <v-divider class="mt-2"></v-divider>
             
             <v-sheet 
               outlined 
@@ -106,7 +108,17 @@
               color="blue-grey lighten-1"
             >
               <v-icon class="mr-1">mdi-information</v-icon>
-              <strong>EPS </strong> 가 평균보다 높을수록, <span>투자 가치가 높다고 볼 수 있습니다</span>
+              <strong class="mr-1">EPS</strong> 가 평균보다 높을수록, <span>투자 가치가 높다고 볼 수 있습니다</span>
+            </v-sheet>                  
+
+            <v-sheet 
+              outlined 
+              class="pt-3 pb-3 pr-3 pl-3 mt-3 d-flex align-center indicator-detail-card" 
+              rounded="lg" 
+              color="blue-grey lighten-1"
+            >
+              <v-icon class="mr-1">mdi-information</v-icon>
+              <strong class="mr-1">EPS</strong>와<strong class="mr-1 ml-1">BPS</strong>가 동시에 늘어나는 종목에 투자하는 것이 일반적으로 가장 높은 수익률을 거둘 수 있습니다.              
             </v-sheet>                  
           </v-card-text>
       </v-card>        
@@ -178,6 +190,8 @@
               <strong :class="bpsMean.colorClass">{{ bpsMean.text }}</strong>
               <v-icon :color="bpsMean.iconColor" size="20" class="ml-2">{{ bpsMean.icon}}</v-icon>
             </div>
+
+            <v-divider class="mt-2"></v-divider>
             
             <v-sheet 
               outlined 
@@ -186,7 +200,7 @@
               color="blue-grey lighten-1"
             >
               <v-icon class="mr-1">mdi-information</v-icon>
-              <strong>BPS</strong> 가 높으면, 자기 자본의 비중이 크거나, <span>회사의 가치가 높다고 판단됩니다</span>
+              <strong class="mr-1">BPS</strong> 가 높으면, 자기 자본의 비중이 크거나, <span>회사의 가치가 높다고 판단됩니다</span>
             </v-sheet>
 
             <v-sheet 
@@ -196,8 +210,18 @@
               color="blue-grey lighten-1"
             >
               <v-icon class="mr-1">mdi-information</v-icon>
-              <strong>BPS</strong> 에는 주가 정보가 고려되있지 않기 때문에, 주가와의 상관관계를 파악하기 위해 주로<strong>PBR</strong>을 같이 확인하여 투자 가치를 판단합니다.
+              <strong class="mr-1">BPS</strong> 에는 주가 정보가 고려되있지 않기 때문에, 주가와의 상관관계를 파악하기 위해 주로<strong class="ml-1 mr-1">PBR</strong>을 같이 확인하여 투자 가치를 판단합니다.
             </v-sheet>
+
+            <v-sheet 
+              outlined 
+              class="pt-3 pb-3 pr-3 pl-3 mt-3 d-flex align-center indicator-detail-card" 
+              rounded="lg" 
+              color="blue-grey lighten-1"
+            >
+              <v-icon class="mr-1">mdi-information</v-icon>
+              <strong class="mr-1">BPS</strong>와<strong class="mr-1 ml-1">EPS</strong>가 동시에 늘어나는 종목에 투자하는 것이 일반적으로 가장 높은 수익률을 거둘 수 있습니다.              
+            </v-sheet>     
           </v-card-text>
         </v-card>      
       </v-expand-transition>
@@ -277,6 +301,8 @@
                 <strong :class="roeMean.colorClass">{{ roeMean.text }}</strong>
                 <v-icon :color="roeMean.iconColor" size="20" class="ml-2">{{ roeMean.icon}}</v-icon>
               </div>
+
+              <v-divider class="mt-2"></v-divider>
               
               <v-sheet 
                 outlined 
@@ -425,7 +451,7 @@ export default class StockIndicatorDetail extends Vue {
   @StockStoreModule.State('indicatorLoaded') indicatorLoaded!: boolean
   @StockStoreModule.State('indicatorSectorLoaded') indicatorSectorLoaded!: boolean
 
-  @MarketStoreModule.State('codeTitleMapping') codeTitleMapping!: any
+  @MarketStoreModule.State('codeTitleMapping') codeTitleMapping!: { [name: string]: string }
   
   expandEps = false
   expandBps = false
@@ -451,8 +477,8 @@ export default class StockIndicatorDetail extends Vue {
   }
 
   getIndicatorMean(indicatorType: string) {
-    const origin = Number((this.indicators[indicatorType]?.value.reduce((acc, cur) => acc + cur, 0) / 4).toFixed(1))
-    const sector = Number((this.indicatorSector[`sector_${indicatorType}`]?.reduce((acc, cur) => acc + cur, 0) / 4).toFixed(1))
+    const origin = Number((this.indicators[indicatorType]?.value.reduce((acc: number, cur: number) => acc + cur, 0) / 4).toFixed(1))
+    const sector = Number((this.indicatorSector[`sector_${indicatorType}`]?.reduce((acc: number, cur: number) => acc + cur, 0) / 4).toFixed(1))
     const isHighVal = origin > sector
     return {
       origin,
@@ -546,7 +572,7 @@ strong {
 .stock-indicator-detail-content:hover .strong-white .sector,
 .stock-indicator-detail-content:hover .strong-black .sector
  {
-  color: rgb(255, 99, 132) !important;
+  color: rgb(255, 99, 132) !important;  
 } 
 
 .btn-badge-text {

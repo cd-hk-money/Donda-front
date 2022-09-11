@@ -122,8 +122,19 @@
 
           <v-divider></v-divider>
 
-          <v-card-text class='grey--text mt-1'>            
-               
+          <v-card-text :class="['grey--text', getStrongFontColorClass]">            
+            <div class="calculate"> 계산법 : <strong class="mr-1">EPS</strong> x <strong class="ml-1">ROE</strong></div> 
+            <v-divider class="mt-2"></v-divider>
+            <v-sheet 
+              outlined 
+              class="pt-3 pb-3 pr-3 pl-3 mt-3 d-flex align-center indicator-detail-card" 
+              rounded="lg" 
+              color="blue-grey lighten-1"
+            >
+              
+              <v-icon class="mr-1">mdi-information</v-icon>
+              
+            </v-sheet>  
           </v-card-text>
         </v-card>        
       </v-expand-transition>
@@ -265,7 +276,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator'
+import { Component, Vue } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 import { IValuationContent } from '@/models/market'
 
@@ -277,8 +288,8 @@ import { IStockEvaluationModel, IStockModel } from '@/models/stock'
 const StockStoreModule = namespace('StockStore')
 
 type ValuationContentType = {
-  origin?: any
-  valuation?: any
+  origin?: number
+  valuation?:  number
   text: string | undefined
   colorClass: string | undefined
   icon: string | undefined
@@ -494,6 +505,16 @@ strong {
   font-size: 16px;
 }
 
+.strong-white .calculate strong {
+  font-size: 23px;
+}
+
+.calculate {
+  line-height: 23px; 
+  font-size: 23px;
+}
+
+
 .strong-white span {
   font-size: 16px;
   font-weight: bold;
@@ -502,6 +523,7 @@ strong {
 
 .strong-black strong {
   color: black;
+  font-size: 16px;
 }
 .strong-black span {
   font-weight: bold;

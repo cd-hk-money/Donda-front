@@ -66,8 +66,7 @@ export default class StockIndicatorChart extends Vue {
       mode: 'index',
       callbacks: {
         title: item => LABEL_INDEX[item[0].index]
-      }
-      
+      }      
     }          
   }
   

@@ -80,7 +80,7 @@ export default class LineChart extends Vue {
         },        
         ticks: {       
           fontSize: 13,               
-          fontStyle: 'normal',          
+          fontStyle: 'normal',  
           maxRotation: 0,
           maxTicksLimit: 10,             
         },
