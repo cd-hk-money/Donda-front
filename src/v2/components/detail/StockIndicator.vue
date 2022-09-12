@@ -15,7 +15,7 @@
 
       <v-row>
         <v-col cols="12" xl="8">
-          <template v-if="!loaded && !stockLoaded && !sectorLoaded && !indicatorSectorLoaded">
+          <template v-if="!loaded && !stockLoaded && !sectorLoaded && !indicatorSectorLoaded && !indicatorDailyLoaded">
             <v-carousel 
               cycle
               hide-delimiter-background
@@ -175,6 +175,9 @@ export default class StockIndicator extends Vue {
   @StockStoreModule.State('indicatorLoaded') loaded!: boolean
   @StockStoreModule.State('indicatorSectorLoaded') sectorLoaded!: boolean
   @StockStoreModule.State('stockLoaded') stockLoaded!: boolean  
+  @StockStoreModule.State('indicatorDailyLoaded') indicatorDailyLoaded!: boolean
+
+
   @StockStoreModule.State('indicator') indicator!: ISimpleChartData
   @StockStoreModule.State('indicatorSector') indicatorSector!: IStockIndicatorSectorModel
   @StockStoreModule.State('indicatorSectorLoaded') indicatorSectorLoaded!: boolean
@@ -183,7 +186,8 @@ export default class StockIndicator extends Vue {
 
   // action
   @StockStoreModule.Action('getStockIndicator') readonly getStockIndicator!: (name: string) => Promise<void>
-  @StockStoreModule.Action('getIndicatorSector') readonly getIndicatorSector!: (code: string) => Promise<void>
+  @StockStoreModule.Action('getStockIndicatorDaily') readonly getStockIndicatorDaily!: (stockcode: string) => Promise<void>
+  @StockStoreModule.Action('getIndicatorSector') readonly getIndicatorSector!: (code: string) => Promise<void>  
 
 
   // methods
@@ -192,12 +196,11 @@ export default class StockIndicator extends Vue {
   }
   
   async created () {
-    const code = this.$route.params.title
-    await this.getStockIndicator(code)
-    await this.getIndicatorSector(code)  
-    
-    console.log(this.indicator)
-    console.log(this.indicatorSector)
+    const stockcode = this.$route.params.title
+    await this.getStockIndicator(stockcode)
+    await this.getStockIndicatorDaily(stockcode) 
+    await this.getIndicatorSector(stockcode) 
+        
   }
 }
 </script> 

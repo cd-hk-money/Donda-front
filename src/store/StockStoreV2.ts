@@ -1,6 +1,6 @@
 import { Module, VuexModule, Action, Mutation } from "vuex-module-decorators";
 import axios from "axios";
-import { IMarketRank , IStockModel, ISimpleChartData, IStockEvaluationModel, IStockIndicatorSectorModel, IStockIndicatorSectorDailyModel } from "@/models/stock";
+import { IMarketRank , IStockModel, ISimpleChartData, IStockEvaluationModel, IStockIndicatorSectorModel, IStockIndicatorSectorDailyModel, IStockIndicatorDailyModel } from "@/models/stock";
 import { IUpdateStateModel } from "@/models/payload";
 
 import { convertChartData } from "@/mixins/tools";
@@ -89,7 +89,10 @@ export default class StockStore extends VuexModule {
   
   // 종목 하나의 4분기 보조지표
   public indicatorLoaded = false
+  public indicatorDailyLoaded = false
   public indicator: ISimpleChartData = {}
+  public indicatorDaily: IStockIndicatorDailyModel
+  public indicatorDailyChartLabel: string[]
   public indicatorTypes: string[] = []
 
   // 종목 하나의 관련섹터 보조지표
@@ -261,7 +264,7 @@ export default class StockStore extends VuexModule {
 
       const res = await axios.get(`/stock/${name}/indicator`, HEADER)
 
-      console.log(res.data)
+      console.log('indicator', res.data)
 
       const label = Object.keys(res.data).slice(0, 4)      
       const value = Object.values(res.data).slice(0, 4) as string[]  
@@ -278,10 +281,42 @@ export default class StockStore extends VuexModule {
     }
   }
 
+  @Action
+  public async getStockIndicatorDaily(stockcode: string): Promise<void> {
+    try {
+      this.context.commit('updateState', {
+        indicatorDailyLoaded: true
+      })
+
+      const res = await axios.get(`/stock/${stockcode}/indicator/daily`)
+
+      const indicatorDailyChartLabel = Object.keys(res.data)
+      const indicatorDaily = 
+        Object.values(res.data)
+                .map(arr => arr[0])
+                .reduce((acc, cur, _) => {
+                    acc.PBR.push(cur.PBR)
+                    acc.PER.push(cur.PBR)
+                    acc.PSR.push(cur.PBR)
+                    return acc
+                },{
+                  PBR: [], PER: [], PSR: []
+                })      
+      
+      this.context.commit('updateState', {
+        indicatorDailyLoaded: false,
+        indicatorDailyChartLabel,
+        indicatorDaily
+      })
+    } catch (e: unknown) {
+      console.log(e)
+    }
+  }
+
 
   /**
    * @param code 종목 정보
-   * @description 종복 하나의 보조 지표를 가져옵니다.
+   * @description 종복 하나의 관련 섹터 보조 지표를 가져옵니다.
    */
   @Action
   public async getIndicatorSector(code: string): Promise<void> {
@@ -304,6 +339,7 @@ export default class StockStore extends VuexModule {
       })
       
       const psrs = Object.values(indicatorSectorDaily as IStockIndicatorSectorDailyModel).map(v => v[0].psr)      
+
       
             
     } catch (e) {

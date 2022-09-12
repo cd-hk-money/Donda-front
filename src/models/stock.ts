@@ -137,6 +137,10 @@ export interface IStockIndicatorSectorDailyModel {
   }
 }
 
+export interface IStockIndicatorDailyModel {
+  [indicatorType: string]: number[]
+}
+
 
 // statement
 export interface IStockStatementModel {
