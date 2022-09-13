@@ -1,7 +1,7 @@
 <template>
   <div class="mr-10">
     <v-navigation-drawer        
-      :class="[mobile ? '' : 'ml-5 mt-5']"      
+      :class="[mobile ? '' : 'ml-8 mt-5']"      
       permanent                  
       :fixed="mobile"
       :width="mobile ? '100%' : '350'"      
@@ -263,7 +263,7 @@
         <v-divider></v-divider>
       </v-card>      
     </v-dialog>    
-    <side-bar v-if="!mini" :class="[mobile ? '' : 'ml-5 mt-5']"  />
+    <side-bar v-if="!mini" :class="[mobile ? '' : 'ml-8 mt-5']"  />
   </div>
 </template>
 

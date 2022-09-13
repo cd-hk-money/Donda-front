@@ -342,12 +342,42 @@
 
       <v-expand-transition>
         <v-card v-if="expandPsr">
-          <stock-indicator-bar-chart 
+          <stock-indicator-line-chart 
             type="PSR"
-            :chartData="indicators.roe"   
-            :sector="indicatorSector.sector_roe"
+            :chartData="indicatorDaily.PSR"   
+            :sector="indicatorSectorDaily.PSR"
             :height="100"      
           />
+          <v-card-text :class="['grey--text mt-1', getStrongFontColorClass]">
+            <div>
+              <strong>{{ stock.name }}</strong>의 1년 <strong>PSR</strong>평균값은 <strong>{{ psrMean.origin.toLocaleString() }}</strong>으로,
+              <strong class="sector">동종 업계 1년 평균 {{ psrMean.sector.toLocaleString() }}</strong> 보다  
+              <strong :class="psrMean.colorClass">{{ psrMean.text }}</strong>
+              <v-icon :color="psrMean.iconColor" size="20" class="ml-2">{{ psrMean.icon}}</v-icon>
+            </div>
+
+            <v-divider class="mt-2"></v-divider>
+
+            <v-sheet 
+              outlined 
+              class="pt-3 pb-3 pr-3 pl-3 mt-3 d-flex align-center indicator-detail-card" 
+              rounded="lg" 
+              color="blue-grey lighten-1"
+            >
+              <v-icon class="mr-1">mdi-information</v-icon>
+              <strong>PSR</strong> 의 수치가 낮을수록 저평가된 기업입니다. 
+            </v-sheet>
+
+            <v-sheet 
+              outlined 
+              class="pt-3 pb-3 pr-3 pl-3 mt-3 d-flex align-center indicator-detail-card" 
+              rounded="lg" 
+              color="blue-grey lighten-1"
+            >
+              <v-icon class="mr-1">mdi-information</v-icon>
+              다른 주식과 비교해서, <strong class="ml-1">PER</strong>은 같은데, <strong class="ml-1">PSR</strong>이 낮은 주식은 <strong>순이익률</strong>이 낮다고 판단되므로, 매수에 신중을 요할 필요가 있습니다.
+            </v-sheet>
+          </v-card-text>              
         </v-card>
       </v-expand-transition>
     </v-sheet>  
@@ -376,12 +406,42 @@
 
       <v-expand-transition>
         <v-card v-if="expandPer">
-          <stock-indicator-bar-chart 
+          <stock-indicator-line-chart 
             type="PSR"
-            :chartData="indicators.roe"   
-            :sector="indicatorSector.sector_roe"
+            :chartData="indicatorDaily.PER"   
+            :sector="indicatorSectorDaily.PER"
             :height="100"      
           />
+          <v-card-text :class="['grey--text mt-1', getStrongFontColorClass]">
+            <div>
+              <strong>{{ stock.name }}</strong>의 1년 <strong>PER</strong>평균값은 <strong>{{ perMean.origin.toLocaleString() }}</strong>으로,
+              <strong class="sector">동종 업계 1년 평균 {{ perMean.sector.toLocaleString() }}</strong> 보다  
+              <strong :class="perMean.colorClass">{{ perMean.text }}</strong>
+              <v-icon :color="perMean.iconColor" size="20" class="ml-2">{{ perMean.icon}}</v-icon>
+            </div>
+
+            <v-divider class="mt-2"></v-divider>
+
+            <v-sheet 
+              outlined 
+              class="pt-3 pb-3 pr-3 pl-3 mt-3 d-flex align-center indicator-detail-card" 
+              rounded="lg" 
+              color="blue-grey lighten-1"
+            >
+              <v-icon class="mr-1">mdi-information</v-icon>
+              일반적으로 <strong>PER</strong> 의 수치가 낮을수록 저평가된 기업입니다. 
+            </v-sheet>
+
+            <v-sheet 
+              outlined 
+              class="pt-3 pb-3 pr-3 pl-3 mt-3 d-flex align-center indicator-detail-card" 
+              rounded="lg" 
+              color="blue-grey lighten-1"
+            >
+              <v-icon class="mr-1">mdi-information</v-icon>
+              산업 특성상<strong class="ml-1">PER</strong>이 높은 군이 있고, 낮은 군이 존재하므로, 동종 업계와의 비교를 요합니다.
+            </v-sheet>
+          </v-card-text>  
         </v-card>
       </v-expand-transition>
     </v-sheet>    
@@ -410,16 +470,45 @@
 
       <v-expand-transition>
         <v-card v-if="expandPbr">
-          <stock-indicator-bar-chart 
+          <stock-indicator-line-chart 
             type="PSR"
-            :chartData="indicators.roe"   
-            :sector="indicatorSector.sector_roe"
+            :chartData="indicatorDaily.PBR"   
+            :sector="indicatorSectorDaily.PBR"
             :height="100"      
           />
+          <v-card-text :class="['grey--text mt-1', getStrongFontColorClass]">
+            <div>
+              <strong>{{ stock.name }}</strong>의 1년 <strong>PBR</strong>평균값은 <strong>{{ pbrMean.origin.toLocaleString() }}</strong>으로,
+              <strong class="sector">동종 업계 1년 평균 {{ pbrMean.sector.toLocaleString() }}</strong> 보다  
+              <strong :class="pbrMean.colorClass">{{ pbrMean.text }}</strong>
+              <v-icon :color="pbrMean.iconColor" size="20" class="ml-2">{{ pbrMean.icon}}</v-icon>
+            </div>
+
+            <v-divider class="mt-2"></v-divider>
+
+            <v-sheet 
+              outlined 
+              class="pt-3 pb-3 pr-3 pl-3 mt-3 d-flex align-center indicator-detail-card" 
+              rounded="lg" 
+              color="blue-grey lighten-1"
+            >
+              <v-icon class="mr-1">mdi-information</v-icon>
+              일반적으로 <strong class="ml-1">PBR</strong>이 섹터 평균보나 낮거나. <strong class="ml-1">0.7</strong>보다 낮다면, 투자를 고려해 볼 만 합니다.
+            </v-sheet>
+
+            <v-sheet 
+              outlined 
+              class="pt-3 pb-3 pr-3 pl-3 mt-3 d-flex align-center indicator-detail-card" 
+              rounded="lg" 
+              color="blue-grey lighten-1"
+            >
+              <v-icon class="mr-1">mdi-information</v-icon>
+              <strong>PBR</strong>이 <strong>1.5</strong>보다 높다면, 투자를 권장하지 않습니다.
+            </v-sheet>
+          </v-card-text>  
         </v-card>
       </v-expand-transition>
     </v-sheet>    
-
 
     <!-- 주당순이익(EPS)과 주당순자산(BPS)이 동시에 늘어나는 종목에 투자하는 것이 가장 높은 수익률을 거두는 것으로 -->
 
@@ -431,6 +520,7 @@ import { ISimpleChartData, IStockIndicatorDailyModel, IStockIndicatorSectorDaily
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class'
 import StockIndicatorBarChart from '@/v2/components/detail/StockIndicatorBarChart.vue'
+import StockIndicatorLineChart from '@/v2/components/detail/StockIndicatorLineChart.vue'
 import BtnBadge from '@/v2/components/vuetify/BtnBadge.vue'
 
 const StockStoreModule = namespace('StockStore')
@@ -439,7 +529,8 @@ const MarketStoreModule = namespace('MarketStore')
 @Component({
   components: {
     BtnBadge,
-    StockIndicatorBarChart
+    StockIndicatorBarChart,
+    StockIndicatorLineChart    
   }
 })
 export default class StockIndicatorDetail extends Vue {
@@ -448,9 +539,10 @@ export default class StockIndicatorDetail extends Vue {
   @StockStoreModule.State('indicator') indicators!: ISimpleChartData  
   @StockStoreModule.State('indicatorDaily') indicatorDaily!: IStockIndicatorDailyModel
   @StockStoreModule.State('indicatorSector') indicatorSector!: IStockIndicatorSectorModel
-  @StockStoreModule.State('indicatorSectorDaily') indicatorSectorDaily!: IStockIndicatorSectorDailyModel  
+  @StockStoreModule.State('indicatorSectorDaily') indicatorSectorDaily!: any  
   @StockStoreModule.State('indicatorLoaded') indicatorLoaded!: boolean
   @StockStoreModule.State('indicatorSectorLoaded') indicatorSectorLoaded!: boolean
+  @StockStoreModule.State('indicatorDailyChartLabel') labels! :string[]
 
   @MarketStoreModule.State('codeTitleMapping') codeTitleMapping!: { [name: string]: string }
   
@@ -474,10 +566,20 @@ export default class StockIndicatorDetail extends Vue {
   }
 
   get psrMean () {
-    return this.getIndicatorMean('eps')
+    return this.getIncicatorDailyMean('PSR')
   }
 
-  getIndicatorMean(indicatorType: string) {
+  get perMean () {
+    return this.getIncicatorDailyMean('PER')
+  }
+
+  get pbrMean () {
+    return this.getIncicatorDailyMean('PBR')
+  }
+
+  
+
+  getIndicatorMean(indicatorType: string) {        
     const origin = Number((this.indicators[indicatorType]?.value.reduce((acc: number, cur: number) => acc + cur, 0) / 4).toFixed(1))
     const sector = Number((this.indicatorSector[`sector_${indicatorType}`]?.reduce((acc: number, cur: number) => acc + cur, 0) / 4).toFixed(1))
     const isHighVal = origin > sector
@@ -491,6 +593,21 @@ export default class StockIndicatorDetail extends Vue {
     }        
   }
 
+  getIncicatorDailyMean(indicatorType: string) {
+    const length = this.indicatorDaily.PBR.length
+    const origin = Number((this.indicatorDaily[indicatorType]?.reduce((acc: number, cur: number) => acc + cur, 0) / length).toFixed(1))
+    const sector = Number((this.indicatorSectorDaily[indicatorType]?.reduce((acc: number, cur: number) => acc + cur, 0) / length).toFixed(1))
+    const isHighVal = origin > sector
+    return {
+      origin,
+      sector,
+      text: isHighVal ? "높습니다." : "낮습니다.",
+      colorClass: isHighVal ? '' : 'sector',
+      icon: isHighVal ? 'fa-solid fa-arrow-trend-up' : 'fa-solid fa-arrow-trend-down',
+      iconColor: isHighVal ? 'red' : 'blue'
+    }   
+  }
+
   get isMobile () {
     return this.$vuetify.breakpoint.name === 'xs'
   }
@@ -498,6 +615,7 @@ export default class StockIndicatorDetail extends Vue {
   get getStrongFontColorClass () {
     return this.$vuetify.theme.dark ? 'strong-white' : 'strong-black'
   }
+
 
   mounted () {
     this.expandEps = true

@@ -1,7 +1,7 @@
 <template>    
   <div>
     <v-card
-      class="ml-5 mr-5 align-center justify-center overflow-y-auto"
+      class="ml-5 align-center justify-center overflow-y-auto"
       :width="mobile ? 460 : 1150"
       height="890"
       elevation="0"

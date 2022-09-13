@@ -98,7 +98,7 @@ export default class StockStore extends VuexModule {
   // 종목 하나의 관련섹터 보조지표
   public indicatorSectorLoaded = false
   public indicatorSector: IStockIndicatorSectorModel
-  public indicatorSectorDaily: IStockIndicatorSectorDailyModel
+  public indicatorSectorDaily!: IStockIndicatorDailyModel
 
 
   // 뉴스
@@ -290,9 +290,10 @@ export default class StockStore extends VuexModule {
 
       const res = await axios.get(`/stock/${stockcode}/indicator/daily`)
 
-      const indicatorDailyChartLabel = Object.keys(res.data)
+      const indicatorDailyChartLabel = Object.keys(res.data).slice(0, -9)      
       const indicatorDaily = 
         Object.values(res.data)
+                .slice(0, -9)
                 .map(arr => arr[0])
                 .reduce((acc, cur, _) => {
                     acc.PBR.push(cur.PBR)
@@ -329,12 +330,25 @@ export default class StockStore extends VuexModule {
                 .all([axios.get(`/stock/${code}/sector`), axios.get(`/stock/${code}/sector/daily`)])                
                                             
       const [indicatorSector, indicatorSectorDaily] = multiRes.map(v=> v.data)      
+      console.log(Object.keys(indicatorSectorDaily))
+      const computedIndicatorSectorDaily = 
+        Object.values(indicatorSectorDaily)
+        .map(arr => arr[0])
+        .reduce((acc, cur, _) => {
+            acc.PBR.push(cur.pbr)
+            acc.PER.push(cur.per)
+            acc.PSR.push(cur.psr)
+            return acc
+        },{
+          PBR: [], PER: [], PSR: []
+        })     
 
-      console.log(indicatorSectorDaily)
+
+      
           
       this.context.commit('updateState', {
         indicatorSector,
-        indicatorSectorDaily,
+        indicatorSectorDaily: computedIndicatorSectorDaily,
         indicatorSectorLoaded: false
       })
       
