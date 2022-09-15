@@ -110,6 +110,7 @@
             icon
             right
             x-small
+            @click="drawerChange"
           ><v-icon>fa-solid fa-circle-info</v-icon>
           </v-btn>
         </v-card-title>
@@ -146,7 +147,6 @@ import { IStockModel } from '@/models/stock'
 import { IInterestGroup, IInterestGroupItem } from '@/models/interest'
 
 
-const MarketStoreModule = namespace('MarketStore')
 const StockStoreModule = namespace('StockStore')
 const InterestStoreModule = namespace('InterestStore')
 
@@ -158,10 +158,7 @@ export default class StockInfo extends Vue {
   get isBookmarked () {
     return this.bookmarked.find((v: string) => v === this.stock.name)
   }
-
-  // MarketStore
-  @MarketStoreModule.State('codeTitleMapping') codeTitleMapping!: any
-    
+      
   // StockStore
   @StockStoreModule.State('stock') stock!: IStockModel
   @StockStoreModule.State('stockLoaded') loaded!: boolean
@@ -177,6 +174,10 @@ export default class StockInfo extends Vue {
 
   get mobile () { 
     return this.$vuetify.breakpoint.name === 'xs' 
+  }
+  
+  drawerChange () {
+    this.$emit('drawerChange', 0)
   }
         
   async mounted () {    

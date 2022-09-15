@@ -110,8 +110,8 @@ export default class StockValuationSingleChart extends Vue {
       },
 
       animation: {
-        duration: 800,
-        easing: 'easeInOutQuint'
+        duration: 2000,
+        easing: 'easeOutQuad'
       },
 
       tooltips: {
@@ -134,7 +134,7 @@ export default class StockValuationSingleChart extends Vue {
       options: this.chartOptions,      
     }    
 
-    this.chart = new Chart(canvas, options as Chart.ChartConfiguration).update()            
+    this.chart = new Chart(canvas, options as Chart.ChartConfiguration)
   }
 
   mounted () {          

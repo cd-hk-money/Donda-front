@@ -52,8 +52,8 @@
         yAxes: [{
           ticks: {
             display: false,
-            fontSize: 15,       
-            maxTicksLimit: 1   
+            fontSize: 15,                                       
+
           },
           gridLines: {
             display: false,                  

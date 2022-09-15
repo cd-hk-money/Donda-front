@@ -1,7 +1,7 @@
 <template>
   <v-row :keys="componentKey">
     <v-col cols="12" xl="3" lg="4" md="4">        
-      <stock-info/>           
+      <stock-info @drawerChange="drawerChange"/>           
       <stock-score @drawerChange="drawerChange"/>     
       <stock-indicator @drawerChange="drawerChange"/>    
     </v-col>    

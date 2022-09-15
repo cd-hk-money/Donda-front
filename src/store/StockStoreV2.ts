@@ -292,23 +292,25 @@ export default class StockStore extends VuexModule {
 
       const indicatorDailyChartLabel = Object.keys(res.data).slice(0, -9)      
       const indicatorDaily = 
-        Object.values(res.data)
-                .slice(0, -9)
-                .map(arr => arr[0])
-                .reduce((acc, cur, _) => {
-                    acc.PBR.push(cur.PBR)
-                    acc.PER.push(cur.PBR)
-                    acc.PSR.push(cur.PBR)
-                    return acc
-                },{
-                  PBR: [], PER: [], PSR: []
-                })      
+        Object
+        .values(res.data)
+        .slice(0, -9)
+        .map(arr => arr[0])
+        .reduce((acc, cur) => {
+            acc.PBR.push(cur.PBR)
+            acc.PER.push(cur.PBR)
+            acc.PSR.push(cur.PBR)
+            return acc
+        },{
+          PBR: [], PER: [], PSR: []
+        })      
       
       this.context.commit('updateState', {
         indicatorDailyLoaded: false,
         indicatorDailyChartLabel,
         indicatorDaily
       })
+      
     } catch (e: unknown) {
       console.log(e)
     }
@@ -330,7 +332,9 @@ export default class StockStore extends VuexModule {
                 .all([axios.get(`/stock/${code}/sector`), axios.get(`/stock/${code}/sector/daily`)])                
                                             
       const [indicatorSector, indicatorSectorDaily] = multiRes.map(v=> v.data)      
+
       console.log(Object.keys(indicatorSectorDaily))
+      
       const computedIndicatorSectorDaily = 
         Object.values(indicatorSectorDaily)
         .map(arr => arr[0])

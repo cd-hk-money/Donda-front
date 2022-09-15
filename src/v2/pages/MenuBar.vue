@@ -1,7 +1,7 @@
 <template>
   <div class="mr-10">
     <v-navigation-drawer        
-      :class="[mobile ? '' : 'ml-8 mt-5']"      
+      :class="[mobile ? '' : 'ml-5 mt-5']"      
       permanent                  
       :fixed="mobile"
       :width="mobile ? '100%' : '350'"      
@@ -196,7 +196,7 @@
                   v-for="(alram, i) in alramItems" :key="i"
                   @click.left="[
                     alramItems.splice(i, 1),
-                    $router.push(`/detail/${codeTitleMapping[alram.title]}`)
+                    $router.push(`/detail/${store.codeTitleMapping[alram.title]}`)
                   ]"                       
                   @contextmenu.prevent="alramItems.splice(i, 1)"             
                 >
@@ -277,11 +277,13 @@ import { IUserAccount } from '@/models/user'
 import { IUpdateStateModel } from '@/models/payload'
 import { IInterestGroup, IInterestGroupItem, InterestGroupModel, IUserAlram, IUserInterestGroupItem } from '@/models/interest'
 import SideBar from '@/v2/pages/SideBar.vue'
+import StoreMixin from '@/mixins/StoreMixin.vue'
 
 const MarketStoreModule = namespace('MarketStore')
 const StockStoreModule = namespace('StockStore')
 const UserStoreModule = namespace('UserStore')
 const InterestStoreModule = namespace('InterestStore')
+const store: StoreMixin = new StoreMixin()
 
 export interface IMenu {
   icon?: string,
@@ -301,6 +303,8 @@ export interface IMenu {
   }
 })
 export default class MenuBar extends Vue {
+
+  store: StoreMixin = new StoreMixin()
 
   alramTypeObj = {
     'close': '종가 변동',
@@ -476,7 +480,7 @@ export default class MenuBar extends Vue {
 
 
   @MarketStoreModule.State('searchTable') searchTable!: StockSimpleModel[]
-  @MarketStoreModule.State('codeTitleMapping') codeTitleMapping!: any
+  // @MarketStoreModule.State('codeTitleMapping') codeTitleMapping!: any
   @UserStoreModule.Action('tryLogin') login!: (payload: IUserAccount) => Promise<void>
   @StockStoreModule.Action('getStock') getStock!: (name: string) => Promise<void>
 
@@ -543,7 +547,7 @@ export default class MenuBar extends Vue {
     this.expandState('expand')
 
     this.getStock(item).then(() => {
-      this.$router.push(`/detail/${this.codeTitleMapping[item]}`)
+      this.$router.push(`/detail/${store.codeTitleMapping[item]}`)
     });    
     (document.activeElement as HTMLElement).blur()      
   }

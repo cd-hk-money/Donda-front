@@ -1,7 +1,7 @@
 <template>    
   <div>
     <v-card
-      class="ml-5 align-center justify-center overflow-y-auto"
+      class="ml-5 align-center justify-center overflow-y-auto stock-news"
       :width="mobile ? 460 : 1150"
       height="890"
       elevation="0"
@@ -21,12 +21,12 @@
 
       <v-card-subtitle class="ml-5 d-flex justify-space-between">
         <span>추천 종목을 확인 해 보세요.</span>      
-        <span>갱신일 : 2022-07-27 </span>      
+        <span>갱신일 : 2022-09-14 </span>      
       </v-card-subtitle>
 
       <v-divider></v-divider>
 
-      <v-card-text v-if="!loaded">
+      <v-card-text v-if="!loaded" class="d-flex flex-wrap justify-center">
         <div
           v-for="(content, i) in recommend"
           :key="i"

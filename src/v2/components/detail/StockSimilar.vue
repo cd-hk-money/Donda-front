@@ -23,7 +23,7 @@
 
     <v-divider></v-divider>
 
-    <v-card-text v-if="!loaded">
+    <v-card-text v-if="!loaded" class="d-flex flex-wrap justify-center">
       <div 
         v-for="(content, i) in recommend"
         :key="i"

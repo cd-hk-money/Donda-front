@@ -79,10 +79,8 @@ export default class Stock extends Vue {
   @StockStoreModule.State('stockGraphAllFlag') flag!: boolean  
   @StockStoreModule.Action('getStockGraphAll') getStockGraphAll!: (name: string) => Promise<void>
   @StockStoreModule.Action('getStockGraphDefault') getStockGraphDefault!: (name: string) => Promise<void>
-
-  @MarketStoreModule.State('codeTitleMapping') codeTitleMapping!: any
-  
-  gradientEnable = true
+    
+  gradientEnable = false
   getGradient () { return this.gradientEnable }
   @Watch('gradientEnable')
   watchGradient () {

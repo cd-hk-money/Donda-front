@@ -6,7 +6,19 @@
       outlined
     >     
       <v-card-title class="ml-5">
-        보조 지표        
+        보조 지표       
+        <v-tooltip bottom>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn  
+                v-on="on"
+                v-bind="attrs"                
+                icon                       
+                @click="drawerChange"
+              ><v-icon small>fa-solid fa-circle-question</v-icon>              
+              </v-btn>
+            </template>
+            <span>자세히..</span>
+          </v-tooltip> 
       </v-card-title>
   
       <v-card-subtitle class="ml-5">
@@ -14,7 +26,7 @@
       </v-card-subtitle>
 
       <v-row>
-        <v-col cols="12" xl="8">
+        <v-col cols="12" xl="12">
           <template v-if="!loaded && !stockLoaded && !sectorLoaded && !indicatorSectorLoaded && !indicatorDailyLoaded">
             <v-carousel 
               cycle
@@ -83,7 +95,7 @@
           </template>
         </v-col>  
         
-        <v-col cols="12" xl="4" lg="5" sm="12" md="12" xs="12" class="text-center align-center mt-3">
+        <!-- <v-col cols="12" xl="4" lg="5" sm="12" md="12" xs="12" class="text-center align-center mt-3">
           <div class="text-h4 mt-4">
             <span :class="compareIndicator.colorClass">
             {{ compareIndicator.score }} 
@@ -108,7 +120,7 @@
             </template>
             <span>자세히..</span>
           </v-tooltip>
-        </v-col>
+        </v-col> -->
       </v-row>
     </v-card>
 </template>
