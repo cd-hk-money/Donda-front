@@ -2,7 +2,8 @@
   <v-navigation-drawer 
     permanent     
     :width="mobile ? '100%' : '350' "          
-    :class="mobile ? 'ml-5 mt-5' : ''"    
+    :class="mobile ? '' : 'ml-5 mt-5'"    
+    min-width="120%"
     v-show="!mobile"    
   >
     <v-sheet           

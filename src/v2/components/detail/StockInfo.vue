@@ -1,6 +1,6 @@
 <template>
   <v-card 
-    :class="['ml-5 mr-5', mobile ? 'stock-info-mobile mr-15' : 'mt-5']"    
+    :class="['ml-5 mr-5', mobile ? 'mt-5 mr-15' : 'mt-5']"    
     height="240"
     width="465"
     outlined   

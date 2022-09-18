@@ -1,8 +1,8 @@
 <template>
   <v-card     
-    class="mt-5 ml-5 mr-5 mb-5"    
+    class="mt-5 ml-5 mr-5"    
     outlined
-    height="100%"
+    height="840"
     :width="width"                  
   >
     <v-card-title>
@@ -41,12 +41,11 @@
     <v-divider></v-divider>
     <v-card-text v-if="!loaded">
       <stock-big-chart   
-        :height="169"        
+        :height="140"        
         :gradient="gradientEnable"
         :volume="volumeEnable"
       />        
     </v-card-text>  
-    <v-divider></v-divider>
   </v-card>
 </template>
 
@@ -71,7 +70,7 @@ export default class Stock extends Vue {
   dateOverlay = false
 
   get width (): string | number { 
-    return this.$vuetify.breakpoint.name === 'xs' ? 465 : '94%'
+    return this.$vuetify.breakpoint.name === 'xs' ? 465 : '97%'
   }
 
   @StockStoreModule.State('stock') stock!: IStockModel

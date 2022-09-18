@@ -1,13 +1,14 @@
 <template>
   <v-app>     
+    <nav-bar />
     <v-main>               
       <div class="d-flex">
         <transition name="slide-fade" mode="out-in">
           <router-view />      
         </transition>  
-          <div>
+          <!-- <div>
             <menu-bar />             
-          </div>
+          </div> -->
       </div>
       <v-snackbar 
         v-model="SnackBar" timeout="3000"
@@ -30,9 +31,7 @@
             닫기
           </v-btn>
         </template>
-      </v-snackbar>
-
-      <side-bar v-show="mobile"/>
+      </v-snackbar>      
     </v-main>
   </v-app>
 </template>
@@ -44,8 +43,10 @@ import { isMobile } from '@/mixins/tools'
 
 import SideBar from '@/v2/pages/SideBar.vue'
 import MenuBar from '@/v2/pages/MenuBar.vue'
+import NavBar from '@/v2/pages/NavBar.vue'
 import InterestToggle from '@/v2/pages/InterestToggle.vue'
 import { IUpdateStateModel } from './models/payload'
+
 
 const StockStoreModule = namespace('StockStore')
 const MarketStoreModule = namespace('MarketStore')
@@ -55,7 +56,8 @@ const InterestStoreModule = namespace('InterestStore')
   components: {
     SideBar,
     MenuBar,
-    InterestToggle    
+    InterestToggle,
+    NavBar    
   }
 })
 export default class App extends Vue {

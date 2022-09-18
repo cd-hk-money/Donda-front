@@ -73,7 +73,7 @@ export default class DetailV2 extends Vue {
 
   // Datas
   drawer = 0
-componentKey = 1 
+  componentKey = 1 
   menus: IMenu[] = [
     {
       title: '주가',
@@ -98,7 +98,7 @@ componentKey = 1
   }
 
   drawerChange (val: any) {        
-    document.getElementById('stock-drawer').scrollIntoView()
+    // document.getElementById('stock-drawer').scrollIntoView()
     this.drawer = val
   }
 
@@ -114,8 +114,7 @@ componentKey = 1
     this.getStockGraphDefault(code)
   }  
 
-  created () {
-    window.scrollTo(0, 0)
+  created () {    
     this.stockLoad(this.$route.params.title)
   }
 }

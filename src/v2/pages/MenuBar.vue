@@ -1,7 +1,7 @@
 <template>
-  <div class="mr-10">
+  <div class="mr-4">
     <v-navigation-drawer        
-      :class="[mobile ? '' : 'ml-5 mt-5']"      
+      :class="[mobile ? '' : 'ml-8 mt-5']"      
       permanent                  
       :fixed="mobile"
       :width="mobile ? '100%' : '350'"      
@@ -115,7 +115,7 @@
               clearable
               validate-on-blur
               ref="autoinput"                
-              @keypress.enter="push(search)"   
+              @keypress.enter="push(search)"  
             >       
             </v-autocomplete>
           </v-card-text>        

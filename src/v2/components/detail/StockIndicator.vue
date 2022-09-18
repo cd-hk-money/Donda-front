@@ -1,7 +1,7 @@
 <template>
     <v-card 
       class="ml-5 mt-5"
-      height="340"
+      max-height="290"
       width="465"            
       outlined
     >     
@@ -35,20 +35,20 @@
               hide-delimiters
               :show-arrows="false"
               interval="10000000"
-              height="280"        
+              height="260"        
             >
               <v-carousel-item >          
                 <div class="d-flex justify-center align-center">
                   <v-card 
                     width="500"
-                    height="250"
+                    height="180"
                     elevation="0"
                     class="d-flex justify-center align-center ml-3"
                   >
                     <stock-indicator-chart                       
                       :chartData="indicatorChartData"
                       :sector="indicatorSectorChartData"
-                      :height="230"      
+                      :height="180"      
                     />         
                   </v-card>
                 </div>        

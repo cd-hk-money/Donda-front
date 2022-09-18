@@ -84,19 +84,20 @@ export interface StockRecommendModel extends SingleStock {
 }
 
 export interface IStockModel {
-  date : string
-  code: string
-  name: string
-  market: string
-  close: number
-  changes: number
-  changes_ratio: number
-  open: number
-  high: number
-  low: number
-  amount: number
-  marcap: number
-  stocks: number
+  date?: string
+  code?: string
+  name?: string
+  title?: string
+  market?: string
+  close?: number
+  changes?: number
+  changes_ratio?: number
+  open?: number
+  high?: number
+  low?: number
+  amount?: number
+  marcap?: number
+  stocks?: number
   per?: number
   pbr?: number
 }

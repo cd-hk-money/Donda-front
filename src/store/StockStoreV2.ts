@@ -41,6 +41,7 @@ export default class StockStore extends VuexModule {
     marcap: 0,
     stocks: 0,    
   }
+
   // 주가 그래프 인덱스 저장
   public stockGraphLength = 20
 
@@ -140,6 +141,7 @@ export default class StockStore extends VuexModule {
   // 하나의 간단 종목 정보를 가져옵니다.
   @Action
   public async getStock(name: string): Promise<void> {
+    console.log(name, 'name')
     try {
       this.context.commit('updateState', {
         stockLoaded: true
@@ -226,7 +228,6 @@ export default class StockStore extends VuexModule {
       })
 
       const res = await axios.get(`/stock/${stockCode}/evaluation/daily`, HEADER)
-      console.log(res.data)
 
       this.context.commit('updateState', {
         stockEvaluationDaily: res.data,
@@ -263,8 +264,6 @@ export default class StockStore extends VuexModule {
       })
 
       const res = await axios.get(`/stock/${name}/indicator`, HEADER)
-
-      console.log('indicator', res.data)
 
       const label = Object.keys(res.data).slice(0, 4)      
       const value = Object.values(res.data).slice(0, 4) as string[]  
@@ -347,9 +346,6 @@ export default class StockStore extends VuexModule {
           PBR: [], PER: [], PSR: []
         })     
 
-
-      
-          
       this.context.commit('updateState', {
         indicatorSector,
         indicatorSectorDaily: computedIndicatorSectorDaily,
@@ -357,9 +353,7 @@ export default class StockStore extends VuexModule {
       })
       
       const psrs = Object.values(indicatorSectorDaily as IStockIndicatorSectorDailyModel).map(v => v[0].psr)      
-
-      
-            
+                
     } catch (e) {
       console.log(e)
     }

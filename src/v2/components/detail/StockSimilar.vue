@@ -1,7 +1,7 @@
 <template>
   <v-card 
     class="mt-5 ml-5 mr-5 overflow-y-auto stock-similar"
-    height="885"    
+    height="840"    
     :width="width"
     outlined
     elevation="1"
@@ -33,10 +33,11 @@
           :name="content.name"
           :code="content.code"
         />
-      </div>
-              
+      </div>              
     </v-card-text>
+
     <v-divider></v-divider>
+    
     <v-overlay 
       :value="overlay"      
       opacity="0.88"

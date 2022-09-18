@@ -1,7 +1,7 @@
 <template>
   <v-card 
-    class="mt-5 ml-5 overflow-auto stock-news"
-    height="885"
+    class="mt-5 ml-3 overflow-auto stock-news"
+    height="840"
     width="94%"    
     elevation="1"    
   >

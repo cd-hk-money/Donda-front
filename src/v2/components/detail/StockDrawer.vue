@@ -1,14 +1,13 @@
 <template>
   <v-carousel 
-    id="stock-drawer"
+    class="detail__stock-drawer"
     cycle
     interval="500000000"
     hide-delimiter-background
     hide-delimiters
     :show-arrows="false"
-    height="100%"
-    vertical
-    :max-width="width"
+    height="100%"    
+    vertical    
     v-model="drawer"
 >    
     <v-carousel-item>
@@ -84,3 +83,7 @@ export default class StockDrawer extends Vue {
 
 }
 </script>
+
+<style>
+
+</style>

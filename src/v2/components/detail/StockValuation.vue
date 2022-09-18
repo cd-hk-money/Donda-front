@@ -1,10 +1,10 @@
 <template>
   <v-card     
-    class="mt-5 ml-5 mr-5 mb-5 overflow-y-auto stock-indicator-detail"
-    height="885"
+    class="mt-5 ml-5 mr-5 overflow-y-auto stock-indicator-detail"
+    height="840"
     outlined
     elevation="0"                
-    :width="isMobile ? 460 : '94%'"
+    :width="isMobile ? 460 : '97%'"
     v-if="!loaded && !evalLoaded && !allLoaded && !dailyLoaded"
   >
     <v-card-title>
@@ -79,7 +79,7 @@
         <v-chip small class="ml-3">
           <v-tooltip top>
             <template v-slot:activator="{on}">
-              <v-icon 
+              <v-icon
                 v-on="on"
                 :color="epsroe.iconColor"                  
               >{{ epsroe.icon }}</v-icon>        
