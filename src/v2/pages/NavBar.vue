@@ -35,13 +35,9 @@
 
               <span class="ml-1"> {{ carouselContent.close.toLocaleString() }}₩</span>
               <span :class="carouselChangesClass(carouselContent.changes)">
-                {{ carouselContent.changes > 0 ? '+' + carouselContent.changes.toLocaleString()  
-                    :carouselContent.changes.toLocaleString() 
-                }}₩
+                {{ addPreFixer(carouselContent.changes) }}₩
                 <span class="ml-1">
-                  ({{ carouselContent.changes_ratio > 0 ? '+' + carouselContent.changes_ratio.toLocaleString()  
-                    :carouselContent.changes_ratio.toLocaleString() 
-                  }}%)
+                  ({{ addPreFixer(carouselContent.changes_ratio) }}%)
                 </span>
               </span>              
             </v-card>
@@ -404,10 +400,12 @@ export default class NavBar extends Vue {
     return this.$vuetify.breakpoint.name === 'xs'
   }
 
-  carouselChangesClass = (changes: number) => {
+  carouselChangesClass = (changes: number): string => {
     if(!changes) return ''
     return changes > 0 ? 'red--text' : 'blue--text'
   }
+
+  addPreFixer = (value: number): string => value > 0 ? '+' + value.toLocaleString() :value.toLocaleString() 
 
   pushLink(link: string) {
     if(this.$route.fullPath !== link) this.$router.push(link)
