@@ -1,9 +1,8 @@
 <template>
   <v-row>
-    <v-card     
-      class="mt-5 menu"
-      elevation="0"      
-      outlined
+    <v-card           
+      class="rank ml-5 mt-3"
+      elevation="0"            
       width="100%"
     >
       <v-card-title class="text-h4 d-flex justify-center font-weight-bold">
@@ -50,7 +49,6 @@
 
           <v-divider></v-divider>
 
-
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn
@@ -81,10 +79,7 @@
       interval="1000000"
       cycle
     >
-      <v-carousel-item
-        v-for="(rankType, i) in Object.keys(dailySimpleRanks)"
-        :key="i"      
-      > 
+      <v-carousel-item v-for="(rankType, i) in Object.keys(dailySimpleRanks)" :key="i"> 
         <rank-component        
           :title="rankTitle[i]"  
           :contents="dailySimpleRanks[rankType].slice(0, amount)"
@@ -179,9 +174,9 @@ export default class RankV2 extends Vue {
 }
 </script>
 
-<style>
-.menu {
-  margin-left: 80px;
-  margin-right: 60px;
+<style scoped>
+.rank {
+  margin-left: px;
 }
+
 </style>

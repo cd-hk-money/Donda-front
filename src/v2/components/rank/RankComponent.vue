@@ -1,9 +1,7 @@
 <template>
   <v-card   
-    height="auto"    
-    class="ml-15 mr-15"
-    elevation="0"
-    outlined
+    height="auto"        
+    elevation="0"    
    >
     <v-divider></v-divider>      
 
