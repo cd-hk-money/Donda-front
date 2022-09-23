@@ -74,16 +74,26 @@
           </v-list-item-content>
         </template>
       </v-autocomplete>    
-
-      <v-divider vertical inset class="mr-3" />
-
-      <v-btn icon @click="pushLink('/rank')">
-        <v-icon>mdi-format-list-numbered</v-icon>
-      </v-btn>
-
-      <v-btn icon @click="isSearch = !isSearch">
+            
+      <div class="d-flex navbar__menu__btn">
+        <v-btn icon @click="isSearch = !isSearch">
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
+        <div class="navbar__menu__btn__text">            
+          Search
+        </div>    
+      </div>
+
+      <div class="d-flex navbar__menu__btn">
+        <v-btn icon @click="pushLink('/rank')">
+          <v-icon>mdi-format-list-numbered</v-icon>
+        </v-btn>
+        <div class="navbar__menu__btn__text">            
+          Ranking
+        </div>    
+      </div>
+
+      <v-divider vertical inset class="mr-1" />
         
       <v-menu
         right bottom        
@@ -91,12 +101,17 @@
         :offset-y="100"
         v-model="bookmark"        
         :min-width="250"
-        :close-on-content-click="false"
+        :close-on-content-click="false"                
       >
         <template v-slot:activator="{ on, attrs}">
-          <v-btn icon v-bind="attrs" v-on="on">
-            <v-icon>mdi-account</v-icon>
-          </v-btn>          
+          <div class="d-flex navbar__menu__btn">
+            <v-btn icon v-bind="attrs" v-on="on">
+              <v-icon>mdi-account</v-icon>
+            </v-btn>                      
+            <div class="navbar__menu__btn__text" v-bind="attrs" v-on="on">            
+              Account
+            </div>            
+          </div>
         </template>
         
         <v-card v-if="logined">
@@ -150,9 +165,14 @@
         :close-on-content-click="false"
       >
         <template v-slot:activator="{ on , attrs}">
-          <v-btn icon v-on="on" v-bind="attrs" >
-            <v-icon>mdi-bookmark</v-icon>
-          </v-btn>
+          <div class="d-flex navbar__menu__btn">
+            <v-btn icon v-on="on" v-bind="attrs" >
+              <v-icon>mdi-bookmark</v-icon>
+            </v-btn>
+            <div class="navbar__menu__btn__text" v-bind="attrs" v-on="on">            
+              Bookmark
+            </div>     
+          </div>
         </template>
 
         <v-card min-width="350">
@@ -247,17 +267,17 @@
         :close-on-content-click="false"
       >
         <template v-slot:activator="{ on, attrs }">
-          <v-btn 
-            icon 
-            v-on="on"
-            v-bind="attrs"
-            @click="isAlarm = false"
-          >        
-            <v-badge v-if="isAlarm" color="error" overlap dot>
-              <v-icon>mdi-alarm-light</v-icon>
-            </v-badge> 
-            <v-icon v-else>mdi-alarm-light</v-icon>
-          </v-btn>
+          <div class="d-flex navbar__menu__btn">
+            <v-btn icon v-on="on" v-bind="attrs" @click="isAlarm = false">       
+              <v-badge v-if="isAlarm" color="error" overlap dot>
+                <v-icon>mdi-alarm-light</v-icon>
+              </v-badge> 
+              <v-icon v-else>mdi-alarm-light</v-icon>
+            </v-btn>            
+            <div class="navbar__menu__btn__text" v-bind="attrs" v-on="on">            
+              Alarm
+            </div>  
+          </div> 
         </template>
         
         <v-card min-width="350">
@@ -368,6 +388,8 @@ export default class NavBar extends Vue {
   groupIcon = 'mdi-chevron-down'
   removeDialog = false
   dialogTitle: string | null = ''
+
+  accountExpand = false
   
   alramItems: IUserAlram[] = [
   {
@@ -472,6 +494,7 @@ export default class NavBar extends Vue {
 .navbar__title,
 .navbar__icon {
   cursor: pointer;
+  font-weight: bold;
   /* font-size: 30px; */
 }
 
@@ -504,6 +527,33 @@ export default class NavBar extends Vue {
 .navbar__alarm__list__action {
   position: absolute;
   right: 5px;
+}
+
+.navbar__menu__btn {    
+  text-align: center;      
+  width: 50px;
+  transition: all .2s ease-in-out;
+}
+
+.navbar__menu__btn__text {
+  display: none;  
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.navbar__menu__btn:hover {
+  width: 110px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.navbar__menu__btn:hover .navbar__menu__btn__text {  
+  width: auto;    
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 }
 
 .disable {
