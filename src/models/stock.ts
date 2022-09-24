@@ -100,6 +100,7 @@ export interface IStockModel {
   stocks?: number
   per?: number
   pbr?: number
+  sector?: string
 }
 
 

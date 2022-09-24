@@ -1,7 +1,7 @@
 <template>
-  <v-card   
+    <v-card   
     class="ml-5 mr-5 mb-5 mt-5"
-    width="500"
+    width="420"
     height="130"    
     outlined    
   >
@@ -38,13 +38,12 @@
 </template>
 
 <script lang="ts">
-import { IStockModel, StockRecommendModel } from '@/models/stock'
-import { Component, Vue, Prop } from 'vue-property-decorator' 
+import { IStockModel } from '@/models/stock';
+import { Component, Vue, Prop } from 'vue-property-decorator'
 
 @Component
-export default class StockSimilarContent extends Vue {
-  
-  @Prop() content!: StockRecommendModel | undefined  
+export default class StockRecommendContnet extends Vue {
+  @Prop({}) content!: IStockModel
 
   get close () {        
     return (this.content.close).toLocaleString() + ' ₩'
@@ -86,22 +85,11 @@ export default class StockSimilarContent extends Vue {
     return changes_ratio > 0 ? '상승' : '하락'
   }
 
-  mounted() {
-    console.log('eeee')
-  }
 }
 
 </script>
 
 <style>
 
- .stock-similar-content {
-  position: absolute;  
-  right: 20px;  
-  bottom: 10px;
- }
-
- .stock-similar-content-title:hover {
-    cursor: pointer;
- }
 </style>
+

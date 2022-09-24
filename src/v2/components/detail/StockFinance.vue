@@ -1,22 +1,25 @@
 <template>
   <div>
     <v-card 
-      width="94%"
-      class="mt-5 ml-5"      
+      class="overflow-y-auto stock-indicator-detail"    
+      outlined
+      width="100%"
+      height="787"
     >
       <v-card-title>
         재무제표
       </v-card-title>
       <v-card-subtitle>
-        재무제표
+        각 재무제표가 의미하는 바를 알아보세요.
       </v-card-subtitle>
-    </v-card>
-    <v-card 
-      v-if="!loaded"
-      class="ml-5 d-flex flex-wrap justify-center"
-      :height="height > 500 ? 800 : '100%'"
-      width="94%"    
-    >    
+
+      <v-divider></v-divider>
+
+      <v-sheet
+        v-if="!loaded"
+        class="ml-5 d-flex flex-wrap justify-center"        
+        width="100%"    
+      >
       <v-card
         height="266.5"
         :width="height > 500 ? 322.9 : 500"
@@ -73,6 +76,8 @@
           <v-divider></v-divider>
         </v-card>
       </v-dialog>
+
+      </v-sheet>
     </v-card>
   </div>
 </template>

@@ -2,7 +2,7 @@
   <v-card          
     height="450"
     :width="isMobile ? 460 : '94%'"    
-    :class="['ml-5 mr-5', isMobile ? '' : '']"
+    :class="['ml-5', isMobile ? '' : '']"
     elevation="0"         
     outlined
   >
@@ -44,7 +44,7 @@
             class="mt-5"
             :mobile="false"
             :fill="fill"                        
-            :height="195"
+            :height="180"
             :count="count"            
             :type="marketType" />
         </v-card>

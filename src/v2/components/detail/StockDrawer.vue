@@ -1,43 +1,92 @@
 <template>
-  <v-carousel 
-    class="detail__stock-drawer"
-    cycle
-    interval="500000000"
-    hide-delimiter-background
-    hide-delimiters
-    :show-arrows="false"
-    height="100%"    
-    vertical    
-    v-model="drawer"
->    
-    <v-carousel-item>
-      <stock />
-    </v-carousel-item>
+  <div>
+    <v-card width="97%" class="ml-5 mt-5" outlined>
+      <v-tabs
+        v-model="drawer"        
+        fixed-tabs
+      >
+        <v-tabs-slider color="cyan"></v-tabs-slider>
+  
+        <v-tab
+          v-for="item in tabItems"
+          :key="item"
+          active-class="cyan--text"
+        >
+          {{ item }}
+        </v-tab>
+      </v-tabs>
+    </v-card>
 
-    <v-carousel-item>      
-      <stock-finance :key="componentKey" />
-    </v-carousel-item>
+    <v-tabs-items v-model="drawer" class="ml-5 mr-6">
+      <v-tab-item>
+        <stock />
+      </v-tab-item>
 
-    <v-carousel-item>      
-      <stock-valuation/>
-    </v-carousel-item>
+      <v-tab-item>
+        <stock-valuation />
+      </v-tab-item>
 
-    <v-carousel-item>
-      <v-row>
-        <v-col cols="12" xl="6" lg="6" sm="12">
-          <stock-similar />
-        </v-col>
-        <v-col cols="12" xl="6" lg="6" sm="12">
-          <stock-news />
-        </v-col>
-      </v-row>
-    </v-carousel-item>
+      <v-tab-item>
+        <stock-indicator-detail />
+      </v-tab-item>
 
-    <v-carousel-item>
-      <stock-indicator-detail />
-    </v-carousel-item>
+      <v-tab-item>
+        <stock-finance :key="componentKey" />
+      </v-tab-item>
 
-  </v-carousel>
+
+      <v-tab-item>
+        <v-row>
+          <v-col cols="12" xl="6" lg="6" sm="12">
+            <stock-similar />
+          </v-col>
+          <v-col cols="12" xl="6" lg="6" sm="12">
+            <stock-news />
+          </v-col>
+        </v-row>
+      </v-tab-item>
+
+    </v-tabs-items>
+    <!-- <v-carousel 
+      class="detail__stock-drawer"
+      cycle
+      interval="500000000"
+      hide-delimiter-background
+      hide-delimiters
+      :show-arrows="false"
+      height="100%"    
+      vertical    
+      v-model="drawer"
+  >    
+      <v-carousel-item>
+        <stock />
+      </v-carousel-item>
+  
+      <v-carousel-item>      
+        <stock-finance :key="componentKey" />
+      </v-carousel-item>
+  
+      <v-carousel-item>      
+        <stock-valuation/>
+      </v-carousel-item>
+  
+      <v-carousel-item>
+        <v-row>
+          <v-col cols="12" xl="6" lg="6" sm="12">
+            <stock-similar />
+          </v-col>
+          <v-col cols="12" xl="6" lg="6" sm="12">
+            <stock-news />
+          </v-col>
+        </v-row>
+      </v-carousel-item>
+  
+      <v-carousel-item>
+        <stock-indicator-detail />
+      </v-carousel-item>
+  
+    </v-carousel> -->
+  </div>
 </template>
 
 <script lang="ts">
@@ -66,6 +115,7 @@ export default class StockDrawer extends Vue {
   // datas
   fab = false
   componentKey = 0
+  tabItems = ['주가', '적정주가', '보조지표', '재무제표', '유사종목 및 뉴스']
 
   get width () {
     return this.$vuetify.breakpoint.name === 'xs' ? 465 : '100%'

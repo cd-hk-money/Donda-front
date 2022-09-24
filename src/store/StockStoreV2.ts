@@ -42,6 +42,10 @@ export default class StockStore extends VuexModule {
     stocks: 0,    
   }
 
+  // 추천 종목
+  public recommendStocksLoaded = false
+
+
   // 주가 그래프 인덱스 저장
   public stockGraphLength = 20
 
@@ -140,8 +144,7 @@ export default class StockStore extends VuexModule {
 
   // 하나의 간단 종목 정보를 가져옵니다.
   @Action
-  public async getStock(name: string): Promise<void> {
-    console.log(name, 'name')
+  public async getStock(name: string): Promise<void> {    
     try {
       this.context.commit('updateState', {
         stockLoaded: true
@@ -153,6 +156,28 @@ export default class StockStore extends VuexModule {
         stock: res.data,
         stockLoaded: false
       })
+    
+      return res.data
+    } catch(e) {
+      console.log(e)
+    }
+  }
+
+  @Action
+  public async getStocks(codes: string[]): Promise<any> {    
+    try {
+      this.context.commit('updateState', {
+        recommendStocksLoaded: true
+      })
+      const reses = await axios.all(codes.map(code => axios.get(`/stock/${code}`)))
+
+      this.context.commit('updateState', {
+        recommendStocksLoaded: false
+      })
+
+      return reses
+      
+      
     } catch(e) {
       console.log(e)
     }

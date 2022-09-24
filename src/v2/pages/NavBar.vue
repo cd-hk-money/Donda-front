@@ -75,8 +75,8 @@
         </template>
       </v-autocomplete>    
             
-      <div class="d-flex navbar__menu__btn">
-        <v-btn icon @click="isSearch = !isSearch">
+      <div class="d-flex navbar__menu__btn" @click="isSearch = !isSearch">
+        <v-btn icon>
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
         <div class="navbar__menu__btn__text">            
@@ -84,8 +84,8 @@
         </div>    
       </div>
 
-      <div class="d-flex navbar__menu__btn">
-        <v-btn icon @click="pushLink('/rank')">
+      <div class="d-flex navbar__menu__btn" @click="pushLink('/rank')">
+        <v-btn icon>
           <v-icon>mdi-format-list-numbered</v-icon>
         </v-btn>
         <div class="navbar__menu__btn__text">            
@@ -473,10 +473,6 @@ export default class NavBar extends Vue {
     await this.getDailySimpleRanks()
   }
 
-
-  
-
-  
 }
 
   

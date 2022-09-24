@@ -221,22 +221,24 @@ export default class MarketStore extends VuexModule {
 
 	// 추천 종목을 불러옵니다.
 	@Action
-	public async getRecommend(): Promise<void> {
+	public async getRecommend(): Promise<any> {
 		try {
 			this.context.commit('updateState', {
 				recommendLoaded : true
 			})
 			const res = await axios.get('/daily/recommand')
+
+			const recommend = Object.entries(res.data).map((recommend: any[]) => ({
+				code: recommend[0],
+				...recommend[1]
+			}))
 						
 			this.context.commit('updateState', {
-				recommend: Object.entries(res.data).map((recommend: any[]) => ({
-					code: recommend[0],
-					...recommend[1]
-				})),
+				recommend,
 				recommendLoaded : false,
 			})     
 			
-			console.log(this.recommend)
+			return recommend
 			
 		} catch (e) {
 			console.log(e)

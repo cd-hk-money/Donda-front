@@ -1,6 +1,6 @@
 <template>
   <v-card
-    height="420"
+    height="39vh"
     :width="mobile ? 460 : '94%'"
     class="ml-5 mr-5 mt-5"
     elevation="0"

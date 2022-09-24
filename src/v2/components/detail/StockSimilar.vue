@@ -1,9 +1,8 @@
 <template>
   <v-card 
-    class="mt-5 ml-5 mr-5 overflow-y-auto stock-similar"
+    class="overflow-y-auto stock-similar"
     height="840"    
-    :width="width"
-    outlined
+    :width="width"    
     elevation="1"
   >  
     <v-card-title class="ml-5">
@@ -82,7 +81,7 @@ export default class StockSimilar extends Vue {
   @MarketStoreModule.Action('getRecommend') readonly getRecommend!: () => Promise<void>
 
   get width (): string | number { 
-    return this.$vuetify.breakpoint.name === 'xs' ? 465 : '94%'
+    return this.$vuetify.breakpoint.name === 'xs' ? 465 : '100%'
   }
 
   async created () {

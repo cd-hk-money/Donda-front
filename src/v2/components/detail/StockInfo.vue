@@ -118,6 +118,10 @@
         <v-card-subtitle :class="['text-h6', 'font-weight-bold', 'ml-5', stock.changes > 0 ? 'red--text' : 'blue--text']">
           <span>{{ stock.changes > 0 ? '+' + stock.changes : stock.changes }}₩ ({{ stock.changes_ratio > 0 ? '+' + stock.changes_ratio : stock.changes_ratio}}%)</span>                        
         </v-card-subtitle>
+
+        <v-chip class="stock-info-sector" small >
+          {{ stock.sector }}
+        </v-chip>
         
         <div class="stock-info-date">
           {{ stock.date }}
@@ -180,10 +184,11 @@ export default class StockInfo extends Vue {
     this.$emit('drawerChange', 0)
   }
         
-  async mounted () {    
-    console.log('다시')
+  async mounted () {          
     const code = this.$route.params.title
     await this.getStock(code)    
+
+    console.log(this.stock)
   }  
 }
 </script>
@@ -204,5 +209,12 @@ export default class StockInfo extends Vue {
   bottom: -5px;
   right: 13px;
   opacity: .5;
+}
+
+.stock-info-sector {
+  position: absolute; 
+  font-size: 10px !important;
+  top: 60%;
+  right: 2%;
 }
 </style>

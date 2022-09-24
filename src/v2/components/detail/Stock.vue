@@ -1,9 +1,8 @@
 <template>
-  <v-card     
-    class="mt-5 ml-5 mr-5"    
+  <v-card             
+    height="787"
+    width="100%"
     outlined
-    height="840"
-    :width="width"                  
   >
     <v-card-title>
       주가

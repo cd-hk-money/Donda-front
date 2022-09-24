@@ -1,10 +1,10 @@
 <template>
   <v-card     
-    class="mt-5 ml-5 mr-5 overflow-y-auto stock-indicator-detail"
-    height="840"
+    class="overflow-y-auto stock-indicator-detail"
+    height="787"
     outlined
     elevation="0"                
-    :width="isMobile ? 460 : '97%'"
+    :width="isMobile ? 460 : '100%'"
     v-if="!loaded && !evalLoaded && !allLoaded && !dailyLoaded"
   >
     <v-card-title>

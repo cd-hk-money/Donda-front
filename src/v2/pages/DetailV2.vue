@@ -7,7 +7,7 @@
     </v-col>    
     <v-col cols="12" xl="9" lg="8">
       <stock-drawer @drawerChange="drawerChange" :drawer="drawer"/>
-      <v-menu
+      <!-- <v-menu
         open-on-hover
         offset-y
       >
@@ -36,7 +36,7 @@
             {{ menu.title }}
           </v-list-item>
         </v-list>
-      </v-menu>
+      </v-menu> -->
     </v-col>
   </v-row>
 </template>

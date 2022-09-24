@@ -1,8 +1,9 @@
 <template>
   <v-card 
-    class="mt-5 ml-3 overflow-auto stock-news"
+    class="overflow-auto stock-news"
     height="840"
-    width="94%"    
+    width="100%"    
+    outlined
     elevation="1"    
   >
     <v-card-title class="ml-5">
