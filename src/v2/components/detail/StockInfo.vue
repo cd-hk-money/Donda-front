@@ -187,8 +187,6 @@ export default class StockInfo extends Vue {
   async mounted () {          
     const code = this.$route.params.title
     await this.getStock(code)    
-
-    console.log(this.stock)
   }  
 }
 </script>

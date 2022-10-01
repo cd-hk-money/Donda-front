@@ -78,14 +78,10 @@ export default class StockRecommend extends Vue {
   get mobile () {    
     return mobileHeight(this.$vuetify.breakpoint.name) < 500
   }
-
-  
     
   async created () {    
     const recommendCodes = (await this.getRecommend()).map(stock => stock.code)    
-    // const recommendStocks = (await this.getStocks(recommendCodes)).map(res => res.data)
-
-    // this.stockEtcs = recommendStocks          
+    const recommendStocks = (await this.getStocks(recommendCodes)).map(res => res.data)
   }
 }
 </script>

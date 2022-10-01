@@ -17,6 +17,10 @@
 
     <v-divider></v-divider>
 
+    <v-sheet class="stock-indicator-detail-content">
+      
+    </v-sheet>  
+
             
     <!-- 돈다 지수 -->
     <v-sheet 
@@ -49,7 +53,8 @@
 
       <v-expand-transition>
         <v-card v-if="expandDonda">
-          <stock-valuation-single-chart 
+          <stock-valuation-single-chart            
+            
             label="돈다 지수"
             :dates="dates"
             :chartData="chartDatas.donda"
@@ -113,7 +118,8 @@
 
       <v-expand-transition>
         <v-card v-if="expandEpsRoe">
-          <stock-valuation-single-chart 
+          <stock-valuation-single-chart            
+            
             label="EPS-ROE"
             :dates="dates"
             :chartData="chartDatas.epsroe"
@@ -185,7 +191,7 @@
 
       <v-expand-transition>
         <v-card v-if="expandSrim">
-          <stock-valuation-single-chart 
+          <stock-valuation-single-chart            
             label="S-RIM"
             :dates="dates"
             :chartData="chartDatas.srim"
@@ -239,7 +245,8 @@
 
       <v-expand-transition>
         <v-card v-if="expandPer">
-          <stock-valuation-single-chart 
+          <stock-valuation-single-chart            
+            
             label="PER"
             :dates="stockEvaluationDaily.date"
             :chartData="stockEvaluationDaily.value"
@@ -423,8 +430,7 @@ export default class StockValuation extends Vue {
   }
 
   async mounted () {    
-    await this.getStockEvaluation(this.$route.params.title)    
-    this.expandDonda = true
+    await this.getStockEvaluation(this.$route.params.title)        
   }
 
 }

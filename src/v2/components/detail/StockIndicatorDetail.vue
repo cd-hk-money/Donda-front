@@ -82,7 +82,8 @@
 
       <v-expand-transition>
         <v-card v-if="expandEps">
-          <stock-indicator-bar-chart 
+          <stock-indicator-bar-chart
+            class="ml-3" 
             type="EPS"
             :chartData="indicators.eps"   
             :sector="indicatorSector.sector_eps"
@@ -174,7 +175,8 @@
 
       <v-expand-transition>
         <v-card v-if="expandBps">
-          <stock-indicator-bar-chart 
+          <stock-indicator-bar-chart
+            class="ml-3" 
             type="BPS"
             :chartData="indicators.bps"   
             :sector="indicatorSector.sector_bps"
@@ -288,7 +290,8 @@
 
       <v-expand-transition>
         <v-card v-if="expandRoe">
-          <stock-indicator-bar-chart 
+          <stock-indicator-bar-chart
+            class="ml-3" 
             type="ROE"
             :chartData="indicators.roe"   
             :sector="indicatorSector.sector_roe"

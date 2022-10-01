@@ -51,12 +51,7 @@ export default class LineChart extends Vue {
   watchChartOptions () {
     this.reRender()
   }
-
-  @Watch('height')
-  watchHeight(val) {
-    console.log(val)
-  }
-  
+    
   @Watch('fill')
   watchFill () {
     this.reRender()

@@ -163,9 +163,7 @@ export default class RankV2 extends Vue {
   }
 
   created () {
-    this.getDailySimpleRanks().then(() => {
-      console.log(this.dailySimpleRanks)
-    })
+    this.getDailySimpleRanks()
   }
 
   mounted () {

@@ -518,7 +518,6 @@ export default class MenuBar extends Vue {
 
   expandState(state: string) {
     this[state] = !this[state]
-    console.log('update' + state + ' ' + this[state])    
   }
 
   getState(state: string) {

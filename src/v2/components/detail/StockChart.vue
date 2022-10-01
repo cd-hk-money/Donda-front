@@ -2,8 +2,9 @@
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import { mixins, Line } from 'vue-chartjs-typescript'
 import { transparentize } from '@/mixins/tools'
-import Chart from 'chart.js'
+import { ChartOptions, ChartData } from 'chart.js'
 import { namespace } from 'vuex-class'
+import { IStockEvaluationModel } from '@/models/stock'
 
 const { reactiveProp } = mixins
 const StockStoreModule = namespace('StockStore')
@@ -17,14 +18,44 @@ const SUB_COLOR = 'rgb(255, 99, 132)'
 export default class StockChart extends Vue {
 
   @Prop({default: false}) fill!: boolean
-  @Prop() height!: number  
-  @Prop() chartData!: never
+  @Prop() height!: number    
 
   @StockStoreModule.State('stockGraphDefault') stockGraphDefault!: any
-  
-  // methods  
-  renderChart!: (chartData: any, options: any) => any
-  chartOptions: Chart.ChartOptions = {
+  @StockStoreModule.State('stockEvaluationDaily') stockEvaluationDaily!: IStockEvaluationModel
+
+  renderChart!: (chartData: ChartData, options: ChartOptions) => any
+
+  get getChartData (): ChartData | any {
+    return {
+      labels: Object.keys(this.stockGraphDefault).map((date: string) => date.substr(5)),
+      datasets: [
+        {
+          label: '현재 주가',
+          data : Object.values(this.stockGraphDefault),
+          fill: this.fill,
+          borderColor: MAIN_COLOR,
+          backgroundColor: transparentize(MAIN_COLOR, 0.8),
+          borderWidth: 2,
+          radius: 0,
+          pointStyple: 'rectRounded',
+          tension: .4
+        },
+        {
+          label: '적정 주가',
+          data : this.stockEvaluationDaily.value.slice(-11, ),
+          fill: this.fill,
+          borderColor: SUB_COLOR,
+          backgroundColor: transparentize(SUB_COLOR, 0.8),
+          borderWidth: 2,
+          radius: 0,
+          pointStyple: 'rectRounded',
+          tension: .4
+        }
+      ]
+    }
+  }
+    
+  chartOptions: ChartOptions = {
     maintainAspectRatio: true,
     responsive: true,
     legend: {
@@ -63,56 +94,23 @@ export default class StockChart extends Vue {
       easing: 'easeOutBounce'
     },
     tooltips: {
-      enabled: false,
+      enabled: true,
       intersect: false,
-      titleFontSize: 10,
+      titleFontSize: 15,
       titleFontColor: MAIN_COLOR,
-      bodyFontSize: 20,
+      bodyFontSize: 16,
       cornerRadius: 10,
-      displayColors: false,
+      displayColors: true,
+      mode: 'index',      
       callbacks: {
-        label: (tooltipItem) => tooltipItem.yLabel as string,        
-      }
+        label: (tooltipItem, _) => 
+          ` ${_.datasets[tooltipItem.datasetIndex].label} : ${tooltipItem.yLabel.toLocaleString().split('.')[0]} ₩`          
+      }    
     }
   }
-
-
-  createChartData() {
-    return {
-      labels: Object.keys(this.stockGraphDefault).map((date: string) => date.substr(5)),
-      datasets: [
-        {
-          label: '현재 주가',
-          data : Object.values(this.stockGraphDefault),
-          fill: this.fill,
-          borderColor: MAIN_COLOR,
-          backgroundColor: transparentize(MAIN_COLOR, 0.8),
-          borderWidth: 2,
-          radius: 0,
-          pointStyple: 'rectRounded',
-          tension: .4
-        },
-        {
-          label: '적정 주가',
-          data : (Object.values(this.stockGraphDefault) as number[]).map((value: number) => value * 1.005),
-          fill: this.fill,
-          borderColor: SUB_COLOR,
-          backgroundColor: transparentize(SUB_COLOR, 0.8),
-          borderWidth: 2,
-          radius: 0,
-          pointStyple: 'rectRounded',
-          tension: .4
-        }
-      ]
-    }
-  }
-
-  renderLineChart () {        
-    this.renderChart(this.createChartData(), this.chartOptions)      
-  }
-
+  
   mounted () {    
-    this.renderLineChart()    
+    this.renderChart(this.getChartData, this.chartOptions)      
   }
 }
 </script>

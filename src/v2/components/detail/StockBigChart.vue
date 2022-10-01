@@ -359,7 +359,6 @@ export default class StockBigChart extends Vue {
         
     // 거래량이 로딩되지 않았다면, 로딩
     if(!this.volumeFlag) { 
-      console.log('volume..')
       this.getStockGraphVolume(this.$route.params.title).then(() => {        
         this.createChart(chartData)
       })

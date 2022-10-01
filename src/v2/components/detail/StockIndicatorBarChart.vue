@@ -48,14 +48,15 @@ export default class StockScoreBarChart extends Vue {
       yAxes: [{
         ticks: {
           display: false,
-          fontSize: 15,       
-          maxTicksLimit: 1   
+          fontSize: 15,                                     
         },
         gridLines: {
-          display: false,                  
-          color: '#696969',  
-          zeroLineWidth: 4,
-          zeroLineColor: 'white'
+          display: true,                  
+          color: '',            
+          zeroLineWidth: 2,
+          zeroLineColor: '#fff',    
+          drawBorder: false      
+          
         },      
       }], 
     }
@@ -66,11 +67,11 @@ export default class StockScoreBarChart extends Vue {
     
     this.chartOptions.tooltips = {      
       enabled: true,
-      titleFontSize: 14,
+      titleFontSize: 15,
       titleFontColor: MAIN_COLOR,
-      bodyFontSize: 12,
-      cornerRadius: 12,
-      displayColors: false,        
+      bodyFontSize: 15,
+      cornerRadius: 8,
+      displayColors: true,        
       mode: 'index',
     }  
   }
@@ -87,20 +88,20 @@ export default class StockScoreBarChart extends Vue {
           fill: true,
           borderColor: MAIN_COLOR,        
           backgroundColor: transparentize(MAIN_COLOR, 0.6),
-          borderWidth: 5,
+          borderWidth: 4,
           radius: 4,
           tension: .4,               
-          barThickness: 180,
+          barThickness: 130,
           minBarLength: 60
         },
         {
-          type: 'line',
+          type: 'bar',
           label: this.type + '업종 평균',
           data : this.sector,
           fill: false,
           borderColor: SUB_COLOR,        
-          backgroundColor: transparentize(SUB_COLOR, 0.2),
-          borderWidth: 5,
+          backgroundColor: transparentize(SUB_COLOR, 0.6),          
+          borderWidth: 4,
           radius: 4,          
           tension: .4,                      
         }
@@ -117,7 +118,6 @@ export default class StockScoreBarChart extends Vue {
 
   mounted () {
     this.renderBarChart()
-    console.log(this.sector)
   }
 }
 </script>

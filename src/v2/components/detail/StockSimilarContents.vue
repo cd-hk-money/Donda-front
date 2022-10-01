@@ -86,9 +86,6 @@ export default class StockSimilarContent extends Vue {
     return changes_ratio > 0 ? '상승' : '하락'
   }
 
-  mounted() {
-    console.log('eeee')
-  }
 }
 
 </script>

@@ -119,7 +119,6 @@
   
     mounted () {
       this.renderBarChart()
-      console.log(this.sector)
     }
   }
   </script>
