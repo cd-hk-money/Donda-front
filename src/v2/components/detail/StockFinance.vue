@@ -17,14 +17,13 @@
 
       <v-sheet
         v-if="!loaded"
-        class="ml-5 d-flex flex-wrap justify-center"        
-        width="100%"    
+        class="ml-5 d-flex flex-wrap justify-space-between"                
       >
       <v-card
+        elevation="0"
         height="266.5"
         :width="height > 500 ? 322.9 : 500"
-        outlined
-        v-for="(type, index) in statementTypes.slice(0, 9)"
+        v-for="(type, index) in statementTypes"
         :key="index"
         @click.stop="[dialog = true, dialogType = types[index]]"
       >
@@ -40,16 +39,26 @@
             </v-btn>  
           </span>
         </v-card-title>
+
+        <v-card-subtitle class="d-flex justify-space-between">
+          <span>
+            {{ statement[type].value.at(0).toLocaleString() }} ₩        
+          </span>
+          <span class="stock-finance-date">
+            기준일: {{ statement[type].date.at(0)}}
+          </span>
+        </v-card-subtitle>
   
         <v-card-text>
           <stock-finance-bar-chart
             class="ml-5 mr-5"
             :key="index"
             :chartData="statement[type]"          
-            :height="height > 500 ? 300 : 180"
+            :height="height > 500 ? 300 : 170"
           />
         </v-card-text>
       </v-card>
+      
   
       <v-dialog      
         :style="dialogStyle"
@@ -73,7 +82,7 @@
             :title="title"
             :height="200"
           />  
-          <v-divider></v-divider>
+          <v-divider />
         </v-card>
       </v-dialog>
 
@@ -152,3 +161,9 @@ export default class StockFinance extends Vue {
 }
 
 </script>
+
+<style scoped>
+.stock-finance-date {
+  font-size: 12px !important;
+}
+</style>

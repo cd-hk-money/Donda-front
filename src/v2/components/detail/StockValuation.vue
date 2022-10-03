@@ -14,13 +14,13 @@
       어떻게 적정 주가를 산출 했을까요?
     </v-card-subtitle>
 
-
-    <v-divider></v-divider>
-
+    <v-divider />
+    
     <v-sheet class="stock-indicator-detail-content">
-      
+      <stock-valuation-chart :height="100"/>
     </v-sheet>  
 
+    <v-divider />
             
     <!-- 돈다 지수 -->
     <v-sheet 
@@ -61,7 +61,7 @@
             :height="100"
           />
 
-          <v-divider></v-divider>
+          <v-divider />
 
           <v-card-text class='grey--text mt-1'>            
                
@@ -71,7 +71,7 @@
     </v-sheet>  
 
 
-    <v-divider></v-divider>
+    <v-divider />
 
 
     <v-sheet 
@@ -126,11 +126,11 @@
             :height="100"
           />
 
-          <v-divider></v-divider>
+          <v-divider />
 
           <v-card-text :class="['grey--text', getStrongFontColorClass]">            
             <div class="calculate"> 계산법 : <strong class="mr-1">EPS</strong> x <strong class="ml-1">ROE</strong></div> 
-            <v-divider class="mt-2"></v-divider>
+            <v-divider class="mt-2" />
             <v-sheet 
               outlined 
               class="pt-3 pb-3 pr-3 pl-3 mt-3 d-flex align-center indicator-detail-card" 
@@ -147,7 +147,7 @@
     </v-sheet>  
 
 
-    <v-divider></v-divider>
+    <v-divider />
 
 
     <v-sheet 
@@ -198,7 +198,7 @@
             :height="100"
           />
 
-          <v-divider></v-divider>
+          <v-divider />
 
           <v-card-text class='grey--text mt-1'>            
                
@@ -208,7 +208,7 @@
     </v-sheet>  
 
 
-    <v-divider></v-divider>
+    <v-divider />
 
     
     <v-sheet 
@@ -253,7 +253,7 @@
             :height="100"
           />
 
-          <v-divider></v-divider>
+          <v-divider />
 
           <v-card-text class='grey--text mt-1'>            
                
@@ -316,6 +316,7 @@ export default class StockValuation extends Vue {
   colors: string[] = ['#ff6384', '#994433', '#6495ed', '#800080']
   formula = '$$x = {-b \\pm \\sqrt{b^2-4ac} \\over 2a}.$$'
   
+  expandBoard = false
   expandDonda = false
   expandEpsRoe = false 
   expandSrim = false
