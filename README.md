@@ -134,8 +134,12 @@
  ┃ ┗ 📜index.d.ts
  ┣ 📂assets
  ┃ ┣ 📜logo.png
- ┃ ┗ 📜logo.svg
+ ┃ ┣ 📜logo.svg
+ ┃ ┣ 📜readme-chart1.png
+ ┃ ┣ 📜readme-chart2.png
+ ┃ ┗ 📜readme-chart3.png
  ┣ 📂mixins
+ ┃ ┣ 📜StoreMixin.vue
  ┃ ┣ 📜tools.ts
  ┃ ┗ 📜TopListMixin.vue
  ┣ 📂models
@@ -171,6 +175,8 @@
  ┃ ┃ ┃ ┣ 📜StockIndicator.vue
  ┃ ┃ ┃ ┣ 📜StockIndicatorBarChart.vue
  ┃ ┃ ┃ ┣ 📜StockIndicatorChart.vue
+ ┃ ┃ ┃ ┣ 📜StockIndicatorDetail.vue
+ ┃ ┃ ┃ ┣ 📜StockIndicatorLineChart.vue
  ┃ ┃ ┃ ┣ 📜StockInfo.vue
  ┃ ┃ ┃ ┣ 📜StockMarcapChart.vue
  ┃ ┃ ┃ ┣ 📜StockNews.vue
@@ -179,22 +185,30 @@
  ┃ ┃ ┃ ┣ 📜StockSimilar.vue
  ┃ ┃ ┃ ┣ 📜StockSimilarContents.vue
  ┃ ┃ ┃ ┣ 📜StockValuation.vue
- ┃ ┃ ┃ ┗ 📜StockValuationChart.vue
+ ┃ ┃ ┃ ┣ 📜StockValuationChart.vue
+ ┃ ┃ ┃ ┣ 📜StockValuationCharts.vue
+ ┃ ┃ ┃ ┗ 📜StockValuationSingleChart.vue
  ┃ ┃ ┣ 📂home
+ ┃ ┃ ┃ ┣ 📜HomeNav.vue
  ┃ ┃ ┃ ┣ 📜Market.vue
  ┃ ┃ ┃ ┣ 📜MarketChart.vue
  ┃ ┃ ┃ ┣ 📜MarketDesc.vue
  ┃ ┃ ┃ ┣ 📜MarketTrend.vue
- ┃ ┃ ┃ ┗ 📜StockRecommend.vue
- ┃ ┃ ┗ 📂rank
+ ┃ ┃ ┃ ┣ 📜StockRecommend.vue
+ ┃ ┃ ┃ ┗ 📜StockRecommendContent.vue
+ ┃ ┃ ┣ 📂rank
  ┃ ┃ ┃ ┣ 📜RankComponent.vue
  ┃ ┃ ┃ ┗ 📜RankContents.vue
+ ┃ ┃ ┗ 📂vuetify
+ ┃ ┃ ┃ ┗ 📜BtnBadge.vue
  ┃ ┗ 📂pages
  ┃ ┃ ┣ 📜AppBar.vue
  ┃ ┃ ┣ 📜DetailV2.vue
+ ┃ ┃ ┣ 📜Footer.vue
  ┃ ┃ ┣ 📜HomeV2.vue
  ┃ ┃ ┣ 📜InterestToggle.vue
  ┃ ┃ ┣ 📜MenuBar.vue
+ ┃ ┃ ┣ 📜NavBar.vue
  ┃ ┃ ┣ 📜RankV2.vue
  ┃ ┃ ┗ 📜SideBar.vue
  ┣ 📜App.vue
