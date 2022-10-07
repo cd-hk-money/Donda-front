@@ -1,19 +1,19 @@
 <template>
-  <div>
+  <div class="app-bar">
     <v-app-bar      
       dense
       dark
+      app
       height="60px"
     >      
-      <v-app-bar-icon @click="pushLink('/')" class="navbar__icon">
+      <v-app-bar-nav-icon @click="pushLink('/')" class="navbar__icon">
         <v-icon>home</v-icon>
-      </v-app-bar-icon>
+      </v-app-bar-nav-icon>
       <v-toolbar-title @click="pushLink('/')" class="ml-5 navbar__title">DONDA</v-toolbar-title>
 
       <div v-if="!mobile">
         <v-carousel        
           hide-delimiter-background             
-          hide-controls        
           hide-delimiters
           vertical hide cycle
           :show-arrows="false"
@@ -60,12 +60,12 @@
         hide-no-data
         solo-inverted
         cache-items   
-        clearable
         validate-on-blur
         item-text="name"
         item-value="id"
         @blur="isSearch = false"
-        @keypress.enter="pushDetail(search)"  
+        @keypress.enter="pushDetail(search)"
+        @keydown.esc="isSearch = false"
       >
         <template v-slot:item="{ item }">        
           <v-list-item-content>
@@ -98,7 +98,7 @@
       <v-menu
         right bottom        
         :position-y="100"            
-        :offset-y="100"
+        offset-y
         v-model="bookmark"        
         :min-width="250"
         :close-on-content-click="false"                
@@ -479,6 +479,7 @@ export default class NavBar extends Vue {
 </script>
 
 <style scoped>
+
 .navbar__autocomplete {
   max-width: 400px;  
   min-width: 168px;

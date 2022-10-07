@@ -4,7 +4,6 @@
     outlined
     elevation="0"    
     height="787"            
-    :width="isMobile ? 460 : '100%'"
     v-if="!indicatorLoaded && !indicatorSectorLoaded"
   >    
     <v-card-title>
@@ -16,11 +15,11 @@
     </v-card-subtitle>
 
 
-    <v-divider></v-divider>
+    <v-divider />
 
-
+  
     <!-- EPS -->
-    <v-sheet 
+    <v-sheet       
       class="stock-indicator-detail-content" 
       @click="expandEps = !expandEps"      
     >
@@ -55,9 +54,7 @@
             <div><strong class="text-h6 cyan--text font-weight-bold">당기순이익</strong></div>
             일정 회계기간 동안 발생한 기업의 전체 수익에서 비용을 차감한 금액으로,
             <div class="d-flex justify-space-between">
-              <span>
-                <strong class="cyan--text">일정 기간동안 기업이 창출한 순이익</strong>을 뜻합니다.
-              </span>
+              <span><strong class="cyan--text">일정 기간동안 기업이 창출한 순이익</strong>을 뜻합니다.</span>
               <a href="https://terms.naver.com/entry.naver?docId=67170&cid=43667&categoryId=43667">출처: 네이버 지식백과</a>
             </div>
           </template>
@@ -69,9 +66,7 @@
             <div><strong class="text-h6 cyan--text font-weight-bold">유통 주식수</strong></div>
             상장법인의 총발행 주식 중 최대주주 지분 및 정부 소유주 등을 제외한,
             <div class="d-flex justify-space-between">
-              <span>
-                <strong class="cyan--text">실제 시장에서 유통 가능한 주식 수</strong>를 뜻합니다.
-              </span>
+              <span><strong class="cyan--text">실제 시장에서 유통 가능한 주식 수</strong>를 뜻합니다.</span>
               <a href="https://econowide.com/3598">출처: 이코노와이드 블로그</a>
             </div>
           </template>
@@ -90,7 +85,7 @@
             :height="100"      
           />          
 
-          <v-divider></v-divider>
+          <v-divider />
 
           <v-card-text :class="['grey--text mt-1', getStrongFontColorClass]">            
             <div>
@@ -100,7 +95,7 @@
               <v-icon :color="epsMean.iconColor" size="20" class="ml-2">{{ epsMean.icon}}</v-icon>
             </div>          
 
-            <v-divider class="mt-2"></v-divider>
+            <v-divider class="mt-2" />
             
             <v-sheet 
               outlined 
@@ -127,7 +122,7 @@
     </v-sheet>    
 
 
-    <v-divider></v-divider>
+    <v-divider />
 
 
     <!-- BPS -->
@@ -183,7 +178,7 @@
             :height="100"      
           />
 
-          <v-divider></v-divider>
+          <v-divider />
 
           <v-card-text :class="['grey--text mt-1', getStrongFontColorClass]">            
             <div>
@@ -193,7 +188,7 @@
               <v-icon :color="bpsMean.iconColor" size="20" class="ml-2">{{ bpsMean.icon}}</v-icon>
             </div>
 
-            <v-divider class="mt-2"></v-divider>
+            <v-divider class="mt-2" />
             
             <v-sheet 
               outlined 
@@ -231,7 +226,7 @@
     </v-sheet>    
 
 
-    <v-divider></v-divider>
+    <v-divider />
 
 
     <!-- ROE -->
@@ -305,7 +300,7 @@
                 <v-icon :color="roeMean.iconColor" size="20" class="ml-2">{{ roeMean.icon}}</v-icon>
               </div>
 
-              <v-divider class="mt-2"></v-divider>
+              <v-divider class="mt-2" />
               
               <v-sheet 
                 outlined 
@@ -322,7 +317,7 @@
     </v-sheet>    
 
 
-    <v-divider></v-divider>
+    <v-divider />
 
 
     <!-- PSR -->
@@ -359,7 +354,7 @@
               <v-icon :color="psrMean.iconColor" size="20" class="ml-2">{{ psrMean.icon}}</v-icon>
             </div>
 
-            <v-divider class="mt-2"></v-divider>
+            <v-divider class="mt-2" />
 
             <v-sheet 
               outlined 
@@ -386,7 +381,7 @@
     </v-sheet>  
     
     
-    <v-divider></v-divider>
+    <v-divider />
 
 
     <!-- PER -->
@@ -423,7 +418,7 @@
               <v-icon :color="perMean.iconColor" size="20" class="ml-2">{{ perMean.icon}}</v-icon>
             </div>
 
-            <v-divider class="mt-2"></v-divider>
+            <v-divider class="mt-2" />
 
             <v-sheet 
               outlined 
@@ -450,7 +445,7 @@
     </v-sheet>    
 
 
-    <v-divider></v-divider>
+    <v-divider />
 
 
     <!-- PBR -->
@@ -487,7 +482,7 @@
               <v-icon :color="pbrMean.iconColor" size="20" class="ml-2">{{ pbrMean.icon}}</v-icon>
             </div>
 
-            <v-divider class="mt-2"></v-divider>
+            <v-divider class="mt-2" />
 
             <v-sheet 
               outlined 
@@ -628,6 +623,7 @@ export default class StockIndicatorDetail extends Vue {
 </script>
 
 <style scoped>
+
 strong {  
   letter-spacing: .5px;
 }
@@ -688,7 +684,6 @@ strong {
 .stock-indicator-detail-content:hover .strong-black strong
  {
   color: rgb(64, 224, 208) !important;
-  
 } 
 
 .stock-indicator-detail-content:hover .strong-white .sector,

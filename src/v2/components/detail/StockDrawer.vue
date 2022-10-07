@@ -1,23 +1,26 @@
 <template>
-  <div>
-    <v-card width="97%" class="ml-5 mt-5" outlined>
-      <v-tabs
-        v-model="drawer"        
-        fixed-tabs
-      >
-        <v-tabs-slider color="cyan"></v-tabs-slider>
-  
-        <v-tab
-          v-for="item in tabItems"
-          :key="item"
-          active-class="cyan--text"
-        >
-          {{ item }}
-        </v-tab>
-      </v-tabs>
-    </v-card>
+  <v-card 
+    :width="mobile ? '465' : '97%'"
+    class="ml-5 mt-5 mr-5" 
+    outlined
 
-    <v-tabs-items v-model="drawer" class="ml-5 mr-6">
+  >
+    <v-tabs
+      v-show="!mobile"
+      v-model="drawer"        
+      fixed-tabs
+    >
+      <v-tabs-slider color="cyan"></v-tabs-slider>
+
+      <v-tab
+        v-for="item in tabItems"
+        :key="item"
+        active-class="cyan--text"        
+      >
+        {{ item }}
+      </v-tab>
+    </v-tabs>
+    <v-tabs-items v-model="drawer">
       <v-tab-item>
         <stock />
       </v-tab-item>
@@ -47,6 +50,8 @@
       </v-tab-item>
 
     </v-tabs-items>
+  </v-card>
+
     <!-- <v-carousel 
       class="detail__stock-drawer"
       cycle
@@ -86,7 +91,6 @@
       </v-carousel-item>
   
     </v-carousel> -->
-  </div>
 </template>
 
 <script lang="ts">
@@ -97,8 +101,6 @@ import StockNews from '@/v2/components/detail/StockNews.vue'
 import StockFinance from '@/v2/components/detail/StockFinance.vue'
 import StockValuation from '@/v2/components/detail/StockValuation.vue'
 import StockIndicatorDetail from './StockIndicatorDetail.vue'
-import { mobileHeight } from '@/mixins/tools' 
-
 
 @Component({
   components: {

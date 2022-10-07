@@ -6,38 +6,39 @@
       <stock-indicator @drawerChange="drawerChange"/>    
     </v-col>    
     <v-col cols="12" xl="9" lg="8">
-      <stock-drawer @drawerChange="drawerChange" :drawer="drawer"/>
-      <!-- <v-menu
-        open-on-hover
-        offset-y
-      >
-        <template v-slot:activator="{ on, attrs}">
-          <v-btn 
-            elevation="5"            
-            x-large
-            outlined
-            fixed
-            bottom
-            right
-            fab          
-            v-on="on"
-            v-bind="attrs"
-            class="mb-3 mr-5"
-          ><v-icon>mdi-menu</v-icon>
-          </v-btn>  
-        </template>
-
-        <v-list>
-          <v-list-item
-            v-for="(menu, i) in menus"
-            :key="i"
-            @click="menu.callback"
-          >
-            {{ menu.title }}
-          </v-list-item>
-        </v-list>
-      </v-menu> -->
+      <stock-drawer @drawerChange="drawerChange" :drawer.sync="drawer"/>
     </v-col>
+    <v-menu
+      open-on-hover
+      offset-y
+      v-if="mobile"
+    >
+      <template v-slot:activator="{ on, attrs}">
+        <v-btn 
+          elevation="5"            
+          x-large
+          outlined
+          fixed
+          bottom
+          right
+          fab          
+          v-on="on"
+          v-bind="attrs"
+          class="mb-3 mr-5"
+        ><v-icon>mdi-menu</v-icon>
+        </v-btn>  
+      </template>
+  
+      <v-list>
+        <v-list-item
+          v-for="(menu, i) in menus"
+          :key="i"
+          @click="menu.callback"
+        >
+          {{ menu.title }}
+        </v-list-item>
+      </v-list>
+    </v-menu>
   </v-row>
 </template>
 
@@ -86,12 +87,20 @@ export default class DetailV2 extends Vue {
     {
       title: '유사종목 및 뉴스',
       callback: () => this.drawerChange(3)
+    },
+    {
+      title: '적정주가',
+      callback: () => this.drawerChange(4)
     }
   ]
 
   @StockStoreModule.Action('getStock') getStock!: (name: string) => Promise<void>
   @StockStoreModule.Action('getStockGraphAll') getStockGraphAll!: (name: string) => Promise<void>
   @StockStoreModule.Action('getStockGraphDefault') getStockGraphDefault!: (name: string) => Promise<void>
+
+  get mobile () {
+    return this.$vuetify.breakpoint.name === 'xs'
+  }
 
   stockLoad(title: string) {    
     this.drawer = 0        

@@ -22,12 +22,14 @@ const END_LABEL_INDEX = 23
 export default class StockFinanceLineChart extends Vue {
 
   @Prop() chartData!: null
-  @Prop() type!: string
+  @Prop() statementType!: string
   @Prop() title!: string
 
   chartOptions: Chart.ChartOptions = {}
 
-  @StockStoreModule.Action('getStockStatementAll') readonly getStockStatementAll!: (name: string) => Promise<void>
+  @StockStoreModule.Action('getStockStatementAll')
+  readonly getStockStatementAll!: (payload: {code: string, statementType: string}) => Promise<void>
+
   @StockStoreModule.State('statementAll') statementAll!: ISimpleChartData
 
   applyDefaultOptions() {
@@ -120,11 +122,10 @@ export default class StockFinanceLineChart extends Vue {
     this.renderChart(this.createChartData(), this.chartOptions)
   }
 
-  mounted () {
-    this.$nextTick(() => {
-      this.renderLineChart()
-    })
+  async mounted () {
+    await this.getStockStatementAll({code: this.$route.params.title, statementType: this.statementType})
+    this.renderLineChart()
   }
-  
+    
 }
 </script>

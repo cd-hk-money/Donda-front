@@ -156,34 +156,32 @@ export default class StockIndicator extends Vue {
 
   get indicatorChartData () {
     return {
-      eps: this.indicator.eps.value[0],
-      bps: this.indicator.bps.value[0],
-      roe: this.indicator.roe.value[0]
+      eps: this.indicator.eps?.value[0],
+      bps: this.indicator.bps?.value[0],
+      roe: this.indicator.roe?.value[0]
     }
   }
 
   get indicatorSectorChartData () {
     return {
-      eps: this.indicatorSector.sector_eps[3],
-      bps: this.indicatorSector.sector_bps[3],
-      roe: this.indicatorSector.sector_roe[3],      
+      eps: this.indicatorSector?.sector_eps[3],                                
+      bps: this.indicatorSector?.sector_bps[3],
+      roe: this.indicatorSector?.sector_roe[3],      
     }
   }
 
-  get compareIndicator () {
-    const origin = this.indicatorChartData.eps + this.indicatorChartData.bps / 20 + this.indicatorChartData.roe
-    const sector = this.indicatorSectorChartData.eps + this.indicatorSectorChartData.bps / 20 + this.indicatorSectorChartData.roe
-    const isHighVal = origin > sector
-
-    const score = isHighVal ? (origin / sector * 100).toFixed(1) : (sector / origin * 100).toFixed(1)
-    const text = isHighVal ? '평균 이상' : '평균 이하'
-    const colorClass = isHighVal ? 'red--text' : 'blue--text'
+  // get compareIndicator () {
+  //   const origin = this.indicatorChartData.eps + this.indicatorChartData.bps / 20 + this.indicatorChartData.roe
+  //   const sector = this.indicatorSectorChartData.eps + this.indicatorSectorChartData.bps / 20 + this.indicatorSectorChartData.roe
+  //   const isHighVal = origin > sector
+  //   const score = isHighVal ? (origin / sector * 100).toFixed(1) : (sector / origin * 100).toFixed(1)
+  //   const text = isHighVal ? '평균 이상' : '평균 이하'
+  //   const colorClass = isHighVal ? 'red--text' : 'blue--text'
     
-    return { score, text, colorClass }
+  //   return { score, text, colorClass }
 
-  }
+  // }
   
-  // state
   @StockStoreModule.State('indicatorLoaded') loaded!: boolean
   @StockStoreModule.State('indicatorSectorLoaded') sectorLoaded!: boolean
   @StockStoreModule.State('stockLoaded') stockLoaded!: boolean  
@@ -196,7 +194,6 @@ export default class StockIndicator extends Vue {
   @StockStoreModule.State('indicatorSectorDaily') indicatorSectorDaily!: IStockIndicatorSectorDailyModel
 
 
-  // action
   @StockStoreModule.Action('getStockIndicator') readonly getStockIndicator!: (name: string) => Promise<void>
   @StockStoreModule.Action('getStockIndicatorDaily') readonly getStockIndicatorDaily!: (stockcode: string) => Promise<void>
   @StockStoreModule.Action('getIndicatorSector') readonly getIndicatorSector!: (code: string) => Promise<void>  
@@ -207,7 +204,7 @@ export default class StockIndicator extends Vue {
     this.$emit('drawerChange', 4)
   }
   
-  async created () {
+  async mounted () {
     const stockcode = this.$route.params.title
     await this.getStockIndicator(stockcode)
     await this.getStockIndicatorDaily(stockcode) 
@@ -221,6 +218,5 @@ export default class StockIndicator extends Vue {
 .stockinfo-progress-circular {
   bottom: -100px;
   left: 30%;
-
 }
 </style>

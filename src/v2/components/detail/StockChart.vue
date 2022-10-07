@@ -19,6 +19,7 @@ export default class StockChart extends Vue {
 
   @Prop({default: false}) fill!: boolean
   @Prop() height!: number    
+  @Prop() chartData!: any
 
   @StockStoreModule.State('stockGraphDefault') stockGraphDefault!: any
   @StockStoreModule.State('stockEvaluationDaily') stockEvaluationDaily!: IStockEvaluationModel

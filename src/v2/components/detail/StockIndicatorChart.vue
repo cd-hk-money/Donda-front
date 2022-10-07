@@ -77,9 +77,9 @@ export default class StockIndicatorChart extends Vue {
         { 
           label: this.stock.name,
           data: [
-            this.chartData.eps.toFixed(),
-            (this.chartData.bps / 20).toFixed(),
-            ((this.chartData.roe + 20) * 30).toFixed(),
+            this.chartData.eps?.toFixed(),
+            (this.chartData.bps / 20)?.toFixed(),
+            ((this.chartData.roe + 20) * 30)?.toFixed(),
           ],          
           borderColor: MAIN_COLOR,
           borderWidth: 1.5,
@@ -95,9 +95,9 @@ export default class StockIndicatorChart extends Vue {
         {
           label: '업종 평균',
           data: [
-            this.sector.eps.toFixed(),
-            (this.sector.bps / 20).toFixed(),
-            ((this.sector.roe + 20) * 30).toFixed(),            
+            this.sector.eps?.toFixed(),
+            (this.sector.bps / 20)?.toFixed(),
+            ((this.sector.roe + 20) * 30)?.toFixed(),            
           ],          
           borderWidth: 1.5,
           fill: true,

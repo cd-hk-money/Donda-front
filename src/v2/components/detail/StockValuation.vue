@@ -8,7 +8,7 @@
     v-if="!loaded && !evalLoaded && !allLoaded && !dailyLoaded"
   >
     <v-card-title>
-      적정 주가?
+      적정 주가
     </v-card-title>
     <v-card-subtitle>
       어떻게 적정 주가를 산출 했을까요?
@@ -374,8 +374,8 @@ export default class StockValuation extends Vue {
   }
 
   get closes () {
-    return this.stockEvaluation?.date
-            .map(k => Object.entries(this.stockGraphAll).filter((v, _) => (v[0] as string).substr(0, 7) === k)[0][1])
+    return this.stockEvaluation.date
+            ?.map(k => Object.entries(this.stockGraphAll).filter((v, _) => (v[0] as string).substr(0, 7) === k)[0][1])
   }
 
   get donda () {
@@ -392,7 +392,7 @@ export default class StockValuation extends Vue {
 
   get chartDatas () {
     return {
-      donda: this.closes.map(k => Number(k) * 1.050),
+      donda: this.closes?.map(k => Number(k) * 1.050),
       epsroe: this.stockEvaluation['proper-price'],
       srim: this.stockEvaluation['S-rim']
     }
@@ -403,7 +403,7 @@ export default class StockValuation extends Vue {
     return {
       text: isHighVal ? '더 낮은 주가로 예측됩니다.' : '더 높은 주가로 예측됩니다.',
       colorClass : isHighVal ? 'sector' : '',
-      icon: isHighVal ? 'fa-solid fa-arrow-trend-down' : 'fa-solid fa-arrow-trend-up',
+    icon: isHighVal ? 'fa-solid fa-arrow-trend-down' : 'fa-solid fa-arrow-trend-up',
       iconColor: isHighVal ? 'blue' : 'red'
     }
   }
@@ -417,8 +417,8 @@ export default class StockValuation extends Vue {
   }
 
   getValuation (valuationType: string): ValuationContentType {
-    const origin = this.closes.at(-1)
-    const valuation = this.chartDatas[valuationType].at(-1)
+    const origin = this.closes?.at(-1)
+    const valuation = this.chartDatas[valuationType]?.at(-1)
     const isHighVal = origin > valuation
     return {
       origin,

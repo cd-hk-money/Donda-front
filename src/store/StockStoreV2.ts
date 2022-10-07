@@ -356,8 +356,6 @@ export default class StockStore extends VuexModule {
                 .all([axios.get(`/stock/${code}/sector`), axios.get(`/stock/${code}/sector/daily`)])                
                                             
       const [indicatorSector, indicatorSectorDaily] = multiRes.map(v=> v.data)      
-
-      console.log(Object.keys(indicatorSectorDaily))
       
       const computedIndicatorSectorDaily = 
         Object.values(indicatorSectorDaily)
@@ -377,8 +375,6 @@ export default class StockStore extends VuexModule {
         indicatorSectorLoaded: false
       })
       
-      const psrs = Object.values(indicatorSectorDaily as IStockIndicatorSectorDailyModel).map(v => v[0].psr)      
-                
     } catch (e) {
       console.log(e)
     }
@@ -386,13 +382,18 @@ export default class StockStore extends VuexModule {
   
    // 종목 하나의 특정 재무제표 5년치 를 가져옵니다.
   @Action
-  public async getStockStatementAll(name: string): Promise<void> {
+  public async getStockStatementAll(payload: {code: string, statementType: string}): Promise<void> {
     try {
       this.context.commit('updateState', {
         statementAllLoaded: true
       })
 
-      const res = await axios.get(`/stock/${name}/statement/revenue`, HEADER)
+      const {code, statementType} = payload
+            
+      const replacedStatementType = statementType.replace('_','')
+      console.log(replacedStatementType)
+      
+      const res = await axios.get(`/stock/${code}/statement/${statementType.replace('_','')}`, HEADER)
 
       this.context.commit('updateState', {
         statementAll: res.data.origin,
@@ -416,12 +417,14 @@ export default class StockStore extends VuexModule {
       const label = Object.keys(res.data)
       const value = Object.values(res.data) as string[]                        
       const keys = Object.keys(value[0][0])
-
+      
       this.context.commit('updateState', {
         statementTypes: keys.filter((key: string) => key !== 'type'),
         statement: convertChartData(keys, value, label),
         statementLoaded: false
       })
+
+      console.log(this.statementTypes, 'types')
     } catch(e) {
       console.log(e)
     }

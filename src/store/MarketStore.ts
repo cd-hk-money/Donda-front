@@ -196,7 +196,6 @@ export default class MarketStore extends VuexModule {
 			})
 			const res = await axios.get('/krx', HEADER)
 			
-
 			this.context.commit('updateState', {
 				searchTable: Object.entries(res.data).map((stock: any) => ({
 					code: stock[0],
@@ -209,11 +208,6 @@ export default class MarketStore extends VuexModule {
 				}, {}),
 				searchTableLoaded: false
 			})      
-
-			console.log(this.codeTitleMapping)
-
-			
-			
 		} catch (e) {
 			console.log(e)
 		}

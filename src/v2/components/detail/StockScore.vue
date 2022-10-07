@@ -99,26 +99,20 @@ type ScoreType = {
 })
 export default class StockScore extends Vue {
 
-  // datas
   overlay = false
   carousel = 0
 
-  // store
   @StockStoreModule.State('stockLoaded') loaded!: boolean
   @StockStoreModule.State('stockGraphDefaultLoaded') graphLoaded!: boolean
   @StockStoreModule.State('getStockEvaluationDaily') evalLoaded!: boolean
   @StockStoreModule.State('stockEvaluationDailyLoaded') dailyLoaded!: boolean
   @StockStoreModule.State('stock') stock!: IStockModel
-
   @StockStoreModule.Getter('stockEvaluationDailyLast') stockEvaluationDailyLast!: string
-
   @StockStoreModule.Action('getStockGraphDefault') readonly getStockGraphDefault!: (name: string) => Promise<void>
   @StockStoreModule.Action('getStockEvaluationDaily') getStockEvaluationDaily!: (stockCode: string) => Promise<void>
 
   @MarketStoreModule.State('codeTitleMapping') codeTitleMapping!: any
 
-
-  // computed
   get mobile () { 
     return mobileHeight(this.$vuetify.breakpoint.name) < 500 
   }
@@ -146,10 +140,10 @@ export default class StockScore extends Vue {
 
 
   // hooks
-  created () {
+  async created () {
     const code = this.$route.params.title    
-    this.getStockGraphDefault(code)    
-    this.getStockEvaluationDaily(code)
+    await this.getStockGraphDefault(code)
+    await this.getStockEvaluationDaily(code)
   }
 }
 </script>

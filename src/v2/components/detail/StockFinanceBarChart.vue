@@ -5,11 +5,11 @@ import Chart from 'chart.js'
 
 import { transparentize } from '@/mixins/tools'
 import { IStockStatementBarChartModel } from '@/models/stock'
+import { namespace } from 'vuex-class'
 
 const { reactiveProp } = mixins
 
 const MAIN_COLOR = '#40E0D0'
-const SUB_COLOR = 'rgb(255, 99, 132)'
 
 @Component({
   extends: Bar,
@@ -34,7 +34,6 @@ export default class StockFinanceBarChart extends Vue {
       xAxes: [{
         gridLines: {
           display: false,
-          zeroLineColor: '#696969',          
         },
         ticks: {
           fontSize: 12,
@@ -44,17 +43,16 @@ export default class StockFinanceBarChart extends Vue {
         }
       }],
       yAxes: [{
-        ticks: {
-          callback: function(value: string) {return value.toLocaleString()},
+        ticks: {          
+          callback: value => value.toLocaleString(),
           display: false,
-          fontSize: 15,       
-          maxTicksLimit: 1   
+          fontSize: 15,                 
         },
         gridLines: {
-          display: false,                  
-          color: '#696969',  
-          zeroLineWidth: 4,
-          zeroLineColor: 'white'
+          display: true,                             
+          zeroLineWidth: 2,
+          zeroLineColor: '#fff',    
+          drawBorder: false    
         },      
       }], 
     }
@@ -92,7 +90,10 @@ export default class StockFinanceBarChart extends Vue {
           borderWidth: 3,
           radius: 4,
           pointStyple: 'rectRounded',
-          tension: .4,               
+          tension: .4,         
+          minBarLength: 30,
+          barThickness: 60,
+          
         }
       ]
     }    
@@ -105,7 +106,7 @@ export default class StockFinanceBarChart extends Vue {
     this.renderChart(this.createChartData(), this.chartOptions)
   }
 
-  mounted () {
+  mounted () {    
     this.renderBarChart()
   }
 }
