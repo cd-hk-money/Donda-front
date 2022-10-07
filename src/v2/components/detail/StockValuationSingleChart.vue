@@ -27,7 +27,7 @@ export default class StockValuationSingleChart extends Vue {
   }
 
   @Prop({default: false}) fill!: boolean  
-  @Prop() chartData!: any
+  @Prop() chartData!: number[]
   @Prop() height: number | string
   @Prop({default: 'undefined'}) label!: string
   @Prop({default: []}) dates!: string[]

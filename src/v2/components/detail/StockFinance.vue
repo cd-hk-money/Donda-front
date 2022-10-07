@@ -92,7 +92,6 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
-import { mobileHeight } from '@/mixins/tools'
 
 import BtnBadge from '../vuetify/BtnBadge.vue'
 import StockFinanceBarChart from '@/v2/components/detail/StockFinanceBarChart.vue'
@@ -152,7 +151,7 @@ export default class StockFinance extends Vue {
   @StockStoreModule.State('statementLoaded') loaded!: boolean  
   @StockStoreModule.Action('getStockStatement') readonly getStockStatement!: (name: string) => Promise<void>
   
-  @MarketStoreModule.State('codeTitleMapping') codeTitleMapping!: any
+  @MarketStoreModule.State('codeTitleMapping') codeTitleMapping!: { [title: string]: string }
 
   async created() {        
     const code = this.$route.params.title

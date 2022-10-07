@@ -24,15 +24,13 @@ export default class StockScoreBarChart extends Vue {
   @StockStoreModule.State('stock') stock!: IStockModel
 
   chartData!: IStockStatementBarChartModel
-  chartOptions: Chart.ChartOptions = {}
-
-  applyDefaultOptions() {
-    this.chartOptions.maintainAspectRatio = true
-    this.chartOptions.responsive = true      
-    this.chartOptions.plugins = {
+  chartOptions: Chart.ChartOptions = {
+    maintainAspectRatio: true,
+    responsive: true,      
+    plugins: {
       crosshair: false
-    }
-      this.chartOptions.scales = {
+    },
+    scales: {
       xAxes: [{
         gridLines: {
           display: false,
@@ -55,17 +53,17 @@ export default class StockScoreBarChart extends Vue {
           color: '',            
           zeroLineWidth: 2,
           zeroLineColor: '#fff',    
-          drawBorder: false      
-          
+          drawBorder: false                
         },      
       }], 
-    }
-    this.chartOptions.animation = {
+    },
+
+    animation: {
       duration: 2000,
       easing: 'easeOutQuad'
-    }
+    },
     
-    this.chartOptions.tooltips = {      
+    tooltips: {      
       enabled: true,
       titleFontSize: 15,
       titleFontColor: MAIN_COLOR,
@@ -75,7 +73,6 @@ export default class StockScoreBarChart extends Vue {
       mode: 'index',
     }  
   }
-
 
   createChartData() {
     return {
@@ -109,15 +106,10 @@ export default class StockScoreBarChart extends Vue {
     }    
   }
 
-  renderChart!: (chartData: any, options: any) => any
-
-  renderBarChart() {
-    this.applyDefaultOptions()
-    this.renderChart(this.createChartData(), this.chartOptions)
-  }
-
+  renderChart!: (chartData: unknown, options: unknown) => unknown
+  
   mounted () {
-    this.renderBarChart()
+    this.renderChart(this.createChartData(), this.chartOptions)
   }
 }
 </script>

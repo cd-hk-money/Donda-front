@@ -67,6 +67,8 @@ export default class Stock extends Vue {
   
   count = 20
   dateOverlay = false
+  gradientEnable = false
+  volumeEnable = false
 
   get width (): string | number { 
     return this.$vuetify.breakpoint.name === 'xs' ? 465 : '97%'
@@ -78,17 +80,16 @@ export default class Stock extends Vue {
   @StockStoreModule.Action('getStockGraphAll') getStockGraphAll!: (name: string) => Promise<void>
   @StockStoreModule.Action('getStockGraphDefault') getStockGraphDefault!: (name: string) => Promise<void>
     
-  gradientEnable = false
   getGradient () { return this.gradientEnable }
+  getVolumeEnable () { return this.volumeEnable }
+
   @Watch('gradientEnable')
   watchGradient () {
     const content = this.menus.find((menu: IMenu) => menu.title === 'gradient')
     content.enable = !content.enable
   }
 
-  volumeEnable = false
   @Watch('volumeEnable')
-  getVolumeEnable () { return this.volumeEnable }
   watchVolume () {
     const content = this.menus.find((menu: IMenu) => menu.title === 'volume')
     content.enable = !content.enable
@@ -97,10 +98,8 @@ export default class Stock extends Vue {
   menus: IMenu[] = [    
     {
       title: 'dateFicker',
-      icon: 'mdi-calendar-expand-horizontal',
-      callback: () => this.updateData({
-
-      }),
+      icon: 'mdi-calendar-expand-horizontal',      
+      callback: () => null,
       enable: false
     },
     {

@@ -1,11 +1,10 @@
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator'
+import { Component, Vue } from 'vue-property-decorator'
 import { mixins, Bar } from 'vue-chartjs-typescript'
 import Chart from 'chart.js'
 
 import { transparentize } from '@/mixins/tools'
 import { IStockStatementBarChartModel } from '@/models/stock'
-import { namespace } from 'vuex-class'
 
 const { reactiveProp } = mixins
 
@@ -18,19 +17,16 @@ const MAIN_COLOR = '#40E0D0'
 export default class StockFinanceBarChart extends Vue {
 
   chartData!: IStockStatementBarChartModel
-  chartOptions: Chart.ChartOptions = {}
-
-  applyDefaultOptions() {
-    this.chartOptions.maintainAspectRatio = true
-    this.chartOptions.responsive = true
-    
-    this.chartOptions.legend = {
+  chartOptions: Chart.ChartOptions = {
+    maintainAspectRatio: true,
+    responsive: true,    
+    legend: {
       display: false
-    }
-    this.chartOptions.plugins = {
+    },
+    plugins: {
       crosshair: false
-    }
-    this.chartOptions.scales = {
+    },
+    scales: {
       xAxes: [{
         gridLines: {
           display: false,
@@ -55,13 +51,13 @@ export default class StockFinanceBarChart extends Vue {
           drawBorder: false    
         },      
       }], 
-    }
-    this.chartOptions.animation = {
+    },
+    animation: {
       duration: 800,
       easing: 'easeOutQuad'
-    }
+    },
       
-    this.chartOptions.tooltips = {      
+    tooltips: {      
       enabled: true,
       titleFontSize: 15,
       titleFontColor: MAIN_COLOR,
@@ -99,15 +95,10 @@ export default class StockFinanceBarChart extends Vue {
     }    
   }
 
-  renderChart!: (chartData: any, options: any) => any
-
-  renderBarChart() {
-    this.applyDefaultOptions()
-    this.renderChart(this.createChartData(), this.chartOptions)
-  }
+  renderChart!: (chartData: unknown, options: unknown) => unknown
 
   mounted () {    
-    this.renderBarChart()
+    this.renderChart(this.createChartData(), this.chartOptions)
   }
 }
 </script>

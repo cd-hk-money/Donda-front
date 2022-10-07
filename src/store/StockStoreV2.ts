@@ -424,7 +424,6 @@ export default class StockStore extends VuexModule {
         statementLoaded: false
       })
 
-      console.log(this.statementTypes, 'types')
     } catch(e) {
       console.log(e)
     }

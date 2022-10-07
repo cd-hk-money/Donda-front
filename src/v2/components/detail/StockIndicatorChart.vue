@@ -5,7 +5,7 @@ import { Component, Prop } from 'vue-property-decorator'
 import { mixins, Radar } from 'vue-chartjs-typescript'
 
 import { transparentize } from '@/mixins/tools'
-import { ISimpleChartData, IStockIndicatorSectorModel, IStockModel } from '@/models/stock'
+import { IStockModel } from '@/models/stock'
 import { namespace } from 'vuex-class'
 
 const { reactiveProp } = mixins
@@ -14,36 +14,34 @@ const SUB_COLOR = 'rgb(255, 99, 132)'
 const StockStoreModule = namespace('StockStore')
 const LABEL_INDEX = ['EPS', 'BPS', 'ROE']
 
+interface ISector {
+  eps: number | undefined
+  bps: number | undefined
+  roe: number | undefined
+}
+
 @Component({
   extends: Radar,
   mixins: [reactiveProp],
 })
 export default class StockIndicatorChart extends Vue {
   
-  @Prop({default: {}}) chartData!: any
-  @Prop() sector!: any
+  @Prop({default: {}}) chartData!: ISector
+  @Prop() sector!: ISector
 
   @StockStoreModule.State('stock') stock!: IStockModel
 
-  chartOptions: Chart.ChartOptions = {}
-
-  renderChart!: (chartData: any, options: any) => any    
-
-  applyDefaultOptions() {
-
-    this.chartOptions.responsive = true
-    this.chartOptions.legend = {
+  chartOptions: Chart.ChartOptions = {
+    responsive: true,
+    legend: {
       display: true,      
-    }
+    },
 
-    this.chartOptions.plugins = {
+    plugins: {
       crosshair: false
-    }
-    this.chartOptions.animation = {
-      duration: 1000,
-      easing: 'easeOutBounce'
-    }
-    this.chartOptions.scale = {
+    },    
+
+    scale: {
       gridLines: {
         color: this.$vuetify.theme.dark ? transparentize('#fff', 0.9) : 'grey',   
         lineWidth: 1     
@@ -54,9 +52,14 @@ export default class StockIndicatorChart extends Vue {
       pointLabels: {
         fontSize: 20,        
       },
-    }
+    },
 
-    this.chartOptions.tooltips = {            
+    animation: {
+      duration: 1000,
+      easing: 'easeOutBounce'
+    },
+
+    tooltips: {            
       enabled: true,
       titleFontSize: 13,
       titleFontColor: MAIN_COLOR,
@@ -67,9 +70,9 @@ export default class StockIndicatorChart extends Vue {
       callbacks: {
         title: item => LABEL_INDEX[item[0].index]
       }      
-    }          
+    }   
   }
-  
+    
   createChartData () {            
     return {
       labels: ['EPS', 'BPS', 'ROE'],
@@ -112,12 +115,11 @@ export default class StockIndicatorChart extends Vue {
       ],          
     }
   }
-  renderLineChart() {
-    this.applyDefaultOptions()
-    this.renderChart(this.createChartData(), this.chartOptions)    
-  }
+
+  renderChart!: (chartData: unknown, options: unknown) => unknown    
+  
   mounted() {        
-    this.renderLineChart()
+    this.renderChart(this.createChartData(), this.chartOptions)    
   }    
 }
 </script> 

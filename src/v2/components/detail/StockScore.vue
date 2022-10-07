@@ -111,7 +111,7 @@ export default class StockScore extends Vue {
   @StockStoreModule.Action('getStockGraphDefault') readonly getStockGraphDefault!: (name: string) => Promise<void>
   @StockStoreModule.Action('getStockEvaluationDaily') getStockEvaluationDaily!: (stockCode: string) => Promise<void>
 
-  @MarketStoreModule.State('codeTitleMapping') codeTitleMapping!: any
+  @MarketStoreModule.State('codeTitleMapping') codeTitleMapping!: {[title: string]: number}
 
   get mobile () { 
     return mobileHeight(this.$vuetify.breakpoint.name) < 500 

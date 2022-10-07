@@ -4,7 +4,7 @@
   import Chart from 'chart.js'
   import { mixins, Line  } from 'vue-chartjs-typescript'
   import { transparentize } from '@/mixins/tools'
-  import { IStockModel, IStockStatementBarChartModel } from '@/models/stock'
+  import { IStockModel } from '@/models/stock'
   import { namespace } from 'vuex-class'
   
   const { reactiveProp } = mixins
@@ -24,16 +24,15 @@
     @StockStoreModule.State('stock') stock!: IStockModel
     @StockStoreModule.State('indicatorDailyChartLabel') labels!: string[]
   
-    chartData!: any
-    chartOptions: Chart.ChartOptions = {}
-  
-    applyDefaultOptions() {
-      this.chartOptions.maintainAspectRatio = true
-      this.chartOptions.responsive = true      
-      this.chartOptions.plugins = {
+    chartData!: number[] | undefined
+    chartOptions: Chart.ChartOptions = {
+      maintainAspectRatio: true,
+      responsive: true,
+      plugins: {
         crosshair: false
-      }
-        this.chartOptions.scales = {
+      },
+
+      scales: {
         xAxes: [{
           gridLines: {
             display: false,
@@ -53,7 +52,7 @@
           ticks: {
             display: false,
             fontSize: 15,                                       
-
+  
           },
           gridLines: {
             display: false,                  
@@ -62,13 +61,14 @@
             zeroLineColor: 'white'
           },      
         }], 
-      }
-      this.chartOptions.animation = {
+      },
+
+      animation: {
         duration: 2000,
         easing: 'easeOutQuad'
-      }
+      },
       
-      this.chartOptions.tooltips = {      
+      tooltips: {      
         enabled: true,
         titleFontSize: 14,
         titleFontColor: MAIN_COLOR,
@@ -77,9 +77,9 @@
         displayColors: false,        
         mode: 'index',
       }  
+
     }
-  
-  
+
     createChartData() {
       return {
         labels: this.labels,
@@ -110,15 +110,10 @@
       }    
     }
   
-    renderChart!: (chartData: any, options: any) => any
-  
-    renderBarChart() {
-      this.applyDefaultOptions()
-      this.renderChart(this.createChartData(), this.chartOptions)
-    }
-  
+    renderChart!: (chartData: unknown, options: unknown) => unknown
+        
     mounted () {
-      this.renderBarChart()
+      this.renderChart(this.createChartData(), this.chartOptions)
     }
   }
   </script>

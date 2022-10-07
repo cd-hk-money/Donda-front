@@ -514,7 +514,7 @@
 </template>
 
 <script lang="ts">
-import { ISimpleChartData, IStockIndicatorDailyModel, IStockIndicatorSectorDailyModel, IStockIndicatorSectorModel, IStockModel } from '@/models/stock';
+import { ISimpleChartData, IStockIndicatorDailyModel, IStockIndicatorSectorModel, IStockModel } from '@/models/stock';
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class'
 import StockIndicatorBarChart from '@/v2/components/detail/StockIndicatorBarChart.vue'
@@ -537,7 +537,7 @@ export default class StockIndicatorDetail extends Vue {
   @StockStoreModule.State('indicator') indicators!: ISimpleChartData  
   @StockStoreModule.State('indicatorDaily') indicatorDaily!: IStockIndicatorDailyModel
   @StockStoreModule.State('indicatorSector') indicatorSector!: IStockIndicatorSectorModel
-  @StockStoreModule.State('indicatorSectorDaily') indicatorSectorDaily!: any  
+  @StockStoreModule.State('indicatorSectorDaily') indicatorSectorDaily!: IStockIndicatorDailyModel  
   @StockStoreModule.State('indicatorLoaded') indicatorLoaded!: boolean
   @StockStoreModule.State('indicatorSectorLoaded') indicatorSectorLoaded!: boolean
   @StockStoreModule.State('indicatorDailyChartLabel') labels! :string[]

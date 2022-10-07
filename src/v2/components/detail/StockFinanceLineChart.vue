@@ -6,13 +6,12 @@ import Chart from 'chart.js'
 import { mixins, Line } from 'vue-chartjs-typescript'
 
 import { getGradient, transparentize } from '@/mixins/tools'
-import { ISimpleChartData, IStockStatementBarChartModel } from '@/models/stock'
+import { ISimpleChartData } from '@/models/stock'
 
 const { reactiveProp } = mixins
 const StockStoreModule = namespace('StockStore')
 
 const MAIN_COLOR = '#40E0D0'
-const SUB_COLOR = 'rgb(255, 99, 132)'
 const END_LABEL_INDEX = 23
 
 @Component({
@@ -115,7 +114,7 @@ export default class StockFinanceLineChart extends Vue {
     }    
   }
 
-  renderChart!: (chartData: any, options: any) => any
+  renderChart!: (chartData: unknown, options: unknown) => unknown
 
   renderLineChart() {
     this.applyDefaultOptions()

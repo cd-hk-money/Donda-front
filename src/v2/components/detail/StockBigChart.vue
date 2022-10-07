@@ -446,6 +446,8 @@ export default class StockBigChart extends Vue {
     }    
         
     const canvas = document.getElementById('lineChart') as HTMLCanvasElement
+    
+    if(!canvas) return
     const options = {
       data: chartData,
       options: this.chartOptions,
@@ -469,8 +471,6 @@ export default class StockBigChart extends Vue {
     this.chart.update()
   }
 
-
-  // hooks
   mounted () {        
     this.renderingChart()
   }
