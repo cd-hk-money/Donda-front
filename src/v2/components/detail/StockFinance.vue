@@ -64,7 +64,7 @@
               {{ contents[index] }}
               <div class="d-flex">
                 <v-sheet
-                  v-for="content in statmentInfomationsHTML[index]"
+                  v-for="content in stateInformationsHTML[index]"
                   :key="content"
                   outlined
                   max-height="40"
@@ -92,31 +92,6 @@
         <v-divider />
       </div>      
     </div>
-    
-    <v-dialog      
-      :style="dialogStyle"
-      max-width="800"
-      min-height="500"
-      v-model="dialog"      
-      overlay-opacity="0.2"      
-    >
-      <v-card         
-        max-width="800"
-        min-height="500"
-        outlined      
-      >
-        <v-card-title class="font-weight-bold">
-          {{ types[statementTypes.indexOf(dialogType)]  }}
-        </v-card-title>
-
-        <stock-finance-line-chart 
-          class="mr-5"            
-          :statementType="dialogType"
-          :title="title"
-        />  
-        <v-divider />
-      </v-card>
-    </v-dialog>
   </v-card>
 </template>
 
@@ -132,6 +107,12 @@ import { ISimpleChartData, IStockModel } from '@/models/stock'
 const StockStoreModule = namespace('StockStore')
 const MarketStoreModule = namespace('MarketStore')
 
+interface IStatementInfo {
+  type: string
+  description?: string
+  informations: string[]
+}
+
 @Component({
   components: {
     BtnBadge,
@@ -141,13 +122,7 @@ const MarketStoreModule = namespace('MarketStore')
 })
 export default class StockFinance extends Vue {
 
-  model = 0
   expands = [false, false, false, false, false, false, false, false, false, false]
-  dialog = false
-  dialogType = ''
-  dialogStyle = {
-    'margin-left': '20px'
-  }
 
   types = [
     '자산총계',              // asset
@@ -175,8 +150,60 @@ export default class StockFinance extends Vue {
     '의미합니다',
     '의미합니다',
   ]
+  
+  statements: IStatementInfo[] = [
+    {
+      type: '자산총계',
+      description: '현금, 매출채권, 제품, 공장 등 기업이 보유하고 있는 모든 자산입니다.',
+      informations: ['는 많으면 많을수록 좋습니다.', '']
+    },
+    {
+      type: '자본총계',
+      informations: ['는 많으면 많을수록 좋습니다.', '']
+    },
+    {
+      type: '자본총계(비지배)',
+      informations: ['는 많으면 많을수록 좋습니다.', '']
+    },
+    {
+      type: '부채총계',
+      informations: ['는 많으면 많을수록 좋습니다.', '']
+    },
+    {
+      type: '유동자산',
+      informations: ['는 많으면 많을수록 좋습니다.', '']
+    },
+    {
+      type: '당기순이익',
+      informations: ['는 많으면 많을수록 좋습니다.', '']
+    },
+    {
+      type: '당기순이익(비지배)',
+      informations: ['는 많으면 많을수록 좋습니다.', '']
+    },
+    {
+      type: '매출액',
+      informations: ['는 많으면 많을수록 좋습니다.', '']
+    },
+    {
+      type: '현금흐름',
+      informations: ['는 많으면 많을수록 좋습니다.', '']
+    },
+    {
+      type: '영업이익',
+      informations: ['는 많으면 많을수록 좋습니다.', '']
+    },
+    {
+      type: '영업총이익',
+      informations: ['는 많으면 많을수록 좋습니다.', '']
+    },    
+  ]
 
-  statmentInfomationsHTML = [
+  get statementInformationHTML () {
+    return this.statements.map(statement => this.createStatementinformationHTML(statement))
+  }
+
+  stateInformationsHTML = [
     ['<strong class="ml-1">자산총계</strong>는 많으면 많을수록 좋습니다.'],
     ['<strong class="ml-1">자본총계</strong>는 많으면 많을수록 좋습니다.'],
     ['<strong class="ml-1">자산총계</strong>는 많으면 많을수록 좋습니다.'],
@@ -188,46 +215,27 @@ export default class StockFinance extends Vue {
     ['<strong class="ml-1">자산총계</strong>는 많으면 많을수록 좋습니다.'],
     ['<strong class="ml-1">자산총계</strong>는 많으면 많을수록 좋습니다.'],
   ]
-
-  createInfomationHTML (html: string | string[]) {
-    if(typeof html === 'string')
-      return `
-        <v-sheet outlined max-height='40 class='pt-3 pb-3 pr-3 pl-3 mt-3 d-flex align-center' rounded='lg' color='blue-grey lighten-1'>
-          <v-icon small class='mr-1'>mdi-information</v-icon>${html}          
-        </v-sheet>
-      `.split('\n').join('').split('  ').join('')
-
-    else 
-      return html.map(content => 
-        `
-          <v-sheet
-            outlined
-            max-height="40"
-            class="pt-3 pb-3 pr-3 pl-3 mt-3 d-flex align-center"
-            rounded="lg"
-            color="blue-grey lighten-1"
-          >
-            <v-icon small class="mr-1">mdi-information</v-icon>
-            ${content}
-          </v-sheet>
-        `).join('').split('\n').join('').split('     ').join('')
-  }
-
-  get getStatementInformationHTML () {
-    return this.statmentInfomationsHTML.map(html => this.createInfomationHTML(html))
-  }
-
+  
+  createStatementinformationHTML = (statements:{type: string, informations: string[]}): string[] => (
+    statements.informations.map((information, i) => {
+      if(!i) return '<strong class="ml-1">' + statements.type + '</strong>' + information
+      else return information
+    })
+  )
+      
   get contents2 () {        
     return Object.values(this.statement)?.splice(1).map((statement, i) => {      
       const isHighVal = statement.value[0] > statement.value[1]
       return {
         chartData: [...statement.value].reverse(),
+        type: this.statementTypes[i],
+        html: this.statementInformationHTML[i],
+        description: this.statements[i].description,
         lastDate: statement.date[0],
         icon: isHighVal ? 'fa-solid fa-arrow-trend-up' : 'fa-solid fa-arrow-trend-down',
         iconColor: isHighVal ? 'red' : 'blue'
       }
-    })
-        
+    })        
   }
 
   get title () {    
