@@ -184,3 +184,9 @@ function crosshairLabel(chart, mousemove) {
   ctx.fillStyle = 'rgba(132, 132, 132, 1)'
 
 }
+
+export function numToKorean(number: number) {
+  if(number > 1000000000000) return number / 1000000000000 + '조'
+  else if(number > 1000000000) return number / 1000000000 + '억'
+  else number
+}

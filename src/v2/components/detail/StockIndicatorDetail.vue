@@ -14,6 +14,8 @@
       각 보조 지표가 의미하는 바를 알아보세요.
     </v-card-subtitle>
 
+    <div class="more"> 각 항목을 클릭하면, 더 많은 정보를 볼 수 있습니다. </div> 
+
 
     <v-divider />
 
@@ -117,7 +119,7 @@
               <strong class="mr-1">EPS</strong>와<strong class="mr-1 ml-1">BPS</strong>가 동시에 늘어나는 종목에 투자하는 것이 일반적으로 가장 높은 수익률을 거둘 수 있습니다.              
             </v-sheet>                  
           </v-card-text>
-      </v-card>        
+        </v-card>        
       </v-expand-transition>
     </v-sheet>    
 
@@ -623,6 +625,15 @@ export default class StockIndicatorDetail extends Vue {
 </script>
 
 <style scoped>
+
+.more {
+  position: absolute;
+  right: 5px;  
+  top: 60px;
+  font-size: 12px;
+  opacity: .8;
+  color: grey !important;
+}
 
 strong {  
   letter-spacing: .5px;

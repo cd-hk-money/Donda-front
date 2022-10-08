@@ -56,7 +56,6 @@ import { IMenu } from '@/v2/pages/MenuBar.vue'
 import StockBigChart from '@/v2/components/detail/StockBigChart.vue'
 
 const StockStoreModule = namespace('StockStore')
-const MarketStoreModule = namespace('MarketStore')
 
 @Component({
   components: {

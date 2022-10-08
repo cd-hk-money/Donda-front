@@ -5,7 +5,7 @@ import { namespace } from 'vuex-class'
 import Chart from 'chart.js'
 import { mixins, Line } from 'vue-chartjs-typescript'
 
-import { getGradient, transparentize } from '@/mixins/tools'
+import { numToKorean, transparentize } from '@/mixins/tools'
 import { ISimpleChartData } from '@/models/stock'
 
 const { reactiveProp } = mixins
@@ -21,31 +21,28 @@ const END_LABEL_INDEX = 23
 export default class StockFinanceLineChart extends Vue {
 
   @Prop() chartData!: null
-  @Prop() statementType!: string
-  @Prop() title!: string
-
-  chartOptions: Chart.ChartOptions = {}
-
+  @Prop() statementType!: string  
+  
   @StockStoreModule.Action('getStockStatementAll')
   readonly getStockStatementAll!: (payload: {code: string, statementType: string}) => Promise<void>
 
   @StockStoreModule.State('statementAll') statementAll!: ISimpleChartData
 
-  applyDefaultOptions() {
-    this.chartOptions.maintainAspectRatio = true
-    this.chartOptions.responsive = true
-    
-    this.chartOptions.legend = {
+  chartOptions: Chart.ChartOptions = {
+    maintainAspectRatio: true,
+    responsive: true,    
+    legend: {
       display: false
-    }
-    this.chartOptions.plugins = {
+    },
+
+    plugins: {
       crosshair: false
-    }
-      this.chartOptions.scales = {
+    },
+
+    scales: {
       xAxes: [{
         gridLines: {
           display: false,
-          zeroLineColor: '#444444',          
         },
         ticks: {
           fontSize: 12,
@@ -55,27 +52,22 @@ export default class StockFinanceLineChart extends Vue {
         }
       }],
       yAxes: [{
-        ticks: {
-          callback: function(value: string) {return value.toLocaleString()},
-          display: false,
+        ticks: {          
+          callback: (value: number) => numToKorean(value),
           fontSize: 15,       
-          beginAtZero: true,
         },
         gridLines: {
-          display: true,             
-          lineWidth: 0,
-          zeroLineWidth: 2,       
-          zeroLineBorderDash: [10, ],        
-          zeroLineColor: this.$vuetify.theme.dark ?  '#fff' : 'gray'
+          display: false
         },      
       }], 
-    }
-    this.chartOptions.animation = {
+    },
+
+    animation: {
       duration: 800,
       easing: 'easeOutQuad'
-    }
+    },
     
-    this.chartOptions.tooltips = {      
+    tooltips: {      
       enabled: true,
       titleFontSize: 15,
       titleFontColor: MAIN_COLOR,
@@ -89,8 +81,8 @@ export default class StockFinanceLineChart extends Vue {
         }
       },
     }  
-  }
 
+  }
 
   createChartData() {
     return {
@@ -99,31 +91,28 @@ export default class StockFinanceLineChart extends Vue {
         {
           data : Object.values(this.statementAll),
           fill: false,
-          borderColor: context => {
-            const {ctx, chartArea, data, scales, width, height} = context.chart
-            if(!chartArea) return null            
-            return getGradient(ctx, chartArea, data, scales, width, height)
-          },        
+          borderColor: MAIN_COLOR,     
           backgroundColor: transparentize(MAIN_COLOR, 0.9),
           borderWidth: 3,          
-          radius: ctx => (ctx.dataIndex === END_LABEL_INDEX || ctx.dataIndex === 0) ? 4 : 0,          
-          pointStyple: 'rectRounded',
+          radius: 4,          
+          
+          pointStyle: 'rectRounded',
           tension: .4,               
         }
       ]
     }    
   }
 
-  renderChart!: (chartData: unknown, options: unknown) => unknown
-
-  renderLineChart() {
-    this.applyDefaultOptions()
-    this.renderChart(this.createChartData(), this.chartOptions)
+  numToKorean(number: number) {
+    if(number > 1000000000000) return number % 1000000000000 + '조'
   }
 
+  renderChart!: (chartData: unknown, options: unknown) => unknown
+  
   async mounted () {
+    console.log(this.statementType)
     await this.getStockStatementAll({code: this.$route.params.title, statementType: this.statementType})
-    this.renderLineChart()
+    this.renderChart(this.createChartData(), this.chartOptions)
   }
     
 }

@@ -5,15 +5,10 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 import { mixins, Line } from 'vue-chartjs-typescript'
-import { transparentize, belowGradient, getGradient, crosshairLine, aboveGradient, meanStockData,
-  maxStockData, 
-minStockData} from '@/mixins/tools'
+import { transparentize,  meanStockData, maxStockData, minStockData} from '@/mixins/tools'
 
-import zoom from 'chartjs-plugin-zoom'
-import crosshair from '@sashke-er/chartjs-plugin-crosshair'
 import Chart from 'chart.js'
 import { namespace } from 'vuex-class'
-import Stock from './Stock.vue'
 import { IUpdateStateModel } from '@/models/payload'
 
 const { reactiveProp } = mixins
@@ -33,7 +28,6 @@ export default class StockBigChart extends Vue {
   tempCount = 20
   chartOptions: Chart.ChartOptions = {}
   yLabel: string
-
 
   // props
   @Prop({default: false}) fill!: boolean | undefined
@@ -69,8 +63,6 @@ export default class StockBigChart extends Vue {
     this.renderingChart()
   }
 
-
-  // methods
   getChartLabels () {
     return Object.keys(this.stockGraphAll)
   }  

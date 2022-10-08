@@ -176,8 +176,7 @@ export default class StockStore extends VuexModule {
       })
 
       return reses
-      
-      
+            
     } catch(e) {
       console.log(e)
     }
@@ -289,6 +288,7 @@ export default class StockStore extends VuexModule {
       })
 
       const res = await axios.get(`/stock/${name}/indicator`, HEADER)
+
 
       const label = Object.keys(res.data).slice(0, 4)      
       const value = Object.values(res.data).slice(0, 4) as string[]  
