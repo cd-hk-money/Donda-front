@@ -190,3 +190,7 @@ export function numToKorean(number: number) {
   else if(number > 1000000000) return number / 1000000000 + '억'
   else number
 }
+
+export function getFirstUpper(str: string) {
+  return str.replace(/\b[a-z]/g, char => char.toUpperCase());
+}

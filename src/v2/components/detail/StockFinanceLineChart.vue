@@ -3,7 +3,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 
 import Chart from 'chart.js'
-import { mixins, Line } from 'vue-chartjs-typescript'
+import { mixins, Bar } from 'vue-chartjs-typescript'
 
 import { numToKorean, transparentize } from '@/mixins/tools'
 import { ISimpleChartData } from '@/models/stock'
@@ -12,10 +12,9 @@ const { reactiveProp } = mixins
 const StockStoreModule = namespace('StockStore')
 
 const MAIN_COLOR = '#40E0D0'
-const END_LABEL_INDEX = 23
 
 @Component({
-  extends: Line,
+  extends: Bar,
   mixins: [reactiveProp]
 })
 export default class StockFinanceLineChart extends Vue {
@@ -63,7 +62,7 @@ export default class StockFinanceLineChart extends Vue {
     },
 
     animation: {
-      duration: 800,
+      duration: 1300,
       easing: 'easeOutQuad'
     },
     
@@ -86,16 +85,16 @@ export default class StockFinanceLineChart extends Vue {
 
   createChartData() {
     return {
-      labels: Object.keys(this.statementAll),
+      labels: Object.keys(this.statementAll) ?? [],
       datasets: [
         {
-          data : Object.values(this.statementAll),
+          data : Object.values(this.statementAll) ?? [],
           fill: false,
           borderColor: MAIN_COLOR,     
-          backgroundColor: transparentize(MAIN_COLOR, 0.9),
-          borderWidth: 3,          
+          backgroundColor: transparentize('#00BCD4', 0.85),
+          borderWidth: 3,                    
           radius: 4,          
-          
+          barThickness: 30,
           pointStyle: 'rectRounded',
           tension: .4,               
         }
@@ -110,7 +109,6 @@ export default class StockFinanceLineChart extends Vue {
   renderChart!: (chartData: unknown, options: unknown) => unknown
   
   async mounted () {
-    console.log(this.statementType)
     await this.getStockStatementAll({code: this.$route.params.title, statementType: this.statementType})
     this.renderChart(this.createChartData(), this.chartOptions)
   }

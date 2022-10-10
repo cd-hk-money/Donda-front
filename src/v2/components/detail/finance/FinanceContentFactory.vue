@@ -2,13 +2,18 @@
   <v-sheet
     class="stock-indicator-detail-content"
     elevation="0"    
-    @click="callback()"
+    @click="expand = !expand"
   >
     <v-card-title class="stock-indicator-detail-content-title d-flex align-end">
-      <span class="text-h4"> {{ getTypeUpper(indicatorType) }} </span>
+      <span class="text-h4"> {{ upper(indicatorType) }} </span>
         <v-chip small class="ml-3 mb-1">
           <v-icon :color="iconColor">
             {{ icon }}
+          </v-icon>
+        </v-chip>
+        <v-chip v-if="level" small class="ml-3 mb-1 d-flex">
+          <v-icon v-for="(star, i) in level" :key="i" color="#FDD835">
+            mdi-star
           </v-icon>
         </v-chip>
     </v-card-title>
@@ -17,7 +22,7 @@
       {{ typeKorean }}
     </v-card-subtitle>
 
-    <v-card-text class="d-flex">
+    <v-card-text class="d-flex align-center">
       <stock-finance-bar-chart
         class="ml-5 mr-5"
         :chartData="chartData"
@@ -25,12 +30,11 @@
       />
       <v-divider vertical/>
       
-      <div class="pl-3">
-        <div class="mr-1 font-weight-bold">
-          <strong> {{ getTypeUpper(indicatorType) }} </strong> | {{ typeKorean }}
+      <div class="pl-3">        
+        <div>
           <slot name="description"></slot>
         </div>
-        <div class="d-flex">
+        <div class="d-flex flex-wrap">
           <slot name="information"></slot> 
         </div>
       </div>
@@ -48,9 +52,10 @@
 </template>
 
 <script lang="ts">    
-import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
+import { Component, Vue, Prop } from 'vue-property-decorator';
 import StockFinanceBarChart from '@/v2/components/detail/StockFinanceBarChart.vue'
 import StockFinanceLineChart from '@/v2/components/detail/StockFinanceLineChart.vue'
+import { getFirstUpper } from '@/mixins/tools'
 import { IStockStatementBarChartModel } from '@/models/stock';
 
   @Component({
@@ -63,18 +68,31 @@ import { IStockStatementBarChartModel } from '@/models/stock';
     @Prop() chartData!: IStockStatementBarChartModel
     @Prop() typeKorean!: string
     @Prop() indicatorType!: string
-    @Prop() iconColor!: string
-    @Prop() icon!: string
+    @Prop({default: 0}) level!: number
 
     expand = false
+    icon = ''
+    iconColor = ''
 
-    callback () {
-      this.expand = !this.expand
+    getIcon() {
+      if(!this.chartData.value) return ''
+      return this.chartData?.value[0] > this.chartData?.value[1] ? 'fa-solid fa-arrow-trend-up' : 'fa-solid fa-arrow-trend-down'
     }
 
-    getTypeUpper(str: string) {
-      return str.replace(/\b[a-z]/g, char => char.toUpperCase());
+    getIconColor() {
+      if(!this.chartData.value) return ''
+      return this.chartData?.value[0] > this.chartData?.value[1] ? 'red' : 'blue'
     }
+
+    upper(str: string) {
+      return getFirstUpper(str)
+    } 
+
+    mounted () {
+      this.icon = this.getIcon()
+      this.iconColor = this.getIconColor()
+    }
+
 
   }
 </script>

@@ -51,7 +51,7 @@ export default class StockFinanceBarChart extends Vue {
       }], 
     },
     animation: {
-      duration: 800,
+      duration: 2000,
       easing: 'easeOutQuad'
     },
       
