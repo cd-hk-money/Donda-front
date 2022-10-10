@@ -33,8 +33,7 @@ export default class StockScoreBarChart extends Vue {
     scales: {
       xAxes: [{
         gridLines: {
-          display: false,
-          zeroLineColor: '#696969',          
+          display: false,          
         },
         ticks: {
           fontSize: 15,
@@ -51,8 +50,6 @@ export default class StockScoreBarChart extends Vue {
         gridLines: {
           display: true,                  
           color: '',            
-          zeroLineWidth: 2,
-          zeroLineColor: '#fff',    
           drawBorder: false                
         },      
       }], 

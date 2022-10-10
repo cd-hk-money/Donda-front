@@ -46,8 +46,6 @@ export default class StockFinanceBarChart extends Vue {
         },
         gridLines: {
           display: true,                             
-          zeroLineWidth: 2,
-          zeroLineColor: '#fff',    
           drawBorder: false    
         },      
       }], 

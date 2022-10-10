@@ -3,7 +3,6 @@
     :width="mobile ? '465' : '97%'"
     class="ml-5 mt-5 mr-5" 
     outlined
-
   >
     <v-tabs
       v-show="!mobile"
@@ -52,45 +51,6 @@
     </v-tabs-items>
   </v-card>
 
-    <!-- <v-carousel 
-      class="detail__stock-drawer"
-      cycle
-      interval="500000000"
-      hide-delimiter-background
-      hide-delimiters
-      :show-arrows="false"
-      height="100%"    
-      vertical    
-      v-model="drawer"
-  >    
-      <v-carousel-item>
-        <stock />
-      </v-carousel-item>
-  
-      <v-carousel-item>      
-        <stock-finance :key="componentKey" />
-      </v-carousel-item>
-  
-      <v-carousel-item>      
-        <stock-valuation/>
-      </v-carousel-item>
-  
-      <v-carousel-item>
-        <v-row>
-          <v-col cols="12" xl="6" lg="6" sm="12">
-            <stock-similar />
-          </v-col>
-          <v-col cols="12" xl="6" lg="6" sm="12">
-            <stock-news />
-          </v-col>
-        </v-row>
-      </v-carousel-item>
-  
-      <v-carousel-item>
-        <stock-indicator-detail />
-      </v-carousel-item>
-  
-    </v-carousel> -->
 </template>
 
 <script lang="ts">
@@ -132,6 +92,7 @@ export default class StockDrawer extends Vue {
   drawerChange(select: number) {
     this.$emit('drawerChange', select)
   }
+  
 
 }
 </script>

@@ -385,7 +385,8 @@ export default class StockStore extends VuexModule {
   public async getStockStatementAll(payload: {code: string, statementType: string}): Promise<void> {
     try {
       this.context.commit('updateState', {
-        statementAllLoaded: true
+        statementAllLoaded: true,
+        statement: {}
       })
 
       const {code, statementType} = payload

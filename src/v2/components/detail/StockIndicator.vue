@@ -150,9 +150,6 @@ export default class StockIndicator extends Vue {
     await this.getStockIndicator(stockcode)
     await this.getStockIndicatorDaily(stockcode) 
     await this.getIndicatorSector(stockcode) 
-
-    console.log(this.indicator)
-        
   }
 }
 </script> 

@@ -260,7 +260,6 @@ export default class StockValuationChart extends Vue {
         yAxes: [{
           ticks: {
             display: true,     
-            maxTicksLimit: 5,
             callback: ctx => ctx.toLocaleString()
           },
           gridLines: {

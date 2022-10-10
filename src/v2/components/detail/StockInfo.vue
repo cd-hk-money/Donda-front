@@ -104,7 +104,7 @@
         height="120"
       >                
         <v-card-title class="text-h5 font-weight-bold ml-5">
-          <span>₩ {{ stock.close.toLocaleString()}} </span>
+          <span> {{ stock.close.toLocaleString()}} ₩ </span>
           <v-btn  
             class="ml-3"
             icon
@@ -116,7 +116,7 @@
         </v-card-title>
 
         <v-card-subtitle :class="['text-h6', 'font-weight-bold', 'ml-5', stock.changes > 0 ? 'red--text' : 'blue--text']">
-          <span>{{ stock.changes > 0 ? '+' + stock.changes : stock.changes }}₩ ({{ stock.changes_ratio > 0 ? '+' + stock.changes_ratio : stock.changes_ratio}}%)</span>                        
+          <span>{{ stock.changes > 0 ? '+' + stock.changes.toLocaleString() : stock.changes.toLocaleString() }}₩ ({{ stock.changes_ratio > 0 ? '+' + stock.changes_ratio : stock.changes_ratio}}%)</span>                        
         </v-card-subtitle>
 
         <v-chip class="stock-info-sector" small >

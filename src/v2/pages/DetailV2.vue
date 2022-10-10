@@ -6,7 +6,57 @@
       <stock-indicator @drawerChange="drawerChange"/>    
     </v-col>    
     <v-col cols="12" xl="9" lg="8">
-      <stock-drawer @drawerChange="drawerChange" :drawer.sync="drawer"/>
+      <v-card 
+    :width="mobile ? '465' : '97%'"
+    class="ml-5 mt-5 mr-5" 
+    outlined
+  >
+    <v-tabs
+      v-show="!mobile"
+      v-model="drawer"        
+      fixed-tabs
+    >
+      <v-tabs-slider color="cyan"></v-tabs-slider>
+
+      <v-tab
+        v-for="item in tabItems"
+        :key="item"
+        active-class="cyan--text"        
+      >
+        {{ item }}
+      </v-tab>
+    </v-tabs>
+    <v-tabs-items v-model="drawer">
+      <v-tab-item>
+        <stock />
+      </v-tab-item>
+
+      <v-tab-item>
+        <stock-valuation />
+      </v-tab-item>
+
+      <v-tab-item>
+        <stock-indicator-detail />
+      </v-tab-item>
+
+      <v-tab-item>
+        <stock-finance :key="componentKey" />
+      </v-tab-item>
+
+
+      <v-tab-item>
+        <v-row>
+          <v-col cols="12" xl="6" lg="6" sm="12">
+            <stock-similar />
+          </v-col>
+          <v-col cols="12" xl="6" lg="6" sm="12">
+            <stock-news />
+          </v-col>
+        </v-row>
+      </v-tab-item>
+
+    </v-tabs-items>
+  </v-card>
     </v-col>
     <v-menu
       open-on-hover
@@ -55,6 +105,9 @@ import StockDrawer from '@/v2/components/detail/StockDrawer.vue'
 import StockIndicator from '@/v2/components/detail/StockIndicator.vue'
 import StockSimilar from '@/v2/components/detail/StockSimilar.vue'
 import StockNews from '@/v2/components/detail/StockNews.vue'
+import Stock from '@/v2/components/detail/Stock.vue'
+import StockValuation from '@/v2/components/detail/StockValuation.vue'
+import StockIndicatorDetail from '@/v2/components/detail/StockIndicatorDetail.vue'
 
 const StockStoreModule = namespace('StockStore')
 
@@ -67,13 +120,17 @@ const StockStoreModule = namespace('StockStore')
     StockIndicator,
     StockSimilar,
     StockNews,
-    StockDrawer
+    StockDrawer,
+    Stock,
+    StockValuation,
+    StockIndicatorDetail
   }
 })
 export default class DetailV2 extends Vue { 
 
   // Datas
   drawer = 0
+  tabItems = ['주가', '적정주가', '보조지표', '재무제표', '유사종목 및 뉴스']
   componentKey = 1 
   menus: IMenu[] = [
     {
@@ -123,8 +180,13 @@ export default class DetailV2 extends Vue {
     this.getStockGraphDefault(code)
   }  
 
-  created () {    
+  created () {        
     this.stockLoad(this.$route.params.title)
   }
+
+  mounted () {
+    this.drawer = 0
+  }
+
 }
 </script>
