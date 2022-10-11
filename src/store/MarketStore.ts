@@ -194,7 +194,7 @@ export default class MarketStore extends VuexModule {
 			this.context.commit('updateState', {
 				searchTableLoaded: true
 			})
-			const res = await axios.get('/krx', HEADER)
+			const res = await axios.get('/krx-corps', HEADER)
 			
 			this.context.commit('updateState', {
 				searchTable: Object.entries(res.data).map((stock: any) => ({
