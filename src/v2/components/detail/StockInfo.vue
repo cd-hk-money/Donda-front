@@ -16,9 +16,11 @@
             <span>{{ stock.name }}</span>                        
             <v-tooltip right>
               <template v-slot:activator="{on}">
-                <v-icon v-on="on" size="30" class="ml-5" color="red">fa-solid fa-arrow-trend-up</v-icon>
+                <v-icon v-on="on" size="30" class="ml-5" :color="prefixedValue.trendIconColor">
+                  {{ prefixedValue.trendIcon }}
+                </v-icon>
               </template>
-              <span class="red--text font-weight-bold">상승</span> 
+              <span :class="['font-weight-bold', prefixedValue.trendTextColor ]">{{ prefixedValue.trendText }}</span> 
               <span> 추세입니다.</span>
             </v-tooltip>
           </v-list-item-title>
@@ -28,13 +30,10 @@
         </v-list-item-content>
   
         <v-list-item-avatar>                  
-          <v-dialog
-            v-model="dialog"
-            width="auto"
-            height="auto"
-          >
+          <v-dialog v-model="dialog">
             <template v-slot:activator="{ on, attrs }">
-              <v-btn icon x-large
+              <v-btn 
+                icon x-large
                 v-on="on"                
                 v-bind="attrs"
               >
@@ -116,7 +115,7 @@
         </v-card-title>
 
         <v-card-subtitle :class="['text-h6', 'font-weight-bold', 'ml-5', stock.changes > 0 ? 'red--text' : 'blue--text']">
-          <span>{{ stock.changes > 0 ? '+' + stock.changes.toLocaleString() : stock.changes.toLocaleString() }}₩ ({{ stock.changes_ratio > 0 ? '+' + stock.changes_ratio : stock.changes_ratio}}%)</span>                        
+          <span>{{ prefixedValue.changes }}₩ ({{ prefixedValue.changes_ratio }}%)</span>                        
         </v-card-subtitle>
 
         <v-chip class="stock-info-sector" small >
@@ -128,18 +127,13 @@
         </div>
       </v-sheet>
     </template>
+
     <template v-else>
       <div class="text-center stockinfo-progress-circular">
-        <v-progress-circular
-          indeterminate
-          color="#40E0D0"
-        ></v-progress-circular>
+        <v-progress-circular indeterminate color="#40E0D0" />        
       </div>
-
     </template>
-
-    <!-- Delete SparkLine -->
-  </v-card>
+</v-card>
 </template>
 
 <script lang="ts">
@@ -149,6 +143,7 @@ import { namespace } from 'vuex-class'
 import { IUpdateStateModel } from '@/models/payload';
 import { IStockModel } from '@/models/stock'
 import { IInterestGroup, IInterestGroupItem } from '@/models/interest'
+import Stock from './Stock.vue';
 
 
 const StockStoreModule = namespace('StockStore')
@@ -178,6 +173,18 @@ export default class StockInfo extends Vue {
 
   get mobile () { 
     return this.$vuetify.breakpoint.name === 'xs' 
+  }
+
+  // <span>{{ stock.changes > 0 ? '+' + stock.changes.toLocaleString() : stock.changes.toLocaleString() }}₩ ({{ stock.changes_ratio > 0 ? '+' + stock.changes_ratio : stock.changes_ratio}}%)</span>                        
+  get prefixedValue () {
+    return {
+      changes: this.stock.changes > 0 ? '+': '' + this.stock.changes.toLocaleString(),
+      changes_ratio: this.stock.changes_ratio > 0 ? '+' : '' + this.stock.changes_ratio.toLocaleString(),
+      trendIcon: this.stock.changes > 0 ? 'fa-solid fa-arrow-trend-up' : 'fa-solid fa-arrow-trend-down',
+      trendText: this.stock.changes > 0 ? '상승' : '하락',
+      trendTextColor: this.stock.changes > 0 ? 'red--text' : 'blue--text',
+      trendIconColor: this.stock.changes > 0 ? 'red' : 'blue'
+    }
   }
   
   drawerChange () {
@@ -211,7 +218,7 @@ export default class StockInfo extends Vue {
 
 .stock-info-sector {
   position: absolute; 
-  font-size: 10px !important;
+  font-size: 13px !important;
   top: 60%;
   right: 2%;
 }

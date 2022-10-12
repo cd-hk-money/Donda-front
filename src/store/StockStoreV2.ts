@@ -389,10 +389,11 @@ export default class StockStore extends VuexModule {
         statement: {}
       })
 
-      const {code, statementType} = payload            
-      const replacedStatementType = statementType.replace('_','')
+      const {code, statementType} = payload                  
       
-      const res = await axios.get(`/stock/${code}/statement/${statementType.replace('_','')}`, HEADER)
+      const res = await axios.get(`/stock/${code}/statement/${statementType}`, HEADER)
+
+      console.log(res.data)
 
       this.context.commit('updateState', {
         statementAll: res.data.origin,
@@ -412,6 +413,8 @@ export default class StockStore extends VuexModule {
       })
 
       const res = await axios.get(`/stock/${code}/statement`, HEADER)
+
+      console.log(res.data)
 
       const label = Object.keys(res.data)
       const value = Object.values(res.data) as string[]                        

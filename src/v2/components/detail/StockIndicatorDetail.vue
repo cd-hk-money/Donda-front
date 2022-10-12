@@ -28,12 +28,12 @@
         :chartData="indicators.eps"
         :sectorData="indicatorSector.sector_eps"
       >
-      <template v-slot:title>
-        <strong>E</strong>arnings <strong>P</strong>er <strong>S</strong>hare |  주당 순이익
-      </template>
+        <template v-slot:title>
+          <strong>E</strong>arnings <strong>P</strong>er <strong>S</strong>hare |  주당 순이익
+        </template>
 
-      <template v-slot:description>
-        <strong>당기순이익</strong>
+        <template v-slot:description>
+          <strong>당기순이익</strong>
           <BtnBadge>
             <template v-slot:text>
               <div><strong class="text-h6 cyan--text font-weight-bold">당기순이익</strong></div>
@@ -54,26 +54,25 @@
                 <a href="https://econowide.com/3598">출처: 이코노와이드 블로그</a>
               </div>
             </template>
-          </BtnBadge>
-          로 나눈 값을 의미합니다.
-      </template>
+          </BtnBadge> 로 나눈 값을 의미합니다.
+        </template>
 
-      <template v-slot:compareSector>
-        <strong>{{ stock.name }}</strong>의 1년 <strong>EPS 평균값은</strong> <strong>{{ epsMean.origin.toLocaleString() }}</strong>으로,
-        <strong class="sector">동종 업계 1년 평균 {{ epsMean.sector.toLocaleString() }}</strong> 보다  
-        <strong :class="epsMean.colorClass">{{ epsMean.text }}</strong>
-        <v-icon :color="epsMean.iconColor" size="20" class="ml-2">{{ epsMean.icon}}</v-icon>
-      </template>
+        <template v-slot:compareSector>
+          <strong>{{ stock.name }}</strong>의 1년 <strong>EPS 평균값은</strong> <strong>{{ epsMean.origin.toLocaleString() }}</strong>으로,
+          <strong class="sector">동종 업계 1년 평균 {{ epsMean.sector.toLocaleString() }}</strong> 보다  
+          <strong :class="epsMean.colorClass">{{ epsMean.text }}</strong>
+          <v-icon :color="epsMean.iconColor" size="20" class="ml-2">{{ epsMean.icon}}</v-icon>
+        </template>
       
-      <template v-slot:information>
-        <InformationFactory :addinationalClass="'indicator-detail-card'">
-          <strong class="mr-1">EPS</strong> 가 평균보다 높을수록, <span>투자 가치가 높다고 볼 수 있습니다</span>
-        </InformationFactory>
+        <template v-slot:information>
+          <InformationFactory :addinationalClass="'indicator-detail-card'">
+            <strong class="mr-1">EPS</strong> 가 평균보다 높을수록, <span>투자 가치가 높다고 볼 수 있습니다</span>
+          </InformationFactory>
 
-        <InformationFactory>
-          <strong class="mr-1">EPS</strong>와<strong class="mr-1 ml-1">BPS</strong>가 동시에 늘어나는 종목에 투자하는 것이 일반적으로 가장 높은 수익률을 거둘 수 있습니다.
-        </InformationFactory>
-      </template>
+          <InformationFactory>
+            <strong class="mr-1">EPS</strong>와<strong class="mr-1 ml-1">BPS</strong>가 동시에 늘어나는 종목에 투자하는 것이 일반적으로 가장 높은 수익률을 거둘 수 있습니다.
+          </InformationFactory>
+        </template>
     </IndicatorContentFactory>
 
     <!-- BPS -->

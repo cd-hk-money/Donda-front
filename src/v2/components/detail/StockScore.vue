@@ -35,10 +35,7 @@
         </template>
         <template v-else>
           <div class="text-center stockinfo-progress-circular">
-            <v-progress-circular
-              indeterminate
-              color="#40E0D0"
-            ></v-progress-circular>
+            <v-progress-circular indeterminate color="#40E0D0" />            
           </div>
         </template>
       </v-col>            
@@ -61,9 +58,8 @@
               v-on="on"
               v-bind="attrs"
               class="ml-1"
-              icon         
-              @click="drawerChange"     
-            ><v-icon>fa-solid fa-circle-question</v-icon>
+              icon                  
+            ><v-icon small>fa-solid fa-circle-question</v-icon>
             </v-btn>
           </template>
           <span>자세히..</span>
@@ -124,7 +120,6 @@ export default class StockScore extends Vue {
   get scorePer () : ScoreType {    
     const [close, valuation] = [this.stock.close, Number(Number(this.stockEvaluationDailyLast).toFixed())]
     const isHighVal = close > valuation
-
     const score = isHighVal ? (valuation / close * 100).toFixed() : (close / valuation * 100).toFixed()
     const text = isHighVal ? '고평가': '저평가'
     const colorClass = isHighVal ? 'red--text' : 'blue--text'
