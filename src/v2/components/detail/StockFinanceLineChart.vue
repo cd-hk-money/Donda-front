@@ -10,8 +10,8 @@ import { ISimpleChartData } from '@/models/stock'
 
 const { reactiveProp } = mixins
 const StockStoreModule = namespace('StockStore')
-
 const MAIN_COLOR = '#40E0D0'
+const SUB_COLOR = 'rgb(255, 99, 132)'
 
 @Component({
   extends: Bar,
@@ -90,8 +90,8 @@ export default class StockFinanceLineChart extends Vue {
         {
           data : Object.values(this.statementAll) ?? [],
           fill: false,
-          borderColor: MAIN_COLOR,     
-          backgroundColor: transparentize('#00BCD4', 0.85),
+          borderColor: ctx => ctx.dataset.data[ctx.dataIndex] > 0 ? MAIN_COLOR : SUB_COLOR,
+          backgroundColor: ctx => ctx.dataset.data[ctx.dataIndex] > 0 ? transparentize(MAIN_COLOR, 0.85) : transparentize(SUB_COLOR, 0.85),
           borderWidth: 3,                    
           radius: 4,          
           barThickness: 30,

@@ -9,6 +9,7 @@ import { IStockStatementBarChartModel } from '@/models/stock'
 const { reactiveProp } = mixins
 
 const MAIN_COLOR = '#40E0D0'
+const SUB_COLOR = 'rgb(255, 99, 132)'
 
 @Component({
   extends: Bar,
@@ -79,13 +80,12 @@ export default class StockFinanceBarChart extends Vue {
         {
           data : [...this.chartData.value].reverse().map((value: number) => `${value}`),
           fill: true,
-          borderColor: MAIN_COLOR,        
-          backgroundColor: transparentize(MAIN_COLOR, 0.9),
+          borderColor: ctx => ctx.dataset.data[ctx.dataIndex] > 0 ? MAIN_COLOR : SUB_COLOR,
+          backgroundColor: ctx => ctx.dataset.data[ctx.dataIndex] > 0 ? transparentize(MAIN_COLOR, 0.85) : transparentize(SUB_COLOR, 0.85),          
           borderWidth: 3,
           radius: 4,
           pointStyple: 'rectRounded',
           tension: .4,         
-          minBarLength: 30,
           barThickness: 60,
           
         }

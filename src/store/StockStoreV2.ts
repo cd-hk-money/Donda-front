@@ -389,10 +389,8 @@ export default class StockStore extends VuexModule {
         statement: {}
       })
 
-      const {code, statementType} = payload
-            
+      const {code, statementType} = payload            
       const replacedStatementType = statementType.replace('_','')
-      console.log(replacedStatementType)
       
       const res = await axios.get(`/stock/${code}/statement/${statementType.replace('_','')}`, HEADER)
 

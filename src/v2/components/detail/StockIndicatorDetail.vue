@@ -15,10 +15,117 @@
 
     <div class="more"> 각 항목을 클릭하면, 더 많은 정보를 볼 수 있습니다. </div> 
 
-
     <v-divider />
 
     <div v-if="!indicatorLoaded && !indicatorSectorLoaded">
+
+      <!-- EPS -->
+      <IndicatorContentFactory       
+        indicatorType="eps"
+        :iconColor="epsMean.iconColor"
+        :icon="epsMean.icon"
+        :tooltipMessage="epsMean.text"
+        :chartData="indicators.eps"
+        :sectorData="indicatorSector.sector_eps"
+      >
+      <template v-slot:title>
+        <strong>E</strong>arnings <strong>P</strong>er <strong>S</strong>hare |  주당 순이익
+      </template>
+
+      <template v-slot:description>
+        <strong>당기순이익</strong>
+          <BtnBadge>
+            <template v-slot:text>
+              <div><strong class="text-h6 cyan--text font-weight-bold">당기순이익</strong></div>
+              일정 회계기간 동안 발생한 기업의 전체 수익에서 비용을 차감한 금액으로,
+              <div class="d-flex justify-space-between">
+                <span><strong class="cyan--text">일정 기간동안 기업이 창출한 순이익</strong>을 뜻합니다.</span>
+                <a href="https://terms.naver.com/entry.naver?docId=67170&cid=43667&categoryId=43667">출처: 네이버 지식백과</a>
+              </div>
+            </template>
+          </BtnBadge>을 
+          <strong>유통 주식수</strong>
+          <BtnBadge>
+            <template v-slot:text>
+              <div><strong class="text-h6 cyan--text font-weight-bold">유통 주식수</strong></div>
+              상장법인의 총발행 주식 중 최대주주 지분 및 정부 소유주 등을 제외한,
+              <div class="d-flex justify-space-between">
+                <span><strong class="cyan--text">실제 시장에서 유통 가능한 주식 수</strong>를 뜻합니다.</span>
+                <a href="https://econowide.com/3598">출처: 이코노와이드 블로그</a>
+              </div>
+            </template>
+          </BtnBadge>
+          로 나눈 값을 의미합니다.
+      </template>
+
+      <template v-slot:compareSector>
+        <strong>{{ stock.name }}</strong>의 1년 <strong>EPS 평균값은</strong> <strong>{{ epsMean.origin.toLocaleString() }}</strong>으로,
+        <strong class="sector">동종 업계 1년 평균 {{ epsMean.sector.toLocaleString() }}</strong> 보다  
+        <strong :class="epsMean.colorClass">{{ epsMean.text }}</strong>
+        <v-icon :color="epsMean.iconColor" size="20" class="ml-2">{{ epsMean.icon}}</v-icon>
+      </template>
+      
+      <template v-slot:information>
+        <InformationFactory :addinationalClass="'indicator-detail-card'">
+          <strong class="mr-1">EPS</strong> 가 평균보다 높을수록, <span>투자 가치가 높다고 볼 수 있습니다</span>
+        </InformationFactory>
+
+        <InformationFactory>
+          <strong class="mr-1">EPS</strong>와<strong class="mr-1 ml-1">BPS</strong>가 동시에 늘어나는 종목에 투자하는 것이 일반적으로 가장 높은 수익률을 거둘 수 있습니다.
+        </InformationFactory>
+      </template>
+    </IndicatorContentFactory>
+
+    <!-- BPS -->
+    <IndicatorContentFactory       
+      indicatorType="bps"
+      :iconColor="bpsMean.iconColor"
+      :icon="bpsMean.icon"
+      :tooltipMessage="bpsMean.text"
+      :chartData="indicators.bps"
+      :sectorData="indicatorSector.sector_bps"
+    >
+      <template v-slot:title>
+        <strong>E</strong>arnings <strong>P</strong>er <strong>S</strong>hare |  주당 순이익
+      </template>
+
+      <template v-slot:description>
+        <strong>순자산</strong>
+          <BtnBadge>
+            <template v-slot:text>            
+              <div><strong class="text-h6 cyan--text font-weight-bold">순자산</strong></div>
+              총자산에서 부채를 뺀 것을 의미합니다. <strong class="cyan--text">자기자본</strong> 이라고도 합니다.
+              <div class="d-flex justify-space-between">
+                <div></div>
+                <a href="https://econowide.com/3598">출처: 매일경제 경제용어사전</a>
+              </div>
+            </template>
+          </BtnBadge>        
+          을 
+          <strong>발행 주식수</strong> 로 나눈 값을 의미합니다.  
+      </template>
+
+      <template v-slot:compareSector>
+        <strong>{{ stock.name }}</strong>의 1년 <strong>BPS 평균값은</strong> <strong>{{ bpsMean.origin.toLocaleString() }}</strong>으로,
+        <strong class="sector">동종 업계 1년 평균 {{ bpsMean.sector.toLocaleString() }}</strong> 보다  
+        <strong :class="bpsMean.colorClass">{{ bpsMean.text }}</strong>
+        <v-icon :color="bpsMean.iconColor" size="20" class="ml-2">{{ bpsMean.icon}}</v-icon>        
+      </template>
+
+      <template v-slot:information>
+        <InformationFactory :addinationalClass="'indicator-detail-card'">
+          <strong class="mr-1">BPS</strong> 가 높으면, 자기 자본의 비중이 크거나, <span>회사의 가치가 높다고 판단됩니다</span>
+        </InformationFactory>
+
+        <InformationFactory>
+          <strong class="mr-1">BPS</strong> 에는 주가 정보가 고려되있지 않기 때문에, 주가와의 상관관계를 파악하기 위해 주로<strong class="ml-1 mr-1">PBR</strong>을 같이 확인하여 투자 가치를 판단합니다.
+        </InformationFactory>
+
+        <InformationFactory>
+          <strong class="mr-1">BPS</strong>와<strong class="mr-1 ml-1">EPS</strong>가 동시에 늘어나는 종목에 투자하는 것이 일반적으로 가장 높은 수익률을 거둘 수 있습니다.
+        </InformationFactory>
+      </template>
+    </IndicatorContentFactory>
       <!-- EPS -->
       <v-sheet       
         class="stock-indicator-detail-content" 
@@ -47,10 +154,9 @@
           </span>        
         </v-card-subtitle>
   
-        <v-card-text :class="['grey--text', getStrongFontColorClass]">
-  
+        <v-card-text :class="['grey--text', getStrongFontColorClass]">  
           <strong>당기순이익</strong>
-          <btn-badge>
+          <BtnBadge>
             <template v-slot:text>
               <div><strong class="text-h6 cyan--text font-weight-bold">당기순이익</strong></div>
               일정 회계기간 동안 발생한 기업의 전체 수익에서 비용을 차감한 금액으로,
@@ -59,10 +165,9 @@
                 <a href="https://terms.naver.com/entry.naver?docId=67170&cid=43667&categoryId=43667">출처: 네이버 지식백과</a>
               </div>
             </template>
-          </btn-badge>
-          을 
+          </BtnBadge>을           
           <strong>유통 주식수</strong>
-          <btn-badge>
+          <BtnBadge>
             <template v-slot:text>
               <div><strong class="text-h6 cyan--text font-weight-bold">유통 주식수</strong></div>
               상장법인의 총발행 주식 중 최대주주 지분 및 정부 소유주 등을 제외한,
@@ -71,9 +176,8 @@
                 <a href="https://econowide.com/3598">출처: 이코노와이드 블로그</a>
               </div>
             </template>
-          </btn-badge>
-          로 나눈 값을 의미합니다.
-  
+          </BtnBadge>
+          로 나눈 값을 의미합니다.  
         </v-card-text>
   
         <v-expand-transition>
@@ -88,7 +192,7 @@
   
             <v-divider />
   
-            <v-card-text :class="['grey--text mt-1', getStrongFontColorClass]">            
+            <v-card-text :class="['grey--text mt-1', getStrongFontColorClass]">
               <div>
                 <strong>{{ stock.name }}</strong>의 1년 <strong>EPS 평균값은</strong> <strong>{{ epsMean.origin.toLocaleString() }}</strong>으로,
                 <strong class="sector">동종 업계 1년 평균 {{ epsMean.sector.toLocaleString() }}</strong> 보다  
@@ -151,10 +255,9 @@
           <strong>B</strong>ookvalue <strong>P</strong>er <strong>S</strong>hare | 주당 순자산가치
         </v-card-subtitle>
   
-        <v-card-text :class="['grey--text', getStrongFontColorClass]">
-  
+        <v-card-text :class="['grey--text', getStrongFontColorClass]">  
           <strong>순자산</strong>
-          <btn-badge>
+          <BtnBadge>
             <template v-slot:text>            
               <div><strong class="text-h6 cyan--text font-weight-bold">순자산</strong></div>
               총자산에서 부채를 뺀 것을 의미합니다. <strong class="cyan--text">자기자본</strong> 이라고도 합니다.
@@ -163,10 +266,9 @@
                 <a href="https://econowide.com/3598">출처: 매일경제 경제용어사전</a>
               </div>
             </template>
-          </btn-badge>        
+          </BtnBadge>        
           을 
-          <strong>발행 주식수</strong> 로 나눈 값을 의미합니다.
-  
+          <strong>발행 주식수</strong> 로 나눈 값을 의미합니다.  
         </v-card-text>
   
         <v-expand-transition>
@@ -257,7 +359,7 @@
   
         <v-card-text :class="['grey--text', getStrongFontColorClass]">
           <strong>당기순이익</strong>
-          <btn-badge>
+          <BtnBadge>
             <template v-slot:text>
               <div><strong class="text-h6 cyan--text font-weight-bold">당기순이익</strong></div>
               일정 회계기간 동안 발생한 기업의 전체 수익에서 비용을 차감한 금액으로,
@@ -268,10 +370,10 @@
                 <a href="https://terms.naver.com/entry.naver?docId=67170&cid=43667&categoryId=43667">출처: 네이버 지식백과</a>
               </div>
             </template>
-          </btn-badge>
+          </BtnBadge>
           을                 
           <strong>평균 자기자본</strong>
-          <btn-badge>
+          <BtnBadge>
             <template v-slot:text>
               <div><strong class="text-h6 cyan--text font-weight-bold">평균 자기자본</strong></div>
               일정기간동안 자기자본의 평균을 뜻합니다.
@@ -280,7 +382,7 @@
                 <a href="https://terms.naver.com/entry.naver?docId=67170&cid=43667&categoryId=43667">출처: 페페 주식정보 블로그</a>
               </div>
             </template>
-          </btn-badge>
+          </BtnBadge>
           으로 나눈 수치 백분율 값을 의미합니다.
         </v-card-text>
   
@@ -522,7 +624,9 @@ import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class'
 import StockIndicatorBarChart from '@/v2/components/detail/StockIndicatorBarChart.vue'
 import StockIndicatorLineChart from '@/v2/components/detail/StockIndicatorLineChart.vue'
+import IndicatorContentFactory from '@/v2/components/detail/indicator/IndicatorContentFactory.vue'
 import BtnBadge from '@/v2/components/vuetify/BtnBadge.vue'
+import InformationFactory from '@/v2/components/detail/finance/InformationFactory.vue';
 
 const StockStoreModule = namespace('StockStore')
 const MarketStoreModule = namespace('MarketStore')
@@ -530,6 +634,8 @@ const MarketStoreModule = namespace('MarketStore')
 @Component({
   components: {
     BtnBadge,
+    InformationFactory,
+    IndicatorContentFactory,
     StockIndicatorBarChart,
     StockIndicatorLineChart    
   }
@@ -703,7 +809,7 @@ strong {
   color: rgb(255, 99, 132) !important;  
 } 
 
-.btn-badge-text {
+.BtnBadge-text {
   font-size: 10px !important;
 }
 

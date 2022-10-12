@@ -2,7 +2,7 @@
     <v-sheet
     outlined
     max-height="40"
-    class="ml-2 pt-3 pb-3 pr-3 pl-3 mt-3 d-flex align-center"
+    :class="['ml-2 pt-3 pb-3 pr-3 pl-3 mt-3 d-flex align-center', addinationalClass]"
     rounded="lg"    
     :color="color"
   >
@@ -13,11 +13,11 @@
 
 <script lang="ts">
   import { Component, Vue, Prop } from 'vue-property-decorator';
-
   
   @Component
   export default class  extends Vue {
     @Prop({default: 'blue-grey lighten-1'}) color!: string  
+    @Prop({default: ''}) addinationalClass!: string
   }
 </script>
 

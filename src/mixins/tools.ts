@@ -186,8 +186,10 @@ function crosshairLabel(chart, mousemove) {
 }
 
 export function numToKorean(number: number) {
-  if(number > 1000000000000) return number / 1000000000000 + '조'
-  else if(number > 1000000000) return number / 1000000000 + '억'
+  if(number >= 1000000000000) return number / 1000000000000 + '조'
+  else if(number > 100000000) return number / 100000000 + '억'
+  else if(number < -1000000000000) return '-' + number * (-1) / 1000000000000 + '조'
+  else if(number < -100000000) return '-' + number * (-1) / 100000000 + '억'
   else number
 }
 

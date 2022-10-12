@@ -320,7 +320,7 @@ import BtnBadge from '../vuetify/BtnBadge.vue'
 import StockFinanceBarChart from '@/v2/components/detail/StockFinanceBarChart.vue'
 import StockFinanceLineChart from '@/v2/components/detail/StockFinanceLineChart.vue'
 import FinanceContentFactory from '@/v2/components/detail/finance/FinanceContentFactory.vue'
-import FinanceInformationFactory from '@/v2/components/detail/finance/FinanceInformationFactory.vue'
+import FinanceInformationFactory from '@/v2/components/detail/finance/InformationFactory.vue'
 import { ISimpleChartData, IStockModel } from '@/models/stock'
 
 const StockStoreModule = namespace('StockStore')
