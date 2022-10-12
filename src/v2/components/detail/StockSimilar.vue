@@ -8,14 +8,10 @@
   >  
     <v-card-title>
       유사 종목
-      <v-btn  
-        class="ml-3"
-        icon
-        right
-        x-small
-        @click="overlay = true"
-      ><v-icon>fa-solid fa-circle-question</v-icon>
-      </v-btn>
+      <BtnBadge>
+        <span class="font-weight-bold cyan--text">{{ stock.sector }} </span> 에 속하는 기업들에서
+        <span class="font-weight-bold cyan--text">{{ stock.name }}</span> 과 유사한 기업을 추천해줍니다.        
+      </BtnBadge>
     </v-card-title>      
     <v-card-subtitle>
       유사 종목을 보여줍니다.
@@ -40,7 +36,7 @@
       height="300"
     >
       <div>
-        추천 종목 기준에 대한 설명..
+        유사 종목 기준에 대한 설명..
       </div>
       <div class="d-flex justify-center">
         <v-btn
@@ -63,19 +59,22 @@ const StockStoreModule = namespace('StockStore')
 
 import StockSimilarContent from '@/v2/components/detail/StockSimilarContents.vue'
 import { IStockModel, StockRecommendModel } from '@/models/stock'
+import BtnBadge from '../vuetify/BtnBadge.vue'
 
 @Component({
   components: {
+    BtnBadge,
     StockSimilarContent
   }
 })
 export default class StockSimilar extends Vue {
   overlay = false
-
+  
   @MarketStoreModule.State('recommend') recommend!: StockRecommendModel[]
   @MarketStoreModule.State('recommedLoaded') loaded!: boolean
   @MarketStoreModule.Action('getRecommend') readonly getRecommend!: () => Promise<void>
 
+  @StockStoreModule.State('stock') stock!: IStockModel
   @StockStoreModule.State('similarContents') similarContents!: IStockModel[]
   @StockStoreModule.Action('getSimilarContents') readonly getSimilarContent!: (code: string) => Promise<void>
 

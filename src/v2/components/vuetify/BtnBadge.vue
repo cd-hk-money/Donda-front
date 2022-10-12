@@ -1,5 +1,8 @@
 <template>
-  <v-tooltip bottom class="btn-badge">
+  <v-tooltip 
+    bottom class="btn-badge"
+    color="grey darken-3"
+  >
     <template v-slot:activator="{on, attrs}">
       <v-btn 
         v-on="on"
@@ -10,9 +13,8 @@
         </v-icon>
       </v-btn>
     </template>
-    <slot name="text">
-
-    </slot>    
+    <slot name="text"></slot>    
+    <slot></slot>
   </v-tooltip>
 </template>
 
