@@ -9,16 +9,21 @@
     <v-card-title>
       유사 종목
       <BtnBadge>
-        <span class="font-weight-bold cyan--text">{{ stock.sector }} </span> 에 속하는 기업들에서
-        <span class="font-weight-bold cyan--text">{{ stock.name }}</span> 과 유사한 기업을 추천해줍니다.        
+        <v-card-title>
+          유사 종목
+        </v-card-title>
+        <v-card-subtitle>
+          <span class="font-weight-bold cyan--text">{{ stock.sector }} </span> 에 속하는 기업들에서
+          <span class="font-weight-bold cyan--text">{{ stock.name }}</span> 과 유사한 기업을 추천해줍니다.        
+        </v-card-subtitle>
       </BtnBadge>
     </v-card-title>      
     <v-card-subtitle>
       유사 종목을 보여줍니다.
     </v-card-subtitle>
 
-    <v-divider></v-divider>
-
+    <v-divider />
+    
     <v-card-text v-if="!loaded" class="d-flex flex-wrap justify-center">
       <stock-similar-content 
         v-for="(content, i) in similarContents"
@@ -26,8 +31,6 @@
         :content="content"
       />
     </v-card-text>
-
-    <v-divider></v-divider>
     
     <v-overlay 
       :value="overlay"      
@@ -98,7 +101,7 @@ export default class StockSimilar extends Vue {
 }
 
 .stock-similar:hover {
-  color: rgba(64, 224, 208, 1);
+  color: #00BCD4;
 }
 
 .stock-similar::-webkit-scrollbar-thumb,

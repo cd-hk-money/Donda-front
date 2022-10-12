@@ -13,8 +13,6 @@
     <v-card-subtitle>
        종목 관련 뉴스를 보여줍니다.
     </v-card-subtitle>
-
-    <v-divider></v-divider>
     
     <v-card-text v-if="!loaded">
       <v-list two-line>
@@ -39,9 +37,7 @@
             </v-list-item-action>
           </v-list-item-content>          
         </v-list-item>
-      </v-list>
-      <v-list>      
-      </v-list>
+      </v-list>      
     </v-card-text> 
   </v-card>
 </template>

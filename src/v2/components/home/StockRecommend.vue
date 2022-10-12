@@ -6,36 +6,25 @@
     elevation="0"
     outlined
   >
-    <v-card-title             
-      class="text-h4 font-weight-bold ml-5">
+    <v-card-title>
       추천 종목
-        <v-btn
-          icon      
-          large
-          @click="overlay = !overlay"
-        >
-          <v-icon>fa-solid fa-circle-info</v-icon>
-        </v-btn>
+      <BtnBadge>
+        추천 종목 기준..
+      </BtnBadge>        
     </v-card-title>    
 
-    <v-card-subtitle class="ml-5 d-flex justify-space-between">
-      <span>추천 종목을 확인 해 보세요.</span>      
-      <span>갱신일 : 2022-09-14 </span>      
+    <v-card-subtitle class="d-flex justify-space-between">
+      <span>추천 종목을 확인 해 보세요.</span>            
     </v-card-subtitle>
 
-    <v-divider></v-divider>
+    <v-divider />
 
-    <v-card-text v-if="!loaded" class="d-flex flex-wrap justify-center">
-      <div
+    <v-card-text v-if="!loaded" class="d-flex flex-wrap justify-center">      
+      <stock-similar-content
         v-for="(content, i) in recommend"
         :key="i"
-      >
-        <stock-similar-content
-          :content="content" 
-          :name="content.name"
-          :code="content.code"            
-        />
-      </div>
+        :content="content"           
+      />
     </v-card-text>
   </v-card>
 </template>
@@ -46,18 +35,19 @@ import { IStockModel, StockRecommendModel } from '@/models/stock'
 import { Component, Vue } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 import StockSimilarContent from '@/v2/components/detail/StockSimilarContents.vue'
+import BtnBadge from '../vuetify/BtnBadge.vue'
 
 const MarketStoreModule = namespace('MarketStore')
 const StockStoreModule = namespace('StockStore')
 
 @Component({
   components: {
+    BtnBadge,
     StockSimilarContent
   }
 })
 export default class StockRecommend extends Vue {
-
-  sparkLineValue = [1, 11, 3, 4, 5, 7, 5, 9, 1, 5, 16]
+  
   model = null
   overlay = false
   stockEtcs: IStockModel[] | null = null
