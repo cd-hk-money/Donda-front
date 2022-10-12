@@ -106,6 +106,11 @@ export default class StockStore extends VuexModule {
   public indicatorSectorDaily!: IStockIndicatorDailyModel
 
 
+  // 유사종목
+  public similarContents: IStockModel[] = []
+  public similarLoaded = false
+
+
   // 뉴스
   public newsLoaded = false
   public news: any[] = []
@@ -430,6 +435,27 @@ export default class StockStore extends VuexModule {
       console.log(e)
     }
   }  
+
+  // 현재 종목에 대해 유사 종목을 가져옵니다.
+  @Action
+  public async getSimilarContents(code: string): Promise<void> {
+    try {
+      this.context.commit('updateState', {
+        similarLoaded: true
+      })
+
+      const res = await axios.get(`/stock/${code}/similar`)      
+            
+      this.context.commit('updateState', {
+        similarLoaded: false,
+        similarContents: res.data.slice(0, 12)
+      })
+
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
 
   // 종목 하나의 관련 뉴스를 가져옵니다.
   @Action

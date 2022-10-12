@@ -1,12 +1,13 @@
 <template>
   <v-card 
-    class="overflow-y-auto stock-similar"
-    height="840"    
+    class="overflow-y-auto stock-similar"    
+    height="787"
     :width="width"    
-    elevation="1"
+    min-width="465"
+    outlined
   >  
-    <v-card-title class="ml-5">
-      Similar
+    <v-card-title>
+      유사 종목
       <v-btn  
         class="ml-3"
         icon
@@ -16,23 +17,18 @@
       ><v-icon>fa-solid fa-circle-question</v-icon>
       </v-btn>
     </v-card-title>      
-    <v-card-subtitle class="ml-5">
+    <v-card-subtitle>
       유사 종목을 보여줍니다.
     </v-card-subtitle>
 
     <v-divider></v-divider>
 
     <v-card-text v-if="!loaded" class="d-flex flex-wrap justify-center">
-      <div 
-        v-for="(content, i) in recommend"
+      <stock-similar-content 
+        v-for="(content, i) in similarContents"
         :key="i"
-      >
-        <stock-similar-content
-          :content="content" 
-          :name="content.name"
-          :code="content.code"
-        />
-      </div>              
+        :content="content"
+      />
     </v-card-text>
 
     <v-divider></v-divider>
@@ -61,12 +57,12 @@
 <script lang="ts">
 import { Component, Vue} from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
-import { mobileHeight } from '@/mixins/tools'
 
 const MarketStoreModule = namespace('MarketStore')
+const StockStoreModule = namespace('StockStore')
 
 import StockSimilarContent from '@/v2/components/detail/StockSimilarContents.vue'
-import { StockRecommendModel } from '@/models/stock'
+import { IStockModel, StockRecommendModel } from '@/models/stock'
 
 @Component({
   components: {
@@ -80,12 +76,18 @@ export default class StockSimilar extends Vue {
   @MarketStoreModule.State('recommedLoaded') loaded!: boolean
   @MarketStoreModule.Action('getRecommend') readonly getRecommend!: () => Promise<void>
 
+  @StockStoreModule.State('similarContents') similarContents!: IStockModel[]
+  @StockStoreModule.Action('getSimilarContents') readonly getSimilarContent!: (code: string) => Promise<void>
+
   get width (): string | number { 
-    return this.$vuetify.breakpoint.name === 'xs' ? 465 : '100%'
+    return this.$vuetify.breakpoint.name === 'xs' ? 465 : '60%'
   }
 
   async created () {
-    await this.getRecommend()    
+    const code = this.$route.params.title
+    await this.getRecommend()
+    await this.getSimilarContent(code)    
+    console.log(this.similarContents)
   }
 
 }
@@ -102,7 +104,7 @@ export default class StockSimilar extends Vue {
 
 .stock-similar::-webkit-scrollbar-thumb,
 .stock-similar::-webkit-scrollbar {    
-  width: 4px;    
+  width: 2px;    
   transition: all 1s;    
   background-clip: padding-box;
 }

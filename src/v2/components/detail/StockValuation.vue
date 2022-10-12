@@ -4,9 +4,8 @@
     height="787"
     outlined
     elevation="0"                
-    :width="isMobile ? 460 : '100%'"
-    v-if="!loaded && !evalLoaded && !allLoaded && !dailyLoaded"
-  >
+    :width="isMobile ? 460 : '100%'"    
+  >    
     <v-card-title>
       적정 주가
     </v-card-title>
@@ -16,251 +15,252 @@
 
     <v-divider />
     
-    <v-sheet class="stock-indicator-detail-content">
-      <stock-valuation-chart :height="100"/>
-    </v-sheet>  
-
-    <v-divider />
-            
-    <!-- 돈다 지수 -->
-    <v-sheet 
-      class="stock-indicator-detail-content" 
-      @click="expandDonda = !expandDonda"      
-    >
-      <v-card-title class="text-h4 stock-indicator-detail-content-title">        
-          돈다 지수
-        <v-chip small class="ml-3"> 분기 </v-chip>
-        <v-chip small class="ml-3">
-          <v-tooltip top>
-            <template v-slot:activator="{on}">
-              <v-icon 
-                v-on="on"
-                :color="donda.iconColor"                  
-              >{{ donda.icon }}</v-icon>        
-            </template>          
-            <span>{{ donda.text }}</span>          
-          </v-tooltip>
-        </v-chip>        
-        <v-chip small class="ml-3">
-          <v-icon>mdi-star</v-icon>
-        </v-chip>
-      </v-card-title>
-
-
-      <v-card-text :class="['grey--text', getStrongFontColorClass]">
-        <strong >돈다</strong> 에서 자체적으로 계산한 주가 지수입니다.     
-      </v-card-text>
-
-      <v-expand-transition>
-        <v-card v-if="expandDonda">
-          <stock-valuation-single-chart            
-            
-            label="돈다 지수"
-            :dates="dates"
-            :chartData="chartDatas.donda"
-            :height="100"
-          />
-
-          <v-divider />
-
-          <v-card-text class='grey--text mt-1'>            
-               
-          </v-card-text>
-        </v-card>        
-      </v-expand-transition>
-    </v-sheet>  
-
-
-    <v-divider />
-
-
-    <v-sheet 
-      class="stock-indicator-detail-content" 
-      @click="expandEpsRoe = !expandEpsRoe"      
-    >
-      <v-card-title class="text-h4 stock-indicator-detail-content-title">        
-          EPS-ROE 방법
-        <v-chip small class="ml-3"> 분기 </v-chip>
-        <v-chip small class="ml-3">
-          <v-tooltip top>
-            <template v-slot:activator="{on}">
-              <v-icon
-                v-on="on"
-                :color="epsroe.iconColor"                  
-              >{{ epsroe.icon }}</v-icon>        
-            </template>          
-            <span>{{ epsroe.text }}</span>          
-          </v-tooltip>
-        </v-chip>
-        
-      </v-card-title>
+    <div v-if="!loaded && !evalLoaded && !allLoaded && !dailyLoaded">
+      <v-sheet class="stock-indicator-detail-content">
+        <stock-valuation-chart :height="100"/>
+      </v-sheet>  
       
-      <v-card-text :class="['grey--text', getStrongFontColorClass]">
-        보조지표 <strong>EPS</strong>
-        <btn-badge>
-          <template v-slot:text>
-            <div class="text-h6 cyan--text font-weight-bold"><strong>EPS</strong> | 주당 순이익</div>
-            <div>당기순이익을 유통 주식수로 나눈 값을 의미합니다.</div>
-            <div>EPS가 클수록, 일반적으로 투자가치가 높다고 볼 수 있습니다.</div>
-          </template>
-        </btn-badge>
-        와 
-        <strong>ROE</strong>
-        <btn-badge>
-          <template v-slot:text>
-            <div class="text-h6 cyan--text font-weight-bold"><strong>ROE</strong> | 자기자본이익률</div>
-            <div>당기순이익을 평균 자기자본으로 나눈 백분율 수치 값을 의미합니다..</div>
-            <div>ROE가 클수록, 일반적으로 주가 상승률이 높다고 판단됩니다.</div>
-          </template>
-        </btn-badge>
-        를 활용한 적정 주가 계산 공식입니다.
-      </v-card-text>
-
-      <v-expand-transition>
-        <v-card v-if="expandEpsRoe">
-          <stock-valuation-single-chart            
-            
-            label="EPS-ROE"
-            :dates="dates"
-            :chartData="chartDatas.epsroe"
-            :height="100"
-          />
-
-          <v-divider />
-
-          <v-card-text :class="['grey--text', getStrongFontColorClass]">            
-            <div class="calculate"> 계산법 : <strong class="mr-1">EPS</strong> x <strong class="ml-1">ROE</strong></div> 
-            <v-divider class="mt-2" />
-            <v-sheet 
-              outlined 
-              class="pt-3 pb-3 pr-3 pl-3 mt-3 d-flex align-center indicator-detail-card" 
-              rounded="lg" 
-              color="blue-grey lighten-1"
-            >
+      <v-divider />
+      <!-- 돈다 지수 -->
+      <v-sheet 
+        class="stock-indicator-detail-content" 
+        @click="expandDonda = !expandDonda"      
+      >
+        <v-card-title class="text-h4 stock-indicator-detail-content-title">        
+            돈다 지수
+          <v-chip small class="ml-3"> 분기 </v-chip>
+          <v-chip small class="ml-3">
+            <v-tooltip top>
+              <template v-slot:activator="{on}">
+                <v-icon 
+                  v-on="on"
+                  :color="donda.iconColor"                  
+                >{{ donda.icon }}</v-icon>        
+              </template>          
+              <span>{{ donda.text }}</span>          
+            </v-tooltip>
+          </v-chip>        
+          <v-chip small class="ml-3">
+            <v-icon>mdi-star</v-icon>
+          </v-chip>
+        </v-card-title>
+  
+        <v-card-text :class="['grey--text', getStrongFontColorClass]">
+          <strong >돈다</strong> 에서 자체적으로 계산한 주가 지수입니다.     
+        </v-card-text>
+  
+        <v-expand-transition>
+          <v-card v-if="expandDonda">
+            <stock-valuation-single-chart                        
+              label="돈다 지수"
+              :dates="dates"
+              :chartData="chartDatas.donda"
+              :height="100"
+            />
+  
+            <v-divider />
+  
+            <v-card-text class='grey--text mt-1'>            
+                 
+            </v-card-text>
+          </v-card>        
+        </v-expand-transition>
+      </v-sheet>  
+  
+  
+      <v-divider />
+  
+  
+      <v-sheet 
+        class="stock-indicator-detail-content" 
+        @click="expandEpsRoe = !expandEpsRoe"      
+      >
+        <v-card-title class="text-h4 stock-indicator-detail-content-title">        
+            EPS-ROE 방법
+          <v-chip small class="ml-3"> 분기 </v-chip>
+          <v-chip small class="ml-3">
+            <v-tooltip top>
+              <template v-slot:activator="{on}">
+                <v-icon
+                  v-on="on"
+                  :color="epsroe.iconColor"                  
+                >{{ epsroe.icon }}</v-icon>        
+              </template>          
+              <span>{{ epsroe.text }}</span>          
+            </v-tooltip>
+          </v-chip>
+          
+        </v-card-title>
+        
+        <v-card-text :class="['grey--text', getStrongFontColorClass]">
+          보조지표 <strong>EPS</strong>
+          <btn-badge>
+            <template v-slot:text>
+              <div class="text-h6 cyan--text font-weight-bold"><strong>EPS</strong> | 주당 순이익</div>
+              <div>당기순이익을 유통 주식수로 나눈 값을 의미합니다.</div>
+              <div>EPS가 클수록, 일반적으로 투자가치가 높다고 볼 수 있습니다.</div>
+            </template>
+          </btn-badge>
+          와 
+          <strong>ROE</strong>
+          <btn-badge>
+            <template v-slot:text>
+              <div class="text-h6 cyan--text font-weight-bold"><strong>ROE</strong> | 자기자본이익률</div>
+              <div>당기순이익을 평균 자기자본으로 나눈 백분율 수치 값을 의미합니다..</div>
+              <div>ROE가 클수록, 일반적으로 주가 상승률이 높다고 판단됩니다.</div>
+            </template>
+          </btn-badge>
+          를 활용한 적정 주가 계산 공식입니다.
+        </v-card-text>
+  
+        <v-expand-transition>
+          <v-card v-if="expandEpsRoe">
+            <stock-valuation-single-chart            
               
-              <v-icon class="mr-1">mdi-information</v-icon>
+              label="EPS-ROE"
+              :dates="dates"
+              :chartData="chartDatas.epsroe"
+              :height="100"
+            />
+  
+            <v-divider />
+  
+            <v-card-text :class="['grey--text', getStrongFontColorClass]">            
+              <div class="calculate"> 계산법 : <strong class="mr-1">EPS</strong> x <strong class="ml-1">ROE</strong></div> 
+              <v-divider class="mt-2" />
+              <v-sheet 
+                outlined 
+                class="pt-3 pb-3 pr-3 pl-3 mt-3 d-flex align-center indicator-detail-card" 
+                rounded="lg" 
+                color="blue-grey lighten-1"
+              >
+                
+                <v-icon class="mr-1">mdi-information</v-icon>
+                
+              </v-sheet>  
+            </v-card-text>
+          </v-card>        
+        </v-expand-transition>
+      </v-sheet>  
+  
+  
+      <v-divider />
+  
+  
+      <v-sheet 
+        class="stock-indicator-detail-content" 
+        @click="expandSrim = !expandSrim"      
+      >
+        <v-card-title class="text-h4 stock-indicator-detail-content-title">        
+            S-RIM 방법
+          <v-chip small class="ml-3"> 분기 </v-chip>
+          <v-chip small class="ml-3">
+            <v-tooltip top>
+              <template v-slot:activator="{on}">
+                <v-icon 
+                  v-on="on"
+                  :color="srim.iconColor"                  
+                >{{ srim.icon }}</v-icon>        
+              </template>          
+              <span>{{ srim.text }}</span>          
+            </v-tooltip>
+          </v-chip>
+          
+        </v-card-title>
+        
+        <v-card-text :class="['grey--text', getStrongFontColorClass]">
+          <strong>사경인 회계사</strong>
+          <btn-badge>
+            <template v-slot:text>
+              <div class="text-h6 cyan--text font-weight-bold"><strong>사경인 회계사</strong></div>            
+            </template>
+          </btn-badge>
+          에서 제시한 
+          <strong>S-RIM</strong>
+          <btn-badge>
+            <template v-slot:text>
+              <div class="text-h6 cyan--text font-weight-bold"><strong>S-RIM</strong></div>            
+            </template>
+          </btn-badge>
+          모델을 활용한 주가 계산 공식입니다.
+          
+        </v-card-text>
+  
+        <v-expand-transition>
+          <v-card v-if="expandSrim">
+            <stock-valuation-single-chart            
+              label="S-RIM"
+              :dates="dates"
+              :chartData="chartDatas.srim"
+              :height="100"
+            />
+  
+            <v-divider />
+  
+            <v-card-text class='grey--text mt-1'>            
+                 
+            </v-card-text>
+          </v-card>        
+        </v-expand-transition>
+      </v-sheet>  
+  
+  
+      <v-divider />
+  
+      
+      <v-sheet 
+        class="stock-indicator-detail-content" 
+        @click="expandPer = !expandPer"      
+      >
+        <v-card-title class="text-h4 stock-indicator-detail-content-title">        
+            PER 방법     
+          <v-chip small class="ml-3">
+            <v-tooltip top>
+              <template v-slot:activator="{on}">
+                <v-icon 
+                  v-on="on"
+                  :color="per.iconColor"                  
+                >{{ per.icon }}</v-icon>        
+              </template>          
+              <span>{{ per.text }}</span>          
+            </v-tooltip>
+          </v-chip>
+          
+        </v-card-title>
+        
+        <v-card-text :class="['grey--text', getStrongFontColorClass]">        
+          보조지표 <strong>PER</strong>
+          <btn-badge>
+            <template v-slot:text>
+              <div class="text-h6 cyan--text font-weight-bold"><strong>PER</strong></div>            
+              현재 주가를 <strong>당기순이익</strong>을 <strong>유통 주식수</strong>로 나눈 <strong>EPS</strong>로 나눈 값을 의미합니다.
+            </template>
+          </btn-badge>
+          을 활용한 주가 계산 공식입니다.
+          
+        </v-card-text>
+  
+        <v-expand-transition>
+          <v-card v-if="expandPer">
+            <stock-valuation-single-chart            
               
-            </v-sheet>  
-          </v-card-text>
-        </v-card>        
-      </v-expand-transition>
-    </v-sheet>  
+              label="PER"
+              :dates="stockEvaluationDaily.date"
+              :chartData="stockEvaluationDaily.value"
+              :height="100"
+            />
+  
+            <v-divider />
+  
+            <v-card-text class='grey--text mt-1'>            
+                 
+            </v-card-text>
+          </v-card>        
+        </v-expand-transition>
+      </v-sheet>
+    </div>
 
-
-    <v-divider />
-
-
-    <v-sheet 
-      class="stock-indicator-detail-content" 
-      @click="expandSrim = !expandSrim"      
-    >
-      <v-card-title class="text-h4 stock-indicator-detail-content-title">        
-          S-RIM 방법
-        <v-chip small class="ml-3"> 분기 </v-chip>
-        <v-chip small class="ml-3">
-          <v-tooltip top>
-            <template v-slot:activator="{on}">
-              <v-icon 
-                v-on="on"
-                :color="srim.iconColor"                  
-              >{{ srim.icon }}</v-icon>        
-            </template>          
-            <span>{{ srim.text }}</span>          
-          </v-tooltip>
-        </v-chip>
-        
-      </v-card-title>
-      
-      <v-card-text :class="['grey--text', getStrongFontColorClass]">
-        <strong>사경인 회계사</strong>
-        <btn-badge>
-          <template v-slot:text>
-            <div class="text-h6 cyan--text font-weight-bold"><strong>사경인 회계사</strong></div>            
-          </template>
-        </btn-badge>
-        에서 제시한 
-        <strong>S-RIM</strong>
-        <btn-badge>
-          <template v-slot:text>
-            <div class="text-h6 cyan--text font-weight-bold"><strong>S-RIM</strong></div>            
-          </template>
-        </btn-badge>
-        모델을 활용한 주가 계산 공식입니다.
-        
-      </v-card-text>
-
-      <v-expand-transition>
-        <v-card v-if="expandSrim">
-          <stock-valuation-single-chart            
-            label="S-RIM"
-            :dates="dates"
-            :chartData="chartDatas.srim"
-            :height="100"
-          />
-
-          <v-divider />
-
-          <v-card-text class='grey--text mt-1'>            
-               
-          </v-card-text>
-        </v-card>        
-      </v-expand-transition>
-    </v-sheet>  
-
-
-    <v-divider />
-
-    
-    <v-sheet 
-      class="stock-indicator-detail-content" 
-      @click="expandPer = !expandPer"      
-    >
-      <v-card-title class="text-h4 stock-indicator-detail-content-title">        
-          PER 방법     
-        <v-chip small class="ml-3">
-          <v-tooltip top>
-            <template v-slot:activator="{on}">
-              <v-icon 
-                v-on="on"
-                :color="per.iconColor"                  
-              >{{ per.icon }}</v-icon>        
-            </template>          
-            <span>{{ per.text }}</span>          
-          </v-tooltip>
-        </v-chip>
-        
-      </v-card-title>
-      
-      <v-card-text :class="['grey--text', getStrongFontColorClass]">        
-        보조지표 <strong>PER</strong>
-        <btn-badge>
-          <template v-slot:text>
-            <div class="text-h6 cyan--text font-weight-bold"><strong>PER</strong></div>            
-            현재 주가를 <strong>당기순이익</strong>을 <strong>유통 주식수</strong>로 나눈 <strong>EPS</strong>로 나눈 값을 의미합니다.
-          </template>
-        </btn-badge>
-        을 활용한 주가 계산 공식입니다.
-        
-      </v-card-text>
-
-      <v-expand-transition>
-        <v-card v-if="expandPer">
-          <stock-valuation-single-chart            
             
-            label="PER"
-            :dates="stockEvaluationDaily.date"
-            :chartData="stockEvaluationDaily.value"
-            :height="100"
-          />
-
-          <v-divider />
-
-          <v-card-text class='grey--text mt-1'>            
-               
-          </v-card-text>
-        </v-card>        
-      </v-expand-transition>
-    </v-sheet>
 
 
     <!-- 돈다 지수 -->

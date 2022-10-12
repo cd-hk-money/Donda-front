@@ -1,15 +1,19 @@
 <template>
   <v-card   
-    class="ml-5 mr-5 mb-5 mt-5"
-    width="500"
-    height="130"    
-    outlined    
-  >
-    <v-card-title 
-      class="font-weight-bold text-h5 stock-similar-content-title" 
-      @click="$router.push(`/detail/${content.code}`)"
-    >            
-      {{ content.name }}
+    class="mb-4 mt-4 mr-1 ml-1"
+    width="380"
+    height="140"    
+    color="#252424"
+    elevation="0"
+     
+  >    
+    <div class="stock-similar-content-market">
+      {{ content.market }}
+    </div>    
+    <v-card-title class="font-weight-bold text-h5 ml-2">            
+      <span class="stock-similar-content-title" @click="$router.push(`/detail/${content.code}`)">
+        {{ content.name }}
+      </span>
       <v-tooltip top>
         <template v-slot:activator="{on}">
           <v-icon class="ml-3" :color="trendIconColor" v-on="on">{{ trendIcon }}</v-icon>
@@ -18,7 +22,7 @@
       </v-tooltip>
     </v-card-title> 
 
-    <v-card-subtitle class="text-h6">       
+    <v-card-subtitle class="text-h6 ml-2">       
       {{ content.code }}
     </v-card-subtitle>
 
@@ -38,7 +42,7 @@
 </template>
 
 <script lang="ts">
-import { IStockModel, StockRecommendModel } from '@/models/stock'
+import { StockRecommendModel } from '@/models/stock'
 import { Component, Vue, Prop } from 'vue-property-decorator' 
 
 @Component
@@ -95,7 +99,17 @@ export default class StockSimilarContent extends Vue {
  .stock-similar-content {
   position: absolute;  
   right: 20px;  
-  bottom: 10px;
+  bottom: 20px;
+ }
+
+ .stock-similar-content-market {  
+  padding-left: 15px;
+  padding-top: 15px;
+ }
+
+ .s {
+  color: #252424;
+
  }
 
  .stock-similar-content-title:hover {

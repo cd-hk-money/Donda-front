@@ -1,15 +1,16 @@
 <template>
   <v-card 
     class="overflow-auto stock-news"
-    height="840"
+    height="787"
     width="100%"    
+    min-width="465"
     outlined
     elevation="1"    
   >
-    <v-card-title class="ml-5">
+    <v-card-title>
       NEWS
     </v-card-title>      
-    <v-card-subtitle class="ml-5">
+    <v-card-subtitle>
        종목 관련 뉴스를 보여줍니다.
     </v-card-subtitle>
 
@@ -91,7 +92,7 @@ export default class StockNews extends Vue {
 
 .stock-news::-webkit-scrollbar-thumb,
 .stock-news::-webkit-scrollbar {    
-  width: 4px;    
+  width: 2px;    
   transition: all 1s;    
   background-clip: padding-box;
 }

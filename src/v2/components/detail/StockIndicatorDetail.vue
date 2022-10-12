@@ -10,7 +10,7 @@
     </v-card-title>
 
     <v-card-subtitle>
-      각 보조 지표가 의미하는 바를 알아보세요.
+      {{ stock.name }}의 보조지표를 확인해보세요.
     </v-card-subtitle>
 
     <div class="more"> 각 항목을 클릭하면, 더 많은 정보를 볼 수 있습니다. </div> 

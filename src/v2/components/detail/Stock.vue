@@ -9,13 +9,6 @@
     </v-card-title>
     <v-card-subtitle>
       <span>{{ stock.name }}의 주가 정보를 확인해보세요.</span>
-      <v-btn  
-        class="ml-3"
-        icon
-        right
-        x-small
-      ><v-icon>fa-solid fa-circle-info</v-icon>
-      </v-btn>
     </v-card-subtitle>
     <v-divider></v-divider>
     <v-card

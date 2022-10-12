@@ -7,56 +7,51 @@
     </v-col>    
     <v-col cols="12" xl="9" lg="8">
       <v-card 
-    :width="mobile ? '465' : '97%'"
-    class="ml-5 mt-5 mr-5" 
-    outlined
-  >
-    <v-tabs
-      v-show="!mobile"
-      v-model="drawer"        
-      fixed-tabs
-    >
-      <v-tabs-slider color="cyan"></v-tabs-slider>
-
-      <v-tab
-        v-for="item in tabItems"
-        :key="item"
-        active-class="cyan--text"        
+        :width="mobile ? '465' : '97%'"
+        class="ml-5 mt-5 mr-5" 
+        outlined
       >
-        {{ item }}
-      </v-tab>
-    </v-tabs>
-    <v-tabs-items v-model="drawer">
-      <v-tab-item>
-        <stock />
-      </v-tab-item>
+        <v-tabs
+          v-show="!mobile"
+          v-model="drawer"        
+          fixed-tabs
+        >
+          <v-tabs-slider color="cyan"></v-tabs-slider>
 
-      <v-tab-item>
-        <stock-valuation />
-      </v-tab-item>
+          <v-tab
+            v-for="item in tabItems"
+            :key="item"
+            active-class="cyan--text"        
+          >
+            {{ item }}
+          </v-tab>
+        </v-tabs>
+        <v-tabs-items v-model="drawer">
+          <v-tab-item>
+            <stock />
+          </v-tab-item>
 
-      <v-tab-item>
-        <stock-indicator-detail />
-      </v-tab-item>
+          <v-tab-item>
+            <stock-valuation />
+          </v-tab-item>
 
-      <v-tab-item>
-        <stock-finance :key="componentKey" />
-      </v-tab-item>
+          <v-tab-item>
+            <stock-indicator-detail />
+          </v-tab-item>
 
+          <v-tab-item>
+            <stock-finance :key="componentKey" />
+          </v-tab-item>
 
-      <v-tab-item>
-        <v-row>
-          <v-col cols="12" xl="6" lg="6" sm="12">
-            <stock-similar />
-          </v-col>
-          <v-col cols="12" xl="6" lg="6" sm="12">
-            <stock-news />
-          </v-col>
-        </v-row>
-      </v-tab-item>
+          <v-tab-item>        
+            <div class="d-flex flex-warp">
+              <stock-similar />
+              <stock-news />
+            </div>  
+          </v-tab-item>
 
-    </v-tabs-items>
-  </v-card>
+        </v-tabs-items>
+      </v-card>
     </v-col>
     <v-menu
       open-on-hover
@@ -154,6 +149,7 @@ export default class DetailV2 extends Vue {
   @StockStoreModule.Action('getStock') getStock!: (name: string) => Promise<void>
   @StockStoreModule.Action('getStockGraphAll') getStockGraphAll!: (name: string) => Promise<void>
   @StockStoreModule.Action('getStockGraphDefault') getStockGraphDefault!: (name: string) => Promise<void>
+  @StockStoreModule.Action('getSimilarContents') readonly getSimilarContent!: (code: string) => Promise<void>
 
   get mobile () {
     return this.$vuetify.breakpoint.name === 'xs'
@@ -178,6 +174,7 @@ export default class DetailV2 extends Vue {
     this.getStock(code)   
     this.getStockGraphAll(code)
     this.getStockGraphDefault(code)
+    this.getSimilarContent(code)
   }  
 
   created () {        

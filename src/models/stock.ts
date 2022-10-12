@@ -2,6 +2,7 @@ export interface SingleStock {
   title?: string
   code: string
   name?: string
+  market?: string
 }
 
 export interface StockSimpleModel extends SingleStock { 

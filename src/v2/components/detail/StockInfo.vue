@@ -24,13 +24,13 @@
               <span> 추세입니다.</span>
             </v-tooltip>
           </v-list-item-title>
-          <v-list-item-subtitle class="text-h5 mb-1 ml-6">
+          <v-list-item-subtitle class="text-h5 mb-1 ml-5">
             {{ stock.code }}
           </v-list-item-subtitle>
         </v-list-item-content>
   
         <v-list-item-avatar>                  
-          <v-dialog v-model="dialog">
+          <v-dialog v-model="dialog" width="500">
             <template v-slot:activator="{ on, attrs }">
               <v-btn 
                 icon x-large
@@ -41,7 +41,7 @@
               </v-btn>
             </template>
   
-            <v-card>
+            <v-card width="500">
               <v-card-title class="text-h5">
                 관심 종목 추가
               </v-card-title>
@@ -178,8 +178,8 @@ export default class StockInfo extends Vue {
   // <span>{{ stock.changes > 0 ? '+' + stock.changes.toLocaleString() : stock.changes.toLocaleString() }}₩ ({{ stock.changes_ratio > 0 ? '+' + stock.changes_ratio : stock.changes_ratio}}%)</span>                        
   get prefixedValue () {
     return {
-      changes: this.stock.changes > 0 ? '+': '' + this.stock.changes.toLocaleString(),
-      changes_ratio: this.stock.changes_ratio > 0 ? '+' : '' + this.stock.changes_ratio.toLocaleString(),
+      changes: (this.stock.changes > 0 ? '+': '') + this.stock.changes.toLocaleString(),
+      changes_ratio: (this.stock.changes_ratio > 0 ? '+' : '') + this.stock.changes_ratio.toLocaleString(),
       trendIcon: this.stock.changes > 0 ? 'fa-solid fa-arrow-trend-up' : 'fa-solid fa-arrow-trend-down',
       trendText: this.stock.changes > 0 ? '상승' : '하락',
       trendTextColor: this.stock.changes > 0 ? 'red--text' : 'blue--text',

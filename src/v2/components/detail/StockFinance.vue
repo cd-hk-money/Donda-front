@@ -7,7 +7,7 @@
   >
     <v-card-title>
       재무제표
-      <btn-badge>
+      <BtnBadge>
         <template v-slot:text>
           <div><strong class="text-h6 cyan--text font-weight-bold">재무제표</strong></div>
           기업의 재무상태나 경영성과 등을 보여주는 문서입니다. <br />
@@ -17,7 +17,7 @@
             <a href="https://ko.wikipedia.org/wiki/%EC%9E%AC%EB%AC%B4%EC%A0%9C%ED%91%9C">출처: 위키백과</a>
           </div>
         </template>
-      </btn-badge>               
+      </BtnBadge>               
     </v-card-title>    
     <v-card-subtitle>
       {{ stock.name }}의 재무제표를 확인해보세요.
@@ -422,7 +422,7 @@ export default class StockFinance extends Vue {
   color: rgba(64, 224, 208, 1);
 }
 
-.btn-badge-text {
+.BtnBadge-text {
   font-size: 10px !important;
 }
 

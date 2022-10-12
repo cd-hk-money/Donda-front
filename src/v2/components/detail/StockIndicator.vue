@@ -22,7 +22,7 @@
     </v-card-title>
 
     <v-card-subtitle class="ml-5">
-      각 보조지표의 수치를 보여줍니다.  
+      {{ stock.name }}의 보조지표를 확인해보세요.
     </v-card-subtitle>
 
     <v-card-text class="d-flex justify-center align-end">
@@ -73,7 +73,7 @@ import { namespace } from 'vuex-class'
 import StockIndicatorChart from '@/v2/components/detail/StockIndicatorChart.vue'
 import StockIndicatorBarChart from './StockIndicatorBarChart.vue'
 
-import { ISimpleChartData, IStockIndicatorSectorDailyModel, IStockIndicatorSectorModel } from '@/models/stock'
+import { ISimpleChartData, IStockIndicatorSectorDailyModel, IStockIndicatorSectorModel, IStockModel } from '@/models/stock'
 
 const StockStoreModule = namespace('StockStore')
 
@@ -127,6 +127,7 @@ export default class StockIndicator extends Vue {
   @StockStoreModule.State('indicatorSectorLoaded') sectorLoaded!: boolean
   @StockStoreModule.State('stockLoaded') stockLoaded!: boolean  
   @StockStoreModule.State('indicatorDailyLoaded') indicatorDailyLoaded!: boolean
+  @StockStoreModule.State('stock') stock!: IStockModel
 
 
   @StockStoreModule.State('indicator') indicator!: ISimpleChartData
