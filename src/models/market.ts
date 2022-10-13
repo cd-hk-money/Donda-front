@@ -23,11 +23,13 @@ export interface IMarketChartModel {
 }
 
 export interface IMarketRecentModel {  
-  [marketType: string]: {
-    close?: number,
-    changes?: number,
-    recent?: string
-  }
+  [marketType: string]: IMarketRecentValueModel
+}
+
+export interface IMarketRecentValueModel {
+  close?: number,
+  changes?: number,
+  recent?: string
 }
 
 export interface IValuationContent {
