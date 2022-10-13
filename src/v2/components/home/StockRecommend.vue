@@ -1,10 +1,10 @@
 <template>    
   <v-card
     class="align-center justify-center overflow-y-auto stock-news"
-    :width="mobile ? 460 : '99%'"
-    height="90vh"
+    width="98%"
+    min-height="835"    
     elevation="0"
-    outlined
+    rounded="xl"
   >
     <v-card-title>
       추천 종목

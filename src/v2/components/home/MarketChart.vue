@@ -13,7 +13,8 @@ import zoom from 'chartjs-plugin-zoom'
 const { reactiveProp } = mixins
 const MarketStoreModule = namespace('MarketStore')
 
-const MAIN_COLOR = '#40E0D0'
+const MAIN_COLOR = '#00BCD4'
+const REQUEST_DATE = [14, 30, 120]
 
 @Component({
   extends: Line,
@@ -25,42 +26,24 @@ export default class LineChart extends Vue {
   @Prop() fill!: boolean
   @Prop() mobile!: boolean
   @Prop() height: number
+  @Prop({default: 0}) count!: number
 
-  @Prop({default: function () { return {} }})
-  options!: object
+  @Prop({default: function () { return {} }}) options!: object
 
-  @MarketStoreModule.State('marketChart')
-  marketChart!: IMarketChartModel
+  @MarketStoreModule.State('marketChart') marketChart!: IMarketChartModel
+  @MarketStoreModule.State('requestDate') requestDate!: number
 
-  @MarketStoreModule.State('requestDate')
-  requestDate!: number
 
   
   renderChart!: (chartData: any, options: any) => HTMLCanvasElement    
 
   chartOptions: Chart.ChartOptions = {}
 
-  @Watch('requestDate')
-  watchRequestDate () {
-    this.$nextTick(() => {
-      this.reRender()
-    })
-  }
-
-  @Watch('chartOptions')
-  watchChartOptions () {
-    this.reRender()
-  }
-    
-  @Watch('fill')
+  @Watch('count')
   watchFill () {
-    this.reRender()
-  }
-  
-  reRender () {
     this.renderLineChart()
   }
-
+  
   applyDefaultOptions() {
     this.chartOptions.responsive = true
     this.chartOptions.legend = {
@@ -87,7 +70,6 @@ export default class LineChart extends Vue {
         ticks: {
           callback: function(value: string) {return value.toLocaleString()},
           fontSize: 15,              
-          maxTicksLimit: 3, 
           padding: 18,                   
           display: !this.mobile            
         },
@@ -123,18 +105,18 @@ export default class LineChart extends Vue {
   }
 
   createChartData (type: string, count: number, fill: boolean | string) {
-    const marketType = this.marketChart[this.type]
+    const market = this.marketChart[this.type]    
     return {
-      labels: [...[...marketType.labels].reverse().slice(0, this.requestDate)].reverse().map((date: string) => date.substr(5)),
+      labels: market.labels.slice(count * (-1)).map(label => label.substr(5)),      
       datasets: [ 
         { 
           label: this.type,
-          data: [...[...marketType.values].reverse().slice(0, this.requestDate)].reverse().map((k: MarketModel) => k.close),
+          data: market.values.slice(count * (-1)).map((value: MarketModel) => value.close), 
           fill: fill,        
           borderColor: MAIN_COLOR,
           backgroundColor: transparentize(MAIN_COLOR, 0.8),
           borderWidth: 3.5,                 
-          radius: this.requestDate > 150 ? 0 : 0,
+          radius: this.count > 150 ? 0 : 0,
           pointStyle: 'rectRounded',
           tension: .4,          
           pointHitRadius: 10,
@@ -146,7 +128,8 @@ export default class LineChart extends Vue {
 
   renderLineChart() {
     this.applyDefaultOptions()
-    const chart = this.renderChart(this.createChartData(this.type, this.requestDate, this.fill), this.chartOptions)    
+    console.log(REQUEST_DATE[this.count])
+    const chart = this.renderChart(this.createChartData(this.type, REQUEST_DATE[this.count], this.fill), this.chartOptions)    
   }
 
   mounted() {            

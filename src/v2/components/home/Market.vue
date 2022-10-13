@@ -3,20 +3,12 @@
     height="450"
     :width="isMobile ? 460 : '94%'"    
     :class="['ml-5', isMobile ? '' : '']"
-    elevation="0"         
-    outlined
+    elevation="0"             
   >
-    <v-card-title class="text-h4 font-weight-bold ml-5">
-      주식 시장
-      <v-btn
-        icon      
-        large
-        @click="overlay = !overlay"
-      >
-        <v-icon>fa-solid fa-circle-info</v-icon>
-      </v-btn>
+    <v-card-title class="font-weight-bold">
+      주식 시장      
     </v-card-title>
-    <v-card-subtitle class="ml-5">
+    <v-card-subtitle>
       주식 시장 주가를 알아보세요.
     </v-card-subtitle>
 
@@ -104,7 +96,7 @@ export default class Market extends Vue {
   ]
 
   @MarketStoreModule.State('marketLoaded') marketLoaded!: boolean    
-  @MarketStoreModule.State('marketRecents') marketRecents!: IMarketRecentModel[] 
+  @MarketStoreModule.State('marketRecents') marketRecents!: IMarketRecentModel[]     
 
   changeRequestDate (date: number) {    
     this.count = this.count + date

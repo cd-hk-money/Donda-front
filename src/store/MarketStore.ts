@@ -4,7 +4,7 @@ import axios from 'axios'
 import * as _ from 'lodash'
 
 import { StockSimpleModel, StockRecommendModel} from '@/models/stock'
-import { MarketModel, IMarketChartModel, IMarketRecentModel } from '@/models/market'
+import { IMarketChartModel, IMarketRecentModel } from '@/models/market'
 import { IUpdateStateModel } from '@/models/payload'
 import { division } from '@/mixins/tools'
 
@@ -32,6 +32,8 @@ export default class MarketStore extends VuexModule {
 	public marketRecents!: IMarketRecentModel
 	public requestDate = 20
 	public stockRequestDate = 20
+	public marketValuation!: any
+	public marketValuationLoaded = false
 
 
 	// 종목 추천 정보
@@ -185,6 +187,26 @@ export default class MarketStore extends VuexModule {
 			console.log(e)
 		}
 	}  
+
+
+	// 시장 트렌드를 불러옵니다.
+	@Action
+	public async getMarketValuation(): Promise<void> {
+		try {
+			this.context.commit('updateState', {
+				marketValuationLoaded: true
+			})
+
+			const res = await axios.get('/daily/market', HEADER)
+
+			this.context.commit('updateState', {
+				marketValuationLoaded: false,
+				marketValuation: res.data
+			})
+		} catch(e)	 {
+			console.log(e)
+		}
+	}
 	
 
 	// 자동완성을 위한 기업명과 코드를 불러옵니다.
@@ -221,6 +243,8 @@ export default class MarketStore extends VuexModule {
 				recommendLoaded : true
 			})
 			const res = await axios.get('/daily/recommand')
+
+			console.log(res.data)
 
 			const recommend = Object.entries(res.data).map((recommend: any[]) => ({
 				code: recommend[0],
