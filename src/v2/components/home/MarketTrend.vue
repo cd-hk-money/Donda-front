@@ -10,9 +10,9 @@
     <MarketTrendFactory
       :market="computedMarket.nasdaq"
       :marketValuation="marketValuation.NASDQ"
-      contry="korea"
+      contry="usa"
     >
-      한국 주가는 상승중입니다.
+      미국 주가는 상승중입니다.
     </MarketTrendFactory>
     <MarketTrendFactory
       :market="computedMarket.usdkrw"
