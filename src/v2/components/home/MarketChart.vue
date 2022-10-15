@@ -1,3 +1,7 @@
+<template>
+  <canvas :id="type" :height="height"></canvas>
+</template>
+
 <script lang="ts">
 import Vue from 'vue'
 import Chart from 'chart.js'
@@ -5,10 +9,9 @@ import { Component, Prop, Watch } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 import { mixins, Line } from 'vue-chartjs-typescript'
 
-import { transparentize } from '@/mixins/tools'
+import { transparentize, myCrossHair } from '@/mixins/tools'
 import { IMarketChartModel, MarketModel } from '@/models/market'
 
-import zoom from 'chartjs-plugin-zoom'
 
 const { reactiveProp } = mixins
 const MarketStoreModule = namespace('MarketStore')
@@ -25,32 +28,24 @@ export default class LineChart extends Vue {
   @Prop() chartData!: null
   @Prop() fill!: boolean
   @Prop() mobile!: boolean
-  @Prop() height: number
+  @Prop({default: 40}) height: number
   @Prop({default: 0}) count!: number
 
   @Prop({default: function () { return {} }}) options!: object
 
   @MarketStoreModule.State('marketChart') marketChart!: IMarketChartModel
   @MarketStoreModule.State('requestDate') requestDate!: number
-
-
   
   renderChart!: (chartData: any, options: any) => HTMLCanvasElement    
 
-  chartOptions: Chart.ChartOptions = {}
-
-  @Watch('count')
-  watchFill () {
-    this.renderLineChart()
-  }
-  
-  applyDefaultOptions() {
-    this.chartOptions.responsive = true
-    this.chartOptions.legend = {
+  chart!: Chart
+  chartOptions: Chart.ChartOptions = {
+    responsive: true,
+    legend: {
       display: false,      
-    }
-
-    this.chartOptions.scales = {
+    },
+       
+    scales: {
       xAxes: [{
         gridLines: {
           display: false,                    
@@ -68,7 +63,7 @@ export default class LineChart extends Vue {
       }],
       yAxes: [{
         ticks: {
-          callback: function(value: string) {return value.toLocaleString()},
+          callback: (value: string) => value.toLocaleString(),          
           fontSize: 15,              
           padding: 18,                   
           display: !this.mobile            
@@ -78,18 +73,18 @@ export default class LineChart extends Vue {
           drawTicks: false        
         }
       }]
-    }
+    },
 
-    this.chartOptions.animation = {
+    animation: {
       duration: 1000,
       easing: 'easeOutBounce'
-    }
+    },
 
-    this.chartOptions.plugins = {      
-      zoom
-    }  
+    plugins: {      
+      'dottedLine': false,
+    },
     
-    this.chartOptions.tooltips = {
+    tooltips: {
       enabled: true,
       titleFontSize: 15,
       backgroundColor: '#666',
@@ -100,44 +95,67 @@ export default class LineChart extends Vue {
       callbacks: {
         label: (tooltipItem) => tooltipItem.yLabel as string,        
       },
-      intersect: false
-    }    
+      intersect: false,
+      mode: 'index'
+    }       
   }
 
-  createChartData (type: string, count: number, fill: boolean | string) {
+  crosshairPoint = {
+    id: 'crosshairPoint',
+    
+  } 
+
+  
+  @Watch('count')
+  watchFill () {
+    this.createChart()
+  }
+  
+  createChartData (type: string, count: number): Chart.ChartData {
     const market = this.marketChart[this.type]    
     return {
       labels: market.labels.slice(count * (-1)).map(label => label.substr(5)),      
       datasets: [ 
         { 
+          type: 'line',
           label: this.type,
           data: market.values.slice(count * (-1)).map((value: MarketModel) => value.close), 
-          fill: fill,        
+          fill: false,        
           borderColor: MAIN_COLOR,
           backgroundColor: transparentize(MAIN_COLOR, 0.8),
           borderWidth: 3.5,                 
           radius: this.count > 150 ? 0 : 0,
           pointStyle: 'rectRounded',
-          tension: .4,          
           pointHitRadius: 10,
-          hoverPointRadius: 10          
+          pointRadius: 0,
+          pointHoverRadius: 5
         },
       ],          
     }
   }
 
-  renderLineChart() {
-    this.applyDefaultOptions()
-    console.log(REQUEST_DATE[this.count])
-    const chart = this.renderChart(this.createChartData(this.type, REQUEST_DATE[this.count], this.fill), this.chartOptions)    
-  }
+  createChart() {
+    if(this.chart) this.chart.destroy()
 
+    const canvas = document.getElementById(this.type) as HTMLCanvasElement
+    if(!canvas) return
+
+    const options: Chart.ChartConfiguration = {
+      data: this.createChartData(this.type, REQUEST_DATE[this.count]),
+      options: this.chartOptions,
+      plugins: [myCrossHair]
+    }
+
+    this.chart = new Chart(canvas, options)
+    this.chart.update()
+  }
+  
   mounted() {            
-    this.renderLineChart()    
+    this.createChart()
   }    
 
   updated() {
-    this.renderLineChart()    
+    this.createChart()
   }
 }
 

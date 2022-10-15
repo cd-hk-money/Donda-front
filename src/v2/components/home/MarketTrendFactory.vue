@@ -73,7 +73,7 @@
           
         <MarketChart          
           class="mt-5"
-          :height="180"
+          :height="130"
           :type="market.type"
           :fill="false"
           :count="selectionChipGroup"

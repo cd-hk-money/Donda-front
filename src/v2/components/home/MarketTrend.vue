@@ -116,8 +116,6 @@
     async mounted () {
       if(!this.marketValuation) await this.getMarketValuation()
       if(!this.marketRecents) await this.getTodayMarket()        
-
-      console.log(this.marketValuation)
     }
 
   }
