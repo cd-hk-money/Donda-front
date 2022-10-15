@@ -5,8 +5,7 @@
       :marketValuation="marketValuation.KOSPI" 
       contry="korea"
     />
-      
-    
+          
     <MarketTrendFactory
       :market="computedMarket.nasdaq"
       :marketValuation="marketValuation.NASDQ"
@@ -23,8 +22,7 @@
       :market="computedMarket.snp500"
       :marketValuation="marketValuation['S&P500']"
       contry="usa"
-    />
-      
+    />      
   </div>
 </template>
 
