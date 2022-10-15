@@ -13,7 +13,7 @@
             {{ stock.market }} 
           </div>
           <v-list-item-title class="text-h4 font-weight-bold m-1 ml-5">
-            <span>{{ stock.name }}</span>                        
+            <span>{{ stock.name }}</span>                 
             <v-tooltip right>
               <template v-slot:activator="{on}">
                 <v-icon v-on="on" size="30" class="ml-5" :color="prefixedValue.trendIconColor">

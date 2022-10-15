@@ -1,5 +1,5 @@
 <template>
-    <v-card   
+  <v-card
     class="ml-5 mr-5 mb-5 mt-5"
     width="420"
     height="130"    

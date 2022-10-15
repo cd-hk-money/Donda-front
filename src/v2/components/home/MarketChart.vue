@@ -127,7 +127,7 @@ export default class LineChart extends Vue {
           borderWidth: 3.5,                           
           pointStyle: 'circle',
           pointHitRadius: this.count === 2 ? 1 : 200,
-          pointRadius: this.count === 2 ? 0 : 5,
+          pointRadius: this.count === 2 ? 0 : 3,
           pointHoverRadius: 10,
           pointBackgroundColor: MAIN_COLOR,
           pointHoverBackgroundColor: '#fff',          

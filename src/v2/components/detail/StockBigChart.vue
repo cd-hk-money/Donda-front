@@ -269,7 +269,7 @@ export default class StockBigChart extends Vue {
         easing: 'easeOutQuart'        
       },
 
-      tooltips: {
+    tooltips: {
         enabled: true,
         intersect: false,
         titleFontSize: 20,

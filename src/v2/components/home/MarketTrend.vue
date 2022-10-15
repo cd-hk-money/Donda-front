@@ -66,11 +66,7 @@
     expandKospi = false
     selectionChipGroup = 0
 
-    @Watch('selectionChipGroup')
-    watchSelctionChipGroup(old) {
-      console.log(old)
-    }
-    
+
     get mobile () { return this.$vuetify.breakpoint.name === 'xs'}    
 
 

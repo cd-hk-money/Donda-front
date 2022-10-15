@@ -6,9 +6,6 @@
         <transition name="slide-fade" mode="out-in">
           <router-view />      
         </transition>  
-          <!-- <div>
-            <menu-bar />             
-          </div> -->
       </div>
       <v-snackbar 
         v-model="SnackBar" timeout="3000"
@@ -144,6 +141,13 @@ html {
 body {
   min-height: 100%;
   overflow: hidden;
+}
+
+.stockinfo-progress-circular {
+  top: 50%;
+  left: 50%;
+  right: 50%;
+  position: absolute;
 }
 
 </style>
