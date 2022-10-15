@@ -2,6 +2,7 @@
   <v-card
     :width="mobile ? 460 : '94%'"
     color="#252424"
+    min-height="161"
     class="ml-5 mr-5 mb-5 mt-5"
     rounded="xl"
     elevation="0"     

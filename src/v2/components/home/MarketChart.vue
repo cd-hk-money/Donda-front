@@ -113,6 +113,7 @@ export default class LineChart extends Vue {
   
   createChartData (type: string, count: number): Chart.ChartData {
     const market = this.marketChart[this.type]    
+    console.log(this.count)
     return {
       labels: market.labels.slice(count * (-1)).map(label => label.substr(5)),      
       datasets: [ 
@@ -123,12 +124,16 @@ export default class LineChart extends Vue {
           fill: false,        
           borderColor: MAIN_COLOR,
           backgroundColor: transparentize(MAIN_COLOR, 0.8),
-          borderWidth: 3.5,                 
-          radius: this.count > 150 ? 0 : 0,
-          pointStyle: 'rectRounded',
-          pointHitRadius: 10,
-          pointRadius: 0,
-          pointHoverRadius: 5
+          borderWidth: 3.5,                           
+          pointStyle: 'circle',
+          pointHitRadius: this.count === 2 ? 1 : 200,
+          pointRadius: this.count === 2 ? 0 : 5,
+          pointHoverRadius: 10,
+          pointBackgroundColor: MAIN_COLOR,
+          pointHoverBackgroundColor: '#fff',          
+          pointBorderColor: '#fff',
+          pointBorderWidth: this.count === 2 ? 0 : 2.5,   
+    
         },
       ],          
     }
