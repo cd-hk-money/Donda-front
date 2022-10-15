@@ -11,7 +11,20 @@
       추천 종목
       <BtnBadge>
         추천 종목 기준..
-      </BtnBadge>        
+      </BtnBadge>  
+      <v-tooltip left>
+        <template v-slot:activator="{on, attrs}">
+          <v-btn 
+            icon absolute right top large class=""
+            @click="reload"
+            v-on="on"
+            v-bind="attrs"
+          >
+            <v-icon>mdi-reload</v-icon>
+          </v-btn>      
+        </template>
+        <span> 추천종목을 새로 로드합니다.</span>
+      </v-tooltip>
     </v-card-title>    
 
     <v-card-subtitle class="d-flex justify-space-between">
@@ -20,12 +33,11 @@
 
     <v-divider />
 
-    <v-card-text v-if="!loaded && !stocksLoaded" class="d-flex flex-wrap justify-center">          
+    <v-card-text v-if="!loaded && !recommendStocksLoaded" class="d-flex flex-wrap justify-center">          
       <stock-similar-content
-        v-for="(content, i) in recommend"
+        v-for="(content, i) in recommendStocks"
         :key="i"
         :content="content"
-        :test="recommendStocks[i]"
       />
     </v-card-text>
     <v-card-text v-else>
@@ -57,37 +69,37 @@ const StockStoreModule = namespace('StockStore')
   }
 })
 export default class StockRecommend extends Vue {
-  
-  model = null
-  overlay = false
-  stockEtcs: IStockModel[] | null = null
-  recommendStocks = []
-  stocksLoaded = false
-
+          
   @MarketStoreModule.State('recommend') recommend!: StockRecommendModel[]
   @MarketStoreModule.State('recommedLoaded') loaded!: boolean
   @MarketStoreModule.State('codeTitleMapping') codeTitleMapping!: any
   @MarketStoreModule.Getter('recommendArray') recommendArray!: any
   @MarketStoreModule.Action('getRecommend') readonly getRecommend!: () => Promise<any>
 
+  @StockStoreModule.State('recommendStocks') recommendStocks!: IStockModel[]
+  @StockStoreModule.State('recommendStocksLoaded') recommendStocksLoaded!: boolean
   @StockStoreModule.Action('getStocks') readonly getStocks!: (codes: string[]) => Promise<any>
 
+    
+  get mobile () {    
+    return mobileHeight(this.$vuetify.breakpoint.name) < 500
+  }
+  
   colorClass (content) {
     const { changes_ratio } = content
     return changes_ratio > 0 ? 'red--text' : 'blue--text'
   }
 
-  get mobile () {    
-    return mobileHeight(this.$vuetify.breakpoint.name) < 500
+  async reload () {
+    const recommendCodes = (await this.getRecommend()).map(stock => stock.code)
+    await this.getStocks(recommendCodes)
   }
 
   
-  async created () {    
-    this.stocksLoaded = true
-    const recommendCodes = (await this.getRecommend()).map(stock => stock.code)    
-    this.recommendStocks = (await this.getStocks(recommendCodes)).map(res => res.data)    
-    this.stocksLoaded = false
-
+    
+  async mounted () {    
+    const recommendCodes = (await this.getRecommend()).map(stock => stock.code)
+    if(!this.recommendStocks.length) await this.getStocks(recommendCodes)
   }
 }
 </script>
