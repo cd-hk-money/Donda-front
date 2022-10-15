@@ -87,6 +87,7 @@ export default class StockFinanceBarChart extends Vue {
           pointStyple: 'rectRounded',
           tension: .4,         
           barThickness: 60,
+          minBarLength: 10,
           
         }
       ]

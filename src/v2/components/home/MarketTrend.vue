@@ -1,34 +1,30 @@
 <template>
-  <div v-if="!marketLoaded && !marketValuationLoaded">
+  <div v-if="!marketLoaded && !marketValuationLoaded">    
     <MarketTrendFactory
       :market="computedMarket.kospi"
       :marketValuation="marketValuation.KOSPI" 
       contry="korea"
-    >
-      한국 주가는 상승중입니다.
-    </MarketTrendFactory>
+    />
+      
+    
     <MarketTrendFactory
       :market="computedMarket.nasdaq"
       :marketValuation="marketValuation.NASDQ"
       contry="usa"
-    >
-      미국 주가는 상승중입니다.
-    </MarketTrendFactory>
+    />
+      
     <MarketTrendFactory
       :market="computedMarket.usdkrw"
       :marketValuation="marketValuation['KRW/USD']"
       contry="korea"
-    >
-      환율은 상승중입니다.
-    </MarketTrendFactory>
+    />
+      
     <MarketTrendFactory
       :market="computedMarket.snp500"
       :marketValuation="marketValuation['S&P500']"
       contry="usa"
-    >
-      미국 주가는 상승중입니다.
-    </MarketTrendFactory>
-
+    />
+      
   </div>
 </template>
 

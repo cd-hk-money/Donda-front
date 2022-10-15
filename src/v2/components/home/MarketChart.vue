@@ -148,11 +148,10 @@ export default class LineChart extends Vue {
     const options: Chart.ChartConfiguration = {
       data: this.createChartData(this.type, REQUEST_DATE[this.count]),
       options: this.chartOptions,
-      plugins: [myCrossHair]
+      plugins: []
     }
 
     this.chart = new Chart(canvas, options)
-    this.chart.update()
   }
   
   mounted() {            
