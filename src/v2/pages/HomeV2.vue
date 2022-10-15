@@ -1,7 +1,7 @@
 <template>
   <v-row class="mt-2">
     <v-col cols="12" xl="4" lg="4">
-      <v-card rounded="xl" max-height="835" class="ml-5 overflow-y-auto" v-if="!mobile">
+      <v-card rounded="xl" max-height="835" class="ml-5 overflow-y-auto stock-news" v-if="!mobile">
         <v-card-title>
           주식 시장
         </v-card-title>          
