@@ -329,7 +329,7 @@ export default class StockValuation extends Vue {
 
   valuations: IValuationContent[] = [
     {
-      color: '#40E0D0',
+      color: '#00BCD4',
       title: '현재 주가',
       content: '내용'
     },
@@ -541,7 +541,7 @@ strong {
 }
 
 .stock-indicator-detail:hover {
-  color: rgba(64, 224, 208, 1);
+  color: #00BCD4;
 }
 
 .stock-indicator-detail::-webkit-scrollbar-thumb,

@@ -7,18 +7,21 @@
   >     
     <v-card-title class="ml-5">
       보조 지표       
-      <v-tooltip bottom>
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn  
-              v-on="on"
-              v-bind="attrs"                
-              icon                       
-              @click="drawerChange"
-            ><v-icon small>fa-solid fa-circle-question</v-icon>              
-            </v-btn>
-          </template>
-          <span>자세히..</span>
-        </v-tooltip> 
+      <BtnBadge>
+        <div><strong class="text-h6 cyan--text font-weight-bold">보조지표</strong></div>
+        기업의 재무제표를 기반으로 계산된 시장 예측을 가능하게 하는 지표들입니다. <br />
+        <v-divider class="mt-2 mb-2"/>
+        <div class="d-flex align-center">
+          <v-icon small>fa-solid fa-circle-question</v-icon>
+          <span class="mt-1 ml-2 mb-2 cyan--text">왜 EPS, ROE, BPS 3개를 대표적으로 보여주나요?</span>
+        </div>
+        EPS, ROE, BPS는 크면 클수록 투자가치가 높다고 판단됩니다. 업종 평균과의 그래프 면적 비교를 통해
+        해당 종목의 투자 가치를 대략적으로 파악 할 수 있습니다.
+        <div>
+          자세한 내용은 보조지표 탭을 참조하세요.
+        </div>
+        
+      </BtnBadge>      
     </v-card-title>
 
     <v-card-subtitle class="ml-5">
@@ -58,7 +61,7 @@
       <div class="text-center stockinfo-progress-circular" v-else>
         <v-progress-circular
           indeterminate
-          color="#40E0D0"
+          color="#00BCD4"
         ></v-progress-circular>
       </div>
     </v-card-text>
@@ -74,13 +77,15 @@ import StockIndicatorChart from '@/v2/components/detail/StockIndicatorChart.vue'
 import StockIndicatorBarChart from './StockIndicatorBarChart.vue'
 
 import { ISimpleChartData, IStockIndicatorSectorDailyModel, IStockIndicatorSectorModel, IStockModel } from '@/models/stock'
+import BtnBadge from '../vuetify/BtnBadge.vue'
 
 const StockStoreModule = namespace('StockStore')
 
 @Component({
   components: {
     StockIndicatorChart,
-    StockIndicatorBarChart
+    StockIndicatorBarChart,
+    BtnBadge
   }
 })
 export default class StockIndicator extends Vue {

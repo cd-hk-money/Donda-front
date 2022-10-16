@@ -4,7 +4,9 @@
     @click="expand = !expand"
   >
     <v-card-title class="text-h4 stock-indicator-detail-content-title">
-      {{ upperType }}
+      <span>
+        {{ upperType }}
+      </span>
       <v-chip v-if="quarter" small class="ml-3"> 분기 </v-chip>
       <v-chip small class="ml-3">
         <v-tooltip top >
@@ -90,6 +92,11 @@
   }
 </script>
 
-<style scoped>
-
+<style>
+.stock-indicator-detail-content:hover .stock-indicator-detail-content-title,
+.stock-indicator-detail-content:hover .strong-white strong,
+.stock-indicator-detail-content:hover .strong-black strong
+ {
+  color: #00BCD4 !important;
+} 
 </style>

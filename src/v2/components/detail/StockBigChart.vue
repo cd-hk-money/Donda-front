@@ -13,7 +13,7 @@ import { IUpdateStateModel } from '@/models/payload'
 
 const { reactiveProp } = mixins
 const StockStoreModule = namespace('StockStore')
-const MAIN_COLOR = '#40E0D0'
+const MAIN_COLOR = '#00BCD4'
 const zoomScale = 1
 
 

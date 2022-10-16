@@ -97,21 +97,9 @@
   
       </v-list-item>
   
-      <v-sheet 
-        elevation="0"
-        outlined        
-        height="120"
-      >                
+      <v-sheet elevation="0" outlined height="120">                
         <v-card-title class="text-h5 font-weight-bold ml-5">
           <span> {{ stock.close.toLocaleString()}} ₩ </span>
-          <v-btn  
-            class="ml-3"
-            icon
-            right
-            x-small
-            @click="drawerChange"
-          ><v-icon>fa-solid fa-circle-info</v-icon>
-          </v-btn>
         </v-card-title>
 
         <v-card-subtitle :class="['text-h6', 'font-weight-bold', 'ml-5', stock.changes > 0 ? 'red--text' : 'blue--text']">
@@ -130,7 +118,7 @@
 
     <template v-else>
       <div class="text-center stockinfo-progress-circular">
-        <v-progress-circular indeterminate color="#40E0D0" />        
+        <v-progress-circular indeterminate color="#00BCD4" />        
       </div>
     </template>
 </v-card>

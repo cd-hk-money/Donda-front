@@ -8,7 +8,7 @@
   import { namespace } from 'vuex-class'
   
   const { reactiveProp } = mixins
-  const MAIN_COLOR = '#40E0D0'
+  const MAIN_COLOR = '#00BCD4'
   const SUB_COLOR = 'rgb(255, 99, 132)'
   const StockStoreModule = namespace('StockStore')
   
@@ -74,7 +74,6 @@
         titleFontColor: MAIN_COLOR,
         bodyFontSize: 12,
         cornerRadius: 12,
-        displayColors: false,        
         mode: 'index',
       }  
 
@@ -93,7 +92,8 @@
             backgroundColor: transparentize(MAIN_COLOR, 0.6),
             borderWidth: 3,            
             tension: .4,     
-            pointRadius: 0,          
+            pointRadius: 0,  
+            pointHitRadius: 100,            
           },
           {
             type: 'line',
@@ -104,7 +104,8 @@
             backgroundColor: transparentize(SUB_COLOR, 0.2),
             borderWidth: 3,
             tension: .4,   
-            pointRadius: 0,                   
+            pointRadius: 0,      
+            pointHitRadius: 100             
           }
         ]
       }    

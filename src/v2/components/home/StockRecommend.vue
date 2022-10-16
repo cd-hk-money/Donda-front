@@ -34,7 +34,7 @@
     <v-divider />
 
     <v-card-text v-if="!loaded && !recommendStocksLoaded" class="d-flex flex-wrap justify-center">          
-      <stock-similar-content
+      <StockSimilarContent
         v-for="(content, i) in recommendStocks"
         :key="i"
         :content="content"
@@ -42,7 +42,7 @@
     </v-card-text>
     <v-card-text v-else>
       <div class="stockinfo-progress-circular">
-        <v-progress-circular indeterminate color="#40E0D0" />         
+        <v-progress-circular indeterminate color="#00BCD4" />         
       </div>
     </v-card-text>
   </v-card>

@@ -73,290 +73,77 @@
             <strong class="mr-1">EPS</strong>와<strong class="mr-1 ml-1">BPS</strong>가 동시에 늘어나는 종목에 투자하는 것이 일반적으로 가장 높은 수익률을 거둘 수 있습니다.
           </InformationFactory>
         </template>
-    </IndicatorContentFactory>
+      </IndicatorContentFactory>
 
-    <!-- BPS -->
-    <IndicatorContentFactory       
-      indicatorType="bps"
-      :iconColor="bpsMean.iconColor"
-      :icon="bpsMean.icon"
-      :tooltipMessage="bpsMean.text"
-      :chartData="indicators.bps"
-      :sectorData="indicatorSector.sector_bps"
-    >
-      <template v-slot:title>
-        <strong>E</strong>arnings <strong>P</strong>er <strong>S</strong>hare |  주당 순이익
-      </template>
-
-      <template v-slot:description>
-        <strong>순자산</strong>
-          <BtnBadge>
-            <template v-slot:text>            
-              <div><strong class="text-h6 cyan--text font-weight-bold">순자산</strong></div>
-              총자산에서 부채를 뺀 것을 의미합니다. <strong class="cyan--text">자기자본</strong> 이라고도 합니다.
-              <div class="d-flex justify-space-between">
-                <div></div>
-                <a href="https://econowide.com/3598">출처: 매일경제 경제용어사전</a>
-              </div>
-            </template>
-          </BtnBadge>        
-          을 
-          <strong>발행 주식수</strong> 로 나눈 값을 의미합니다.  
-      </template>
-
-      <template v-slot:compareSector>
-        <strong>{{ stock.name }}</strong>의 1년 <strong>BPS 평균값은</strong> <strong>{{ bpsMean.origin.toLocaleString() }}</strong>으로,
-        <strong class="sector">동종 업계 1년 평균 {{ bpsMean.sector.toLocaleString() }}</strong> 보다  
-        <strong :class="bpsMean.colorClass">{{ bpsMean.text }}</strong>
-        <v-icon :color="bpsMean.iconColor" size="20" class="ml-2">{{ bpsMean.icon}}</v-icon>        
-      </template>
-
-      <template v-slot:information>
-        <InformationFactory :addinationalClass="'indicator-detail-card'">
-          <strong class="mr-1">BPS</strong> 가 높으면, 자기 자본의 비중이 크거나, <span>회사의 가치가 높다고 판단됩니다</span>
-        </InformationFactory>
-
-        <InformationFactory>
-          <strong class="mr-1">BPS</strong> 에는 주가 정보가 고려되있지 않기 때문에, 주가와의 상관관계를 파악하기 위해 주로<strong class="ml-1 mr-1">PBR</strong>을 같이 확인하여 투자 가치를 판단합니다.
-        </InformationFactory>
-
-        <InformationFactory>
-          <strong class="mr-1">BPS</strong>와<strong class="mr-1 ml-1">EPS</strong>가 동시에 늘어나는 종목에 투자하는 것이 일반적으로 가장 높은 수익률을 거둘 수 있습니다.
-        </InformationFactory>
-      </template>
-    </IndicatorContentFactory>
-      <!-- EPS -->
-      <v-sheet       
-        class="stock-indicator-detail-content" 
-        @click="expandEps = !expandEps"      
-      >
-        <v-card-title class="text-h4 stock-indicator-detail-content-title">        
-            EPS        
-          <v-chip small class="ml-3"> 분기 </v-chip>
-          <v-chip small class="ml-3">
-            <v-tooltip top>
-              <template v-slot:activator="{on}">
-                <v-icon 
-                  v-on="on"
-                  :color="epsMean.iconColor"                  
-                >{{ epsMean.icon }}</v-icon>        
-              </template>          
-              <span> 투자 가치가 상대적으로 {{ epsMean.text }}</span>          
-            </v-tooltip>
-          </v-chip>
-          
-        </v-card-title>
-  
-        <v-card-subtitle :class="['text-h6', getStrongFontColorClass]">
-          <span>
-            <strong>E</strong>arnings <strong>P</strong>er <strong>S</strong>hare |  주당 순이익
-          </span>        
-        </v-card-subtitle>
-  
-        <v-card-text :class="['grey--text', getStrongFontColorClass]">  
-          <strong>당기순이익</strong>
-          <BtnBadge>
-            <template v-slot:text>
-              <div><strong class="text-h6 cyan--text font-weight-bold">당기순이익</strong></div>
-              일정 회계기간 동안 발생한 기업의 전체 수익에서 비용을 차감한 금액으로,
-              <div class="d-flex justify-space-between">
-                <span><strong class="cyan--text">일정 기간동안 기업이 창출한 순이익</strong>을 뜻합니다.</span>
-                <a href="https://terms.naver.com/entry.naver?docId=67170&cid=43667&categoryId=43667">출처: 네이버 지식백과</a>
-              </div>
-            </template>
-          </BtnBadge>을           
-          <strong>유통 주식수</strong>
-          <BtnBadge>
-            <template v-slot:text>
-              <div><strong class="text-h6 cyan--text font-weight-bold">유통 주식수</strong></div>
-              상장법인의 총발행 주식 중 최대주주 지분 및 정부 소유주 등을 제외한,
-              <div class="d-flex justify-space-between">
-                <span><strong class="cyan--text">실제 시장에서 유통 가능한 주식 수</strong>를 뜻합니다.</span>
-                <a href="https://econowide.com/3598">출처: 이코노와이드 블로그</a>
-              </div>
-            </template>
-          </BtnBadge>
-          로 나눈 값을 의미합니다.  
-        </v-card-text>
-  
-        <v-expand-transition>
-          <v-card v-if="expandEps">
-            <stock-indicator-bar-chart
-              class="ml-3" 
-              type="EPS"
-              :chartData="indicators.eps"   
-              :sector="indicatorSector.sector_eps"
-              :height="100"      
-            />          
-  
-            <v-divider />
-  
-            <v-card-text :class="['grey--text mt-1', getStrongFontColorClass]">
-              <div>
-                <strong>{{ stock.name }}</strong>의 1년 <strong>EPS 평균값은</strong> <strong>{{ epsMean.origin.toLocaleString() }}</strong>으로,
-                <strong class="sector">동종 업계 1년 평균 {{ epsMean.sector.toLocaleString() }}</strong> 보다  
-                <strong :class="epsMean.colorClass">{{ epsMean.text }}</strong>
-                <v-icon :color="epsMean.iconColor" size="20" class="ml-2">{{ epsMean.icon}}</v-icon>
-              </div>          
-  
-              <v-divider class="mt-2" />
-              
-              <v-sheet 
-                outlined 
-                class="pt-3 pb-3 pr-3 pl-3 mt-3 d-flex align-center indicator-detail-card" 
-                rounded="lg" 
-                color="blue-grey lighten-1"
-              >
-                <v-icon class="mr-1">mdi-information</v-icon>
-                <strong class="mr-1">EPS</strong> 가 평균보다 높을수록, <span>투자 가치가 높다고 볼 수 있습니다</span>
-              </v-sheet>                  
-  
-              <v-sheet 
-                outlined 
-                class="pt-3 pb-3 pr-3 pl-3 mt-3 d-flex align-center indicator-detail-card" 
-                rounded="lg" 
-                color="blue-grey lighten-1"
-              >
-                <v-icon class="mr-1">mdi-information</v-icon>
-                <strong class="mr-1">EPS</strong>와<strong class="mr-1 ml-1">BPS</strong>가 동시에 늘어나는 종목에 투자하는 것이 일반적으로 가장 높은 수익률을 거둘 수 있습니다.              
-              </v-sheet>                  
-            </v-card-text>
-          </v-card>        
-        </v-expand-transition>
-      </v-sheet>    
-  
-  
       <v-divider />
-  
-  
+
       <!-- BPS -->
-      <v-sheet 
-        class="stock-indicator-detail-content"
-        @click="expandBps = !expandBps" 
+      <IndicatorContentFactory       
+        indicatorType="bps"
+        :iconColor="bpsMean.iconColor"
+        :icon="bpsMean.icon"
+        :tooltipMessage="bpsMean.text"
+        :chartData="indicators.bps"
+        :sectorData="indicatorSector.sector_bps"
       >
-        <v-card-title class="text-h4 stock-indicator-detail-content-title">
-          BPS
-          <v-chip small class="ml-3"> 분기 </v-chip>
-          <v-chip small class="ml-3"> 
-            <v-tooltip top>
-              <template v-slot:activator="{on}">
-                <v-icon 
-                  v-on="on"
-                  :color="bpsMean.iconColor"                 
-                >{{ bpsMean.icon }}</v-icon>        
-              </template>
-              <span> 투자 가치가 상대적으로 {{ bpsMean.text }}</span>
-            </v-tooltip>
-          </v-chip>
-        </v-card-title>
-  
-        <v-card-subtitle :class="['text-h6', getStrongFontColorClass]">
-          <strong>B</strong>ookvalue <strong>P</strong>er <strong>S</strong>hare | 주당 순자산가치
-        </v-card-subtitle>
-  
-        <v-card-text :class="['grey--text', getStrongFontColorClass]">  
+        <template v-slot:title>
+          <strong>E</strong>arnings <strong>P</strong>er <strong>S</strong>hare |  주당 순이익
+        </template>
+
+        <template v-slot:description>
           <strong>순자산</strong>
-          <BtnBadge>
-            <template v-slot:text>            
-              <div><strong class="text-h6 cyan--text font-weight-bold">순자산</strong></div>
-              총자산에서 부채를 뺀 것을 의미합니다. <strong class="cyan--text">자기자본</strong> 이라고도 합니다.
-              <div class="d-flex justify-space-between">
-                <div></div>
-                <a href="https://econowide.com/3598">출처: 매일경제 경제용어사전</a>
-              </div>
-            </template>
-          </BtnBadge>        
-          을 
-          <strong>발행 주식수</strong> 로 나눈 값을 의미합니다.  
-        </v-card-text>
-  
-        <v-expand-transition>
-          <v-card v-if="expandBps">
-            <stock-indicator-bar-chart
-              class="ml-3" 
-              type="BPS"
-              :chartData="indicators.bps"   
-              :sector="indicatorSector.sector_bps"
-              :height="100"      
-            />
-  
-            <v-divider />
-  
-            <v-card-text :class="['grey--text mt-1', getStrongFontColorClass]">            
-              <div>
-                <strong>{{ stock.name }}</strong>의 1년 <strong>BPS 평균값은</strong> <strong>{{ bpsMean.origin.toLocaleString() }}</strong>으로,
-                <strong class="sector">동종 업계 1년 평균 {{ bpsMean.sector.toLocaleString() }}</strong> 보다  
-                <strong :class="bpsMean.colorClass">{{ bpsMean.text }}</strong>
-                <v-icon :color="bpsMean.iconColor" size="20" class="ml-2">{{ bpsMean.icon}}</v-icon>
-              </div>
-  
-              <v-divider class="mt-2" />
-              
-              <v-sheet 
-                outlined 
-                class="pt-3 pb-3 pr-3 pl-3 mt-3 d-flex align-center indicator-detail-card" 
-                rounded="lg" 
-                color="blue-grey lighten-1"
-              >
-                <v-icon class="mr-1">mdi-information</v-icon>
-                <strong class="mr-1">BPS</strong> 가 높으면, 자기 자본의 비중이 크거나, <span>회사의 가치가 높다고 판단됩니다</span>
-              </v-sheet>
-  
-              <v-sheet 
-                outlined 
-                class="pt-3 pb-3 pr-3 pl-3 mt-3 d-flex align-center" 
-                rounded="lg" 
-                color="blue-grey lighten-1"
-              >
-                <v-icon class="mr-1">mdi-information</v-icon>
-                <strong class="mr-1">BPS</strong> 에는 주가 정보가 고려되있지 않기 때문에, 주가와의 상관관계를 파악하기 위해 주로<strong class="ml-1 mr-1">PBR</strong>을 같이 확인하여 투자 가치를 판단합니다.
-              </v-sheet>
-  
-              <v-sheet 
-                outlined 
-                class="pt-3 pb-3 pr-3 pl-3 mt-3 d-flex align-center indicator-detail-card" 
-                rounded="lg" 
-                color="blue-grey lighten-1"
-              >
-                <v-icon class="mr-1">mdi-information</v-icon>
-                <strong class="mr-1">BPS</strong>와<strong class="mr-1 ml-1">EPS</strong>가 동시에 늘어나는 종목에 투자하는 것이 일반적으로 가장 높은 수익률을 거둘 수 있습니다.              
-              </v-sheet>     
-            </v-card-text>
-          </v-card>      
-        </v-expand-transition>
-  
-      </v-sheet>    
-  
-  
-      <v-divider />
-  
-  
-      <!-- ROE -->
-      <v-sheet 
-        class="stock-indicator-detail-content"
-        @click="expandRoe = !expandRoe"
-      >
-        <v-card-title class="text-h4 stock-indicator-detail-content-title">
-          ROE
-          <v-chip small class="ml-3"> 분기 </v-chip>
-          <v-chip small class="ml-3">
-            <v-tooltip top>
-              <template v-slot:activator="{on}">
-                <v-icon 
-                  v-on="on"
-                  :color="roeMean.iconColor"                 
-                >{{ roeMean.icon }}</v-icon>        
+            <BtnBadge>
+              <template v-slot:text>            
+                <div><strong class="text-h6 cyan--text font-weight-bold">순자산</strong></div>
+                총자산에서 부채를 뺀 것을 의미합니다. <strong class="cyan--text">자기자본</strong> 이라고도 합니다.
+                <div class="d-flex justify-space-between">
+                  <div></div>
+                  <a href="https://econowide.com/3598">출처: 매일경제 경제용어사전</a>
+                </div>
               </template>
-              <span> 투자 가치가 상대적으로 {{ roeMean.text }}</span>
-            </v-tooltip>
-          </v-chip>
-        </v-card-title>
-  
-        <v-card-subtitle :class="['text-h6', getStrongFontColorClass]">
+            </BtnBadge>        
+            을 
+            <strong>발행 주식수</strong> 로 나눈 값을 의미합니다.  
+        </template>
+
+        <template v-slot:compareSector>
+          <strong>{{ stock.name }}</strong>의 1년 <strong>BPS 평균값은</strong> <strong>{{ bpsMean.origin.toLocaleString() }}</strong>으로,
+          <strong class="sector">동종 업계 1년 평균 {{ bpsMean.sector.toLocaleString() }}</strong> 보다  
+          <strong :class="bpsMean.colorClass">{{ bpsMean.text }}</strong>
+          <v-icon :color="bpsMean.iconColor" size="20" class="ml-2">{{ bpsMean.icon}}</v-icon>        
+        </template>
+
+        <template v-slot:information>
+          <InformationFactory :addinationalClass="'indicator-detail-card'">
+            <strong class="mr-1">BPS</strong> 가 높으면, 자기 자본의 비중이 크거나, <span>회사의 가치가 높다고 판단됩니다</span>
+          </InformationFactory>
+
+          <InformationFactory>
+            <strong class="mr-1">BPS</strong> 에는 주가 정보가 고려되있지 않기 때문에, 주가와의 상관관계를 파악하기 위해 주로<strong class="ml-1 mr-1">PBR</strong>을 같이 확인하여 투자 가치를 판단합니다.
+          </InformationFactory>
+
+          <InformationFactory>
+            <strong class="mr-1">BPS</strong>와<strong class="mr-1 ml-1">EPS</strong>가 동시에 늘어나는 종목에 투자하는 것이 일반적으로 가장 높은 수익률을 거둘 수 있습니다.
+          </InformationFactory>
+        </template>
+      </IndicatorContentFactory>
+
+      <v-divider />
+
+      <!-- ROE  -->
+      <IndicatorContentFactory
+        indicatorType="roe"
+        :iconColor="roeMean.iconColor"
+        :icon="roeMean.icon"
+        :tooltipMessage="roeMean.text"
+        :chartData="indicators.roe"
+        :sectorData="indicatorSector.sector_roe"
+      >
+         <template v-slot:title>
           <strong>R</strong>eturn <strong>O</strong>n <strong>E</strong>quity | 자기자본이익률
-        </v-card-subtitle>
-  
-        <v-card-text :class="['grey--text', getStrongFontColorClass]">
+        </template>
+
+        <template v-slot:description>
           <strong>당기순이익</strong>
           <BtnBadge>
             <template v-slot:text>
@@ -383,45 +170,24 @@
             </template>
           </BtnBadge>
           으로 나눈 수치 백분율 값을 의미합니다.
-        </v-card-text>
-  
-        <v-expand-transition>
-          <v-card v-if="expandRoe">
-            <stock-indicator-bar-chart
-              class="ml-3" 
-              type="ROE"
-              :chartData="indicators.roe"   
-              :sector="indicatorSector.sector_roe"
-              :height="100"      
-            />
-              <v-card-text :class="['grey--text mt-1', getStrongFontColorClass]">
-                <div>
-                  <strong>{{ stock.name }}</strong>의 1년 <strong>ROE 평균값은</strong> <strong>{{ roeMean.origin.toLocaleString() }}</strong>으로,
-                  <strong class="sector">동종 업계 1년 평균 {{ roeMean.sector.toLocaleString() }}</strong> 보다  
-                  <strong :class="roeMean.colorClass">{{ roeMean.text }}</strong>
-                  <v-icon :color="roeMean.iconColor" size="20" class="ml-2">{{ roeMean.icon}}</v-icon>
-                </div>
-  
-                <v-divider class="mt-2" />
-                
-                <v-sheet 
-                  outlined 
-                  class="pt-3 pb-3 pr-3 pl-3 mt-3 d-flex align-center indicator-detail-card" 
-                  rounded="lg" 
-                  color="blue-grey lighten-1"
-                >
-                  <v-icon class="mr-1">mdi-information</v-icon>
-                  <strong>ROE</strong> 가 높으면, 자기 자본으로 더 많은 이익을 내며, <span>주가 상승률이 높다고 판단됩니다.</span>
-                </v-sheet>
-              </v-card-text>
-          </v-card>
-        </v-expand-transition>      
-      </v-sheet>    
-  
-  
+        </template>
+
+        <template v-slot:compareSector>
+          <strong>{{ stock.name }}</strong>의 1년 <strong>ROE 평균값은</strong> <strong>{{ roeMean.origin.toLocaleString() }}</strong>으로,
+            <strong class="sector">동종 업계 1년 평균 {{ roeMean.sector.toLocaleString() }}</strong> 보다  
+            <strong :class="roeMean.colorClass">{{ roeMean.text }}</strong>
+            <v-icon :color="roeMean.iconColor" size="20" class="ml-2">{{ roeMean.icon}}</v-icon>
+        </template>
+      
+        <template v-slot:information>
+          <InformationFactory :addinationalClass="'indicator-detail-card'">
+            <strong>ROE</strong> 가 높으면, 자기 자본으로 더 많은 이익을 내며, <span>주가 상승률이 높다고 판단됩니다.</span>
+          </InformationFactory>
+        </template>
+      </IndicatorContentFactory>
+
       <v-divider />
-  
-  
+      
       <!-- PSR -->
       <v-sheet 
         class="stock-indicator-detail-content"
@@ -481,11 +247,9 @@
           </v-card>
         </v-expand-transition>
       </v-sheet>  
-      
-      
+            
       <v-divider />
-  
-  
+    
       <!-- PER -->
       <v-sheet 
         class="stock-indicator-detail-content"
@@ -545,11 +309,9 @@
           </v-card>
         </v-expand-transition>
       </v-sheet>    
-  
-  
+    
       <v-divider />
-  
-  
+    
       <!-- PBR -->
       <v-sheet 
         class="stock-indicator-detail-content"
@@ -767,7 +529,7 @@ strong {
 }
 
 .stock-indicator-detail:hover {
-  color: rgba(64, 224, 208, 1);
+  color: #00BCD4;
 }
 
 .stock-indicator-detail::-webkit-scrollbar-thumb,
@@ -799,7 +561,7 @@ strong {
 .stock-indicator-detail-content:hover .strong-white strong,
 .stock-indicator-detail-content:hover .strong-black strong
  {
-  color: rgb(64, 224, 208) !important;
+  color: #00BCD4 !important;
 } 
 
 .stock-indicator-detail-content:hover .strong-white .sector,

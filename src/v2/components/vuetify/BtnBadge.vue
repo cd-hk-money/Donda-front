@@ -2,6 +2,7 @@
   <v-tooltip 
     bottom class="btn-badge"
     color="grey darken-3"
+    max-width="550"
   >
     <template v-slot:activator="{on, attrs}">
       <v-btn 

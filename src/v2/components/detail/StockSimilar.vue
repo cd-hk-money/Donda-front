@@ -9,13 +9,9 @@
     <v-card-title>
       유사 종목
       <BtnBadge>
-        <v-card-title>
-          유사 종목
-        </v-card-title>
-        <v-card-subtitle>
-          <span class="font-weight-bold cyan--text">{{ stock.sector }} </span> 에 속하는 기업들에서
-          <span class="font-weight-bold cyan--text">{{ stock.name }}</span> 과 유사한 기업을 추천해줍니다.        
-        </v-card-subtitle>
+        <div><strong class="text-h6 cyan--text font-weight-bold">유사종목</strong></div>
+        <span class="font-weight-bold cyan--text">{{ stock.sector }} </span> 에 속하는 기업들에서
+        <span class="font-weight-bold cyan--text">{{ stock.name }}</span> 과 유사한 기업을 추천해줍니다.        
       </BtnBadge>
     </v-card-title>      
     <v-card-subtitle>

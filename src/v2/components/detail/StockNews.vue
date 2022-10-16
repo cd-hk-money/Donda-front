@@ -8,11 +8,13 @@
     elevation="1"    
   >
     <v-card-title>
-      NEWS
+      뉴스
     </v-card-title>      
     <v-card-subtitle>
        종목 관련 뉴스를 보여줍니다.
     </v-card-subtitle>
+
+    <v-divider />
     
     <v-card-text v-if="!loaded">
       <v-list two-line>
@@ -83,7 +85,7 @@ export default class StockNews extends Vue {
 }
 
 .stock-news:hover {
-  color: rgba(64, 224, 208, 1);
+  color: #00BCD4;
 }
 
 .stock-news::-webkit-scrollbar-thumb,

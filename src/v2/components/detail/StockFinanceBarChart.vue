@@ -8,7 +8,7 @@ import { IStockStatementBarChartModel } from '@/models/stock'
 
 const { reactiveProp } = mixins
 
-const MAIN_COLOR = '#40E0D0'
+const MAIN_COLOR = '#00BCD4'
 const SUB_COLOR = 'rgb(255, 99, 132)'
 
 @Component({

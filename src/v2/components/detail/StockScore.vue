@@ -26,16 +26,16 @@
             :show-arrows="false"            
           >
             <v-carousel-item>
-              <stock-score-bar-chart :height="230" class="mt-4"/>
+              <StockScoreBarChart :height="230" class="mt-4 ml-1"/>
             </v-carousel-item>
             <v-carousel-item>
-              <stock-chart :height="230" class="mt-4"/>                
+              <StockChart :height="230" class="mt-4 ml-1"/>                
             </v-carousel-item>
           </v-carousel>
         </template>
         <template v-else>
           <div class="text-center stockinfo-progress-circular">
-            <v-progress-circular indeterminate color="#40E0D0" />            
+            <v-progress-circular indeterminate color="#00BCD4" />            
           </div>
         </template>
       </v-col>            
@@ -51,19 +51,11 @@
             {{ scorePer.text }}
           </span>
            되었습니다.
+           <BtnBadge>
+             기준..?
+           </BtnBadge>
         </div>
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn  
-              v-on="on"
-              v-bind="attrs"
-              class="ml-1"
-              icon                  
-            ><v-icon small>fa-solid fa-circle-question</v-icon>
-            </v-btn>
-          </template>
-          <span>자세히..</span>
-        </v-tooltip>
+
       </v-col>
     </v-row>
   </v-card>      
@@ -77,6 +69,7 @@ import { mobileHeight } from '@/mixins/tools'
 import StockScoreBarChart from './StockScoreBarChart.vue'
 import StockChart from '@/v2/components/detail/StockChart.vue'
 import { IStockModel } from '@/models/stock'
+import BtnBadge from '../vuetify/BtnBadge.vue'
 
 const StockStoreModule = namespace('StockStore')
 const MarketStoreModule = namespace('MarketStore')
@@ -90,7 +83,8 @@ type ScoreType = {
 @Component({
   components: {
     StockScoreBarChart,
-    StockChart
+    StockChart,
+    BtnBadge
   }
 })
 export default class StockScore extends Vue {

@@ -66,7 +66,7 @@
             <BtnBadge>
               <template v-slot:text>
                 <div><strong class="text-h6 font-weight-bold">부채비율</strong></div>
-                <span class="text-h6 cyan--text"> 부채총계 / 자기자본 * 100(%) </span> 로 계산되는 값으로, <br>
+                <span class="text-h6 cyan--text"> (부채총계 / 자기자본) X 100 </span> 로 계산되는 값으로, <br>
                 '남의 돈'이 '나의 돈'에 비해 얼마나 비중을 차지하는지 나타냅니다. <br>                                
                 일반적으로 100~200% 수준을 적정 수준으로 보고있습니다. <br>
                 부채비율이 <strong class="cyan--text">100%</strong> 이하면 아주 좋다고 말합니다. <br>
@@ -103,7 +103,7 @@
             <BtnBadge>
               <template v-slot:text>
                 <div><strong class="text-h6 font-weight-bold">영업이익률</strong></div>
-                <span class="text-h6 cyan--text"> 영업이익 / 매출액 * 100(%) </span> 로 계산되는 값으로, <br>
+                <span class="text-h6 cyan--text"> (영업이익 / 매출액) X 100 </span> 로 계산되는 값으로, <br>
                 기업의 마진율이 좋은지를 파악 할 수 있습니다. <br>
                 영업이익률은 일반적으로 높을수록 좋지만, 산업군마다 영업이익률의 평균이 다르므로, 다른 산업군과의 비교는 옳지 않습니다.
 
@@ -137,7 +137,7 @@
             <BtnBadge>
               <template v-slot:text>
                 <div><strong class="text-h6 font-weight-bold">영업이익률</strong></div>
-                <span class="text-h6 cyan--text"> 영업이익 / 매출액 * 100(%) </span> 로 계산되는 값으로, <br>
+                <span class="text-h6 cyan--text"> (영업이익 / 매출액) X 100 </span> 로 계산되는 값으로, <br>
                 기업의 마진율이 좋은지를 파악 할 수 있습니다. <br>
                 영업이익률은 일반적으로 높을수록 좋지만, 산업군마다 영업이익률의 평균이 다르므로, 다른 산업군과의 비교는 옳지 않습니다.
 
@@ -154,7 +154,7 @@
             <BtnBadge>
               <template v-slot:text>
                 <div><strong class="text-h6 font-weight-bold">영업이익률</strong></div>
-                <span class="text-h6 cyan--text"> 영업이익 / 매출액 * 100(%) </span> 로 계산되는 값으로, <br>
+                <span class="text-h6 cyan--text"> (영업이익 / 매출액) X 100 </span> 로 계산되는 값으로, <br>
                 기업의 마진율이 좋은지를 파악 할 수 있습니다. <br>
                 영업이익률은 일반적으로 높을수록 좋지만, 산업군마다 영업이익률의 평균이 다르므로, 다른 산업군과의 비교는 옳지 않습니다.
 
@@ -168,23 +168,6 @@
           </FinanceInformationFactory>
         </template>
       </FinanceContentFactory>
-
-      <v-divider />
-
-      <!-- <FinanceContentFactory
-        indicatorType="cash"
-        typeKorean="현금흐름"
-        :chartData="statement['cash']"
-      >
-        <template v-slot:description>
-          사업주 회사에 주주들이 스스로 납입한 자본입니다. 자기자본이라고 부르기도 합니다.
-        </template>
-        <template v-slot:information>          
-          <FinanceInformationFactory>
-            <strong class="ml-1">자기자본</strong>은 많으면 많을수록 좋습니다.
-          </FinanceInformationFactory>
-        </template>
-      </FinanceContentFactory> -->
 
       <v-divider />
 
@@ -205,7 +188,7 @@
             <BtnBadge>
               <template v-slot:text>
                 <div><strong class="text-h6 font-weight-bold">부채비율</strong></div>
-                <span class="text-h6 cyan--text"> 부채총계 / 자기자본 * 100(%) </span> 로 계산되는 값으로, <br>
+                <span class="text-h6 cyan--text"> (부채총계 / 자기자본) X 100 </span> 로 계산되는 값으로, <br>
                 '남의 돈'이 '나의 돈'에 비해 얼마나 비중을 차지하는지 나타냅니다. <br>                                
                 일반적으로 100~200% 수준을 적정 수준으로 보고있습니다. <br>
                 부채비율이 <strong class="cyan--text">100%</strong>이하면 아주 좋다고 말합니다. <br>
@@ -244,7 +227,7 @@
             <BtnBadge>
               <template v-slot:text>
                 <div><strong class="text-h6 font-weight-bold">매출총이익률</strong></div>
-                <span class="text-h6 cyan--text"> 매출총이익 / 매출액 * 100(%) </span> 로 계산되는 값으로, <br>
+                <span class="text-h6 cyan--text"> (매출총이익 / 매출액) X 100 </span> 로 계산되는 값으로, <br>
                 매출로부터 얼마만큼의 이득을 얻는지를 나타냅니다. <br>
                 매출총이익률 일반적으로 높을수록 좋지만, 유지 가능성을 고려해야합니다.
 
@@ -279,7 +262,7 @@
             <BtnBadge>
               <template v-slot:text>
                 <div><strong class="text-h6 font-weight-bold">ROE</strong></div>
-                <span class="text-h6 cyan--text"> 당기순이익 / 자산총계 * 100(%) </span> 로 계산되는 값입니다. <br>
+                <span class="text-h6 cyan--text"> (당기순이익 / 자산총계) X 100 </span> 로 계산되는 값입니다. <br>
                 자세한 내용은 돈다의 <strong class="cyan--text">보조지표</strong>항목에서 알아보세요.
               </template>
             </BtnBadge>
@@ -419,7 +402,7 @@ export default class StockFinance extends Vue {
 }
 
 .stock-indicator-detail:hover {
-  color: rgba(64, 224, 208, 1);
+  color: #00BCD4;
 }
 
 .BtnBadge-text {

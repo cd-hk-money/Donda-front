@@ -85,7 +85,7 @@ export default class Market extends Vue {
   sparklines = [
     {
       value: [0, 26, 5, 0, 18],
-      color: '#40E0D0',
+      color: '#00BCD4',
       text: '한국'
     },
     {
