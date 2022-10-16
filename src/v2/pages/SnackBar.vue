@@ -48,7 +48,3 @@
     @InterestStoreModule.Mutation('updateState') updateState!: (payload: IUpdateStateModel) => void
   }
 </script>
-
-<style scoped>
-
-</style>
