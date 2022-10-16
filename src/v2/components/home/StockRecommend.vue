@@ -95,8 +95,6 @@ export default class StockRecommend extends Vue {
     await this.getStocks(recommendCodes)
   }
 
-  
-    
   async mounted () {    
     const recommendCodes = (await this.getRecommend()).map(stock => stock.code)
     if(!this.recommendStocks.length) await this.getStocks(recommendCodes)

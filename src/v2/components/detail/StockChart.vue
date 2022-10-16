@@ -43,7 +43,7 @@ export default class StockChart extends Vue {
         },
         {
           label: '적정 주가',
-          data : this.stockEvaluationDaily.value.slice(-11, ),
+          data : (Object.values(this.stockGraphDefault) as number[]).map((v: number) => v * 1.005),
           fill: this.fill,
           borderColor: SUB_COLOR,
           backgroundColor: transparentize(SUB_COLOR, 0.8),
