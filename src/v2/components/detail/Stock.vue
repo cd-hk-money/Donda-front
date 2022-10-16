@@ -7,10 +7,12 @@
     <v-card-title>
       주가
     </v-card-title>
+
     <v-card-subtitle>
       <span>{{ stock.name }}의 주가 정보를 확인해보세요.</span>
     </v-card-subtitle>
-    <v-divider></v-divider>
+    
+    <v-divider />
     <v-card
       elevation="0"
       height="50"
@@ -89,27 +91,13 @@ export default class Stock extends Vue {
 
   menus: IMenu[] = [    
     {
-      title: 'dateFicker',
-      icon: 'mdi-calendar-expand-horizontal',      
-      callback: () => null,
-      enable: false
-    },
-    {
       title: 'volume',
       icon: 'mdi-chart-bar',
       callback: () => this.updateData({
         volumeEnable: !this.getVolumeEnable()
       }),      
       enable: this.volumeEnable,
-    },
-    {
-      title: 'gradient',
-      icon: 'mdi-gradient-vertical',
-      callback: () => this.updateData({
-        gradientEnable: !this.getGradient()
-      }),
-      enable: this.gradientEnable,
-    },        
+    },     
   ]
 
   updateData(payload) {

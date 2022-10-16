@@ -19,13 +19,12 @@
         해당 종목의 투자 가치를 대략적으로 파악 할 수 있습니다.
         <div>
           자세한 내용은 보조지표 탭을 참조하세요.
-        </div>
-        
+        </div>        
       </BtnBadge>      
     </v-card-title>
 
     <v-card-subtitle class="ml-5">
-      {{ stock.name }}의 보조지표를 확인해보세요.
+      EPS, ROE, BPS 지수를 업종 평균과 비교하여 보여줍니다.
     </v-card-subtitle>
 
     <v-card-text class="d-flex justify-center align-end">
@@ -115,18 +114,6 @@ export default class StockIndicator extends Vue {
       roe: this.indicatorSector?.sector_roe[3],      
     }
   }
-
-  // get compareIndicator () {
-  //   const origin = this.indicatorChartData.eps + this.indicatorChartData.bps / 20 + this.indicatorChartData.roe
-  //   const sector = this.indicatorSectorChartData.eps + this.indicatorSectorChartData.bps / 20 + this.indicatorSectorChartData.roe
-  //   const isHighVal = origin > sector
-  //   const score = isHighVal ? (origin / sector * 100).toFixed(1) : (sector / origin * 100).toFixed(1)
-  //   const text = isHighVal ? '평균 이상' : '평균 이하'
-  //   const colorClass = isHighVal ? 'red--text' : 'blue--text'
-    
-  //   return { score, text, colorClass }
-
-  // }
   
   @StockStoreModule.State('indicatorLoaded') loaded!: boolean
   @StockStoreModule.State('indicatorSectorLoaded') sectorLoaded!: boolean

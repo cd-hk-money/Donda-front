@@ -10,7 +10,12 @@
     </v-card-title>
 
     <v-card-subtitle class="ml-5">
-      자체 계산한 적정 주가를 보여줍니다.
+      돈다지수
+      <BtnBadge>
+        <div><strong class="text-h6 cyan--text font-weight-bold">돈다지수</strong></div>
+        DONDA에서 자체적으로 계산된 주가 적정 수치입니다. 자세한건 적정주가 항목을 참고하세요.
+      </BtnBadge>
+      에 근거한 적정주가와 평가 가치를 보여줍니다.
     </v-card-subtitle>
     <v-row>
       <v-col cols="12" xl="7">
@@ -52,7 +57,9 @@
           </span>
            되었습니다.
            <BtnBadge>
-             기준..?
+            <div><strong class="text-h6 cyan--text font-weight-bold">저평가?고평가?</strong></div>
+            <span class="blue--text">저평가</span>되어 있는 종목은 해당 %만큼 상승 여력이 있다고 판단할 수 있습니다. <br>
+            <span class="red--text">고평가</span>되어 있는 종목은 해당 %만큼 하락 가능성이 있다고 판단할 수 있습니다.
            </BtnBadge>
         </div>
 
@@ -114,9 +121,10 @@ export default class StockScore extends Vue {
   get scorePer () : ScoreType {    
     const [close, valuation] = [this.stock.close, Number(Number(this.stockEvaluationDailyLast).toFixed())]
     const isHighVal = close > valuation
-    const score = isHighVal ? (valuation / close * 100).toFixed() : (close / valuation * 100).toFixed()
+    const score = isHighVal ? ((close / valuation) * 100).toFixed() : ((valuation / close) * 100).toFixed()
     const text = isHighVal ? '고평가': '저평가'
     const colorClass = isHighVal ? 'red--text' : 'blue--text'
+    console.log(score)
         
     return { score, text, colorClass }
   }

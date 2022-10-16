@@ -14,7 +14,6 @@
         origin="center center"
         offset-x
         :close-on-content-click="false"
-        :nudge-width="300"            
         bottom
       >
         <template v-slot:activator="{ on, attrs }">
@@ -27,30 +26,25 @@
           <v-icon>mdi-format-line-spacing</v-icon>
         </v-btn> 
         </template>
-        <v-card>
+        <v-card width="180">
           <v-card-title class="text-h6">Filter</v-card-title>
 
-          <v-divider></v-divider>
+          <v-divider />
 
-          <v-row>
-            <v-col cols="12" xl="6">
-              <v-radio-group 
-                class="ml-3"
-                v-model="radioValue">
-                <v-radio
-                  v-for="(title, n) in rankTitle"
-                  :key="n"
-                  :label="title"
-                  :value="n"
-                ></v-radio>
-              </v-radio-group>
-            </v-col>            
-          </v-row>
+          <v-radio-group 
+            class="ml-3"
+            v-model="radioValue">
+            <v-radio
+              v-for="(title, n) in rankTitle"
+              :key="n"
+              :label="title"
+              :value="n"
+            ></v-radio>
+          </v-radio-group>
 
-          <v-divider></v-divider>
+          <v-divider />
 
-          <v-card-actions>
-            <v-spacer></v-spacer>
+          <v-card-actions class="d-flex justify-center">
             <v-btn
               text
               @click="filterMenu = false"

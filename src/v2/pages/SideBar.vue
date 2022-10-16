@@ -6,11 +6,9 @@
     min-width="120%"
     v-show="!mobile"    
   >
-    <v-sheet           
-      permanent      
-      height="auto"
-    >
+    <v-sheet permanent height="auto">
       <v-card outlined>
+
         <v-list-item>
           <v-list-item-content>
             <v-list-item-title class="text-h7 text font-weight-bold">
@@ -22,7 +20,7 @@
           </v-list-item-content>
         </v-list-item>
   
-        <v-divider></v-divider>
+        <v-divider />
   
         <v-list         
           v-for="(item, i) in computedInterestStore"
@@ -61,13 +59,12 @@
                 <v-list-item-subtitle v-text="child.subtitle"></v-list-item-subtitle>
               </v-list-item-content>
   
-              <v-list-item-action class="v-list-item-action-close">
+              <v-list-item-action class="v-list-item-action-close">                
                 <div class="d-flex">
                   <v-btn 
                     @click="setUserInterestAlarm(child.subtitle)"
                     class="mr-4"
-                    small
-                    icon                                    
+                    small icon                                    
                   >
                     <v-icon>{{ isAlarmed(child.subtitle) ? 'mdi-alarm-light' : 'mdi-alarm-light-outline' }}</v-icon>
                   </v-btn>
@@ -76,21 +73,20 @@
                       groupTitle: item.title,
                       itemTitle: child.title
                     })"
-                    small
-                    icon                  
+                    small icon                  
                   >
                     <v-icon>fa-regular fa-x</v-icon>
                   </v-btn>
-
                 </div>
-              </v-list-item-action>                    
+              </v-list-item-action>     
+
             </v-list-item>           
           </v-list-group>
         </v-list>     
         
         <v-btn 
-          v-if="!dialog"
-          block @click="dialog = true" 
+          v-if="!dialog" block 
+          @click="dialog = true" 
         >
           관심종목 그룹 추가
           <v-icon>mdi-plus</v-icon>

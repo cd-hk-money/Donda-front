@@ -8,10 +8,7 @@
     rounded="xl"
   >
     <v-card-title>
-      추천 종목
-      <BtnBadge>
-        추천 종목 기준..
-      </BtnBadge>  
+      추천 종목      
       <v-tooltip left>
         <template v-slot:activator="{on, attrs}">
           <v-btn 
@@ -28,7 +25,7 @@
     </v-card-title>    
 
     <v-card-subtitle class="d-flex justify-space-between">
-      추천 종목을 확인 해 보세요.
+      DONDA가 상대적으로 기업가치가 저평가되어있는 종목들을 추천해줍니다.
     </v-card-subtitle>
 
     <v-divider />
