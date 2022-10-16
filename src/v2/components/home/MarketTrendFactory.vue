@@ -71,7 +71,7 @@
           >
             <v-chip small>2주</v-chip>
             <v-chip small>1달</v-chip>
-            <v-chip small>분기</v-chip>            
+            <v-chip small>1분기</v-chip>            
           </v-chip-group>            
           
         <MarketChart          

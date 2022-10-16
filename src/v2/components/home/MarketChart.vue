@@ -17,7 +17,7 @@ const { reactiveProp } = mixins
 const MarketStoreModule = namespace('MarketStore')
 
 const MAIN_COLOR = '#00BCD4'
-const REQUEST_DATE = [14, 30, 120]
+const REQUEST_DATE = [10, 30, 120, 350]
 
 @Component({
   extends: Line,
@@ -113,7 +113,7 @@ export default class LineChart extends Vue {
   
   createChartData (type: string, count: number): Chart.ChartData {
     const market = this.marketChart[this.type]    
-    console.log(this.count)
+    console.log(market.values)
     return {
       labels: market.labels.slice(count * (-1)).map(label => label.substr(5)),      
       datasets: [ 
@@ -126,13 +126,13 @@ export default class LineChart extends Vue {
           backgroundColor: transparentize(MAIN_COLOR, 0.8),
           borderWidth: 3.5,                           
           pointStyle: 'circle',
-          pointHitRadius: this.count === 2 ? 1 : 200,
-          pointRadius: this.count === 2 ? 0 : 3,
+          pointHitRadius: this.count > 1 ? 1 : 200,
+          pointRadius: this.count > 1 ? 0 : 3,
           pointHoverRadius: 10,
           pointBackgroundColor: MAIN_COLOR,
           pointHoverBackgroundColor: '#fff',          
           pointBorderColor: '#fff',
-          pointBorderWidth: this.count === 2 ? 0 : 2.5,   
+          pointBorderWidth: this.count > 1 ? 0 : 2.5,   
     
         },
       ],          
