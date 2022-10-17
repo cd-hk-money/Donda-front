@@ -218,6 +218,7 @@
     selectDate() {
       this.selectionChipGroup = 3      
       this.rangePicked = this.picked
+      this.menu = false
     }
 
     mounted () {
