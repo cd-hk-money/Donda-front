@@ -102,8 +102,7 @@ export default class LineChart extends Vue {
   }
 
   crosshairPoint = {
-    id: 'crosshairPoint',
-    
+    id: 'crosshairPoint',    
   } 
 
   
@@ -114,12 +113,10 @@ export default class LineChart extends Vue {
 
   @Watch('range')
   watchRange (val) {
-    console.log(val)
     if(val.length !== 0) this.createChart()  
   }
   
-  createChartData (type: string, count: number | number[]): Chart.ChartData {
-    console.log('arg', count)
+  createChartData (count: number | number[]): Chart.ChartData {
     const market = this.marketChart[this.type]         
     const isNumber = typeof count === 'number'  
     const labels = isNumber
@@ -129,7 +126,6 @@ export default class LineChart extends Vue {
     const data = isNumber
       ? market.values.slice(count * (-1)).map((value: MarketModel) => value.close)
       : market.values.slice(count[0], count[1]).map((value: MarketModel) => value.close) 
-
     
     return {
       labels,      
@@ -149,8 +145,7 @@ export default class LineChart extends Vue {
           pointBackgroundColor: MAIN_COLOR,
           pointHoverBackgroundColor: '#fff',          
           pointBorderColor: '#fff',
-          pointBorderWidth: data.length > 50 ? 0 : 2.5,   
-    
+          pointBorderWidth: data.length > 50 ? 0 : 2.5,       
         },
       ],          
     }
@@ -163,7 +158,7 @@ export default class LineChart extends Vue {
     if(!canvas) return
 
     const options: Chart.ChartConfiguration = {
-      data: this.createChartData(this.type, this.getRequestDate()),
+      data: this.createChartData(this.getRequestDate()),
       options: this.chartOptions,
       plugins: []
     }
@@ -189,10 +184,10 @@ export default class LineChart extends Vue {
 
   correctionsDate(date) {
     const labels = this.marketChart[this.type].labels
-    const f = true
+    const whileCondition = true
     let result
     let findDate = date
-    while(f) {      
+    while(whileCondition) {      
       const index = labels.indexOf(findDate)
       if(index !== -1) {
         result = index
@@ -200,7 +195,6 @@ export default class LineChart extends Vue {
       }
       const k = new Date(findDate)
       findDate = new Date(k.setDate(k.getDate() - 1)).toISOString().substr(0, 10)
-      console.log(findDate)
     }
     return result
   }

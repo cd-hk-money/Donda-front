@@ -47,7 +47,7 @@
         :min-width="mobile ? '110' : '180'"
         class="d-flex align-center justify-center mr-3 mt-3 sparkline-sheet"
         color="#252424"
-        @click="expand = !expand"
+        @click="[expand = !expand, menu = false]"
       > 
         <v-sparkline            
           :min-width="mobile ? '110' : '180'"
@@ -93,6 +93,9 @@
                 <v-date-picker                
                   :allowed-dates="allowedDates"
                   v-model="picked"
+                  :month-format="monthFormat"
+                  :header-date-format="monthFormat"
+                  :weekday-format="weekdayFormat"
                   :show-current="false"
                   no-title
                   color="cyan"
@@ -178,6 +181,11 @@
       }
     }
 
+    get dateLastDay () {
+      const labels = this.marketChart[this.market.type].labels
+      return labels[labels.length-1]
+    }
+
     get Picked () {
       const last = new Date(this.dateLastDay)      
       return [
@@ -190,12 +198,6 @@
       this.picked = val
     }
 
-    get dateLastDay () {
-      const labels = this.marketChart[this.market.type].labels
-      return labels[labels.length-1]
-    }
-    
-
     allowedDates(arg: string) {
       const current = new Date(arg).getTime()
       const last = new Date(this.dateLastDay).getTime()
@@ -203,16 +205,26 @@
       return null          
     }
 
+    monthFormat = (date: string) => `${date.split('-')[0]}년 ${date.split('-')[1]}월`
+
+    weekdayFormat = (date: string) => {
+      const week = ['일', '월', '화', '수', '목', '금', '토'];
+      const dayOfWeek = week[new Date(date).getDay()];
+      return dayOfWeek;
+    }
+
+
+    
     selectDate() {
       this.selectionChipGroup = 3      
       this.rangePicked = this.picked
-      this.menu = false
     }
-
 
     mounted () {
       this.picked = this.Picked
     }
+
+
     
   }
 </script>
