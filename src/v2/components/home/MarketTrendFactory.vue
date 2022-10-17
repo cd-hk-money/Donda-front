@@ -101,7 +101,7 @@
                   color="cyan"
                   range
                 >
-                    <v-btn plain color="error" class="date-action">
+                    <v-btn plain @click="menu = false" color="error" class="date-action">
                       취소
                     </v-btn>
                     <v-btn plain @click="selectDate">
@@ -205,15 +205,17 @@
       return null          
     }
 
-    monthFormat = (date: string) => `${date.split('-')[0]}년 ${date.split('-')[1]}월`
+    monthFormat = (date: string) => {
+      const split = date.split('-')
+      if(split.length === 1) return `${split[0]}년`
+      return `${split[0]}년 ${split[1]}월`      
+    }
 
     weekdayFormat = (date: string) => {
       const week = ['일', '월', '화', '수', '목', '금', '토'];
       const dayOfWeek = week[new Date(date).getDay()];
       return dayOfWeek;
     }
-
-
     
     selectDate() {
       this.selectionChipGroup = 3      
@@ -224,9 +226,6 @@
     mounted () {
       this.picked = this.Picked
     }
-
-
-    
   }
 </script>
 
