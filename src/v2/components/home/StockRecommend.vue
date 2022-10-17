@@ -5,7 +5,6 @@
     min-height="835"
     max-height="835"    
     elevation="0"
-    rounded="xl"
   >
     <v-card-title>
       추천 종목      

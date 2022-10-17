@@ -17,7 +17,7 @@ const { reactiveProp } = mixins
 const MarketStoreModule = namespace('MarketStore')
 
 const MAIN_COLOR = '#00BCD4'
-const REQUEST_DATE = [10, 30, 120, 350]
+const REQUEST_DATE = [10, 30, 120]
 
 @Component({
   extends: Line,
@@ -30,6 +30,7 @@ export default class LineChart extends Vue {
   @Prop() mobile!: boolean
   @Prop({default: 40}) height: number
   @Prop({default: 0}) count!: number
+  @Prop() range!: string[]
 
   @Prop({default: function () { return {} }}) options!: object
 
@@ -107,32 +108,48 @@ export default class LineChart extends Vue {
 
   
   @Watch('count')
-  watchFill () {
+  watchCount () {
     this.createChart()
   }
+
+  @Watch('range')
+  watchRange (val) {
+    console.log(val)
+    if(val.length !== 0) this.createChart()  
+  }
   
-  createChartData (type: string, count: number): Chart.ChartData {
-    const market = this.marketChart[this.type]    
-    console.log(market.values)
+  createChartData (type: string, count: number | number[]): Chart.ChartData {
+    console.log('arg', count)
+    const market = this.marketChart[this.type]         
+    const isNumber = typeof count === 'number'  
+    const labels = isNumber
+      ? market.labels.slice(count * (-1)).map(label => label.substr(5))
+      : market.labels.slice(count[0], count[1]).map(label => label.substr(5))
+
+    const data = isNumber
+      ? market.values.slice(count * (-1)).map((value: MarketModel) => value.close)
+      : market.values.slice(count[0], count[1]).map((value: MarketModel) => value.close) 
+
+    
     return {
-      labels: market.labels.slice(count * (-1)).map(label => label.substr(5)),      
+      labels,      
       datasets: [ 
         { 
           type: 'line',
           label: this.type,
-          data: market.values.slice(count * (-1)).map((value: MarketModel) => value.close), 
+          data, 
           fill: false,        
           borderColor: MAIN_COLOR,
           backgroundColor: transparentize(MAIN_COLOR, 0.8),
           borderWidth: 3.5,                           
           pointStyle: 'circle',
-          pointHitRadius: this.count > 1 ? 1 : 200,
-          pointRadius: this.count > 1 ? 0 : 3,
+          pointHitRadius: data.length > 50 ? 1 : 200,
+          pointRadius: data.length > 50 ? 0 : 3,
           pointHoverRadius: 10,
           pointBackgroundColor: MAIN_COLOR,
           pointHoverBackgroundColor: '#fff',          
           pointBorderColor: '#fff',
-          pointBorderWidth: this.count > 1 ? 0 : 2.5,   
+          pointBorderWidth: data.length > 50 ? 0 : 2.5,   
     
         },
       ],          
@@ -146,12 +163,46 @@ export default class LineChart extends Vue {
     if(!canvas) return
 
     const options: Chart.ChartConfiguration = {
-      data: this.createChartData(this.type, REQUEST_DATE[this.count]),
+      data: this.createChartData(this.type, this.getRequestDate()),
       options: this.chartOptions,
       plugins: []
     }
 
     this.chart = new Chart(canvas, options)
+  }
+
+  getRequestDate(): number | number[] {    
+    if(!this.range.length) return REQUEST_DATE[this.count]    
+
+    let range = [...this.range]    
+    const x = new Date(this.range[0])
+    const y = new Date(this.range[1])
+
+    if(x > y) range = [this.range[1], this.range[0]]
+        
+    return [
+      this.correctionsDate(range[0]),
+      this.correctionsDate(range[1])
+    ]
+        
+  }
+
+  correctionsDate(date) {
+    const labels = this.marketChart[this.type].labels
+    const f = true
+    let result
+    let findDate = date
+    while(f) {      
+      const index = labels.indexOf(findDate)
+      if(index !== -1) {
+        result = index
+        break
+      }
+      const k = new Date(findDate)
+      findDate = new Date(k.setDate(k.getDate() - 1)).toISOString().substr(0, 10)
+      console.log(findDate)
+    }
+    return result
   }
   
   mounted() {            

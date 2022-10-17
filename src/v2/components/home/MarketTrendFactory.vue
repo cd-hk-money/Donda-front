@@ -65,21 +65,57 @@
         <v-divider class="ml-5 mr-5"/>            
           <v-chip-group 
             class="chart-chip-group"
-            active-class="cyan--text text--accent-4"
+            :active-class="chipGroupActiveClass"
             mandatory
-            v-model="selectionChipGroup"
+            @click="chipGroupActiveClass = 'cyan--text text--accent-4'"
+            :value="selectionChipGroup"
           >
-            <v-chip small>2주</v-chip>
-            <v-chip small>1달</v-chip>
-            <v-chip small>1분기</v-chip>            
+            <v-chip small @click="[rangePicked=[], selectionChipGroup = 0,]">2주</v-chip>
+            <v-chip small @click="[rangePicked=[], selectionChipGroup = 1,]">1달</v-chip>
+            <v-chip small @click="[rangePicked=[], selectionChipGroup = 2,]">1분기</v-chip>            
+            <v-menu 
+              left bottom offset-y :close-on-content-click="false"
+              v-model="menu"
+            >
+              <template v-slot:activator="{on, attrs}">
+                <v-chip 
+                  small
+                  v-on="on"
+                  v-bind="attrs"
+                >
+                  <v-icon left small>
+                    mdi-calendar
+                  </v-icon>
+                  날짜선택
+                </v-chip>
+              </template>
+              <v-card>
+                <v-date-picker                
+                  :allowed-dates="allowedDates"
+                  v-model="picked"
+                  :show-current="false"
+                  no-title
+                  color="cyan"
+                  range
+                >
+                    <v-btn plain color="error" class="date-action">
+                      취소
+                    </v-btn>
+                    <v-btn plain @click="selectDate">
+                      결정
+                    </v-btn>
+                </v-date-picker>
+              </v-card>
+            </v-menu>
           </v-chip-group>            
           
         <MarketChart          
-          class="mt-5"
+          class="mt-9"
           :height="130"
           :type="market.type"
           :fill="false"
           :count="selectionChipGroup"
+          :range="rangePicked"
         />
         
       </v-sheet>
@@ -91,7 +127,11 @@
   import { Component, Prop, Vue } from 'vue-property-decorator';  
   import { ComputedMarket } from '@/v2/components/home/MarketTrend.vue';
   import MarketChart from '@/v2/components/home/MarketChart.vue'
+  import { IMarketChartModel } from '@/models/market'
+  import { namespace } from 'vuex-class'
   
+  const MarketStoreModule = namespace('MarketStore')
+  const REQUEST_DATE = [10, 30, 120]
 
   @Component({
     components: {
@@ -104,9 +144,14 @@
     @Prop() marketValuation!: string
     @Prop() contry!: string
 
+    @MarketStoreModule.State('marketChart') marketChart!: IMarketChartModel
 
     expand = false
+    menu = false
     selectionChipGroup = 0
+    chipGroupActiveClass = 'cyan--text text--accent-4'
+    picked = []
+    rangePicked = []
 
 
     get title() {
@@ -132,6 +177,43 @@
         textColor: this.marketValuation.includes('상승') ? 'red--text' : 'blue--text'
       }
     }
+
+    get Picked () {
+      const last = new Date(this.dateLastDay)      
+      return [
+        new Date(last.setDate(last.getDate() - REQUEST_DATE[this.selectionChipGroup])).toISOString().substr(0, 10),
+        this.dateLastDay
+      ]
+    }
+
+    set Picked (val) {
+      this.picked = val
+    }
+
+    get dateLastDay () {
+      const labels = this.marketChart[this.market.type].labels
+      return labels[labels.length-1]
+    }
+    
+
+    allowedDates(arg: string) {
+      const current = new Date(arg).getTime()
+      const last = new Date(this.dateLastDay).getTime()
+      if(current < last) return arg
+      return null          
+    }
+
+    selectDate() {
+      this.selectionChipGroup = 3      
+      this.rangePicked = this.picked
+      this.menu = false
+    }
+
+
+    mounted () {
+      this.picked = this.Picked
+    }
+    
   }
 </script>
 
@@ -152,7 +234,7 @@
 .chart-chip-group {
   position: absolute;
   display: flex;
-  right: 12px;
+  right: 15px;
   margin-top: 12px;
   gap: 3px;
 }
@@ -165,5 +247,15 @@
 
 .chart-chip-group-active {
   color: #00BCD4;
+}
+
+.chart-chip-datepicker {
+  position: absolute;
+  right: 5px; 
+  margin-top: 20px;
+}
+
+.date-action {
+  margin-left: 75px;
 }
 </style>
