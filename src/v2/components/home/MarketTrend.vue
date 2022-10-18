@@ -2,25 +2,25 @@
   <div v-if="!marketLoaded && !marketValuationLoaded">    
     <MarketTrendFactory
       :market="computedMarket.kospi"
-      :marketValuation="marketValuation.KOSPI" 
+      :marketValuation="marketValuation[0]" 
       contry="korea"
     />
           
     <MarketTrendFactory
       :market="computedMarket.nasdaq"
-      :marketValuation="marketValuation.NASDQ"
+      :marketValuation="marketValuation[1]"
       contry="usa"
     />
       
     <MarketTrendFactory
       :market="computedMarket.usdkrw"
-      :marketValuation="marketValuation['KRW/USD']"
+      :marketValuation="marketValuation[3]"
       contry="korea"
     />
       
     <MarketTrendFactory
       :market="computedMarket.snp500"
-      :marketValuation="marketValuation['S&P500']"
+      :marketValuation="marketValuation[2]"
       contry="usa"
     />      
   </div>
@@ -105,7 +105,8 @@
 
     async mounted () {
       if(!this.marketValuation) await this.getMarketValuation()
-      if(!this.marketRecents) await this.getTodayMarket()        
+      if(!this.marketRecents) await this.getTodayMarket()    
+      console.log(this.marketValuation)    
     }
 
   }

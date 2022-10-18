@@ -28,13 +28,39 @@
         </v-card-title>
         <v-card-subtitle>
           <div>
-            <v-chip class="mt-1" :color="chipColor">
-              {{ marketValuation }}.                    
-            </v-chip>
+            <v-carousel
+              hide-delimiter-background             
+              hide-delimiters
+              vertical hide cycle
+              :show-arrows="false"
+              width="auto"
+              height="45"
+            >
+              <v-carousel-item>
+                <v-chip class="mt-1" :color="getChipColor('weeklyTrend2')">
+                  {{ marketValuation.market }}은(는) 2주동안 {{ marketValuation.weeklyTrend2  }}% 
+                  {{ marketValuation.weeklyTrend2 > 0 ? '상승' : '하락' }} 하였습니다.                    
+                </v-chip>
+              </v-carousel-item>
+              <v-carousel-item>
+                <v-chip class="mt-1" :color="getChipColor('weeklyTrend')">
+                  {{ marketValuation.market }}은(는) 1주동안 {{ marketValuation.weeklyTrend  }}% 
+                  {{ marketValuation.weeklyTrend > 0 ? '상승' : '하락' }} 하였습니다.                    
+                </v-chip>
+              </v-carousel-item>
+              <v-carousel-item>
+                <v-chip class="mt-1" :color="getChipColor('monthlyTrend')">
+                  {{ marketValuation.market }} 한달 동안 {{ marketValuation.monthlyTrend  }}% 
+                  {{ marketValuation.monthlyTrend > 0 ? '상승' : '하락' }} 하였습니다.                    
+                </v-chip>
+              </v-carousel-item>
+
+            </v-carousel>
+            
           </div>
           <div>
             <v-chip class="mt-1">
-              {{ chipContnet.contry }} 시장은
+              {{ title === 'USD/KRW' ? '환율' : `${chipContnet.contry}시장` }} 은
               <span :class="['mr-1 ml-1 font-weight-bold', chipContnet.textColor]">{{ chipContnet.trend }}</span> 중입니다.
             </v-chip>
           </div>
@@ -82,7 +108,7 @@
                   small
                   v-on="on"
                   v-bind="attrs"
-                >
+                >                
                   <v-icon left small>
                     mdi-calendar
                   </v-icon>
@@ -144,7 +170,7 @@
   export default class MarketTrendFactory extends Vue {
 
     @Prop() market!: ComputedMarket
-    @Prop() marketValuation!: string
+    @Prop() marketValuation!: any
     @Prop() contry!: string
 
     @MarketStoreModule.State('marketChart') marketChart!: IMarketChartModel
@@ -156,9 +182,8 @@
     picked = []
     rangePicked = []
 
-
     get title() {
-      return this.marketValuation.split('은')[0].split('는')[0]
+      return this.marketValuation.market
     }
 
     get flag () {
@@ -170,14 +195,26 @@
     }
 
     get chipColor () {
-      return this.marketValuation.includes('상승') ? 'red darken-3' : 'primary'
+      return this.marketValuation.weeklyTrend2 > 0 ? 'red darken-3' : 'primary'
+    }
+
+    getChipColor (trendRange: string) {
+      return this.marketValuation[trendRange] > 0 ? 'red darken-3' : 'primary'
+    }
+
+    getChipContent (trendRange: string) {
+      return {
+        contry: this.contry === 'korea' ? '한국' : '미국',
+        trend: this.marketValuation[trendRange] > 0 ? '상승' : '하락',
+        textColor: this.marketValuation[trendRange] > 0 ? 'red--text' : 'blue--text'
+      }
     }
 
     get chipContnet () {      
       return {
         contry: this.contry === 'korea' ? '한국' : '미국',
-        trend: this.marketValuation.includes('상승') ? '상승' : '하락',
-        textColor: this.marketValuation.includes('상승') ? 'red--text' : 'blue--text'
+        trend: this.marketValuation.weeklyTrend2 > 0 ? '상승' : '하락',
+        textColor: this.marketValuation.weeklyTrend2 > 0 ? 'red--text' : 'blue--text'
       }
     }
 
