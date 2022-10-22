@@ -1,11 +1,13 @@
 <template>  
   <v-list-item 
-    class="mb-5 news-list-item"
+    class="mb-3 news-list-item"
     link
     @click="onClickRedirect(news.url)"
   >
     <v-list-item-content>
-      <v-list-item-title class="font-weight-bold"> {{ computedContnet.title }} </v-list-item-title>
+      <v-list-item-title class="font-weight-bold news-list-item-title">
+        {{ computedContnet.title }} 
+      </v-list-item-title>
       <v-divider></v-divider>
 
       <v-list-item-content class="news-card-content">
@@ -50,13 +52,25 @@
 .news-card-action {
   position: absolute;
   right: 5px;
-  bottom: -10px;
+  bottom: -7px;
   font-size: 13px;
   opacity: .7; 
 }
 
 .news-list-item {
   height: 125px !important;    
+}
+
+.news-list-item-title {
+  transform: all .8s ease;
+}
+
+.news-list-item:hover .news-list-item-title {
+  color: #00BCD4;
+}
+
+.news-card-content {
+  opacity: .8;
 }
 
 </style>
