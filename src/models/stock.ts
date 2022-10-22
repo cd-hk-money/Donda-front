@@ -195,6 +195,12 @@ export interface IStockIndicatorModelV2 {
   }
 }
 
+export interface INewsModel {
+  subject: string | undefined
+  summary: string | undefined
+  url: string | undefined
+}
+
 
 
 

@@ -4,7 +4,7 @@ import axios from 'axios'
 import * as _ from 'lodash'
 
 import { StockSimpleModel, StockRecommendModel} from '@/models/stock'
-import { IMarketChartModel, IMarketRecentModel } from '@/models/market'
+import { IMarketChartModel, IMarketRecentModel, IMarketRecentValueModel } from '@/models/market'
 import { IUpdateStateModel } from '@/models/payload'
 import { division } from '@/mixins/tools'
 
@@ -23,7 +23,7 @@ export default class MarketStore extends VuexModule {
 	// 자동 완성을 위한 모든 종목의 종목명과 코드
 	public searchTableLoaded = false  
 	public searchTable!: StockSimpleModel[]
-	public codeTitleMapping = {}
+	public codeTitleMapping: { [title: string]: string } = {}
 
 
 	// 주식 시장
@@ -32,7 +32,7 @@ export default class MarketStore extends VuexModule {
 	public marketRecents!: IMarketRecentModel
 	public requestDate = 20
 	public stockRequestDate = 20
-	public marketValuation!: any
+	public marketValuation!: IMarketRecentValueModel[]
 	public marketValuationLoaded = false
 
 

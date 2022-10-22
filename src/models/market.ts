@@ -30,3 +30,10 @@ export interface IValuationContent {
   title?: string,
   content?: string
 }
+
+export interface IMarketValuationModel {
+  market: string
+  monthlyTrend: number
+  weeklyTrend: number
+  weeklyTrend2: number  
+}

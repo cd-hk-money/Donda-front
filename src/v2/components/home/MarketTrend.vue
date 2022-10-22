@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!marketLoaded && !marketValuationLoaded">    
+  <div v-if="!marketLoaded && !marketValuationLoaded">        
     <MarketTrendFactory
       :market="computedMarket.kospi"
       :marketValuation="marketValuation[0]" 
@@ -27,9 +27,9 @@
 </template>
 
 <script lang="ts">
-  import {  IMarketChartModel, IMarketRecentModel, IMarketRecentValueModel } from '@/models/market'
+  import {  IMarketChartModel, IMarketRecentModel, IMarketRecentValueModel, IMarketValuationModel } from '@/models/market'
   import { MarketModel } from '@/models/market'
-  import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
+  import { Component, Vue } from 'vue-property-decorator'
   import { namespace } from 'vuex-class'
 
   import MarketChart from '@/v2/components/home/MarketChart.vue'
@@ -56,7 +56,7 @@
         
     @MarketStoreModule.State('marketRecents') marketRecents!: IMarketRecentModel
     @MarketStoreModule.State('marketLoaded') marketLoaded!: boolean
-    @MarketStoreModule.State('marketValuation') marketValuation!: any
+    @MarketStoreModule.State('marketValuation') marketValuation!: IMarketValuationModel[]
     @MarketStoreModule.State('marketValuationLoaded') marketValuationLoaded!: boolean
     @MarketStoreModule.State('marketChart') marketChart!: IMarketChartModel
 
@@ -65,16 +65,11 @@
 
     expandKospi = false
     selectionChipGroup = 0
-
-
-    get mobile () { return this.$vuetify.breakpoint.name === 'xs'}    
-
-
+    
     createComputedMarketContent(marketType: string): ComputedMarket {
       const {changes, close} = this.marketRecents[marketType]
       const {changeValue, color} = this.getChangeValue(changes, close)    
       const closes = this.marketChart[marketType].values.slice(-12, ).map((value: MarketModel) => value.close)
-
       return {
         ...this.marketRecents[marketType],        
         changeValue,
@@ -95,7 +90,7 @@
       }
     }
 
-    getChangeValue(changes: number, close: number) {
+    getChangeValue(changes: number, close: number): { changeValue: string; color: string } {
       const changeValue = (changes * close)
       return {
         changeValue: (changeValue > 0 ? '+' : '') + changeValue.toFixed(2),
@@ -105,8 +100,7 @@
 
     async mounted () {
       if(!this.marketValuation) await this.getMarketValuation()
-      if(!this.marketRecents) await this.getTodayMarket()    
-      console.log(this.marketValuation)    
+      if(!this.marketRecents) await this.getTodayMarket()     
     }
 
   }

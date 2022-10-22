@@ -38,19 +38,19 @@
             >
               <v-carousel-item>
                 <v-chip class="mt-1" :color="getChipColor('weeklyTrend2')">
-                  {{ marketValuation.market }}은(는) 2주동안 {{ marketValuation.weeklyTrend2  }}% 
-                  {{ marketValuation.weeklyTrend2 > 0 ? '상승' : '하락' }} 하였습니다.                    
+                  {{ marketValuation.market }}은(는) 2주동안 {{ Math.abs(marketValuation.weeklyTrend2) }}% 
+                  {{ (marketValuation.weeklyTrend2 > 0 ? '상승' : '하락') }} 하였습니다.                    
                 </v-chip>
               </v-carousel-item>
               <v-carousel-item>
                 <v-chip class="mt-1" :color="getChipColor('weeklyTrend')">
-                  {{ marketValuation.market }}은(는) 1주동안 {{ marketValuation.weeklyTrend  }}% 
+                  {{ marketValuation.market }}은(는) 1주동안 {{ Math.abs(marketValuation.weeklyTrend) }}% 
                   {{ marketValuation.weeklyTrend > 0 ? '상승' : '하락' }} 하였습니다.                    
                 </v-chip>
               </v-carousel-item>
               <v-carousel-item>
                 <v-chip class="mt-1" :color="getChipColor('monthlyTrend')">
-                  {{ marketValuation.market }} 한달 동안 {{ marketValuation.monthlyTrend  }}% 
+                  {{ marketValuation.market }} 한달 동안 {{ Math.abs(marketValuation.monthlyTrend) }}% 
                   {{ marketValuation.monthlyTrend > 0 ? '상승' : '하락' }} 하였습니다.                    
                 </v-chip>
               </v-carousel-item>

@@ -12,12 +12,13 @@
       <v-toolbar-title @click="pushLink('/')" class="ml-5 navbar__title">DONDA</v-toolbar-title>
 
       <div v-if="!mobile">
-        <v-carousel        
+        <v-carousel     
+          class="ml-15"   
           hide-delimiter-background             
           hide-delimiters
           vertical hide cycle
           :show-arrows="false"
-          height="50px" width="auto" class="ml-15"                                         
+          height="50px"                                          
         >
           <v-carousel-item
             class="navbar__carousel__itme"
@@ -505,7 +506,7 @@ export default class NavBar extends Vue {
 .navbar__carousel__card {
   top: 10px;  
   display: flex;
-  align-items: end;  
+  align-items: end;
   gap: 5px;
   padding-bottom: 5px;
   padding-left: 15px;

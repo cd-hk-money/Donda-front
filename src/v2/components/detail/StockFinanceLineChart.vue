@@ -25,6 +25,10 @@ export default class StockFinanceLineChart extends Vue {
   @StockStoreModule.Action('getStockStatementAll')
   readonly getStockStatementAll!: (payload: {code: string, statementType: string}) => Promise<void>
 
+  get mobile () {
+     return this.$vuetify.breakpoint.name === 'xs'
+  }
+
   @StockStoreModule.State('statementAll') statementAll!: ISimpleChartData
 
   chartOptions: Chart.ChartOptions = {
@@ -94,7 +98,7 @@ export default class StockFinanceLineChart extends Vue {
           backgroundColor: ctx => ctx.dataset.data[ctx.dataIndex] > 0 ? transparentize(MAIN_COLOR, 0.85) : transparentize(SUB_COLOR, 0.85),
           borderWidth: 3,                    
           radius: 4,          
-          barThickness: 30,
+          barThickness: this.mobile ? 5 : 30,
           pointStyle: 'rectRounded',
           tension: .4,               
         }

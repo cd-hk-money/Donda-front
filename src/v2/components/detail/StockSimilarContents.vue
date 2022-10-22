@@ -1,7 +1,7 @@
 <template>
   <v-card   
     class="mb-1 mt-1 mr-1 ml-1"
-    width="380"    
+    :width="mobile ? '100%' : '380'"    
     color="#252424"
     elevation="0"  
     rounded="xl"   
@@ -38,7 +38,6 @@
     <v-sheet 
       elevation="0"        
       height="104"
-      outlined
     >                
       <v-card-title class="text-h5 font-weight-bold ml-5">
         <span> {{ content.close.toLocaleString()}} ₩ </span>          
@@ -72,6 +71,10 @@ export default class StockSimilarContent extends Vue {
   @Prop() content!: IStockModel | undefined  
 
   @StockStoreModule.State('recommendStocksLoaded') recommendStocksLoaded!: boolean
+
+  get mobile () {
+    return this.$vuetify.breakpoint.name === 'xs'
+  }
 
   get computedValues () {
     const { changes_ratio, close } = this.content

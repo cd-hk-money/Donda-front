@@ -1,6 +1,6 @@
 import { Module, VuexModule, Action, Mutation } from "vuex-module-decorators";
 import axios from "axios";
-import { IMarketRank , IStockModel, ISimpleChartData, IStockEvaluationModel, IStockIndicatorSectorModel, IStockIndicatorSectorDailyModel, IStockIndicatorDailyModel } from "@/models/stock";
+import { IMarketRank , IStockModel, ISimpleChartData, IStockEvaluationModel, IStockIndicatorSectorModel, IStockIndicatorSectorDailyModel, IStockIndicatorDailyModel, INewsModel } from "@/models/stock";
 import { IUpdateStateModel } from "@/models/payload";
 
 import { convertChartData } from "@/mixins/tools";
@@ -115,7 +115,7 @@ export default class StockStore extends VuexModule {
 
   // 뉴스
   public newsLoaded = false
-  public news: any[] = []
+  public news: INewsModel[] = []
 
 
   // Mutations

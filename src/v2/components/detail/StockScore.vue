@@ -31,10 +31,10 @@
             :show-arrows="false"            
           >
             <v-carousel-item>
-              <StockScoreBarChart :height="230" class="mt-4 ml-1"/>
+              <StockScoreBarChart :height="180" class="mt-4 ml-1"/>
             </v-carousel-item>
             <v-carousel-item>
-              <StockChart :height="230" class="mt-4 ml-1"/>                
+              <StockChart :height="180" class="mt-4 ml-1"/>                
             </v-carousel-item>
           </v-carousel>
         </template>
@@ -115,7 +115,7 @@ export default class StockScore extends Vue {
   }
 
   get cardHeight (): number { 
-    return this.$vuetify.breakpoint.name === 'xs' ? 520 : 260 
+    return this.$vuetify.breakpoint.name === 'xs' ? 420 : 260 
   }  
 
   get scorePer () : ScoreType {    
@@ -124,8 +124,6 @@ export default class StockScore extends Vue {
     const score = isHighVal ? ((close / valuation) * 100).toFixed() : ((valuation / close) * 100).toFixed()
     const text = isHighVal ? '고평가': '저평가'
     const colorClass = isHighVal ? 'red--text' : 'blue--text'
-    console.log(score)
-        
     return { score, text, colorClass }
   }
 

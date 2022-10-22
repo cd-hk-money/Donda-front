@@ -2,20 +2,20 @@
   <v-sheet
     class="stock-indicator-detail-content"
     elevation="0"    
-    @click="expand = !expand"
+    @click="expand = !expand"    
   >
     <v-card-title class="stock-indicator-detail-content-title d-flex align-end">
       <span class="text-h4"> {{ upper(indicatorType) }} </span>
         <v-chip small class="ml-3 mb-1">
-          <v-icon :color="iconColor">
-            {{ icon }}
-          </v-icon>
-        </v-chip>
-        <v-chip v-if="level" small class="ml-3 mb-1 d-flex">
-          <v-icon v-for="(star, i) in level" :key="i" color="#FDD835">
-            mdi-star
-          </v-icon>
-        </v-chip>
+        <v-icon :color="iconColor">
+          {{ icon }}
+        </v-icon>
+      </v-chip>
+      <v-chip v-if="level" small class="ml-3 mb-1 d-flex">
+        <v-icon v-for="(star, i) in level" :key="i" color="#FDD835">
+          mdi-star
+        </v-icon>
+      </v-chip>
     </v-card-title>
 
     <v-card-subtitle class="pt-1 font-weight-bold text-h7">
@@ -28,8 +28,7 @@
         :chartData="chartData"
         :height="100"
       />
-      <v-divider vertical/>
-      
+            
       <div class="pl-3">        
         <div>
           <slot name="description"></slot>
@@ -44,7 +43,7 @@
         <StockFinanceLineChart 
           class="mr-5"            
           :statementType="indicatorType"
-          :height="100"
+          :height="mobile ? 300 : 100"
         />
       </v-card>
     </v-expand-transition>
@@ -73,6 +72,10 @@ import { IStockStatementBarChartModel } from '@/models/stock';
     expand = false
     icon = ''
     iconColor = ''
+
+    get mobile () {
+      return this.$vuetify.breakpoint.name === 'xs'
+    }
 
     getIcon() {
       if(!this.chartData.value) return ''
