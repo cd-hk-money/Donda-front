@@ -31,8 +31,47 @@
       >
         <v-icon>{{ menu.icon }}</v-icon>
       </v-btn>
+      <v-menu        
+        left bottom offset-y :close-on-content-click="false"
+        v-model="menu"
+      >
+        <template v-slot:activator="{on, attrs}">
+          <v-btn
+            class="mr-2"
+            small
+            icon
+            v-on="on"
+            v-bind="attrs"
+            tile            
+          >
+           <v-icon>
+            mdi-calendar
+           </v-icon>
+          </v-btn>          
+        </template>
+        <v-card>
+          <v-date-picker
+            :allowed-dates="allowedDates"
+            v-model="picked"
+            :month-format="monthFormat"
+            :header-date-format="monthFormat"
+            :weekday-format="weekdayFormat"
+            :show-current="false"
+            no-title
+            color="cyan"
+            range
+          >
+            <v-btn plain @click="menu = false" color="error" class="date-action">
+              취소
+            </v-btn>
+            <v-btn plain @click="selectDate">
+              결정
+            </v-btn>
+          </v-date-picker>          
+        </v-card>
+      </v-menu>
     </v-card>
-    <v-divider></v-divider>
+    <v-divider />
     <v-card-text v-if="!loaded">
       <stock-big-chart   
         :height="140"        
@@ -59,16 +98,20 @@ const StockStoreModule = namespace('StockStore')
 })
 export default class Stock extends Vue {
   
-  count = 20
+  count = 33
   dateOverlay = false
   gradientEnable = false
   volumeEnable = false
+  menu = false
+  picked = []
+  rangePicked = []
 
   get width (): string | number { 
     return this.$vuetify.breakpoint.name === 'xs' ? 465 : '97%'
   }
 
   @StockStoreModule.State('stock') stock!: IStockModel
+  @StockStoreModule.State('stockGraphDefault') stockGraphDefault!: any
   @StockStoreModule.State('stockGraphAllLoaded') loaded!: boolean
   @StockStoreModule.State('stockGraphAllFlag') flag!: boolean  
   @StockStoreModule.Action('getStockGraphAll') getStockGraphAll!: (name: string) => Promise<void>
@@ -76,6 +119,23 @@ export default class Stock extends Vue {
     
   getGradient () { return this.gradientEnable }
   getVolumeEnable () { return this.volumeEnable }
+
+  get lastDate () {
+    const labels = Object.keys(this.stockGraphDefault)
+    return labels[labels.length - 1]
+  }
+  
+  get Picked () {
+    const last = new Date(this.lastDate)      
+    return [
+      new Date(last.setDate(last.getDate() - this.count)).toISOString().substr(0, 10),
+      this.lastDate
+    ]
+  }
+
+  set Picked (val) {
+    this.picked = val
+  }
 
   @Watch('gradientEnable')
   watchGradient () {
@@ -106,10 +166,35 @@ export default class Stock extends Vue {
     })         
   }
 
-  mounted () {
+  allowedDates(arg: string) {
+    const current = new Date(arg).getTime()
+    const last = new Date(this.lastDate).getTime()
+    if(current < last) return arg
+    return null          
+  }
+
+  monthFormat = (date: string) => {
+    const split = date.split('-')
+    if(split.length === 1) return `${split[0]}년`
+    return `${split[0]}년 ${split[1]}월`      
+  }
+
+  weekdayFormat = (date: string) => {
+    const week = ['일', '월', '화', '수', '목', '금', '토'];
+    const dayOfWeek = week[new Date(date).getDay()];
+    return dayOfWeek;
+  }
+
+  selectDate() {
+    this.menu = false
+    this.rangePicked = this.picked
+  }
+
+  mounted () {    
     const code = this.$route.params.title    
     this.getStockGraphDefault(code)  
-    this.getStockGraphAll(code)
+    this.getStockGraphAll(code)    
+    this.picked = this.Picked
   }
   
 }
