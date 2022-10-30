@@ -1,7 +1,9 @@
-import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators'
-import { StockSimpleModel, LineChartModel, StockRankModel, IMarketRanksContents } from '@/models/stock'
+import { Module, VuexModule, Action, Mutation } from "vuex-module-decorators";
+import axios from "axios";
+import { IMarketRank , IStockModel, ISimpleChartData, IStockEvaluationModel, IStockIndicatorSectorModel, IStockIndicatorDailyModel, INewsModel } from "@/models/stock";
+import { IUpdateStateModel } from "@/models/payload";
 
-import axios from 'axios'
+import { convertChartData } from "@/mixins/tools";
 
 const HEADER = {
   headers: {
@@ -9,180 +11,471 @@ const HEADER = {
   }
 }
 
-const URL = '/api'
-
-const DETAIL_TYPE = ['close', 'type', 'change', 'changeRatio', 'open', 'high', 'low', 'volume']
-
 @Module({namespaced: true})
 export default class StockStore extends VuexModule {
 
-  // state  
-  public title = ''               
-  public code = ''
-    
-  public loading = false
-  public loaded = false
-  public requestDate = 20
-  
-  public stocks!: StockSimpleModel[]        // 상장된 모든 종목에 대한 간단 정보
-  public stocksRank!: StockRankModel
-  public stocksDetail!: any                 // 상장된 모든 종목에 대한 상세 정보
-  
-  public searchTable!: Array<string>  
-
-  public stockChart!: Array<LineChartModel> // 개별종목 주가 정보
-  public stockDetail!: any                  // 개별종목 정보
-
-  public subscribe!: StockSimpleModel[]   // 구독 여부
-
-  public sparkValues!: Array<number>
-
-  public recommendLoaded!: boolean
-
-  
   // 오늘의 간단 랭킹
-  public dailySimpleRanks!: IMarketRanksContents 
   public dailySimpleRanksLoaded = false
+  public dailySimpleRanks: IMarketRank = {
+    marcap: [],
+    change_incr: [],
+    change_redu: [],
+    volume: []
+  }
 
-
-  // 오늘의 상세 랭킹
-  public dailyDetailRanks!: Array<any>
-  public dilayDetailRanksLoaded = false
   
-  // getters
-  get nameMappingCode(): StockSimpleModel[] {
-    return this.stocks
+  // 개별 종목 간단정보
+  public stockLoaded = false
+  public stock: IStockModel = {
+    date: '',
+    code: '',
+    name: '',
+    market: '',
+    close: 0,
+    changes: 0,
+    changes_ratio: 0,
+    open: 0,
+    high: 0,
+    low: 0,
+    amount: 0,
+    marcap: 0,
+    stocks: 0,    
   }
 
-  get getStocks(): Array<StockSimpleModel> {
-    return this.stocks
+  // 추천 종목
+  public recommendStocksLoaded = false
+
+  // 추천 종목들
+  public recommendStocks: IStockModel[] = []
+
+
+  // 주가 그래프 인덱스 저장
+  public stockGraphLength = 20
+
+
+  // 종목 하나의 2주 그래프정보
+  public stockGraphDefaultLoaded = false
+  public stockGraphDefault = {}
+
+
+  // 종목 하나의 5년치 그래프정보
+  public stockGraphAll = {}
+  public stockGraphAllLoaded = false
+
+  // 종목 하나의 분기 적정주가
+  public stockEvaluation = {}
+  public stockEvaluationLoaded = false
+
+  // 종목 하나의 일간 적정주가
+  public stockEvaluationDaily: IStockEvaluationModel = {
+    value: [],
+    date: []
+  }
+  public stockEvaluationDailyLoaded = false
+  get stockEvaluationDailyLast (): string {
+    return this.stockEvaluationDaily?.value.slice(-1)[0]
+  }
+
+  // 거래량
+  public stockGraphVolume = {}
+  public stockGraphVolumeLoaded = false  
+  public stockGraphAllFlag = false
+  public stockGraphVolumeFlag = false
+
+
+  // 종목 하나의 재무제표
+  public statementLoaded = false
+  public statement: ISimpleChartData = {}
+  public statementTypes: string[] = []
+
+
+  // 종목 하나의 5년치 재무제표
+  public statementAllLoaded = false
+  public statementAll: ISimpleChartData = {}  
+
+  
+  // 종목 하나의 4분기 보조지표
+  public indicatorLoaded = false
+  public indicatorDailyLoaded = false
+  public indicator: ISimpleChartData = {}
+  public indicatorDaily: IStockIndicatorDailyModel
+  public indicatorDailyChartLabel: string[]
+  public indicatorTypes: string[] = []
+
+  // 종목 하나의 관련섹터 보조지표
+  public indicatorSectorLoaded = false
+  public indicatorSector: IStockIndicatorSectorModel
+  public indicatorSectorDaily!: IStockIndicatorDailyModel
+
+
+  // 유사종목
+  public similarContents: IStockModel[] = []
+  public similarLoaded = false
+
+
+  // 뉴스
+  public newsLoaded = false
+  public news: INewsModel[] = []
+
+
+  // Mutations
+  // state를 초기화합니다.
+  @Mutation
+  public updateState(payload: IUpdateStateModel) {    
+    Object.entries(payload).forEach((state) => {
+      this[state[0]] = state[1]
+    })        
   }
   
-  @Mutation
-  public setCode(newCode: string): void {
-    this.code = newCode
-  }
-  
-  @Mutation
-  public setTitle(title: string): void {
-    this.title = title
-  }
-  
-  @Mutation
-  public setSearchTable(): void {
-    this.searchTable = this.stocks.map(stock => stock.title)
-  }
+  // Actions
+  // 비동기 로직을 실행합니다.
 
-  @Mutation
-  public updateStocks(stocks: any) {
-    this.stocksDetail = stocks
-    this.stocks = stocks.map((stock: Array<number | string>) => {
-      return {
-        title: stock[1],
-        code: stock[0],
-        stock: stock[4]
-      }
-    })
-  }
-
-  @Mutation
-  public updateLoaded(payload: boolean): void {
-    this.loaded = payload    
-  }
-  
-  @Mutation
-  public updateLoading(payload: boolean): void {
-    this.loading = payload
-  }
-  
-  @Mutation
-  public uptateTitle(payload: string): void {
-    this.title = payload
-  }
-
-  @Mutation
-  public updateStockChart(payload: Array<LineChartModel>): void {
-    this.stockChart = payload
-  }
-
-  @Mutation
-  public updateStockDetail(payload: any): void {                
-    this.stockDetail = this.stocksDetail
-                        .find((stock: any) => stock[0] === payload)
-                          .slice(4, 12)
-                            .reduce((acc: any, cur: string, index: number) => {
-                                acc[DETAIL_TYPE[index]] = cur
-                                return acc
-                            }, {})
-  }
-
-  @Mutation
-  public updateRequestDate(payload: number): void {
-    this.requestDate = payload
-  }
-
-  @Mutation
-  public updateRecommendLoaded(payload: boolean) {
-    this.recommendLoaded = payload
-  }
-
-  @Mutation
-  public updateDailySimpleRanks(payload: IMarketRanksContents) {
-    this.dailySimpleRanks = payload
-  }
-
-  @Mutation
-  public updateDailySimpleRanksLoaded(payload: boolean) {
-    this.dailySimpleRanksLoaded = payload
-  }
-
+  // 오늘의 간단 랭킹을 불러옵니다.
   @Action
-  public async searchContents (code: string): Promise<any> {
+  public async getDailySimpleRanks(): Promise<void> {    
     try {
-      this.context.commit('updateLoading', true)
-      
-      const res = await axios.get(`/findByCode/${code}/${this.requestDate}`, HEADER)      
-      const chartData: Array<LineChartModel> = Object.entries(res.data).map((stock: any) => {
-        return {
-          date: stock[0],
-          value: stock[1].Close
-        }
+      this.context.commit('updateState', {
+        dailySimpleRanksLoaded: true
       })
-      chartData.pop()            
-      this.context.commit('updateStockDetail', code)               
-      this.context.commit('updateStockChart', chartData)    
-      this.context.commit('updateLoading', false)   
-    } catch(e) {
-      console.log(e)
-    }
-  }
 
-  @Action
-  public async todayMarket(): Promise<void> {
-    try {      
-      this.context.commit('updateLoaded', false)
-      const res = await axios.get(`/today`, HEADER)
-
-      this.context.commit('updateStocks', res.data.data)      
-      this.context.commit('setSearchTable')   
-      this.context.commit('updateLoaded', true)
+      const res = await axios.get(`/daily/rank`, HEADER)
+            
+      this.context.commit('updateState', {
+        dailySimpleRanks: res.data,
+        dailySimpleRanksLoaded: false
+      })      
     } catch(e) {
       console.log(e)
     }
   }  
 
+  // 하나의 간단 종목 정보를 가져옵니다.
   @Action
-  public async getRecommendStock(): Promise<void> {
+  public async getStock(name: string): Promise<void> {    
     try {
-      this.context.commit('updateRecommendLoaded', false)
-      const res = await axios.get(`${URL}/daily/recom`)
+      this.context.commit('updateState', {
+        stockLoaded: true
+      })
 
-      this.context.commit('updateRecommendLoaded', true)
+      const res = await axios.get(`/stock/${name}`, HEADER)
+
+      this.context.commit('updateState', {
+        stock: res.data,
+        stockLoaded: false
+      })
+    
+      return res.data
+    } catch(e) {
+      console.log(e)
+    }
+  }
+
+  // 여러개의 간단 종목 정보를 가져옵니다.
+  @Action
+  public async getStocks(codes: string[]): Promise<void> {    
+    try {
+      this.context.commit('updateState', {
+        recommendStocksLoaded: true
+      })
+      const reses = await axios.all(codes.map(code => axios.get(`/stock/${code}`)))
+
+      this.context.commit('updateState', {
+        recommendStocks: reses.map(res => res.data),
+        recommendStocksLoaded: false
+      })
+            
+    } catch(e) {
+      console.log(e)
+    }
+  }
+
+  // 종목 하나의 2주동안의 주가 정보를 가져옵니다.
+  @Action
+  public async getStockGraphDefault(name: string): Promise<void> {
+    try {
+      this.context.commit('updateState', {
+        stockGraphDefaultLoaded: true
+      })
+
+      const res = await axios.get(`/stock/${name}/price`, HEADER)      
+
+      this.context.commit('updateState', {
+        stockGraphDefault: res.data.origin,
+        stockGraphDefaultLoaded: false
+      })
+    } catch(e) {
+      console.log(e)
+    }
+  }
+
+
+  // 종목 하나의 5년동안의 종가 정보를 가져옵니다.
+  @Action
+  public async getStockGraphAll(name: string): Promise<void> {
+    try {
+      this.context.commit('updateState', {
+        stockGraphAllLoaded: true
+      })
+
+      const res = await axios.get(`/stock/${name}/years-price`, HEADER)
+      
+      this.context.commit('updateState', {
+        stockGraphAll: res.data.origin,
+        stockGraphAllLoaded: false,
+        stockGraphAllFlag: true
+      })
+    } catch(e) {
+      console.log(e)
+    }
+  }
+
+
+  // 종목 하나의 적정주가 정보들을 가져옵니다.
+  @Action
+  public async getStockEvaluation(stockCode: string): Promise<void> {
+    try {
+      this.context.commit('updateState', {
+        stockEvaluationLoaded: true
+      })
+      
+      const res = await axios.get(`/stock/${stockCode}/evaluation`, HEADER)
+      
+      this.context.commit('updateState', {
+        stockEvaluation: res.data,        
+        stockEvaluationLoaded: false
+      })      
+          
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  @Action
+  public async getStockEvaluationDaily(stockCode: string): Promise<void> {
+    try {
+
+      this.context.commit('updateState', {
+        stockEvaluationDailyLoaded: true
+      })
+
+      const res = await axios.get(`/stock/${stockCode}/evaluation/daily`, HEADER)
+
+      this.context.commit('updateState', {
+        stockEvaluationDaily: res.data,
+        stockEvaluationDailyLoaded: false
+      })
+
+    } catch (e) {
+      console.log(e)
+    }
+  }
+  
+  // 종목 하나의 5년동안의 거래량 정보를 가져옵니다.
+  @Action
+  public async getStockGraphVolume(name: string): Promise<void> {
+    try {      
+      const res = await axios.get(`/stock/${name}/years-volume`, HEADER)
+      
+      this.context.commit('updateState', {
+        stockGraphVolume: res.data.origin,
+        stockGraphVolumeLoaded: false,
+        stockGraphVolumeFlag: true
+      })
+    } catch(e) {
+      console.log(e)
+    }
+  }
+
+  // 종목 하나의 최근 4분기 보조지표를 가져옵니다.
+  @Action
+  public async getStockIndicator(name: string): Promise<void> {
+    try {
+      this.context.commit('updateState', {
+        indicatorLoaded: true,        
+      })
+
+      const res = await axios.get(`/stock/${name}/indicator`, HEADER)
+
+
+      const label = Object.keys(res.data).slice(0, 4)      
+      const value = Object.values(res.data).slice(0, 4) as string[]  
+      const keys = Object.keys(value[0][0]).slice(1)
+
+      this.context.commit('updateState', {
+        indicatorTypes: keys,
+        indicator: convertChartData(keys, value, label),
+        indicatorLoaded: false,        
+      })
+
+    } catch(e) {
+      console.log(e)
+    }
+  }
+
+  @Action
+  public async getStockIndicatorDaily(stockcode: string): Promise<void> {
+    try {
+      this.context.commit('updateState', {
+        indicatorDailyLoaded: true
+      })
+
+      const res = await axios.get(`/stock/${stockcode}/indicator/daily`)
+
+      const indicatorDailyChartLabel = Object.keys(res.data).slice(0, -9)      
+      const indicatorDaily = 
+        Object
+        .values(res.data)
+        .slice(0, -9)
+        .map(arr => arr[0])
+        .reduce((acc, cur) => {
+            acc.PBR.push(cur.PBR)
+            acc.PER.push(cur.PBR)
+            acc.PSR.push(cur.PBR)
+            return acc
+        },{
+          PBR: [], PER: [], PSR: []
+        })      
+      
+      this.context.commit('updateState', {
+        indicatorDailyLoaded: false,
+        indicatorDailyChartLabel,
+        indicatorDaily
+      })
+      
+    } catch (e: unknown) {
+      console.log(e)
+    }
+  }
+
+
+  /**
+   * @param code 종목 정보
+   * @description 종복 하나의 관련 섹터 보조 지표를 가져옵니다.
+   */
+  @Action
+  public async getIndicatorSector(code: string): Promise<void> {
+    try {      
+      this.context.commit('updateState', {
+        indicatorSectorLoaded: true
+      })
+
+      const multiRes = await axios
+                .all([axios.get(`/stock/${code}/sector`), axios.get(`/stock/${code}/sector/daily`)])                
+                                            
+      const [indicatorSector, indicatorSectorDaily] = multiRes.map(v=> v.data)      
+      
+      const computedIndicatorSectorDaily = 
+        Object.values(indicatorSectorDaily)
+        .map(arr => arr[0])
+        .reduce((acc, cur, _) => {
+            acc.PBR.push(cur.pbr)
+            acc.PER.push(cur.per)
+            acc.PSR.push(cur.psr)
+            return acc
+        },{
+          PBR: [], PER: [], PSR: []
+        })     
+
+      this.context.commit('updateState', {
+        indicatorSector,
+        indicatorSectorDaily: computedIndicatorSectorDaily,
+        indicatorSectorLoaded: false
+      })
+      
+    } catch (e) {
+      console.log(e)
+    }
+  }
+  
+   // 종목 하나의 특정 재무제표 5년치 를 가져옵니다.
+  @Action
+  public async getStockStatementAll(payload: {code: string, statementType: string}): Promise<void> {
+    try {
+      this.context.commit('updateState', {
+        statementAllLoaded: true,
+        statement: {}
+      })
+
+      const {code, statementType} = payload                  
+      
+      const res = await axios.get(`/stock/${code}/statement/${statementType}`, HEADER)
+
+      console.log(res.data)
+
+      this.context.commit('updateState', {
+        statementAll: res.data.origin,
+        statementAllLoaded: false
+      })
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  // 종목 하나의 모든항목 재무제표 4분기를 가져옵니다.
+  @Action
+  public async getStockStatement(code: string): Promise<void> {
+    try {
+      this.context.commit('updateState', {
+        statementLoaded: true
+      })
+
+      const res = await axios.get(`/stock/${code}/statement`, HEADER)
+
+      console.log(res.data)
+
+      const label = Object.keys(res.data)
+      const value = Object.values(res.data) as string[]                        
+      const keys = Object.keys(value[0][0])
+      
+      this.context.commit('updateState', {
+        statementTypes: keys.filter((key: string) => key !== 'type'),
+        statement: convertChartData(keys, value, label),
+        statementLoaded: false
+      })
+
+    } catch(e) {
+      console.log(e)
+    }
+  }  
+
+  // 현재 종목에 대해 유사 종목을 가져옵니다.
+  @Action
+  public async getSimilarContents(code: string): Promise<void> {
+    try {
+      this.context.commit('updateState', {
+        similarLoaded: true
+      })
+
+      const res = await axios.get(`/stock/${code}/similar`)      
+            
+      this.context.commit('updateState', {
+        similarLoaded: false,
+        similarContents: res.data.slice(0, 12)
+      })
+
     } catch (e) {
       console.log(e)
     }
   }
 
 
-}
+  // 종목 하나의 관련 뉴스를 가져옵니다.
+  @Action
+  public async getStockNews(name: string): Promise<void> {
+    try {
+      this.context.commit('updateState', {
+        newsLoaded: true
+      })
 
+      const res = await axios.get(`/stock/${name}/news`)
+      
+      this.context.commit('updateState', {
+        news: res.data,
+        newsLoaded: false,
+      })
+    } catch (e) {
+      console.log(e)
+    }
+  }  
+
+}

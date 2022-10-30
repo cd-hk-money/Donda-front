@@ -9,7 +9,6 @@ import { IUpdateStateModel } from '@/models/payload'
 import { division } from '@/mixins/tools'
 
 
-const URL = ''
 const HEADER = {
 	headers: {
 		'Content-Type': 'text/plain;charset=utf-8'
@@ -38,7 +37,7 @@ export default class MarketStore extends VuexModule {
 
 	// 종목 추천 정보
 	public recommendLoaded = false
-	public recommend: StockRecommendModel[] = []
+	public recommend: StockRecommendModel[]
 	get recommendArray () {
 		return division(this.recommend, 2)
 	}
@@ -198,6 +197,7 @@ export default class MarketStore extends VuexModule {
 			})
 
 			const res = await axios.get('/daily/market', HEADER)
+			console.log(res.data)
 
 			this.context.commit('updateState', {
 				marketValuationLoaded: false,

@@ -50,7 +50,7 @@
                 어느 그룹에 추가하시겠습니까?
               </v-card-text>
   
-              <v-divider></v-divider>
+              <v-divider />
             
               <v-list>                  
                 <v-list-item 
@@ -79,10 +79,10 @@
                 </v-list-item>
               </v-list>
               
-              <v-divider></v-divider>
+              <v-divider />
   
               <v-card-actions>
-                <v-spacer></v-spacer>
+                <v-spacer />
                 <v-btn
                   color="primary"
                   text
@@ -121,7 +121,7 @@
         <v-progress-circular indeterminate color="#00BCD4" />        
       </div>
     </template>
-</v-card>
+  </v-card>
 </template>
 
 <script lang="ts">
@@ -131,8 +131,6 @@ import { namespace } from 'vuex-class'
 import { IUpdateStateModel } from '@/models/payload';
 import { IStockModel } from '@/models/stock'
 import { IInterestGroup, IInterestGroupItem } from '@/models/interest'
-import Stock from './Stock.vue';
-
 
 const StockStoreModule = namespace('StockStore')
 const InterestStoreModule = namespace('InterestStore')
@@ -162,8 +160,7 @@ export default class StockInfo extends Vue {
   get mobile () { 
     return this.$vuetify.breakpoint.name === 'xs' 
   }
-
-  // <span>{{ stock.changes > 0 ? '+' + stock.changes.toLocaleString() : stock.changes.toLocaleString() }}₩ ({{ stock.changes_ratio > 0 ? '+' + stock.changes_ratio : stock.changes_ratio}}%)</span>                        
+  
   get prefixedValue () {
     return {
       changes: (this.stock.changes > 0 ? '+': '') + this.stock.changes.toLocaleString(),

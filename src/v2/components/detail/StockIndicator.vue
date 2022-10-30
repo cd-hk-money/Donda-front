@@ -27,41 +27,20 @@
       EPS, ROE, BPS 지수를 업종 평균과 비교하여 보여줍니다.
     </v-card-subtitle>
 
-    <v-card-text class="d-flex justify-center align-end">
-      <v-carousel 
-        v-if="!loaded && !stockLoaded && !sectorLoaded && !indicatorSectorLoaded && !indicatorDailyLoaded"
-        cycle
-        hide-delimiter-background
-        show-arrows-on-hover
-        hide-delimiters
-        :show-arrows="false"
-        interval="10000000"
-        height="260"        
+    <v-card-text>
+      <div 
+        v-if="!loaded && !stockLoaded && !sectorLoaded && !indicatorSectorLoaded && !indicatorDailyLoaded"        
+        class="d-flex justify-center align-center ml-3"
       >
-        <v-carousel-item >          
-          <div class="d-flex justify-center align-center">
-            <v-card 
-              width="500"
-              height="180"
-              elevation="0"
-              class="d-flex justify-center align-center ml-3"
-            >
-              <stock-indicator-chart                       
-                :chartData="indicatorChartData"
-                :sector="indicatorSectorChartData"
-                :height="180"      
-              />         
-            </v-card>
-          </div>        
-        </v-carousel-item>
-
-      </v-carousel>
+        <stock-indicator-chart                       
+          :chartData="indicatorChartData"
+          :sector="indicatorSectorChartData"
+          :height="180"      
+        />         
+      </div>
     
       <div class="text-center stockinfo-progress-circular" v-else>
-        <v-progress-circular
-          indeterminate
-          color="#00BCD4"
-        ></v-progress-circular>
+        <v-progress-circular indeterminate color="#00BCD4" />        
       </div>
     </v-card-text>
 
@@ -146,10 +125,3 @@ export default class StockIndicator extends Vue {
   }
 }
 </script> 
-
-<style scoped>
-.stockinfo-progress-circular {
-  position: relative;
-  transform: translateY(170%);
-}
-</style>

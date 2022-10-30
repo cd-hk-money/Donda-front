@@ -4,50 +4,38 @@
     width="100%"
     outlined
   >
-    <v-card-title>
-      주가
-    </v-card-title>
-
+    <v-card-title> 주가 </v-card-title>
     <v-card-subtitle>
       <span>{{ stock.name }}의 주가 정보를 확인해보세요.</span>
     </v-card-subtitle>
     
     <v-divider />
+
     <v-card
       elevation="0"
       height="50"
       class="d-flex justify-end align-center"
     > 
-      <v-btn
-        v-for="(menu, i) in menus"
-        :key="i"
-        icon
-        class="mr-5"
-        elevation="0"
-        tile
-        small
-        v-model="menu.enable"
-        @click="menu.callback"
-      >
-        <v-icon>{{ menu.icon }}</v-icon>
+      <v-btn         
+        plain
+        @click="volumeEnable = !volumeEnable" v-model="volumeEnable" active-class="chip-active">
+        <v-icon left>mdi-chart-bar</v-icon>
+        거래량 표시
       </v-btn>
       <v-menu        
         left bottom offset-y :close-on-content-click="false"
         v-model="menu"
       >
         <template v-slot:activator="{on, attrs}">
-          <v-btn
-            class="mr-2"
-            small
-            icon
+          <v-btn 
+            plain
+            class="mr-2"            
             v-on="on"
             v-bind="attrs"
-            tile            
           >
-           <v-icon>
-            mdi-calendar
-           </v-icon>
-          </v-btn>          
+            <v-icon left>mdi-calendar</v-icon>
+            날짜 선택
+          </v-btn>
         </template>
         <v-card>
           <v-date-picker
@@ -83,10 +71,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator'
+import { Component, Vue } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 import { IStockModel } from '@/models/stock'
-import { IMenu } from '@/v2/pages/MenuBar.vue'
 import StockBigChart from '@/v2/components/detail/StockBigChart.vue'
 
 const StockStoreModule = namespace('StockStore')
@@ -117,9 +104,6 @@ export default class Stock extends Vue {
   @StockStoreModule.Action('getStockGraphAll') getStockGraphAll!: (name: string) => Promise<void>
   @StockStoreModule.Action('getStockGraphDefault') getStockGraphDefault!: (name: string) => Promise<void>
     
-  getGradient () { return this.gradientEnable }
-  getVolumeEnable () { return this.volumeEnable }
-
   get lastDate () {
     const labels = Object.keys(this.stockGraphDefault)
     return labels[labels.length - 1]
@@ -137,34 +121,6 @@ export default class Stock extends Vue {
     this.picked = val
   }
 
-  @Watch('gradientEnable')
-  watchGradient () {
-    const content = this.menus.find((menu: IMenu) => menu.title === 'gradient')
-    content.enable = !content.enable
-  }
-
-  @Watch('volumeEnable')
-  watchVolume () {
-    const content = this.menus.find((menu: IMenu) => menu.title === 'volume')
-    content.enable = !content.enable
-  }
-
-  menus: IMenu[] = [    
-    {
-      title: 'volume',
-      icon: 'mdi-chart-bar',
-      callback: () => this.updateData({
-        volumeEnable: !this.getVolumeEnable()
-      }),      
-      enable: this.volumeEnable,
-    },     
-  ]
-
-  updateData(payload) {
-    Object.entries(payload).forEach(state => {
-      this[state[0]] = state[1]
-    })         
-  }
 
   allowedDates(arg: string) {
     const current = new Date(arg).getTime()
@@ -195,8 +151,14 @@ export default class Stock extends Vue {
     this.getStockGraphDefault(code)  
     this.getStockGraphAll(code)    
     this.picked = this.Picked
-  }
-  
+  }  
 }
 
+
 </script>
+
+<style scoped>
+.chip-active {  
+  background-color: #00BCD4 !important;
+}
+</style>

@@ -24,8 +24,7 @@ const zoomScale = 1
 export default class StockBigChart extends Vue {
 
   // datas
-  chart!: Chart
-  tempCount = 20
+  chart!: Chart  
   chartOptions: Chart.ChartOptions = {}
   yLabel: string
 
@@ -265,8 +264,8 @@ export default class StockBigChart extends Vue {
       },
 
       animation: {
-        duration: 1500,
-        easing: 'easeOutQuart'        
+        duration: 0,
+        easing: 'easeOutQuart',
       },
 
     tooltips: {
@@ -336,7 +335,7 @@ export default class StockBigChart extends Vue {
           pointRadius: 0,
           pointHitRadius: 10,
           pointHoverRadius: 5
-        },        
+        },                
       ]
     }
   }
@@ -353,36 +352,35 @@ export default class StockBigChart extends Vue {
     if(!this.volumeFlag) { 
       this.getStockGraphVolume(this.$route.params.title).then(() => {        
         this.createChart(chartData)
-      })
-      
+      })      
     } 
-    
-  
+      
     // 거래량 옵션이 설정되어있으면 애니메이션 삭제, 설정되어있으면 거래량 데이터 푸시
     else {      
       if(this.volume && this.chartOptions.scales.yAxes.length !== 2) {        
-        const data = Object.values(this.stockGraphVolume)
+        const data = Object.values(this.stockGraphVolume).map(value => value * 100)
+
         this.chartOptions.scales.yAxes.push({
           id: 'volume',
           type: 'linear',
           position: 'right',
-          ticks: {
-            min: 0,
-            max: 100000000,
+          ticks: {            
             display: false
           },
           gridLines: {
             display: false
           }                  
-        })        
+        })     
+
         chartData.datasets.push({
-          label: '거래량ㅎ',
+          label: '거래량',
           type: 'bar',
           data,
           fill: true,
           yAxisID: 'volume',
           backgroundColor: transparentize(MAIN_COLOR, 0.8)
         })
+        
         this.createChart(chartData)        
       }
       else {
@@ -424,43 +422,47 @@ export default class StockBigChart extends Vue {
     if((labels[labels.indexOf(max)]) >= labels[labels.length - 1]) {
       chart.config.options.scales.xAxes[0].ticks.max = labels[labels.length - 1]
     }
-
-        
-    this.chart.options.animation = null
-    this.chart.update()
+                
+    this.chart.update()    
 
   }
 
   createChart(chartData: object) {                
             
-    if(this.chart) {
-      this.chart.destroy()      
-    }    
-        
+    if(this.chart) {      
+      this.chart.clear()     
+    }   
+                
     const canvas = document.getElementById('lineChart') as HTMLCanvasElement
     
-    if(!canvas) return
+    if(!canvas)  return
     const options = {
       data: chartData,
       options: this.chartOptions,
       plugins: [this.dottedLine, this.myCrossHair]
     }    
     
-    this.chart = new Chart(canvas, options)        
-    this.chart.canvas.addEventListener('mousewheel', e => {      
+    this.chart = new Chart(canvas, options)   
+        
+    this.chart.canvas.removeEventListener('mousewheel', e => {
+      this.myZoom(this.chart, e)
+    })
+
+    this.chart.canvas.addEventListener('mousewheel', e => {
       this.myZoom(this.chart, e)
     }, {
       passive: false,
     })    
-
+    
     this.chart.config.options.scales.xAxes[0].ticks.min = this.chart.config.data.labels[this.chart.config.data.labels.length - 1 - this.count]                
+    this.chart.options.animation = null
     const datas = this.getChartDatas()
     const min = minStockData(datas.slice(datas.length - 1 - this.count))
     const max = maxStockData(datas.slice(datas.length - 1 - this.count))
     this.chart.config.options.scales.yAxes[0].ticks.min = min - min * 0.2
     this.chart.config.options.scales.yAxes[0].ticks.max = max + max * 0.2
 
-    this.chart.update()
+    this.chart.update()    
   }
 
   mounted () {        

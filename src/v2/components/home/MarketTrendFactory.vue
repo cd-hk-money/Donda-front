@@ -127,12 +127,12 @@
                   color="cyan"
                   range
                 >
-                    <v-btn plain @click="menu = false" color="error" class="date-action">
-                      취소
-                    </v-btn>
-                    <v-btn plain @click="selectDate">
-                      결정
-                    </v-btn>
+                  <v-btn plain @click="menu = false" color="error" class="date-action">
+                    취소
+                  </v-btn>
+                  <v-btn plain @click="selectDate">
+                    결정
+                  </v-btn>
                 </v-date-picker>
               </v-card>
             </v-menu>

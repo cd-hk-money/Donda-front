@@ -5,10 +5,7 @@
     outlined    
     width="465"
   >
-    <v-card-title class="ml-5">
-      적정주가
-    </v-card-title>
-
+    <v-card-title class="ml-5"> 적정주가 </v-card-title>
     <v-card-subtitle class="ml-5">
       돈다지수
       <BtnBadge>
@@ -17,6 +14,7 @@
       </BtnBadge>
       에 근거한 적정주가와 평가 가치를 보여줍니다.
     </v-card-subtitle>
+    
     <v-row>
       <v-col cols="12" xl="7">
         <template v-if="!loaded && !graphLoaded && !evalLoaded && !dailyLoaded">

@@ -7,12 +7,8 @@
     outlined
     elevation="1"    
   >
-    <v-card-title>
-      뉴스
-    </v-card-title>      
-    <v-card-subtitle>
-       종목 관련 뉴스를 보여줍니다.
-    </v-card-subtitle>
+    <v-card-title> 뉴스 </v-card-title>      
+    <v-card-subtitle> 종목 관련 뉴스를 보여줍니다. </v-card-subtitle>
 
     <v-divider />
     
@@ -61,7 +57,6 @@ export default class StockNews extends Vue {
   getNews () {  
     this.getStockNews(this.$route.params.title)
   }
-    
 }
 </script>
 
