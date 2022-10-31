@@ -38,7 +38,7 @@ export default class StockBigChart extends Vue {
 
   // stores
   @StockStoreModule.State('stockGraphLength') count!: number
-  @StockStoreModule.State('stockGraphDefault') stockGraphDefault!: any
+@StockStoreModule.State('stockGraphDefault') stockGraphDefault!: any
   @StockStoreModule.State('stockGraphAll') stockGraphAll!: any
   @StockStoreModule.State('stockGraphVolumeFlag') volumeFlag!: boolean
   @StockStoreModule.State('stockGraphVolume') stockGraphVolume!: boolean

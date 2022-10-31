@@ -66,6 +66,7 @@
         :gradient="gradientEnable"
         :volume="volumeEnable"
       />        
+      <!-- <StockChartD3 /> -->
     </v-card-text>  
   </v-card>
 </template>
@@ -75,12 +76,14 @@ import { Component, Vue } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 import { IStockModel } from '@/models/stock'
 import StockBigChart from '@/v2/components/detail/StockBigChart.vue'
+import StockChartD3 from '@/v2/components/detail/stock/StockChartD3.vue'
 
 const StockStoreModule = namespace('StockStore')
 
 @Component({
   components: {
-    StockBigChart
+    StockBigChart,
+    StockChartD3
   }
 })
 export default class Stock extends Vue {
