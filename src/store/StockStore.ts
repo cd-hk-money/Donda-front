@@ -274,6 +274,10 @@ export default class StockStore extends VuexModule {
   @Action
   public async getStockGraphVolume(name: string): Promise<void> {
     try {      
+
+      this.context.commit('updateState', {
+        stockGraphVolumeLoaded: true
+      })
       const res = await axios.get(`/stock/${name}/years-volume`, HEADER)
       
       this.context.commit('updateState', {

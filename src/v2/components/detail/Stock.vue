@@ -60,13 +60,14 @@
       </v-menu>
     </v-card>
     <v-divider />
-    <v-card-text v-if="!loaded">
+    <v-card-text v-if="!loaded && !volumeLoaded">
       <stock-big-chart   
         :height="140"        
         :gradient="gradientEnable"
         :volume="volumeEnable"
       />        
       <!-- <StockChartD3 /> -->
+      <!-- <StockChartD3LineBar /> -->
     </v-card-text>  
   </v-card>
 </template>
@@ -77,13 +78,15 @@ import { namespace } from 'vuex-class'
 import { IStockModel } from '@/models/stock'
 import StockBigChart from '@/v2/components/detail/StockBigChart.vue'
 import StockChartD3 from '@/v2/components/detail/stock/StockChartD3.vue'
+import StockChartD3LineBar from '@/v2/components/detail/stock/StockChartD3LineBar.vue'
 
 const StockStoreModule = namespace('StockStore')
 
 @Component({
   components: {
     StockBigChart,
-    StockChartD3
+    StockChartD3,
+    StockChartD3LineBar
   }
 })
 export default class Stock extends Vue {
@@ -103,9 +106,11 @@ export default class Stock extends Vue {
   @StockStoreModule.State('stock') stock!: IStockModel
   @StockStoreModule.State('stockGraphDefault') stockGraphDefault!: any
   @StockStoreModule.State('stockGraphAllLoaded') loaded!: boolean
+  @StockStoreModule.State('stockGraphVolumeLoaded') volumeLoaded!: boolean
   @StockStoreModule.State('stockGraphAllFlag') flag!: boolean  
   @StockStoreModule.Action('getStockGraphAll') getStockGraphAll!: (name: string) => Promise<void>
   @StockStoreModule.Action('getStockGraphDefault') getStockGraphDefault!: (name: string) => Promise<void>
+  @StockStoreModule.Action('getStockGraphVolume') getStockGraphVolume!: (name: string) => Promise<void>
     
   get lastDate () {
     const labels = Object.keys(this.stockGraphDefault)
@@ -149,10 +154,11 @@ export default class Stock extends Vue {
     this.rangePicked = this.picked
   }
 
-  mounted () {    
+  async mounted () {    
     const code = this.$route.params.title    
-    this.getStockGraphDefault(code)  
-    this.getStockGraphAll(code)    
+    await this.getStockGraphDefault(code)  
+    await this.getStockGraphAll(code)    
+    await this.getStockGraphVolume(code)
     this.picked = this.Picked
   }  
 }

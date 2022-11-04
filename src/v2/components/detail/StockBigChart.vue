@@ -38,11 +38,10 @@ export default class StockBigChart extends Vue {
 
   // stores
   @StockStoreModule.State('stockGraphLength') count!: number
-@StockStoreModule.State('stockGraphDefault') stockGraphDefault!: any
+  @StockStoreModule.State('stockGraphDefault') stockGraphDefault!: any
   @StockStoreModule.State('stockGraphAll') stockGraphAll!: any
   @StockStoreModule.State('stockGraphVolumeFlag') volumeFlag!: boolean
-  @StockStoreModule.State('stockGraphVolume') stockGraphVolume!: boolean
-  @StockStoreModule.Action('getStockGraphVolume') getStockGraphVolume!: (name: string) => Promise<void>
+  @StockStoreModule.State('stockGraphVolume') stockGraphVolume!: boolean  
   @StockStoreModule.Mutation('updateState') updateCount!: (payload: IUpdateStateModel) => void
 
 
@@ -317,7 +316,7 @@ export default class StockBigChart extends Vue {
     }
   }
     
-  createChartData(): any {    
+  createChartData(): Chart.ChartData {    
     const labels = this.getChartLabels()
     const data = this.getChartDatas()
     return {      
@@ -331,7 +330,7 @@ export default class StockBigChart extends Vue {
           backgroundColor: transparentize(MAIN_COLOR, 1),
           borderWidth: 3,
           pointStyle: 'rectRounded',          
-          tension: .4,         
+          lineTension: .4,         
           pointRadius: 0,
           pointHitRadius: 10,
           pointHoverRadius: 5
@@ -340,53 +339,73 @@ export default class StockBigChart extends Vue {
     }
   }
 
+  createCloseData() {
+    return {
+      type: 'line',
+          data: this.getChartDatas(),
+          fill: this.gradient,
+          borderColor: MAIN_COLOR,
+          backgroundColor: transparentize(MAIN_COLOR, 1),
+          borderWidth: 3,
+          pointStyle: 'rectRounded',          
+          lineTension: .4,         
+          pointRadius: 0,
+          pointHitRadius: 10,
+          pointHoverRadius: 5
+    }
+  }
+
+  createVolueData() {
+    return {
+      label: '거래량',
+      type: 'bar',
+      data: Object.values(this.stockGraphVolume).map(value => value * 100),
+      fill: true,
+      yAxisID: 'volume',
+      backgroundColor: transparentize(MAIN_COLOR, 0.8)
+    }
+  }
+
+  get getChartData(): Chart.ChartData {
+    return this.createChartData()
+  }
+
   // 차트 렌더링 준비
   renderingChart() {
 
-    // 차트 옵션과 데이터 준비
-    const chartData = this.createChartData()
+    const labels = this.getChartLabels()
+    
+    console.log('re', this.volume)
     this.applyDefaultChartOptions()    
+                  
+    if(this.volume) {        
 
-        
-    // 거래량이 로딩되지 않았다면, 로딩
-    if(!this.volumeFlag) { 
-      this.getStockGraphVolume(this.$route.params.title).then(() => {        
-        this.createChart(chartData)
-      })      
-    } 
-      
-    // 거래량 옵션이 설정되어있으면 애니메이션 삭제, 설정되어있으면 거래량 데이터 푸시
-    else {      
-      if(this.volume && this.chartOptions.scales.yAxes.length !== 2) {        
-        const data = Object.values(this.stockGraphVolume).map(value => value * 100)
+      this.chartOptions.scales.yAxes.push({
+        id: 'volume',
+        type: 'linear',
+        position: 'right',
+        ticks: {            
+          display: false
+        },
+        gridLines: {
+          display: false
+        }                  
+      })         
 
-        this.chartOptions.scales.yAxes.push({
-          id: 'volume',
-          type: 'linear',
-          position: 'right',
-          ticks: {            
-            display: false
-          },
-          gridLines: {
-            display: false
-          }                  
-        })     
-
-        chartData.datasets.push({
-          label: '거래량',
-          type: 'bar',
-          data,
-          fill: true,
-          yAxisID: 'volume',
-          backgroundColor: transparentize(MAIN_COLOR, 0.8)
-        })
-        
-        this.createChart(chartData)        
+      const chartData = {
+        labels,
+        datasets: [this.createCloseData(), this.createVolueData()]
       }
-      else {
-        this.createChart(chartData)
+
+      this.createChart(chartData)
+    } else {
+      const chartData = {
+        labels,
+        datasets: [this.createCloseData()]
       }
+      this.createChart(chartData)
     }
+    
   }
 
   // 마우스 휠에 대응하는 zoom 이벤트 콜백
@@ -427,6 +446,10 @@ export default class StockBigChart extends Vue {
 
   }
 
+  event (e) {
+    this.myZoom(this.chart, e)
+  }
+
   createChart(chartData: object) {                
             
     if(this.chart) {      
@@ -434,25 +457,18 @@ export default class StockBigChart extends Vue {
     }   
                 
     const canvas = document.getElementById('lineChart') as HTMLCanvasElement
-    
-    if(!canvas)  return
+        
     const options = {
       data: chartData,
       options: this.chartOptions,
       plugins: [this.dottedLine, this.myCrossHair]
     }    
-    
+
     this.chart = new Chart(canvas, options)   
         
-    this.chart.canvas.removeEventListener('mousewheel', e => {
-      this.myZoom(this.chart, e)
-    })
-
-    this.chart.canvas.addEventListener('mousewheel', e => {
-      this.myZoom(this.chart, e)
-    }, {
-      passive: false,
-    })    
+    this.chart.canvas.removeEventListener('mousewheel', this.event)
+    console.log(this.chart.canvas)
+    this.chart.canvas.addEventListener('mousewheel', this.event, {passive: false})    
     
     this.chart.config.options.scales.xAxes[0].ticks.min = this.chart.config.data.labels[this.chart.config.data.labels.length - 1 - this.count]                
     this.chart.options.animation = null
