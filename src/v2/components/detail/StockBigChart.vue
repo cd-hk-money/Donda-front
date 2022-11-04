@@ -467,7 +467,6 @@ export default class StockBigChart extends Vue {
     this.chart = new Chart(canvas, options)   
         
     this.chart.canvas.removeEventListener('mousewheel', this.event)
-    console.log(this.chart.canvas)
     this.chart.canvas.addEventListener('mousewheel', this.event, {passive: false})    
     
     this.chart.config.options.scales.xAxes[0].ticks.min = this.chart.config.data.labels[this.chart.config.data.labels.length - 1 - this.count]                
