@@ -41,20 +41,8 @@ export default class StockBigChart extends Vue {
   @StockStoreModule.State('stockGraphDefault') stockGraphDefault!: any
   @StockStoreModule.State('stockGraphAll') stockGraphAll!: any
   @StockStoreModule.State('stockGraphVolumeFlag') volumeFlag!: boolean
-  @StockStoreModule.State('stockGraphVolume') stockGraphVolume!: boolean  
-  @StockStoreModule.Mutation('updateState') updateCount!: (payload: IUpdateStateModel) => void
+  @StockStoreModule.State('stockGraphVolume') stockGraphVolume!: boolean    
 
-
-  // watches
-  @Watch('count')
-  watchCount() {
-    this.renderingChart()
-  }
-
-  @Watch('gradient')
-  watchGradient() {
-    this.renderingChart()
-  }
 
   @Watch('volume')
   watchVolume() {
@@ -359,10 +347,11 @@ export default class StockBigChart extends Vue {
     return {
       label: '거래량',
       type: 'bar',
-      data: Object.values(this.stockGraphVolume).map(value => value * 100),
+      data: Object.values(this.stockGraphVolume),
       fill: true,
       yAxisID: 'volume',
-      backgroundColor: transparentize(MAIN_COLOR, 0.8)
+      backgroundColor: transparentize(MAIN_COLOR, 0.8),            
+      minBarLength: 5,
     }
   }
 
@@ -375,7 +364,6 @@ export default class StockBigChart extends Vue {
 
     const labels = this.getChartLabels()
     
-    console.log('re', this.volume)
     this.applyDefaultChartOptions()    
                   
     if(this.volume) {        
@@ -385,7 +373,7 @@ export default class StockBigChart extends Vue {
         type: 'linear',
         position: 'right',
         ticks: {            
-          display: false
+          display: true
         },
         gridLines: {
           display: false
