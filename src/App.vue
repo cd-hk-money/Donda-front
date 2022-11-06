@@ -7,6 +7,7 @@
       </transition>  
       <SnackBar />
     </v-main>
+    <Footer v-if="mobile" />
   </v-app>
 </template>
 
@@ -19,6 +20,7 @@
   import MenuBar from '@/v2/pages/MenuBar.vue'
   import NavBar from '@/v2/pages/NavBar.vue'
   import SnackBar from '@/v2/pages/SnackBar.vue'
+  import Footer from '@/v2/pages/Footer.vue'
 
   const StockStoreModule = namespace('StockStore')
   const MarketStoreModule = namespace('MarketStore')
@@ -28,7 +30,8 @@
       SideBar,
       MenuBar,
       NavBar,
-      SnackBar
+      SnackBar,
+      Footer
     }
   })
   export default class App extends Vue {
@@ -37,6 +40,10 @@
     @MarketStoreModule.Action('getSearchTable') readonly getSearchTable!: () => Promise<void>    
     @StockStoreModule.Action('getDailySimpleRanks') readonly getDailySimpleRanks!: () => Promise<void>
     @StockStoreModule.State('dailySimpleRanksloaded') rankLoaded!: boolean
+
+    get mobile () {
+      return this.$vuetify.breakpoint.name === 'xs'
+    }
 
     async created () {
       await this.getDailySimpleRanks()  
