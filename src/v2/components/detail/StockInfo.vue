@@ -2,8 +2,7 @@
   <v-card 
     :class="['ml-5 mr-5', mobile ? 'mt-5 mr-15' : 'mt-5']"    
     height="240"
-    width="465"
-    outlined   
+    width="465"    
     elevation="0"    
   >    
     <template v-if="!loaded">
@@ -96,8 +95,10 @@
         </v-list-item-avatar>              
   
       </v-list-item>
+
+      <v-divider />
   
-      <v-sheet elevation="0" outlined height="120">                
+      <v-sheet elevation="0" height="120">                
         <v-card-title class="text-h5 font-weight-bold ml-5">
           <span> {{ stock.close.toLocaleString()}} ₩ </span>
         </v-card-title>

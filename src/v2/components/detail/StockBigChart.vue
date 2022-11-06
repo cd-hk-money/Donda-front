@@ -9,7 +9,6 @@ import { transparentize,  meanStockData, maxStockData, minStockData} from '@/mix
 
 import Chart from 'chart.js'
 import { namespace } from 'vuex-class'
-import { IUpdateStateModel } from '@/models/payload'
 
 const { reactiveProp } = mixins
 const StockStoreModule = namespace('StockStore')
@@ -29,14 +28,23 @@ export default class StockBigChart extends Vue {
   yLabel: string
 
   // props
-  @Prop({default: false}) fill!: boolean | undefined
-  @Prop({default: 300}) height!: number | undefined    
+  @Prop({default: false}) fill!: boolean | undefined  
   @Prop() chartData!: never
   @Prop({default: true}) gradient!: boolean | undefined
   @Prop({default: false}) volume!: boolean | undefined
 
+  get height () {
+    return this.$vuetify.breakpoint.name === 'xs' ? 230 : 140
+  }
 
-  // stores
+  get chartAttributes () {
+    const mobile = this.$vuetify.breakpoint.name === 'xs'
+    return {
+      height: mobile ? 400 : 140,
+      yAxesFontSize: 12
+    }
+  }
+
   @StockStoreModule.State('stockGraphLength') count!: number
   @StockStoreModule.State('stockGraphDefault') stockGraphDefault!: any
   @StockStoreModule.State('stockGraphAll') stockGraphAll!: any
@@ -265,8 +273,8 @@ export default class StockBigChart extends Vue {
         displayColors: false,
         callbacks: {
           label: (tooltipItem) => {
-            this.yLabel = tooltipItem.label            
-            return (tooltipItem.yLabel as string).toLocaleString() + ' ₩'
+            this.yLabel = tooltipItem.label
+            return (tooltipItem.yLabel as string).toLocaleString()                                    
           },        
         }
       },
@@ -459,6 +467,7 @@ export default class StockBigChart extends Vue {
     
     this.chart.config.options.scales.xAxes[0].ticks.min = this.chart.config.data.labels[this.chart.config.data.labels.length - 1 - this.count]                
     this.chart.options.animation = null
+
     const datas = this.getChartDatas()
     const min = minStockData(datas.slice(datas.length - 1 - this.count))
     const max = maxStockData(datas.slice(datas.length - 1 - this.count))

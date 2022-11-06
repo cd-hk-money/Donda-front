@@ -35,8 +35,10 @@
       </v-list-item-content>
     </v-list-item>
 
+    <v-divider />
+
     <v-sheet 
-      elevation="0"        
+      elevation="0"             
       height="104"
     >                
       <v-card-title class="text-h5 font-weight-bold ml-5">
@@ -59,7 +61,7 @@
 </template>
 
 <script lang="ts">
-import { IStockModel, StockRecommendModel } from '@/models/stock'
+import { IStockModel } from '@/models/stock'
 import { Component, Vue, Prop } from 'vue-property-decorator' 
 import { namespace } from 'vuex-class'
 

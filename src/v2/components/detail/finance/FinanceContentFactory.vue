@@ -2,7 +2,7 @@
   <v-sheet
     class="stock-indicator-detail-content"
     elevation="0"    
-    @click="expand = !expand"    
+    @click="expand = !expand"        
   >
     <v-card-title class="stock-indicator-detail-content-title d-flex align-end">
       <span class="text-h4"> {{ upper(indicatorType) }} </span>
@@ -22,15 +22,15 @@
       {{ typeKorean }}
     </v-card-subtitle>
 
-    <v-card-text class="d-flex align-center">
+    <v-card-text :class="mobile ? '' : 'd-flex align-center'">
       <stock-finance-bar-chart
         class="ml-5 mr-5"
         :chartData="chartData"
-        :height="100"
+        :height="mobile ? 170 : 100"
       />
             
       <div class="pl-3">        
-        <div>
+        <div class="ml-3">
           <slot name="description"></slot>
         </div>
         <div class="d-flex flex-wrap">

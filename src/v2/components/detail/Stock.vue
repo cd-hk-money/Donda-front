@@ -1,9 +1,5 @@
 <template>
-  <v-card             
-    height="787"
-    width="100%"
-    outlined
-  >
+  <v-card>
     <v-card-title> 주가 </v-card-title>
     <v-card-subtitle>
       <span>{{ stock.name }}의 주가 정보를 확인해보세요.</span>
@@ -32,6 +28,7 @@
             class="mr-2"            
             v-on="on"
             v-bind="attrs"
+            disabled
           >
             <v-icon left>mdi-calendar</v-icon>
             날짜 선택
@@ -59,16 +56,14 @@
         </v-card>
       </v-menu>
     </v-card>
-    <v-divider />
-    <v-card-text v-if="!loaded && !volumeLoaded">
+    <div v-if="!loaded && !volumeLoaded">
       <stock-big-chart   
-        :height="140"        
         :gradient="gradientEnable"
         :volume="volumeEnable"
       />        
       <!-- <StockChartD3 /> -->
       <!-- <StockChartD3LineBar /> -->
-    </v-card-text>  
+    </div>  
   </v-card>
 </template>
 
@@ -98,11 +93,7 @@ export default class Stock extends Vue {
   menu = false
   picked = []
   rangePicked = []
-
-  get width (): string | number { 
-    return this.$vuetify.breakpoint.name === 'xs' ? 465 : '97%'
-  }
-
+  
   @StockStoreModule.State('stock') stock!: IStockModel
   @StockStoreModule.State('stockGraphDefault') stockGraphDefault!: any
   @StockStoreModule.State('stockGraphAllLoaded') loaded!: boolean
@@ -115,6 +106,14 @@ export default class Stock extends Vue {
   get lastDate () {
     const labels = Object.keys(this.stockGraphDefault)
     return labels[labels.length - 1]
+  }
+
+  get mobile () {
+    return this.$vuetify.breakpoint.name === 'xs'
+  }
+
+  get height () {
+    return this.mobile ? 500 : 787
   }
   
   get Picked () {

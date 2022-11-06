@@ -2,11 +2,10 @@
   <v-card 
     :width="mobile ? '465' : '97%'"
     class="ml-5 mt-5 mr-5" 
-    outlined
   >
     <v-tabs
       v-show="!mobile"
-      v-model="drawer"        
+      v-model="drawer"
       fixed-tabs
     >
       <v-tabs-slider color="cyan"></v-tabs-slider>

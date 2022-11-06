@@ -1,12 +1,11 @@
 <template>
   <v-card 
     class="ml-5 mr-5 mt-7"
-    :height="cardHeight"
-    outlined    
+    :height="cardHeight"    
     width="465"
   >
-    <v-card-title class="ml-5"> 적정주가 </v-card-title>
-    <v-card-subtitle class="ml-5">
+    <v-card-title> 적정주가 </v-card-title>
+    <v-card-subtitle>
       돈다지수
       <BtnBadge>
         <div><strong class="text-h6 cyan--text font-weight-bold">돈다지수</strong></div>

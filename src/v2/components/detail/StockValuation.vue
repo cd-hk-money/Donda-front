@@ -2,7 +2,6 @@
   <v-card     
     class="overflow-y-auto stock-indicator-detail"
     height="787"
-    outlined
     elevation="0"                
     :width="isMobile ? 460 : '100%'"    
   >    

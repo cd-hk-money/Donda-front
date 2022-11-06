@@ -1,9 +1,8 @@
 <template>
   <v-card 
     class="stock-indicator-detail overflow-y-auto"    
-    outlined
     width="100%"
-    height="787"
+    :height="mobile ? '100%' : 787"    
   >
     <v-card-title>
       재무제표
@@ -34,9 +33,7 @@
         :chartData="statement['asset']"
       >
         <template v-slot:description>                  
-          <v-card class="ml-3 mr-3" elevation="0">
-            현금, 매출채권, 제품, 공장 등 기업이 보유하고 있는 모든 자산입니다.
-          </v-card>
+          현금, 매출채권, 제품, 공장 등 기업이 보유하고 있는 모든 자산입니다.
         </template>
         <template v-slot:information>
           <FinanceInformationFactory color="error">

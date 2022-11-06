@@ -8,8 +8,8 @@
     <v-col cols="12" xl="9" lg="8">
       <v-card 
         :width="mobile ? '465' : '97%'"
+        :height="mobile ? '100%' : 'auto'"
         class="ml-5 mt-5 mr-5" 
-        outlined
       >
         <v-tabs
           v-show="!mobile"
@@ -21,11 +21,13 @@
           <v-tab
             v-for="item in tabItems"
             :key="item"
-            active-class="cyan--text"        
+            class="vTab"
+            active-class="cyan--text font-weight-bold vTab--active"        
           >
             {{ item }}
           </v-tab>
         </v-tabs>
+        <v-divider />
         <v-tabs-items v-model="drawer">
           <v-tab-item>
             <stock />
@@ -133,15 +135,19 @@ export default class DetailV2 extends Vue {
       callback: () => this.drawerChange(0)
     },
     {
-      title: '재무제표',
+      title: '적정주가',
       callback: () => this.drawerChange(1)
     },
     {
-      title: '유사종목 및 뉴스',
+      title: '보조지표',
+      callback: () => this.drawerChange(2)
+    },
+    {
+      title: '재무제표',
       callback: () => this.drawerChange(3)
     },
     {
-      title: '적정주가',
+      title: '유사종목 및 뉴스',
       callback: () => this.drawerChange(4)
     }
   ]
@@ -187,3 +193,13 @@ export default class DetailV2 extends Vue {
 
 }
 </script>
+
+<style>
+.vTab {
+  transition: font-size 0.1s;
+}
+
+.vTab--active {
+  font-size: 16px;
+}
+</style>

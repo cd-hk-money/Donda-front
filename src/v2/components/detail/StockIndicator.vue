@@ -2,10 +2,9 @@
   <v-card 
     class="ml-5 mt-5"
     height="290"
-    width="465"            
-    outlined
+    width="465"                
   >     
-    <v-card-title class="ml-5">
+    <v-card-title>
       보조 지표       
       <BtnBadge>
         <div><strong class="text-h6 cyan--text font-weight-bold">보조지표</strong></div>
@@ -23,7 +22,7 @@
       </BtnBadge>      
     </v-card-title>
 
-    <v-card-subtitle class="ml-5">
+    <v-card-subtitle>
       EPS, ROE, BPS 지수를 업종 평균과 비교하여 보여줍니다.
     </v-card-subtitle>
 
