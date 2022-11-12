@@ -11,6 +11,9 @@ import {
   IStockGraph
 } from './types'
 
+const getStockUrl = (code: string) => `/stock/${code}`
+
+
 export type ResponseType = IStock | IStockSimilar[] | IStockNews[] | IStockStatement | IStockEvaluationDaily | StockStatementAll | IStockGraph
 export type AsyncPayload<T extends ResponseType = any> = {
   state: string,
@@ -24,13 +27,14 @@ const HEADER: AxiosRequestConfig = {
   }  
 }
 
+
 const createStoreActionPayload = <T extends ResponseType>(state, callback, compute?): AsyncPayload<T> => ({
   state,
   asyncCallback: callback,
   compute: compute || ((response: AxiosResponse<T>) => response.data)
 })
 
-const createAxiosGetRequest = async <T extends ResponseType>(url: string) => await axios.get<T>(url, HEADER)
+const createAxiosGetRequest = <T extends ResponseType>(url: string) => async () => await axios.get<T>(url, HEADER)
 
 /*  응답 객체 파서들. 분리 예정  */
 const statementParser = (response: AxiosResponse<IStockStatement>) => {
@@ -42,12 +46,9 @@ const statementParser = (response: AxiosResponse<IStockStatement>) => {
 }
 
 
-/*  API 요청 비동기 함수들  */
-// const getStockAsync = async (code: string) => await axios.get<IStock>(`/stock/${code}`, HEADER)
-const getStockAsync = (url: string) => createAxiosGetRequest<IStock>(url)
-
-const getStocksAsync = async (codes: string[]) => await axios.all(codes.map(code => axios.get<IStock>(`/stock/${code}`), HEADER)) 
-const getStockGraphDefaultAsync = async (code: string) => await axios.get<IStockGraph>(`/stock/${code}/price`, HEADER)
+/*  API 요청 비동기 콜백 함수들  */
+// const getStockAsync = createAxiosGetRequest(url)
+const getStockGraphDefaultAsync = (url: string) => createAxiosGetRequest<IStockGraph>(url)
 const getStockGraphAllAsync = async (code: string) => await axios.get<IStockGraph>(`/stock/${code}/years-price`, HEADER)
 const getStockEvaluationAsync = async (code: string) => await axios.get<unknown>(`/stock/${code}/evaluation`, HEADER)
 const getStockEvaluationDailyAsync = async (code: string) => await axios.get<IStockEvaluationDaily>(`/stock/${code}/evaluation/daily`, HEADER)
@@ -56,20 +57,22 @@ const getStockNewsAsync = async (code: string) => await axios.get<IStockNews[]>(
 const getStockStatementAsync = async (code: string) => await axios.get<IStockStatement>(`/stock/${code}/statement`, HEADER)
 const getStockStatementAllAsync = async ({ code, statementType }: {code: string, statementType: string}) => await axios.get<StockStatementAll>(`/stock/${code}/statement/${statementType}`, HEADER)
 
+// 혼자만 axios.all써서 난감하네..
+const getStocksAsync = (codes: string[]) => async () => await axios.all(codes.map(code => axios.get<IStock>(`/stock/${code}`), HEADER)) 
+
 
 
 /*  스토어 요청 디스패치 PAYLOAD 객체들  */
-export const getStock = (code: string) => 
-  createStoreActionPayload("stock", () => getStockAsync(`/stock/${code}`))  
+export const getStock = (code: string) => createStoreActionPayload("stock", createAxiosGetRequest(getStockUrl(code)))    
 
 export const getStocks = (codes: string[]) => 
-  createStoreActionPayload<IStock>('recommendStocks', () => getStocksAsync(codes), (reses: AxiosResponse<IStock>[]) => reses.map(response => response.data))
+  createStoreActionPayload<IStock>('recommendStocks', getStocksAsync(codes), (reses: AxiosResponse[]) => reses.map(response => response.data))
   
 export const getStockGraphDefault = (code: string) => 
-  createStoreActionPayload('stockGraphDefault', () => getStockGraphDefaultAsync(code), (response: AxiosResponse<IStockGraph>) => response.data.origin)
+  createStoreActionPayload('stockGraphDefault', getStockGraphDefaultAsync(`/stock/${code}/price`), (response: AxiosResponse) => response.data.origin)
 
 export const getStockGraphAll = (code: string) => 
-  createStoreActionPayload('stockGraphAll', () => getStockGraphAllAsync(code), (response: AxiosResponse<IStockGraph>) => response.data.origin)
+  createStoreActionPayload('stockGraphAll', () => getStockGraphAllAsync(code), (response: AxiosResponse) => response.data.origin)
 
 export const getStockEvaluation = (code: string) =>
   createStoreActionPayload('stockEvaluation', () => getStockEvaluationAsync(code))
