@@ -2,21 +2,19 @@
   <v-footer
     dark
     padless
+    class="d-flex justify-center"
   >
     <v-card
-      class="flex"
       flat
       tile
+      class="white--text text-center flex"
     >
-      <v-card-title>
-        <strong class="subheading">Get connected with us on social networks!</strong>
-
-        <v-spacer></v-spacer>
+      <v-card-title class="d-flex justify-center"> 
+        <v-icon>
+          mdi-github
+        </v-icon>
       </v-card-title>
-
-      <v-card-text class="py-2 white--text text-center">
-        {{ new Date().getFullYear() }} — <strong>Vuetify</strong>
-      </v-card-text>
+      
     </v-card>
   </v-footer>
 </template>

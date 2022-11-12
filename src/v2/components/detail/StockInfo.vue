@@ -132,6 +132,7 @@ import { namespace } from 'vuex-class'
 import { IUpdateStateModel } from '@/models/payload';
 import { IStockModel } from '@/models/stock'
 import { IInterestGroup, IInterestGroupItem } from '@/models/interest'
+import { AsyncPayload, getStock } from '@/api/market';
 
 const StockStoreModule = namespace('StockStore')
 const InterestStoreModule = namespace('InterestStore')
@@ -149,6 +150,8 @@ export default class StockInfo extends Vue {
   @StockStoreModule.State('stock') stock!: IStockModel
   @StockStoreModule.State('stockLoaded') loaded!: boolean
   @StockStoreModule.Action('getStock') getStock!: (name: string) => Promise<void>
+  @StockStoreModule.Action('getAPI')
+  public getAPI!: <T>(payload: AsyncPayload<T>) => void
 
   // InterestStore
   @InterestStoreModule.State('interestGroups') interestGroups!: IInterestGroup[]
@@ -179,7 +182,8 @@ export default class StockInfo extends Vue {
         
   async mounted () {          
     const code = this.$route.params.title
-    await this.getStock(code)    
+
+    this.getAPI(getStock(code))    
   }  
 }
 </script>

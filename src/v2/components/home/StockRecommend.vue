@@ -49,26 +49,28 @@ import { mobileHeight } from '@/mixins/tools'
 import { IStockModel, StockRecommendModel } from '@/models/stock'
 import { Component, Vue } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
+import { AsyncPayload, getStocks, Stock } from '@/api/market'
 
 import StockSimilarContent from '@/v2/components/detail/StockSimilarContents.vue'
 import StockRecommendContnet from '@/v2/components/home/StockRecommendContent.vue'
 import BtnBadge from '../vuetify/BtnBadge.vue'
 
+import StockMixin from '@/mixins/StoreMixin.vue'
+
 const MarketStoreModule = namespace('MarketStore')
 const StockStoreModule = namespace('StockStore')
 
-@Component({
+@Component({  
   components: {
     BtnBadge,
     StockSimilarContent,
     StockRecommendContnet
-  }
+  },
 })
-export default class StockRecommend extends Vue {
-          
+export default class StockRecommend extends StockMixin {
+            
   @MarketStoreModule.State('recommend') recommend!: StockRecommendModel[]
   @MarketStoreModule.State('recommedLoaded') loaded!: boolean
-  @MarketStoreModule.State('codeTitleMapping') codeTitleMapping!: any
   @MarketStoreModule.Getter('recommendArray') recommendArray!: any
   @MarketStoreModule.Action('getRecommend') readonly getRecommend!: () => Promise<any>
 
@@ -93,7 +95,8 @@ export default class StockRecommend extends Vue {
 
   async mounted () {    
     const recommendCodes = (await this.getRecommend()).map(stock => stock.code)
-    if(!this.recommendStocks.length) await this.getStocks(recommendCodes)
+    if(!this.recommendStocks.length) this.getAPI(getStocks(recommendCodes))
+    
   }
 }
 </script>

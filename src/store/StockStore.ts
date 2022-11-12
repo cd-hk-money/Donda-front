@@ -1,9 +1,12 @@
+import { getStockAsync, getStockGraphAsync, getStocksAsync, AsyncPayload } from './../api/market';
 import { Module, VuexModule, Action, Mutation } from "vuex-module-decorators";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { IMarketRank , IStockModel, ISimpleChartData, IStockEvaluationModel, IStockIndicatorSectorModel, IStockIndicatorDailyModel, INewsModel } from "@/models/stock";
 import { IUpdateStateModel } from "@/models/payload";
 
 import { convertChartData } from "@/mixins/tools";
+
+
 
 const HEADER = {
   headers: {
@@ -126,6 +129,17 @@ export default class StockStore extends VuexModule {
       this[state[0]] = state[1]
     })        
   }
+
+  @Mutation
+  public loading(state: string) {    
+    this[state + 'Loaded'] = true        
+  }
+
+  @Mutation
+  public success({ state, data }: {state: string, data: unknown}) {
+    this[state + 'Loaded'] = false
+    this[state] = data 
+  }
   
   // Actions
   // 비동기 로직을 실행합니다.
@@ -149,22 +163,17 @@ export default class StockStore extends VuexModule {
     }
   }  
 
+
+
   // 하나의 간단 종목 정보를 가져옵니다.
   @Action
-  public async getStock(name: string): Promise<void> {    
-    try {
-      this.context.commit('updateState', {
-        stockLoaded: true
-      })
+  public async getStock(code: string): Promise<void> {    
+    this.context.commit('loading', 'stock')
 
-      const res = await axios.get(`/stock/${name}`, HEADER)
+    try {            
+      const res = await getStockAsync(code)
+      this.context.commit('success', { state: 'stock', data: res.data })    
 
-      this.context.commit('updateState', {
-        stock: res.data,
-        stockLoaded: false
-      })
-    
-      return res.data
     } catch(e) {
       console.log(e)
     }
@@ -173,17 +182,13 @@ export default class StockStore extends VuexModule {
   // 여러개의 간단 종목 정보를 가져옵니다.
   @Action
   public async getStocks(codes: string[]): Promise<void> {    
-    try {
-      this.context.commit('updateState', {
-        recommendStocksLoaded: true
-      })
-      const reses = await axios.all(codes.map(code => axios.get(`/stock/${code}`)))
+    this.context.commit('loading', 'recommendStocks')
 
-      this.context.commit('updateState', {
-        recommendStocks: reses.map(res => res.data),
-        recommendStocksLoaded: false
-      })
-            
+    try {
+      const reses = await getStocksAsync(codes)
+      const data = reses.map(res => res.data)
+      this.context.commit('success', { state: 'recommendStocks', data })    
+                  
     } catch(e) {
       console.log(e)
     }
@@ -191,24 +196,36 @@ export default class StockStore extends VuexModule {
 
   // 종목 하나의 2주동안의 주가 정보를 가져옵니다.
   @Action
-  public async getStockGraphDefault(name: string): Promise<void> {
+  public async getStockGraphDefault(code: string): Promise<void> {
+    this.context.commit('loading', 'stockGraphDefault')
+
     try {
-      this.context.commit('updateState', {
-        stockGraphDefaultLoaded: true
-      })
+      const res = await getStockGraphAsync(code)
+      const data = res.data.origin      
+      this.context.commit('success', { state: 'stockGraphDefault', data })
 
-      const res = await axios.get(`/stock/${name}/price`, HEADER)      
-
-      this.context.commit('updateState', {
-        stockGraphDefault: res.data.origin,
-        stockGraphDefaultLoaded: false
-      })
     } catch(e) {
       console.log(e)
     }
   }
 
+  @Action
+  public async getAPI(payload: AsyncPayload) {
 
+    const { state, asyncCallback, computed } = payload
+    
+    this.context.commit('loading', state)    
+    try {
+      const res = await asyncCallback()      
+      const data = computed(res)
+
+      this.context.commit('success', { state, data })
+
+    } catch (e) {
+      console.log(e)
+    }
+  }
+  
   // 종목 하나의 5년동안의 종가 정보를 가져옵니다.
   @Action
   public async getStockGraphAll(name: string): Promise<void> {

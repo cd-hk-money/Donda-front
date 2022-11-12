@@ -1,4 +1,5 @@
 <script lang="ts">
+import { AsyncPayload } from '@/api/market';
 import { StockSimpleModel } from '@/models/stock';
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
@@ -14,6 +15,9 @@ export default class StoreMixin extends Vue {
   @MarketStore.State('codeTitleMapping') codeTitleMapping!: any
 
   @MarketStore.State('marketLoaded') marketLoaded!: boolean
+
+  @StockStore.Action('getAPI')
+  public getAPI!: (payload: AsyncPayload) => void
   
 }
 </script>

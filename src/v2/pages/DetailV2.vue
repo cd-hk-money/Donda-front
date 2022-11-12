@@ -5,7 +5,7 @@
       <stock-score @drawerChange="drawerChange"/>     
       <stock-indicator @drawerChange="drawerChange"/>    
     </v-col>    
-    <v-col cols="12" xl="9" lg="8">
+    <v-col cols="12" xl="9" lg="8" class="mb-10">
       <v-card 
         :width="mobile ? '465' : '97%'"
         :height="mobile ? '100%' : 'auto'"
@@ -106,6 +106,9 @@ import Stock from '@/v2/components/detail/Stock.vue'
 import StockValuation from '@/v2/components/detail/StockValuation.vue'
 import StockIndicatorDetail from '@/v2/components/detail/StockIndicatorDetail.vue'
 
+import { AxiosResponse } from 'axios'
+import { getStockAsync, getStock } from '@/api/market'
+
 const StockStoreModule = namespace('StockStore')
 
 @Component({
@@ -152,6 +155,9 @@ export default class DetailV2 extends Vue {
     }
   ]
 
+  @StockStoreModule.Action('getAPI')
+  public getAPI!: ({ asyncCallback, state} : {asyncCallback: (code?: string) => Promise<AxiosResponse<any, any>>, state: any}) => void
+
   @StockStoreModule.Action('getStock') getStock!: (name: string) => Promise<void>
   @StockStoreModule.Action('getStockGraphAll') getStockGraphAll!: (name: string) => Promise<void>
   @StockStoreModule.Action('getStockGraphDefault') getStockGraphDefault!: (name: string) => Promise<void>
@@ -161,37 +167,28 @@ export default class DetailV2 extends Vue {
     return this.$vuetify.breakpoint.name === 'xs'
   }
 
-  stockLoad(title: string) {    
-    this.drawer = 0        
-  }
-
-  drawerChange (val: any) {        
-    // document.getElementById('stock-drawer').scrollIntoView()
+  drawerChange (val: number | null) {        
     this.drawer = val
   }
 
-  forceRender() {
-    this.componentKey += 1
-  }
+
   @Watch('$route')
   watchRoute() {        
     this.drawer = 0
     const code = this.$route.params.title
-    this.getStock(code)   
     this.getStockGraphAll(code)
     this.getStockGraphDefault(code)
     this.getSimilarContent(code)
-  }  
 
-  created () {        
-    this.stockLoad(this.$route.params.title)
-  }
+    this.getAPI(getStock(code))
+  }  
 
   mounted () {
     this.drawer = 0
   }
 
 }
+
 </script>
 
 <style>

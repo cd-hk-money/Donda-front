@@ -574,8 +574,6 @@ strong {
   opacity: 1;  
 } 
 
-
-
 .stock-indicator-detail-content:hover .stock-indicator-detail-content-title,
 .stock-indicator-detail-content:hover .strong-white strong,
 .stock-indicator-detail-content:hover .strong-black strong

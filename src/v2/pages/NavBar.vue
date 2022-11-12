@@ -56,11 +56,11 @@
         :search-input.sync="search"
         color="black"          
         autofocus
-        rounded
         hide-details
         hide-no-data
         solo-inverted
         cache-items   
+        placeholder="종목명을 입력하세요."
         validate-on-blur
         item-text="name"
         item-value="id"
@@ -75,8 +75,11 @@
           </v-list-item-content>
         </template>
       </v-autocomplete>    
-            
-      <div class="d-flex navbar__menu__btn" @click="isSearch = !isSearch">
+                  
+      <div 
+        v-if="!isSearch"
+        class="d-flex navbar__menu__btn" @click="isSearch = !isSearch"
+      >
         <v-btn icon>
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
@@ -85,7 +88,10 @@
         </div>    
       </div>
 
-      <div class="d-flex navbar__menu__btn" @click="pushLink('/rank')">
+      <div 
+        v-if="!isSearch"
+        class="d-flex navbar__menu__btn" @click="pushLink('/rank')"
+      >
         <v-btn icon>
           <v-icon>mdi-format-list-numbered</v-icon>
         </v-btn>
@@ -97,6 +103,7 @@
       <v-divider vertical inset class="mr-1" />
         
       <v-menu
+        v-if="!isSearch"
         right bottom        
         :position-y="100"            
         offset-y
@@ -162,6 +169,7 @@
       </v-menu>
 
       <v-menu
+        v-if="!isSearch"
         right bottom offset-y
         :close-on-content-click="false"
       >
@@ -264,6 +272,7 @@
       </v-menu>
 
       <v-menu 
+        v-if="!isSearch"
         left bottom offset-y        
         :close-on-content-click="false"
       >

@@ -1,9 +1,9 @@
 <template>
   <v-card     
     class="overflow-y-auto stock-indicator-detail"
-    height="787"
+    :height="mobile ? '100%' : 787"
     elevation="0"                
-    :width="isMobile ? 460 : '100%'"    
+    :width="mobile ? 460 : '100%'"    
   >    
     <v-card-title>
       적정 주가
@@ -16,7 +16,7 @@
     
     <div v-if="!loaded && !evalLoaded && !allLoaded && !dailyLoaded">
       <v-sheet class="stock-indicator-detail-content">
-        <stock-valuation-chart :height="100"/>
+        <stock-valuation-chart :height="mobile ? 300 : 100"/>
       </v-sheet>  
       
       <v-divider />
@@ -54,7 +54,7 @@
               label="돈다 지수"
               :dates="dates"
               :chartData="chartDatas.donda"
-              :height="100"
+              :height="mobile? 250 : 100"
             />
   
             <v-divider />
@@ -407,7 +407,7 @@ export default class StockValuation extends Vue {
     }
   }
   
-  get isMobile () {
+  get mobile () {
     return this.$vuetify.breakpoint.name === 'xs'
   }
 

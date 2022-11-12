@@ -29,7 +29,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
   }
 </script>
 
-<style>
+<style scoped>
 .btn-badge-btn {
   max-width: 12px; 
   max-height: 12px;
