@@ -1,6 +1,6 @@
-import { getStockAsync, getStocksAsync, AsyncPayload } from '../api/stocks';
+import { AsyncPayload } from '../api/stocks';
 import { Module, VuexModule, Action, Mutation } from "vuex-module-decorators";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import { IMarketRank , IStockModel, ISimpleChartData, IStockEvaluationModel, IStockIndicatorSectorModel, IStockIndicatorDailyModel, INewsModel } from "@/models/stock";
 import { IUpdateStateModel } from "@/models/payload";
 
@@ -46,10 +46,8 @@ export default class StockStore extends VuexModule {
   }
 
   // 추천 종목
-  public recommendStocksLoaded = false
-
-  // 추천 종목들
   public recommendStocks: IStockModel[] = []
+  public recommendStocksLoaded = false  
 
 
   // 주가 그래프 인덱스 저장
@@ -157,7 +155,6 @@ export default class StockStore extends VuexModule {
 
     } catch (e) {
       this.context.commit('error', state)
-      console.log('에러', state)
     }
   }
 

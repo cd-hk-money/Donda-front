@@ -132,13 +132,14 @@ import { namespace } from 'vuex-class'
 import { IUpdateStateModel } from '@/models/payload';
 import { IStockModel } from '@/models/stock'
 import { IInterestGroup, IInterestGroupItem } from '@/models/interest'
-import { AsyncPayload, getStock } from '@/api/stocks'
+import { getStock } from '@/api/stocks'
+import StoreMixin from '@/mixins/StoreMixin.vue';
 
 const StockStoreModule = namespace('StockStore')
 const InterestStoreModule = namespace('InterestStore')
 
 @Component
-export default class StockInfo extends Vue {
+export default class StockInfo extends StoreMixin {
 
   dialog = false
 
@@ -150,8 +151,7 @@ export default class StockInfo extends Vue {
   @StockStoreModule.State('stock') stock!: IStockModel
   @StockStoreModule.State('stockLoaded') loaded!: boolean
   @StockStoreModule.Action('getStock') getStock!: (name: string) => Promise<void>
-  @StockStoreModule.Action('getAPI')
-  public getAPI!: <T>(payload: AsyncPayload<T>) => void
+  
 
   // InterestStore
   @InterestStoreModule.State('interestGroups') interestGroups!: IInterestGroup[]
