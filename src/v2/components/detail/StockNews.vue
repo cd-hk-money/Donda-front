@@ -25,26 +25,25 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch} from 'vue-property-decorator'
+import { getStockNews, IStockNews } from '@/api/market'
+import StoreMixin from '@/mixins/StoreMixin.vue'
+import { Component, Watch} from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 import NewsContentsFactory from './factories/NewsContentsFactory.vue'
 
 const StockStoreModule = namespace('StockStore')
-const MarketStoreModule = namespace('MarketStore')
 
 @Component({
   components: {
     NewsContentsFactory
   }
 })
-export default class StockNews extends Vue {
+export default class StockNews extends StoreMixin {
 
   @StockStoreModule.State('newsLoaded') loaded!: boolean
-  @StockStoreModule.State('news') newses: any
-  @StockStoreModule.Action('getStockNews') getStockNews!: (name: string ) => Promise<void>
-
-  @MarketStoreModule.State('codeTitleMapping') codeTitleMapping!: { [title: string]: string }
-
+  @StockStoreModule.State('news') newses: IStockNews[]
+  
+  
   @Watch('$route')
   watchRoute() {            
     this.getNews()
@@ -55,14 +54,14 @@ export default class StockNews extends Vue {
   }
 
   getNews () {  
-    this.getStockNews(this.$route.params.title)
+    this.getAPI(getStockNews(this.$route.params.title))
   }
 }
 </script>
 
 <style style="scss">
 .stock-news {
-  transition: all .3s ease;  
+  transition: all .3s ease;    
 }
 
 .stock-news:hover {

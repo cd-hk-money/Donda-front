@@ -83,7 +83,6 @@ export default class StockSimilar extends Vue {
 
   async created () {
     const code = this.$route.params.title
-    await this.getRecommend()
     await this.getSimilarContent(code)    
     console.log(this.similarContents)
   }

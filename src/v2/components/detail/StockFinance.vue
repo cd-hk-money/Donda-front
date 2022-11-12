@@ -304,6 +304,8 @@ import StockFinanceLineChart from '@/v2/components/detail/StockFinanceLineChart.
 import FinanceContentFactory from '@/v2/components/detail/finance/FinanceContentFactory.vue'
 import FinanceInformationFactory from '@/v2/components/detail/finance/InformationFactory.vue'
 import { ISimpleChartData, IStockModel } from '@/models/stock'
+import StoreMixin from '@/mixins/StoreMixin.vue'
+import { getStockStatement } from '@/api/market'
 
 const StockStoreModule = namespace('StockStore')
 const MarketStoreModule = namespace('MarketStore')
@@ -317,7 +319,7 @@ const MarketStoreModule = namespace('MarketStore')
     FinanceInformationFactory
   }
 })
-export default class StockFinance extends Vue {
+export default class StockFinance extends StoreMixin {
 
   types = [
     '자산총계',              // asset
@@ -352,19 +354,18 @@ export default class StockFinance extends Vue {
   get title () {
     return this.codeTitleMapping[this.$route.params.title]
   }
+
       
   @StockStoreModule.State('stock') stock!: IStockModel
   @StockStoreModule.State('statement') statement!: ISimpleChartData
-  @StockStoreModule.State('statementTypes') statementTypes!: string[]
-  @StockStoreModule.State('statementLoaded') loaded!: boolean  
-  @StockStoreModule.State('statementAllLoaded') statementAllLoaded!: boolean  
-  @StockStoreModule.Action('getStockStatement') readonly getStockStatement!: (name: string) => Promise<void>
-  
-  @MarketStoreModule.State('codeTitleMapping') codeTitleMapping!: { [title: string]: string }
-
-  async mounted() {        
-    const code = this.$route.params.title
-    await this.getStockStatement(code)    
+  statementTypes = ["asset", "equity", "equity_non", "liability", "current_asset", "profit", "profit_non",
+    "revenue", "cash", "ebitda","gross_margin"
+  ]
+  @StockStoreModule.State('statementLoaded') loaded!: boolean    
+      
+   mounted() {           
+     
+    this.getAPI(getStockStatement(this.$route.params.title))
   }  
 }
 

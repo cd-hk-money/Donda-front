@@ -344,37 +344,34 @@
 </template>
 
 <script lang="ts">
+import { getStock } from '@/api/market'
+import StoreMixin from '@/mixins/StoreMixin.vue'
 import { IUserAlram, IUserInterestGroupItem } from '@/models/interest'
 import { IUpdateStateModel } from '@/models/payload'
 import { IStockModel, StockSimpleModel } from '@/models/stock'
 import { Component, Vue, Watch } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 
-const MarketStoreModule = namespace('MarketStore')
 const StockStoreModule = namespace('StockStore')
 const InterestStoreModule = namespace('InterestStore')
 
 @Component({
   
 })
-export default class NavBar extends Vue {
+export default class NavBar extends StoreMixin {
 
   alramTypeObj = {
     'close': '종가 변동',
     'volume': '거래량 변동'
   }
-
-  @MarketStoreModule.State('codeTitleMapping') codeTitleMapping!: any
-  @MarketStoreModule.State('searchTable') searchTable!: StockSimpleModel[]
-  
+    
   @InterestStoreModule.State('userInterests') userInterests!: IUserInterestGroupItem[]
   @InterestStoreModule.Mutation('addGroup') readonly addGroup!: (group: any) => void
   @InterestStoreModule.Mutation('updateState') readonly updateState!: (payload: IUpdateStateModel) => void
   @InterestStoreModule.Mutation('setUserInterestAlarm') setUserInterestAlarm!: (code: string) => void
   @InterestStoreModule.Mutation('removeInterestGroupItem') readonly removeInterestGroupItem!: ({groupTitle, itemTitle}: {groupTitle: string, itemTitle: string}) => void  
   @InterestStoreModule.Getter('computedInterestStore') computedInterestStore!: any
-  
-  @StockStoreModule.Action('getStock') getStock!: (name: string) => Promise<void>
+    
   @StockStoreModule.Action('getDailySimpleRanks') getDailySimpleRanks!: () => Promise<void>
   @StockStoreModule.State('dailySimpleRanksLoaded') dailySimpleRanksLoaded!: boolean
   @StockStoreModule.State('dailySimpleRanks') dailySimpleRank!: any
@@ -447,9 +444,8 @@ export default class NavBar extends Vue {
     this.isSearch = false
     if(this.$route.fullPath === item) return
 
-    this.getStock(item).then(() => {
-      this.$router.push(`/detail/${this.codeTitleMapping[item]}`)
-    });    
+    this.getAPI(getStock(item))    
+    this.$router.push(`/detail/${this.codeTitleMapping[item]}`); 
     (document.activeElement as HTMLElement).blur()      
   }
 

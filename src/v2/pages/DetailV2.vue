@@ -106,8 +106,8 @@ import Stock from '@/v2/components/detail/Stock.vue'
 import StockValuation from '@/v2/components/detail/StockValuation.vue'
 import StockIndicatorDetail from '@/v2/components/detail/StockIndicatorDetail.vue'
 
-import { AxiosResponse } from 'axios'
-import { getStockAsync, getStock } from '@/api/market'
+import { getStock, getStockGraphDefault } from '@/api/market'
+import StoreMixin from '@/mixins/StoreMixin.vue'
 
 const StockStoreModule = namespace('StockStore')
 
@@ -126,7 +126,7 @@ const StockStoreModule = namespace('StockStore')
     StockIndicatorDetail
   }
 })
-export default class DetailV2 extends Vue { 
+export default class DetailV2 extends StoreMixin { 
 
   // Datas
   drawer = 0
@@ -154,13 +154,9 @@ export default class DetailV2 extends Vue {
       callback: () => this.drawerChange(4)
     }
   ]
-
-  @StockStoreModule.Action('getAPI')
-  public getAPI!: ({ asyncCallback, state} : {asyncCallback: (code?: string) => Promise<AxiosResponse<any, any>>, state: any}) => void
-
+  
   @StockStoreModule.Action('getStock') getStock!: (name: string) => Promise<void>
   @StockStoreModule.Action('getStockGraphAll') getStockGraphAll!: (name: string) => Promise<void>
-  @StockStoreModule.Action('getStockGraphDefault') getStockGraphDefault!: (name: string) => Promise<void>
   @StockStoreModule.Action('getSimilarContents') readonly getSimilarContent!: (code: string) => Promise<void>
 
   get mobile () {
@@ -177,10 +173,12 @@ export default class DetailV2 extends Vue {
     this.drawer = 0
     const code = this.$route.params.title
     this.getStockGraphAll(code)
-    this.getStockGraphDefault(code)
+
+    this.getAPI(getStockGraphDefault(code))
+    this.getAPI(getStock(code))
+    
     this.getSimilarContent(code)
 
-    this.getAPI(getStock(code))
   }  
 
   mounted () {

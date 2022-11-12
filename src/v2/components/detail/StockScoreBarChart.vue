@@ -25,7 +25,12 @@ export default class StockScoreBarChart extends Vue {
   @Prop() chartData!: null
 
   @StockStoreModule.State('stock') stock!: IStockModel
-  @StockStoreModule.Getter('stockEvaluationDailyLast') stockEvaluationDailyLast!: string
+  @StockStoreModule.State('stockEvaluationDaily') stockEvaluationDaily!: any
+
+  get stockEvaluationDailyLast () {
+    return this.stockEvaluationDaily?.value.slice(-1)[0] || ''
+  }
+
   
   applyDefaultOptions() {
     this.chartOptions.maintainAspectRatio = true

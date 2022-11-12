@@ -290,6 +290,8 @@ import StockValuationChart from '@/v2/components/detail/StockValuationChart.vue'
 import StockValuationSingleChart from '@/v2/components/detail/StockValuationSingleChart.vue'
 import BtnBadge from '@/v2/components/vuetify/BtnBadge.vue'
 import { IStockEvaluationModel, IStockModel } from '@/models/stock'
+import StoreMixin from '@/mixins/StoreMixin.vue'
+import { getStockEvaluation, getStockEvaluationDaily } from '@/api/market'
 
 const StockStoreModule = namespace('StockStore')
 
@@ -309,7 +311,7 @@ type ValuationContentType = {
     StockValuationSingleChart
   }
 })
-export default class StockValuation extends Vue {
+export default class StockValuation extends StoreMixin {
     
   toggle_exclusive = [0, 1, 2, 3]
   colors: string[] = ['#ff6384', '#994433', '#6495ed', '#800080']
@@ -358,12 +360,7 @@ export default class StockValuation extends Vue {
   @StockStoreModule.State('stockEvaluation') stockEvaluation!: any
   @StockStoreModule.State('stockEvaluationDaily') stockEvaluationDaily!: IStockEvaluationModel
   @StockStoreModule.State('stockGraphAll') stockGraphAll!: any
-
-  @StockStoreModule.Getter('stockEvaluationDailyLast') stockEvaluationDailyLast!: string
-
-  @StockStoreModule.Action('getStockEvaluation') getStockEvaluation!: (stockCode: string) => Promise<void>
-  @StockStoreModule.Action('getStockEvaluationDaily') getStockEvaluationDaily!: (stockCode: string) => Promise<void>
-  
+      
   get chartHeight (): number {
     return this.$vuetify.breakpoint.name === 'xs' ? 200 : 100
   }
@@ -395,6 +392,10 @@ export default class StockValuation extends Vue {
       epsroe: this.stockEvaluation['proper-price'],
       srim: this.stockEvaluation['S-rim']
     }
+  }
+
+  get stockEvaluationDailyLast () {
+    return this.stockEvaluationDaily?.value.slice(-1)[0] || ''
   }
 
   get per (): ValuationContentType {
@@ -429,8 +430,10 @@ export default class StockValuation extends Vue {
     }
   }
 
-  async mounted () {    
-    await this.getStockEvaluation(this.$route.params.title)        
+  mounted () {    
+    const code = this.$route.params.title 
+    this.getAPI(getStockEvaluationDaily(code))
+    this.getAPI(getStockEvaluation(code))    
   }
 
 }

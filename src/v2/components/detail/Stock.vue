@@ -60,6 +60,7 @@
       <stock-big-chart   
         :gradient="gradientEnable"
         :volume="volumeEnable"
+        :height="chartHeight"
       />        
       <!-- <StockChartD3 /> -->
       <!-- <StockChartD3LineBar /> -->
@@ -99,8 +100,7 @@ export default class Stock extends Vue {
   @StockStoreModule.State('stockGraphAllLoaded') loaded!: boolean
   @StockStoreModule.State('stockGraphVolumeLoaded') volumeLoaded!: boolean
   @StockStoreModule.State('stockGraphAllFlag') flag!: boolean  
-  @StockStoreModule.Action('getStockGraphAll') getStockGraphAll!: (name: string) => Promise<void>
-  @StockStoreModule.Action('getStockGraphDefault') getStockGraphDefault!: (name: string) => Promise<void>
+  @StockStoreModule.Action('getStockGraphAll') getStockGraphAll!: (name: string) => Promise<void>  
   @StockStoreModule.Action('getStockGraphVolume') getStockGraphVolume!: (name: string) => Promise<void>
     
   get lastDate () {
@@ -114,6 +114,10 @@ export default class Stock extends Vue {
 
   get height () {
     return this.mobile ? 500 : 787
+  }
+
+  get chartHeight () {
+    return this.$vuetify.breakpoint.name === 'xs' ? 230 : 140
   }
   
   get Picked () {
@@ -154,8 +158,7 @@ export default class Stock extends Vue {
   }
 
   async mounted () {    
-    const code = this.$route.params.title    
-    await this.getStockGraphDefault(code)  
+    const code = this.$route.params.title        
     await this.getStockGraphAll(code)    
     await this.getStockGraphVolume(code)
     this.picked = this.Picked

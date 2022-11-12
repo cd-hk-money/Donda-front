@@ -40,7 +40,7 @@
     </v-card-text>      
     <v-expand-transition>
       <v-card v-if="expand" height="350" elevation="0">
-        <StockFinanceLineChart 
+        <StockFinanceLineChart                     
           class="mr-5"            
           :statementType="indicatorType"
           :height="mobile ? 300 : 100"
@@ -56,6 +56,11 @@ import StockFinanceBarChart from '@/v2/components/detail/StockFinanceBarChart.vu
 import StockFinanceLineChart from '@/v2/components/detail/StockFinanceLineChart.vue'
 import { getFirstUpper } from '@/mixins/tools'
 import { IStockStatementBarChartModel } from '@/models/stock';
+import StoreMixin from '@/mixins/StoreMixin.vue';
+import { getStockStatementAll } from '@/api/market';
+import { namespace } from 'vuex-class';
+
+  const StockStoreModule = namespace('StockStore')
 
   @Component({
     components: {
@@ -63,12 +68,15 @@ import { IStockStatementBarChartModel } from '@/models/stock';
       StockFinanceLineChart
     }
   })
-  export default class BtnBadge extends Vue {
+  export default class BtnBadge extends StoreMixin {
     @Prop() chartData!: IStockStatementBarChartModel
     @Prop() typeKorean!: string
     @Prop() indicatorType!: string
     @Prop({default: 0}) level!: number
 
+    @StockStoreModule.State('statementAllLoaded') loaded!: boolean
+
+    
     expand = false
     icon = ''
     iconColor = ''
@@ -93,10 +101,10 @@ import { IStockStatementBarChartModel } from '@/models/stock';
 
     mounted () {
       this.icon = this.getIcon()
-      this.iconColor = this.getIconColor()
+      this.iconColor = this.getIconColor()      
+      this.getAPI(getStockStatementAll(this.$route.params.title, this.indicatorType))
+      console.log('zz')
     }
-
-
   }
 </script>
 

@@ -32,7 +32,7 @@ export function transparentize(value: string | number[] | Color, opacity?: numbe
  * @param label 
  * @returns 
  */
-export function convertChartData(keys: string[], value: string[], label: string[]): ISimpleChartData {
+export function convertChartData(keys: string[], value: any[], label: string[]): ISimpleChartData {
   return keys.reduce((acc: any, cur: string, index: number) => {        
     acc[keys[index]] = {
       date: label,

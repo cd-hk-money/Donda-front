@@ -16,7 +16,7 @@
     
     <v-row>
       <v-col cols="12" xl="7">
-        <template v-if="!loaded && !graphLoaded && !evalLoaded && !dailyLoaded">
+        <template v-if="!loaded && !graphLoaded && !dailyLoaded">
           <v-carousel 
             cycle
             hide-delimiter-background
@@ -74,9 +74,10 @@ import StockScoreBarChart from './StockScoreBarChart.vue'
 import StockChart from '@/v2/components/detail/StockChart.vue'
 import { IStockModel } from '@/models/stock'
 import BtnBadge from '../vuetify/BtnBadge.vue'
+import StoreMixin from '@/mixins/StoreMixin.vue'
+import { getStockEvaluationDaily, getStockGraphDefault } from '@/api/market'
 
 const StockStoreModule = namespace('StockStore')
-const MarketStoreModule = namespace('MarketStore')
 
 type ScoreType = {
   score: string
@@ -91,21 +92,22 @@ type ScoreType = {
     BtnBadge
   }
 })
-export default class StockScore extends Vue {
+export default class StockScore extends StoreMixin {
 
   overlay = false
   carousel = 0
 
   @StockStoreModule.State('stockLoaded') loaded!: boolean
   @StockStoreModule.State('stockGraphDefaultLoaded') graphLoaded!: boolean
-  @StockStoreModule.State('getStockEvaluationDaily') evalLoaded!: boolean
+  
+  @StockStoreModule.State('stockEvaluationDaily') stockEvaluationDaily!: any
   @StockStoreModule.State('stockEvaluationDailyLoaded') dailyLoaded!: boolean
-  @StockStoreModule.State('stock') stock!: IStockModel
-  @StockStoreModule.Getter('stockEvaluationDailyLast') stockEvaluationDailyLast!: string
-  @StockStoreModule.Action('getStockGraphDefault') readonly getStockGraphDefault!: (name: string) => Promise<void>
-  @StockStoreModule.Action('getStockEvaluationDaily') getStockEvaluationDaily!: (stockCode: string) => Promise<void>
-
-  @MarketStoreModule.State('codeTitleMapping') codeTitleMapping!: {[title: string]: number}
+  @StockStoreModule.State('stock') stock!: IStockModel  
+  
+  
+  get stockEvaluationDailyLast () {
+    return this.stockEvaluationDaily?.value.slice(-1)[0] || ''
+  }
 
   get mobile () { 
     return mobileHeight(this.$vuetify.breakpoint.name) < 500 
@@ -125,17 +127,14 @@ export default class StockScore extends Vue {
   }
 
 
-  // methods
   drawerChange () {
     this.$emit('drawerChange', 2)
   }
 
-
-  // hooks
-  async created () {
+  created () {
     const code = this.$route.params.title    
-    await this.getStockGraphDefault(code)
-    await this.getStockEvaluationDaily(code)
+    this.getAPI(getStockGraphDefault(code))
+    this.getAPI(getStockEvaluationDaily(code))        
   }
 }
 </script>

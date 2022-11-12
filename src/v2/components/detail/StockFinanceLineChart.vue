@@ -7,6 +7,8 @@ import { mixins, Bar } from 'vue-chartjs-typescript'
 
 import { numToKorean, transparentize } from '@/mixins/tools'
 import { ISimpleChartData } from '@/models/stock'
+import StoreMixin from '@/mixins/StoreMixin.vue'
+import { getStockStatementAll } from '@/api/market'
 
 const { reactiveProp } = mixins
 const StockStoreModule = namespace('StockStore')
@@ -17,13 +19,11 @@ const SUB_COLOR = 'rgb(255, 99, 132)'
   extends: Bar,
   mixins: [reactiveProp]
 })
-export default class StockFinanceLineChart extends Vue {
+export default class StockFinanceLineChart extends StoreMixin {
 
   @Prop() chartData!: null
   @Prop() statementType!: string  
   
-  @StockStoreModule.Action('getStockStatementAll')
-  readonly getStockStatementAll!: (payload: {code: string, statementType: string}) => Promise<void>
 
   get mobile () {
      return this.$vuetify.breakpoint.name === 'xs'
@@ -112,8 +112,8 @@ export default class StockFinanceLineChart extends Vue {
 
   renderChart!: (chartData: unknown, options: unknown) => unknown
   
-  async mounted () {
-    await this.getStockStatementAll({code: this.$route.params.title, statementType: this.statementType})
+  mounted () {        
+    this.getAPI(getStockStatementAll(this.$route.params.title, this.statementType))
     this.renderChart(this.createChartData(), this.chartOptions)
   }
     

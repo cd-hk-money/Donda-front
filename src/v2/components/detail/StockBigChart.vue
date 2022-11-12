@@ -32,18 +32,9 @@ export default class StockBigChart extends Vue {
   @Prop() chartData!: never
   @Prop({default: true}) gradient!: boolean | undefined
   @Prop({default: false}) volume!: boolean | undefined
+  @Prop() height: number | string
 
-  get height () {
-    return this.$vuetify.breakpoint.name === 'xs' ? 230 : 140
-  }
 
-  get chartAttributes () {
-    const mobile = this.$vuetify.breakpoint.name === 'xs'
-    return {
-      height: mobile ? 400 : 140,
-      yAxesFontSize: 12
-    }
-  }
 
   @StockStoreModule.State('stockGraphLength') count!: number
   @StockStoreModule.State('stockGraphDefault') stockGraphDefault!: any
