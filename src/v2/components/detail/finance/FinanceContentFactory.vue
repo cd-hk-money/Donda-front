@@ -57,7 +57,7 @@ import StockFinanceLineChart from '@/v2/components/detail/StockFinanceLineChart.
 import { getFirstUpper } from '@/mixins/tools'
 import { IStockStatementBarChartModel } from '@/models/stock';
 import StoreMixin from '@/mixins/StoreMixin.vue';
-import { getStockStatementAll } from '@/api/market';
+import { getStockStatementAll } from '@/api/stocks';
 import { namespace } from 'vuex-class';
 
   const StockStoreModule = namespace('StockStore')
@@ -103,7 +103,6 @@ import { namespace } from 'vuex-class';
       this.icon = this.getIcon()
       this.iconColor = this.getIconColor()      
       this.getAPI(getStockStatementAll(this.$route.params.title, this.indicatorType))
-      console.log('zz')
     }
   }
 </script>

@@ -49,7 +49,7 @@ import { mobileHeight } from '@/mixins/tools'
 import { IStockModel, StockRecommendModel } from '@/models/stock'
 import { Component, Vue } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
-import { getStocks } from '@/api/market'
+import { getStocks } from '@/api/stocks'
 
 import StockSimilarContent from '@/v2/components/detail/StockSimilarContents.vue'
 import StockRecommendContnet from '@/v2/components/home/StockRecommendContent.vue'

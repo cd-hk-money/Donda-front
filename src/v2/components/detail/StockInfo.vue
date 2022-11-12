@@ -132,7 +132,7 @@ import { namespace } from 'vuex-class'
 import { IUpdateStateModel } from '@/models/payload';
 import { IStockModel } from '@/models/stock'
 import { IInterestGroup, IInterestGroupItem } from '@/models/interest'
-import { AsyncPayload, getStock } from '@/api/market';
+import { AsyncPayload, getStock } from '@/api/stocks'
 
 const StockStoreModule = namespace('StockStore')
 const InterestStoreModule = namespace('InterestStore')

@@ -14,7 +14,7 @@
 
     <v-divider />
     
-    <div v-if="!loaded && !evalLoaded && !allLoaded && !dailyLoaded">
+    <div v-if="!dailyLoaded">
       <v-sheet class="stock-indicator-detail-content">
         <stock-valuation-chart :height="mobile ? 300 : 100"/>
       </v-sheet>  
@@ -291,7 +291,7 @@ import StockValuationSingleChart from '@/v2/components/detail/StockValuationSing
 import BtnBadge from '@/v2/components/vuetify/BtnBadge.vue'
 import { IStockEvaluationModel, IStockModel } from '@/models/stock'
 import StoreMixin from '@/mixins/StoreMixin.vue'
-import { getStockEvaluation, getStockEvaluationDaily } from '@/api/market'
+import { getStockEvaluation, getStockEvaluationDaily } from '@/api/stocks'
 
 const StockStoreModule = namespace('StockStore')
 
@@ -429,12 +429,7 @@ export default class StockValuation extends StoreMixin {
       iconColor: isHighVal ? 'blue' : 'red'
     }
   }
-
-  mounted () {    
-    const code = this.$route.params.title 
-    this.getAPI(getStockEvaluationDaily(code))
-    this.getAPI(getStockEvaluation(code))    
-  }
+  
 
 }
 

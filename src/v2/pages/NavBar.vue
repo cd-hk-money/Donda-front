@@ -344,7 +344,7 @@
 </template>
 
 <script lang="ts">
-import { getStock } from '@/api/market'
+import { getStock } from '@/api/stocks'
 import StoreMixin from '@/mixins/StoreMixin.vue'
 import { IUserAlram, IUserInterestGroupItem } from '@/models/interest'
 import { IUpdateStateModel } from '@/models/payload'

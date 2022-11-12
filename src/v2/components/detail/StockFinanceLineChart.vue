@@ -8,7 +8,6 @@ import { mixins, Bar } from 'vue-chartjs-typescript'
 import { numToKorean, transparentize } from '@/mixins/tools'
 import { ISimpleChartData } from '@/models/stock'
 import StoreMixin from '@/mixins/StoreMixin.vue'
-import { getStockStatementAll } from '@/api/market'
 
 const { reactiveProp } = mixins
 const StockStoreModule = namespace('StockStore')
@@ -113,7 +112,6 @@ export default class StockFinanceLineChart extends StoreMixin {
   renderChart!: (chartData: unknown, options: unknown) => unknown
   
   mounted () {        
-    this.getAPI(getStockStatementAll(this.$route.params.title, this.statementType))
     this.renderChart(this.createChartData(), this.chartOptions)
   }
     

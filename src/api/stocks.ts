@@ -6,12 +6,6 @@ const HEADER: AxiosRequestConfig = {
   }  
 }
 
-export type AsyncPayload<T = any> = {
-  state: string,
-  asyncCallback: () => Promise<AxiosResponse<T, unknown>>
-  compute?: (res?: AxiosResponse<T> | AxiosResponse<T>[]) => unknown
-}
-
 export interface IStock {
   amount: number
   changes: number
@@ -82,7 +76,7 @@ export interface StockStatementAll {
   }
 }
 
-export interface IStockGraphDefault {
+export interface IStockGraph {
   close: {
     date: string[],
     values: number[]
@@ -99,7 +93,10 @@ export const getStocksAsync = async (codes: string[]) =>
   await axios.all(codes.map(code => axios.get<IStock>(`/stock/${code}`), HEADER)) 
 
 export const getStockGraphDefaultAsync = async (code: string) => 
-  await axios.get<IStockGraphDefault>(`/stock/${code}/price`, HEADER)
+  await axios.get<IStockGraph>(`/stock/${code}/price`, HEADER)
+
+export const getStockGraphAllAsync = async (code: string) => 
+  await axios.get<IStockGraph>(`/stock/${code}/years-price`, HEADER)
 
 export const getStockEvaluationAsync = async (code: string) => 
   await axios.get<unknown>(`/stock/${code}/evaluation`, HEADER)
@@ -120,7 +117,11 @@ export const getStockStatementAllAsync = async ({ code, statementType }: {code: 
   await axios.get<StockStatementAll>(`/stock/${code}/statement/${statementType}`, HEADER)
 
 
-
+export type AsyncPayload<T = any> = {
+  state: string,
+  asyncCallback: () => Promise<AxiosResponse<T, unknown>>
+  compute?: (res?: AxiosResponse<T> | AxiosResponse<T>[]) => unknown
+}
   
 /**
  * @param state       변경시킬 store의 state
@@ -143,7 +144,10 @@ export const getStocks = (codes: string[]) =>
 
 
 export const getStockGraphDefault = (code: string) => 
-  createStoreActionPayload('stockGraphDefault', () => getStockGraphDefaultAsync(code), (res: AxiosResponse<IStockGraphDefault>) => res.data.origin)
+  createStoreActionPayload('stockGraphDefault', () => getStockGraphDefaultAsync(code), (res: AxiosResponse<IStockGraph>) => res.data.origin)
+
+export const getStockGraphAll = (code: string) => 
+  createStoreActionPayload('stockGraphAll', () => getStockGraphAllAsync(code), (res: AxiosResponse<IStockGraph>) => res.data.origin)
 
 
 export const getStockEvaluation = (code: string) => 
@@ -156,7 +160,6 @@ createStoreActionPayload('stockEvaluationDaily', () => getStockEvaluationDailyAs
 
 export const getStockSimilarContents = (code: string) => 
   createStoreActionPayload('similarContents', () => getStockSimilarContentsAsync(code))
-
 
 
 export const getStockNews = (code: string) => 

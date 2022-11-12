@@ -106,7 +106,7 @@ import Stock from '@/v2/components/detail/Stock.vue'
 import StockValuation from '@/v2/components/detail/StockValuation.vue'
 import StockIndicatorDetail from '@/v2/components/detail/StockIndicatorDetail.vue'
 
-import { getStock, getStockGraphDefault } from '@/api/market'
+import { getStock, getStockGraphAll, getStockGraphDefault } from '@/api/stocks'
 import StoreMixin from '@/mixins/StoreMixin.vue'
 
 const StockStoreModule = namespace('StockStore')
@@ -154,9 +154,7 @@ export default class DetailV2 extends StoreMixin {
       callback: () => this.drawerChange(4)
     }
   ]
-  
-  @StockStoreModule.Action('getStock') getStock!: (name: string) => Promise<void>
-  @StockStoreModule.Action('getStockGraphAll') getStockGraphAll!: (name: string) => Promise<void>
+    
   @StockStoreModule.Action('getSimilarContents') readonly getSimilarContent!: (code: string) => Promise<void>
 
   get mobile () {
@@ -172,7 +170,8 @@ export default class DetailV2 extends StoreMixin {
   watchRoute() {        
     this.drawer = 0
     const code = this.$route.params.title
-    this.getStockGraphAll(code)
+    
+    this.getAPI(getStockGraphAll(code))
 
     this.getAPI(getStockGraphDefault(code))
     this.getAPI(getStock(code))

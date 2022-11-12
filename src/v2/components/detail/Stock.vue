@@ -75,6 +75,8 @@ import { IStockModel } from '@/models/stock'
 import StockBigChart from '@/v2/components/detail/StockBigChart.vue'
 import StockChartD3 from '@/v2/components/detail/stock/StockChartD3.vue'
 import StockChartD3LineBar from '@/v2/components/detail/stock/StockChartD3LineBar.vue'
+import StoreMixin from '@/mixins/StoreMixin.vue'
+import { getStockGraphAll } from '@/api/stocks'
 
 const StockStoreModule = namespace('StockStore')
 
@@ -85,7 +87,7 @@ const StockStoreModule = namespace('StockStore')
     StockChartD3LineBar
   }
 })
-export default class Stock extends Vue {
+export default class Stock extends StoreMixin {
   
   count = 33
   dateOverlay = false
@@ -98,9 +100,7 @@ export default class Stock extends Vue {
   @StockStoreModule.State('stock') stock!: IStockModel
   @StockStoreModule.State('stockGraphDefault') stockGraphDefault!: any
   @StockStoreModule.State('stockGraphAllLoaded') loaded!: boolean
-  @StockStoreModule.State('stockGraphVolumeLoaded') volumeLoaded!: boolean
-  @StockStoreModule.State('stockGraphAllFlag') flag!: boolean  
-  @StockStoreModule.Action('getStockGraphAll') getStockGraphAll!: (name: string) => Promise<void>  
+  @StockStoreModule.State('stockGraphVolumeLoaded') volumeLoaded!: boolean  
   @StockStoreModule.Action('getStockGraphVolume') getStockGraphVolume!: (name: string) => Promise<void>
     
   get lastDate () {
@@ -159,7 +159,7 @@ export default class Stock extends Vue {
 
   async mounted () {    
     const code = this.$route.params.title        
-    await this.getStockGraphAll(code)    
+    this.getAPI(getStockGraphAll(code))
     await this.getStockGraphVolume(code)
     this.picked = this.Picked
   }  

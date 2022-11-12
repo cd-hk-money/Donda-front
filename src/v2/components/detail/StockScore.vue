@@ -75,7 +75,7 @@ import StockChart from '@/v2/components/detail/StockChart.vue'
 import { IStockModel } from '@/models/stock'
 import BtnBadge from '../vuetify/BtnBadge.vue'
 import StoreMixin from '@/mixins/StoreMixin.vue'
-import { getStockEvaluationDaily, getStockGraphDefault } from '@/api/market'
+import { getStockEvaluation, getStockEvaluationDaily, getStockGraphDefault } from '@/api/stocks'
 
 const StockStoreModule = namespace('StockStore')
 
@@ -134,6 +134,7 @@ export default class StockScore extends StoreMixin {
   created () {
     const code = this.$route.params.title    
     this.getAPI(getStockGraphDefault(code))
+    this.getAPI(getStockEvaluation(code))
     this.getAPI(getStockEvaluationDaily(code))        
   }
 }

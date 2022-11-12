@@ -305,7 +305,7 @@ import FinanceContentFactory from '@/v2/components/detail/finance/FinanceContent
 import FinanceInformationFactory from '@/v2/components/detail/finance/InformationFactory.vue'
 import { ISimpleChartData, IStockModel } from '@/models/stock'
 import StoreMixin from '@/mixins/StoreMixin.vue'
-import { getStockStatement } from '@/api/market'
+import { getStockStatement } from '@/api/stocks'
 
 const StockStoreModule = namespace('StockStore')
 const MarketStoreModule = namespace('MarketStore')
