@@ -114,6 +114,29 @@ export default class StockStore extends VuexModule {
   public newsLoaded = false
   public news: INewsModel[] = []
 
+  public asset = {}
+  public assetLoaed = false
+  public equity = {}
+  public equityLoaded = false
+  public equityNon = {}
+  public equityNonLoaded = false
+  public liability = {}
+  public liabilityLoaded = false
+  public currentAsset = {}
+  public currentAssetLoaded = false
+  public profit = {}
+  public profitLoaded = false
+  public profitNon = {}
+  public profitNonLoaded = false
+  public revenue = {}
+  public revenueLoaed = false
+  public cash = {}
+  public cashLoaded = false
+  public ebitda = {}
+  public ebitdaLoaded = false
+  public grossMargin = {}
+  public grossMarginLoaded = false
+
 
   // Mutations  
   @Mutation
@@ -132,11 +155,32 @@ export default class StockStore extends VuexModule {
   public success({ state, data }: {state: string, data: unknown}) {
     this[state + 'Loaded'] = false
     this[state] = data 
+    console.log(state, this[state])
   }
 
   @Mutation
   public error(state: string) {
     this[state + 'Loaded'] = false
+  }
+
+  @Mutation
+  public clearStore() {
+    this.statement = {}
+    this.statementAll = {}
+    this.indicator = {}
+    this.news = []
+    this.stock = {}
+    this.asset = {}
+    this.equity = {}
+    this.equityNon = {}
+    this.liability = {}
+    this.currentAsset = {}
+    this.profit = {}
+    this.profitNon = {}
+    this.revenue = {}
+    this.cash = {}
+    this.ebitda = {}
+    this.grossMargin = {}
   }
   
   // Actions

@@ -6,11 +6,9 @@ import Chart from 'chart.js'
 import { mixins, Bar } from 'vue-chartjs-typescript'
 
 import { numToKorean, transparentize } from '@/mixins/tools'
-import { ISimpleChartData } from '@/models/stock'
 import StoreMixin from '@/mixins/StoreMixin.vue'
 
 const { reactiveProp } = mixins
-const StockStoreModule = namespace('StockStore')
 const MAIN_COLOR = '#00BCD4'
 const SUB_COLOR = 'rgb(255, 99, 132)'
 
@@ -18,17 +16,15 @@ const SUB_COLOR = 'rgb(255, 99, 132)'
   extends: Bar,
   mixins: [reactiveProp]
 })
-export default class StockFinanceLineChart extends StoreMixin {
+export default class StockFinanceLineChart extends Vue {
 
-  @Prop() chartData!: null
+  @Prop() chartData!: any
   @Prop() statementType!: string  
   
 
   get mobile () {
      return this.$vuetify.breakpoint.name === 'xs'
   }
-
-  @StockStoreModule.State('statementAll') statementAll!: ISimpleChartData
 
   chartOptions: Chart.ChartOptions = {
     maintainAspectRatio: true,
@@ -88,10 +84,10 @@ export default class StockFinanceLineChart extends StoreMixin {
 
   createChartData() {
     return {
-      labels: Object.keys(this.statementAll) ?? [],
+      labels: Object.keys(this.chartData) ?? [],
       datasets: [
         {
-          data : Object.values(this.statementAll) ?? [],
+          data : Object.values(this.chartData) ?? [],
           fill: false,
           borderColor: ctx => ctx.dataset.data[ctx.dataIndex] > 0 ? MAIN_COLOR : SUB_COLOR,
           backgroundColor: ctx => ctx.dataset.data[ctx.dataIndex] > 0 ? transparentize(MAIN_COLOR, 0.85) : transparentize(SUB_COLOR, 0.85),
@@ -112,6 +108,7 @@ export default class StockFinanceLineChart extends StoreMixin {
   renderChart!: (chartData: unknown, options: unknown) => unknown
   
   mounted () {        
+    console.log(this.chartData)
     this.renderChart(this.createChartData(), this.chartOptions)
   }
     

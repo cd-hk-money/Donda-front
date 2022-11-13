@@ -106,7 +106,7 @@ import Stock from '@/v2/components/detail/Stock.vue'
 import StockValuation from '@/v2/components/detail/StockValuation.vue'
 import StockIndicatorDetail from '@/v2/components/detail/StockIndicatorDetail.vue'
 
-import { getStock, getStockGraphAll, getStockGraphDefault } from '@/api/stocks'
+import { getStock, getStockEvaluation, getStockEvaluationDaily, getStockGraphAll, getStockGraphDefault, getStockNews, getStockStatement, getStockStatementAll } from '@/api/stocks'
 import StoreMixin from '@/mixins/StoreMixin.vue'
 
 const StockStoreModule = namespace('StockStore')
@@ -156,32 +156,47 @@ export default class DetailV2 extends StoreMixin {
   ]
     
   @StockStoreModule.Action('getSimilarContents') readonly getSimilarContent!: (code: string) => Promise<void>
+  @StockStoreModule.Action('getStockIndicator') readonly getStockIndicator!: (name: string) => Promise<void>
+  @StockStoreModule.Action('getStockIndicatorDaily') readonly getStockIndicatorDaily!: (stockcode: string) => Promise<void>
+  @StockStoreModule.Action('getIndicatorSector') readonly getIndicatorSector!: (code: string) => Promise<void>  
+  @StockStoreModule.Mutation('clearStore') readonly clearStore!: () => void
 
   get mobile () {
     return this.$vuetify.breakpoint.name === 'xs'
   }
 
+  statementTypes = ["asset", "equity", "equityNon", "liability", "currentAsset", "profit", "profitNon",
+    "revenue", "cash", "ebitda","grossMargin"
+  ]
+
   drawerChange (val: number | null) {        
     this.drawer = val
   }
 
-
-  @Watch('$route')
-  watchRoute() {        
-    this.drawer = 0
+  async fetchStock () {
     const code = this.$route.params.title
-    
-    this.getAPI(getStockGraphAll(code))
 
+    this.getAPI(getStockGraphAll(code))
     this.getAPI(getStockGraphDefault(code))
+    this.getAPI(getStockEvaluation(code))
+    this.getAPI(getStockEvaluationDaily(code))       
+    this.getAPI(getStockGraphDefault(code))
+    this.statementTypes.forEach(statementType => this.getAPI(getStockStatementAll(code, statementType)))
     this.getAPI(getStock(code))
-    
+    this.getAPI(getStockStatement(code))
+    this.getAPI(getStockNews(code))
+
+
+    await this.getStockIndicator(code)
+    await this.getStockIndicatorDaily(code) 
+    await this.getIndicatorSector(code) 
     this.getSimilarContent(code)
 
-  }  
+  }
 
-  mounted () {
+  mounted () {    
     this.drawer = 0
+    this.fetchStock()
   }
 
 }

@@ -106,21 +106,10 @@ export default class StockIndicator extends Vue {
   @StockStoreModule.State('indicatorSectorDaily') indicatorSectorDaily!: IStockIndicatorSectorDailyModel
 
 
-  @StockStoreModule.Action('getStockIndicator') readonly getStockIndicator!: (name: string) => Promise<void>
-  @StockStoreModule.Action('getStockIndicatorDaily') readonly getStockIndicatorDaily!: (stockcode: string) => Promise<void>
-  @StockStoreModule.Action('getIndicatorSector') readonly getIndicatorSector!: (code: string) => Promise<void>  
-
-
   // methods
   drawerChange () {
     this.$emit('drawerChange', 4)
   }
-  
-  async mounted () {
-    const stockcode = this.$route.params.title
-    await this.getStockIndicator(stockcode)
-    await this.getStockIndicatorDaily(stockcode) 
-    await this.getIndicatorSector(stockcode) 
-  }
+
 }
 </script> 

@@ -44,19 +44,6 @@ export default class StockNews extends StoreMixin {
   @StockStoreModule.State('newsLoaded') loaded!: boolean
   @StockStoreModule.State('news') newses: IStockNews[]
   
-  
-  @Watch('$route')
-  watchRoute() {            
-    this.getNews()
-  }  
-
-  mounted() {    
-    this.getNews()
-  }
-
-  getNews () {  
-    this.getAPI(getStockNews(this.$route.params.title))
-  }
 }
 </script>
 

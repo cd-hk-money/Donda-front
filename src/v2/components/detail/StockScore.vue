@@ -131,12 +131,6 @@ export default class StockScore extends StoreMixin {
     this.$emit('drawerChange', 2)
   }
 
-  created () {
-    const code = this.$route.params.title    
-    this.getAPI(getStockGraphDefault(code))
-    this.getAPI(getStockEvaluation(code))
-    this.getAPI(getStockEvaluationDaily(code))        
-  }
 }
 </script>
 

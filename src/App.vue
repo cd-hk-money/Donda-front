@@ -3,7 +3,7 @@
     <NavBar />
     <v-main>               
       <transition name="slide-fade" mode="out-in">
-        <router-view />      
+        <router-view :key="$route.fullPath"/>      
       </transition>  
       <SnackBar />
     </v-main>

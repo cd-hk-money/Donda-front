@@ -2,13 +2,13 @@
   <v-sheet
     class="stock-indicator-detail-content"
     elevation="0"    
-    @click="expand = !expand"        
+    @click="expand = !expand"            
   >
     <v-card-title class="stock-indicator-detail-content-title d-flex align-end">
       <span class="text-h4"> {{ upper(indicatorType) }} </span>
         <v-chip small class="ml-3 mb-1">
-        <v-icon :color="iconColor">
-          {{ icon }}
+        <v-icon :color="icon.color">
+          {{ icon.icon }}
         </v-icon>
       </v-chip>
       <v-chip v-if="level" small class="ml-3 mb-1 d-flex">
@@ -42,7 +42,7 @@
       <v-card v-if="expand" height="350" elevation="0">
         <StockFinanceLineChart                     
           class="mr-5"            
-          :statementType="indicatorType"
+          :chartData="lineChartData"
           :height="mobile ? 300 : 100"
         />
       </v-card>
@@ -51,16 +51,12 @@
 </template>
 
 <script lang="ts">    
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import StockFinanceBarChart from '@/v2/components/detail/StockFinanceBarChart.vue'
 import StockFinanceLineChart from '@/v2/components/detail/StockFinanceLineChart.vue'
 import { getFirstUpper } from '@/mixins/tools'
-import { IStockStatementBarChartModel } from '@/models/stock';
 import StoreMixin from '@/mixins/StoreMixin.vue';
-import { getStockStatementAll } from '@/api/stocks';
-import { namespace } from 'vuex-class';
 
-  const StockStoreModule = namespace('StockStore')
 
   @Component({
     components: {
@@ -69,40 +65,39 @@ import { namespace } from 'vuex-class';
     }
   })
   export default class BtnBadge extends StoreMixin {
-    @Prop() chartData!: IStockStatementBarChartModel
+    @Prop() lineChartData!: any
     @Prop() typeKorean!: string
     @Prop() indicatorType!: string
     @Prop({default: 0}) level!: number
+    @Prop() loaded!: boolean
 
-    @StockStoreModule.State('statementAllLoaded') loaded!: boolean
-
-    
+    get chartData () {
+      return {...this.lineChartData}
+    }
+        
     expand = false
-    icon = ''
-    iconColor = ''
 
+    get icon () {
+
+      const last = Object.values(this.lineChartData)[25] as number
+      const current = Object.values(this.lineChartData)[26] as number
+
+      return {
+        icon: current > last ? 'fa-solid fa-arrow-trend-up' : 'fa-solid fa-arrow-trend-down',
+        color: current > last ? 'red' : 'blue'
+      }
+    }
+    
     get mobile () {
       return this.$vuetify.breakpoint.name === 'xs'
     }
 
-    getIcon() {
-      if(!this.chartData.value) return ''
-      return this.chartData?.value[0] > this.chartData?.value[1] ? 'fa-solid fa-arrow-trend-up' : 'fa-solid fa-arrow-trend-down'
-    }
-
-    getIconColor() {
-      if(!this.chartData.value) return ''
-      return this.chartData?.value[0] > this.chartData?.value[1] ? 'red' : 'blue'
-    }
-
     upper(str: string) {
       return getFirstUpper(str)
-    } 
+    }             
 
     mounted () {
-      this.icon = this.getIcon()
-      this.iconColor = this.getIconColor()      
-      this.getAPI(getStockStatementAll(this.$route.params.title, this.indicatorType))
+      console.log('mount..!')
     }
   }
 </script>

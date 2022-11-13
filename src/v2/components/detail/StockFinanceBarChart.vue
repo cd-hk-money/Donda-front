@@ -1,10 +1,9 @@
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 import { mixins, Bar } from 'vue-chartjs-typescript'
 import Chart from 'chart.js'
 
 import { transparentize } from '@/mixins/tools'
-import { IStockStatementBarChartModel } from '@/models/stock'
 
 const { reactiveProp } = mixins
 
@@ -17,7 +16,8 @@ const SUB_COLOR = 'rgb(255, 99, 132)'
 })
 export default class StockFinanceBarChart extends Vue {
 
-  chartData!: IStockStatementBarChartModel
+  @Prop() chartData!: any
+
   chartOptions: Chart.ChartOptions = {
     maintainAspectRatio: true,
     responsive: true,    
@@ -41,7 +41,6 @@ export default class StockFinanceBarChart extends Vue {
       }],
       yAxes: [{
         ticks: {          
-          callback: value => value.toLocaleString(),
           display: false,
           fontSize: 15,                 
         },
@@ -75,10 +74,10 @@ export default class StockFinanceBarChart extends Vue {
 
   createChartData() {
     return {
-      labels: [...this.chartData.date].reverse(),
+      labels: Object.keys(this.chartData).slice(-4),
       datasets: [
         {
-          data : [...this.chartData.value].reverse().map((value: number) => `${value}`),
+          data : Object.values(this.chartData).slice(-4),
           fill: true,
           borderColor: ctx => ctx.dataset.data[ctx.dataIndex] > 0 ? MAIN_COLOR : SUB_COLOR,
           backgroundColor: ctx => ctx.dataset.data[ctx.dataIndex] > 0 ? transparentize(MAIN_COLOR, 0.85) : transparentize(SUB_COLOR, 0.85),          
@@ -96,8 +95,15 @@ export default class StockFinanceBarChart extends Vue {
 
   renderChart!: (chartData: unknown, options: unknown) => unknown
 
-  mounted () {    
+  @Watch('chartData')
+  watchRoute () {    
+    
+    console.log('ㅇㄴ~~')
+  }
+
+  mounted () {        
     this.renderChart(this.createChartData(), this.chartOptions)
   }
+
 }
 </script>
