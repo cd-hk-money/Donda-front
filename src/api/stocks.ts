@@ -23,6 +23,7 @@ const getStockStatementAllUrl = (code: string, statementType: string) => `/stock
 
 
 export type ResponseType = IStock | IStockSimilar[] | IStockNews[] | IStockStatement | IStockEvaluationDaily | StockStatementAll | IStockGraph
+
 export type AsyncPayload<T extends ResponseType = any> = {
   state: string,
   asyncCallback: () => Promise<AxiosResponse<T, unknown>> | Promise<AxiosResponse<T, unknown>[]>
@@ -54,19 +55,15 @@ const statementParser = (response: AxiosResponse<IStockStatement>) => {
 }
 
 
-// 혼자만 axios.all써서 난감하네..
-
-
-
 /*  스토어 요청 디스패치 PAYLOAD 객체들  */
-export const getStock                 = (code: string) => createStoreActionPayload('stock'                , createAxiosGetRequestCallback(getStockUrl(code)))    
-export const getStockGraphDefault     = (code: string) => createStoreActionPayload('stockGraphDefault'    , createAxiosGetRequestCallback(getStockGraphDefaultUrl(code)), (response: AxiosResponse) => response.data.origin)
-export const getStockGraphAll         = (code: string) => createStoreActionPayload('stockGraphAll'        , createAxiosGetRequestCallback(getStockGraphAllUrl(code)), (response: AxiosResponse) => response.data.origin)
+export const getStock                 = (code: string) => createStoreActionPayload('stock'                , createAxiosGetRequestCallback<IStock>(getStockUrl(code)))    
+export const getStockGraphDefault     = (code: string) => createStoreActionPayload('stockGraphDefault'    , createAxiosGetRequestCallback<IStockGraph>(getStockGraphDefaultUrl(code)), (response: AxiosResponse<IStockGraph>) => response.data.origin)
+export const getStockGraphAll         = (code: string) => createStoreActionPayload('stockGraphAll'        , createAxiosGetRequestCallback<IStockGraph>(getStockGraphAllUrl(code)), (response: AxiosResponse<IStockGraph>) => response.data.origin)
 export const getStockEvaluation       = (code: string) => createStoreActionPayload('stockEvaluation'      , createAxiosGetRequestCallback(getStockEvaluationUrl(code)))
-export const getStockEvaluationDaily  = (code: string) => createStoreActionPayload('stockEvaluationDaily' , createAxiosGetRequestCallback(getStockEvaluationDailyUrl(code)))
-export const getStockSimilarContents  = (code: string) => createStoreActionPayload('similarContents'      , createAxiosGetRequestCallback(getStockSimilarContentsUrl(code)))
-export const getStockNews             = (code: string) => createStoreActionPayload('news'                 , createAxiosGetRequestCallback(getStockNewsUrl(code)))
-export const getStockStatement        = (code: string) => createStoreActionPayload('statement'            , createAxiosGetRequestCallback(getStockStatementUrl(code)), statementParser)    
+export const getStockEvaluationDaily  = (code: string) => createStoreActionPayload('stockEvaluationDaily' , createAxiosGetRequestCallback<IStockEvaluationDaily>(getStockEvaluationDailyUrl(code)))
+export const getStockSimilarContents  = (code: string) => createStoreActionPayload('similarContents'      , createAxiosGetRequestCallback<IStockSimilar[]>(getStockSimilarContentsUrl(code)))
+export const getStockNews             = (code: string) => createStoreActionPayload('news'                 , createAxiosGetRequestCallback<IStockNews[]>(getStockNewsUrl(code)))
+export const getStockStatement        = (code: string) => createStoreActionPayload('statement'            , createAxiosGetRequestCallback<IStockStatement>(getStockStatementUrl(code)), statementParser)    
 
 export const getStockStatementAll     = (code: string, statementType: string) => createStoreActionPayload(statementType, createAxiosGetRequestCallback(getStockStatementAllUrl(code, statementType)), (response: AxiosResponse<StockStatementAll>) => response.data.origin)
 export const getStocks = (codes: string[]) => createStoreActionPayload<IStock>('recommendStocks', getStocksAsync(codes), (reses: AxiosResponse[]) => reses.map(response => response.data))

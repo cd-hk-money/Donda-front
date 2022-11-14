@@ -8,18 +8,99 @@
     <v-card-title>
       적정 주가
     </v-card-title>
+
     <v-card-subtitle>
       어떻게 적정 주가를 산출 했을까요?
     </v-card-subtitle>
 
-    <v-divider />
     
-    <div v-if="!dailyLoaded">
-      <v-sheet class="stock-indicator-detail-content">
-        <stock-valuation-chart :height="mobile ? 300 : 100"/>
-      </v-sheet>  
-      
+
+      <v-sheet class="d-flex flex-wrap align-center justify-space-between ml-4 mr-4 mb-4">
+
+
+        <v-sheet 
+          elevation="0"
+          class="mt-3"          
+          color="rgb(40, 40, 40)" width="32%" height="270" rounded="lg"
+        >
+          <v-card-subtitle class="cyan--text">
+            <v-icon class="mr-1">mdi-account-question</v-icon>
+            적정주가가 뭔가요?
+          </v-card-subtitle>
+          <v-card-text>
+            <v-icon class="mr-1">mdi-account-check</v-icon>
+            자체 주가 분석 지수인 <span class="pink--text text--lighten-2">돈다 지수</span>를 통해 예측되는 <span class="underlined">기업의 적절한 주가입니다.</span>
+          </v-card-text>
+          <v-card-subtitle class="cyan--text">
+            <v-icon class="mr-1">mdi-account-question</v-icon>
+            저평가, 고평가가 뭔가요?
+          </v-card-subtitle>
+          <v-card-text>
+            <v-icon class="mr-1">mdi-account-check</v-icon>
+              현재 주가가 적정 주가와 얼마나 차이가 있나를 보여줍니다. 저평가된 기업은 상승할 여력이, 고평가된 기업은 하락할 가능성이 있습니다.
+          </v-card-text>
+        </v-sheet>
+
+
+        <v-sheet
+          elevation="0"          
+          width="32%" height="270" rounded="lg"
+          class="d-flex flex-column justify-space-between mt-3"
+        >
+          <v-sheet color="rgb(40, 40, 40)" elevation="0" height="80" class="d-flex justify-center align-center text-h7">            
+            <span :class="scorePer.colorClass" class="text-h5">{{ scorePer.score }}%</span>                            
+            <span class="ml-2"> {{ scorePer.text }} 되었습니다.</span>
+            <div class="back">
+              <ValuationBackgroundChart 
+                :height="90" 
+                :chartData="scorePer.score"
+                :backgroundColor="scorePer.backgroundColor"
+              />
+            </div>
+          </v-sheet>
+
+          <v-sheet color="rgb(40, 40, 40)" elevation="0" height="80" class="d-flex justify-center align-center text-h7">            
+            주가가 
+            <span :class="['text-h5 ml-1 mr-1', `${donda.iconColor}--text`]">{{ stockEvaluationDailyLast.toLocaleString() }}₩</span>
+             까지 변동될 수 있습니다.
+             <!-- <div class="back">
+              <v-icon :color="donda.iconColor" large>{{donda.icon}}</v-icon>
+             </div> -->
+          </v-sheet>
+
+          <v-sheet color="rgb(40, 40, 40)" elevation="0" height="80" class="d-flex justify-center align-center text-h7">            
+            지금
+            <span class="ml-1 mr-1 font-weight-bold">{{ stock.name }}</span>
+             에 투자 하는것을  {{ scorePer.isHighVal ? '추천드리지 않습니다..' : '추천드립니다.'}}
+          </v-sheet>          
+        </v-sheet>
+
+        <v-sheet color="rgb(40, 40, 40)" elevation="0" height="270" @click.stop="dialog = true" class="OpendialogClass mt-3" width="32%">           
+          <v-card-subtitle>다른 주가 분석 방법과 비교해보세요.</v-card-subtitle>
+          <StockPolarAreaChart :height="mobile ? 200 : 200" :width="400"/>
+        </v-sheet>                  
+
+
+        <v-dialog v-model="dialog" width="500">
+          <v-card>
+            <StockValuationChart />
+          </v-card>
+        </v-dialog>
+            
+          
+        
+        
+      </v-sheet>
+
       <v-divider />
+
+      <v-card-title>
+        주가 분석법
+      </v-card-title>
+      <v-card-subtitle>
+        여러가지 주가 분석 방법에 대해 알아봅니다.
+      </v-card-subtitle>
+            
       <!-- 돈다 지수 -->
       <v-sheet 
         class="stock-indicator-detail-content" 
@@ -109,7 +190,7 @@
               <div>ROE가 클수록, 일반적으로 주가 상승률이 높다고 판단됩니다.</div>
             </template>
           </btn-badge>
-          를 활용한 적정 주가 계산 공식입니다.
+          를 활용한 적정 주가 계산 방법입니다.
         </v-card-text>
   
         <v-expand-transition>
@@ -121,23 +202,6 @@
               :chartData="chartDatas.epsroe"
               :height="100"
             />
-  
-            <v-divider />
-  
-            <v-card-text :class="['grey--text', getStrongFontColorClass]">            
-              <div class="calculate"> 계산법 : <strong class="mr-1">EPS</strong> x <strong class="ml-1">ROE</strong></div> 
-              <v-divider class="mt-2" />
-              <v-sheet 
-                outlined 
-                class="pt-3 pb-3 pr-3 pl-3 mt-3 d-flex align-center indicator-detail-card" 
-                rounded="lg" 
-                color="blue-grey lighten-1"
-              >
-                
-                <v-icon class="mr-1">mdi-information</v-icon>
-                
-              </v-sheet>  
-            </v-card-text>
           </v-card>        
         </v-expand-transition>
       </v-sheet>  
@@ -181,7 +245,7 @@
               <div class="text-h6 cyan--text font-weight-bold"><strong>S-RIM</strong></div>            
             </template>
           </btn-badge>
-          모델을 활용한 주가 계산 공식입니다.
+          모델을 활용한 주가 계산 방법입니다.
           
         </v-card-text>
   
@@ -235,7 +299,7 @@
               현재 주가를 <strong>당기순이익</strong>을 <strong>유통 주식수</strong>로 나눈 <strong>EPS</strong>로 나눈 값을 의미합니다.
             </template>
           </btn-badge>
-          을 활용한 주가 계산 공식입니다.
+          을 활용한 주가 계산 방법입니다.
           
         </v-card-text>
   
@@ -257,7 +321,6 @@
           </v-card>        
         </v-expand-transition>
       </v-sheet>
-    </div>
 
             
 
@@ -266,13 +329,13 @@
     <!-- <strong>돈다</strong> 에서 자체적으로 계산한 주가 지수입니다. -->
 
     <!-- EPS-ROE -->
-    <!-- <strong>EPS</strong>와 <strong>ROE</strong>를 활용한 적정 주가 계산 공식입니다. -->
+    <!-- <strong>EPS</strong>와 <strong>ROE</strong>를 활용한 적정 주가 계산 방법입니다. -->
 
     <!-- S-RIM -->
     <!-- <strong>사경인 회계사</strong>
       <v-icon size="13" class="valuation-two-tootip">fa-solid fa-circle-question</v-icon>
     </span>
-      에서 제시한 <strong>RIM 모델</strong>을 활용한 주가 계산 공식입니다. -->
+      에서 제시한 <strong>RIM 모델</strong>을 활용한 주가 계산 방법입니다. -->
 
     <!-- PER 방법 -->
 
@@ -288,10 +351,14 @@ import { IValuationContent } from '@/models/market'
 
 import StockValuationChart from '@/v2/components/detail/StockValuationChart.vue'
 import StockValuationSingleChart from '@/v2/components/detail/StockValuationSingleChart.vue'
+import StockPolarAreaChart from '@/v2/components/detail/StockPolarAreaChart.vue'
+import StockScoreBarChart from '@/v2/components/detail/StockScoreBarChart.vue'
+import ValuationBackgroundChart from '@/v2/components/detail/valuation/ValuationBackgroundChart.vue'
+
 import BtnBadge from '@/v2/components/vuetify/BtnBadge.vue'
 import { IStockEvaluationModel, IStockModel } from '@/models/stock'
 import StoreMixin from '@/mixins/StoreMixin.vue'
-import { getStockEvaluation, getStockEvaluationDaily } from '@/api/stocks'
+
 
 const StockStoreModule = namespace('StockStore')
 
@@ -304,11 +371,23 @@ type ValuationContentType = {
   iconColor: string | undefined
 }
 
+type ScoreType = {
+  score: string
+  text: string
+  colorClass: string
+  backgroundColor: string
+  isHighVal: boolean
+}
+
 @Component({
   components: {
     BtnBadge,
     StockValuationChart,
-    StockValuationSingleChart
+    StockValuationSingleChart,
+    StockPolarAreaChart,
+    StockScoreBarChart,
+    ValuationBackgroundChart
+    
   }
 })
 export default class StockValuation extends StoreMixin {
@@ -322,6 +401,8 @@ export default class StockValuation extends StoreMixin {
   expandEpsRoe = false 
   expandSrim = false
   expandPer = false
+
+  dialog = false
 
   roe = {
     date: ['3', '6', '9', '12'],
@@ -356,7 +437,6 @@ export default class StockValuation extends StoreMixin {
   @StockStoreModule.State('stockGraphAllLoaded') allLoaded!: boolean
   @StockStoreModule.State('stockEvaluationDailyLoaded') dailyLoaded!: boolean
   @StockStoreModule.State('stockEvaluationLoaded') evalLoaded!: boolean
-
   @StockStoreModule.State('stockEvaluation') stockEvaluation!: any
   @StockStoreModule.State('stockEvaluationDaily') stockEvaluationDaily!: IStockEvaluationModel
   @StockStoreModule.State('stockGraphAll') stockGraphAll!: any
@@ -406,6 +486,16 @@ export default class StockValuation extends StoreMixin {
     icon: isHighVal ? 'fa-solid fa-arrow-trend-down' : 'fa-solid fa-arrow-trend-up',
       iconColor: isHighVal ? 'blue' : 'red'
     }
+  }
+
+  get scorePer () : ScoreType {    
+    const [close, valuation] = [this.stock.close, Number(Number(this.stockEvaluationDailyLast).toFixed())]
+    const isHighVal = close > valuation
+    const score = isHighVal ? ((close / valuation) * 100 - 100).toFixed() : ((valuation / close) * 100 - 100).toFixed() 
+    const text = isHighVal ? '고평가': '저평가'
+    const colorClass = isHighVal ? 'red--text' : 'blue--text'
+    const backgroundColor = isHighVal ? '#EF5350' : '#00BCD4'
+    return { score, text, colorClass, backgroundColor, isHighVal }
   }
   
   get mobile () {
@@ -566,12 +656,12 @@ strong {
 
 
 
-.stock-indicator-detail-content:hover .stock-indicator-detail-content-title,
+/* .stock-indicator-detail-content:hover .stock-indicator-detail-content-title,
 .stock-indicator-detail-content:hover .strong-white strong,
 .stock-indicator-detail-content:hover .strong-black strong
  {
-  color: rgb(64, 224, 208) !important;
-} 
+  color: #00BCD4 !important;
+}  */
 
 .stock-indicator-detail-content:hover .strong-white .sector,
 .stock-indicator-detail-content:hover .strong-black .sector
@@ -588,6 +678,21 @@ strong {
   text-decoration: underline;
   font-size: 14px !important;
   font-weight: normal !important;
+}
+
+.underlined {
+  text-decoration: underline;
+}
+
+.back {
+  position: absolute;
+  margin-top: 8px;
+  margin-left: -52px;
+  z-index: 0;
+}
+
+.OpendialogClass {
+  cursor: pointer;
 }
 
 

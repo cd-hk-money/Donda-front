@@ -5,7 +5,7 @@
       <stock-score @drawerChange="drawerChange"/>     
       <stock-indicator @drawerChange="drawerChange"/>    
     </v-col>    
-    <v-col cols="12" xl="9" lg="8" class="mb-10">
+    <v-col cols="12" xl="9" lg="8" class="mb-5">
       <v-card 
         :width="mobile ? '465' : '97%'"
         :height="mobile ? '100%' : 'auto'"

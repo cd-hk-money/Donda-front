@@ -15,7 +15,6 @@
   
       <div class="more"> 각 항목을 클릭하면, 더 많은 정보를 볼 수 있습니다. </div> 
   
-      <v-divider />
   
       <div v-if="!indicatorLoaded && !indicatorSectorLoaded">
   

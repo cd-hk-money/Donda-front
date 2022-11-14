@@ -9,8 +9,8 @@ import { transparentize } from '@/mixins/tools'
 import { IStockModel } from '@/models/stock'
 
 const { reactiveProp } = mixins
-const StockStoreModule = namespace('StockStore')
 
+const StockStoreModule = namespace('StockStore')
 const MAIN_COLOR = '#00BCD4'
 const SUB_COLOR = 'rgb(255, 99, 132)'
 
@@ -26,6 +26,7 @@ export default class StockScoreBarChart extends Vue {
 
   @StockStoreModule.State('stock') stock!: IStockModel
   @StockStoreModule.State('stockEvaluationDaily') stockEvaluationDaily!: any
+  @StockStoreModule.State('stockEvaluation') stockEvaluation!: any
 
   get stockEvaluationDailyLast () {
     return this.stockEvaluationDaily?.value.slice(-1)[0] || ''
@@ -35,24 +36,25 @@ export default class StockScoreBarChart extends Vue {
   applyDefaultOptions() {
     this.chartOptions.maintainAspectRatio = true
     this.chartOptions.responsive = true
-    this.chartOptions.legend = {
-      display: false
-    }
-
+    
     this.chartOptions.plugins = {      
       crosshair: false
     }  
+
+    this.chartOptions.legend = {
+      display: false
+    }
       this.chartOptions.scales = {
       xAxes: [{
         gridLines: {
-          display: false,
-          zeroLineColor: '#696969',          
+          display: false,          
         },
+
         ticks: {
           fontSize: 20,
-          fontStyle: 'bold'
-          
+          fontStyle: 'bold',
         },
+
         scaleLabel: {
           fontSize: 15
         }
@@ -60,7 +62,8 @@ export default class StockScoreBarChart extends Vue {
       yAxes: [{
         ticks: {
           display: false,
-          fontSize: 15,       
+          fontSize: 15,  
+          fontColor: 'white',     
           maxTicksLimit: 1   
         },
         gridLines: {
@@ -92,15 +95,20 @@ export default class StockScoreBarChart extends Vue {
 
   createChartData() {
     return {
-      labels: ['현재주가', '적정주가'],
+      labels: ['현재주가', '적정주가' ,'EPS-ROE', 'S-RIM'],
       datasets: [
         {
           type: 'bar',
-          data : [this.stock.close, Number(this.stockEvaluationDailyLast).toFixed()],
+          data: [
+            this.stock.close,
+            Number(this.stockEvaluationDailyLast).toFixed(),
+            this.stockEvaluation['proper-price'][11],
+            this.stockEvaluation['S-rim'][11]
+          ],
           fill: true,
-          borderColor: [MAIN_COLOR, SUB_COLOR],        
-          backgroundColor: [transparentize(MAIN_COLOR, 0.8) ,transparentize(SUB_COLOR, 0.8)],
-          borderWidth: 4,
+          borderColor: [MAIN_COLOR, SUB_COLOR, '#943', '#6495ed'],        
+          backgroundColor: [transparentize(MAIN_COLOR, 0.3) ,transparentize(SUB_COLOR, 0.3), transparentize('#943', 0.3), transparentize('#6495ed', 0.3)],
+          borderWidth: 5,
           radius: 4,
           pointStyple: 'rectRounded',
           tension: .4,              
@@ -119,6 +127,7 @@ export default class StockScoreBarChart extends Vue {
 
   mounted () {
     this.renderBarChart()
+    console.log(this.stockEvaluation)
   }
 }
 </script>

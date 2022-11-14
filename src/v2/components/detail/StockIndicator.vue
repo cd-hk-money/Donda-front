@@ -2,7 +2,8 @@
   <v-card 
     class="ml-5 mt-5"
     height="290"
-    width="465"                
+    width="465"
+    @click="$emit('drawerChange', 2)"    
   >     
     <v-card-title>
       보조 지표       
