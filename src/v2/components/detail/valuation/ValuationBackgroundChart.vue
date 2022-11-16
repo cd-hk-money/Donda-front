@@ -19,8 +19,6 @@ const MAIN_COLOR = '#00BCD4'
 })
 export default class StockScoreBarChart extends Vue {
 
-  chartOptions: Chart.ChartOptions = {}
-
   @Prop() chartData!: null
   @Prop() backgroundColor!: string
 
@@ -32,19 +30,19 @@ export default class StockScoreBarChart extends Vue {
     return this.stockEvaluationDaily?.value.slice(-1)[0] || ''
   }
 
-  
-  applyDefaultOptions() {
-    this.chartOptions.maintainAspectRatio = true
-    this.chartOptions.responsive = true
+  chartOptions: Chart.ChartOptions = {
+    maintainAspectRatio: true,
+    responsive: true,
     
-    this.chartOptions.plugins = {      
+    plugins: {      
       crosshair: false
-    }  
+    },
 
-    this.chartOptions.legend = {
+    legend: {
       display: false
-    }
-      this.chartOptions.scales = {
+    },
+
+    scales: {
       xAxes: [{
         gridLines: {
           display: false,          
@@ -77,13 +75,14 @@ export default class StockScoreBarChart extends Vue {
           zeroLineColor: 'white'
         },      
       }], 
-    }
-    this.chartOptions.animation = {
+    },
+
+    animation: {
       duration: 2000,
       easing: 'easeOutQuad'
-    }
+    },
     
-    this.chartOptions.tooltips = {      
+    tooltips: {      
       enabled: false,
       titleFontSize: 15,
       titleFontColor: MAIN_COLOR,
@@ -96,6 +95,7 @@ export default class StockScoreBarChart extends Vue {
     }  
   }
 
+  
 
   createChartData() {
     return {
@@ -122,14 +122,8 @@ export default class StockScoreBarChart extends Vue {
 
   renderChart!: (chartData: any, options: any) => any
 
-  renderBarChart() {
-    this.applyDefaultOptions()    
-    this.renderChart(this.createChartData(), this.chartOptions)
-  }
-
   mounted () {
-    this.renderBarChart()
-    console.log(this.stockEvaluation)
+    this.renderChart(this.createChartData(), this.chartOptions)
   }
 }
 </script>
