@@ -223,9 +223,9 @@
  ┃ ┃ ┃ ┗ 📜ProgressCircular.vue
  ┃ ┗ 📂pages
  ┃ ┃ ┣ 📜AppBar.vue
- ┃ ┃ ┣ 📜DetailV2.vue
+ ┃ ┃ ┣ 📜Detail.vue
  ┃ ┃ ┣ 📜Footer.vue
- ┃ ┃ ┣ 📜HomeV2.vue
+ ┃ ┃ ┣ 📜Home.vue
  ┃ ┃ ┣ 📜InterestToggle.vue
  ┃ ┃ ┣ 📜MenuBar.vue
  ┃ ┃ ┣ 📜NavBar.vue
