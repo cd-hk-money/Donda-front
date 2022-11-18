@@ -30,7 +30,7 @@ import { IStockNews } from '@/api/types'
 import StoreMixin from '@/mixins/StoreMixin.vue'
 import { Component, Watch} from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
-import NewsContentsFactory from './factories/NewsContentsFactory.vue'
+import NewsContentsFactory from './NewsContentsFactory.vue'
 
 const StockStoreModule = namespace('StockStore')
 

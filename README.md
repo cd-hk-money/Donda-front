@@ -129,15 +129,22 @@
  ┣ 📂@types
  ┃ ┣ 📂chartjs-plugin-zoom
  ┃ ┃ ┗ 📜index.d.ts
+ ┃ ┣ 📂d3
+ ┃ ┃ ┗ 📜index.d.ts
  ┃ ┣ 📂vue-mobile-detection
  ┃ ┃ ┗ 📜index.d.ts
  ┃ ┗ 📜index.d.ts
+ ┣ 📂api
+ ┃ ┣ 📜stocks.ts
+ ┃ ┗ 📜types.ts
  ┣ 📂assets
+ ┃ ┣ 📜koreaflag.png
  ┃ ┣ 📜logo.png
  ┃ ┣ 📜logo.svg
  ┃ ┣ 📜readme-chart1.png
  ┃ ┣ 📜readme-chart2.png
- ┃ ┗ 📜readme-chart3.png
+ ┃ ┣ 📜readme-chart3.png
+ ┃ ┗ 📜usaflag.png
  ┣ 📂mixins
  ┃ ┣ 📜StoreMixin.vue
  ┃ ┣ 📜tools.ts
@@ -159,48 +166,61 @@
  ┃ ┣ 📜index.ts
  ┃ ┣ 📜InterestStore.ts
  ┃ ┣ 📜MarketStore.ts
+ ┃ ┣ 📜payload.ts
  ┃ ┣ 📜StockStore.ts
- ┃ ┣ 📜StockStoreV2.ts
  ┃ ┗ 📜UserStore.ts
  ┣ 📂v2
  ┃ ┣ 📂components
  ┃ ┃ ┣ 📂detail
- ┃ ┃ ┃ ┣ 📜Stock.vue
- ┃ ┃ ┃ ┣ 📜StockBigChart.vue
- ┃ ┃ ┃ ┣ 📜StockChart.vue
- ┃ ┃ ┃ ┣ 📜StockDrawer.vue
- ┃ ┃ ┃ ┣ 📜StockFinance.vue
- ┃ ┃ ┃ ┣ 📜StockFinanceBarChart.vue
- ┃ ┃ ┃ ┣ 📜StockFinanceLineChart.vue
- ┃ ┃ ┃ ┣ 📜StockIndicator.vue
- ┃ ┃ ┃ ┣ 📜StockIndicatorBarChart.vue
- ┃ ┃ ┃ ┣ 📜StockIndicatorChart.vue
- ┃ ┃ ┃ ┣ 📜StockIndicatorDetail.vue
- ┃ ┃ ┃ ┣ 📜StockIndicatorLineChart.vue
- ┃ ┃ ┃ ┣ 📜StockInfo.vue
- ┃ ┃ ┃ ┣ 📜StockMarcapChart.vue
- ┃ ┃ ┃ ┣ 📜StockNews.vue
- ┃ ┃ ┃ ┣ 📜StockScore.vue
- ┃ ┃ ┃ ┣ 📜StockScoreBarChart.vue
- ┃ ┃ ┃ ┣ 📜StockSimilar.vue
- ┃ ┃ ┃ ┣ 📜StockSimilarContents.vue
- ┃ ┃ ┃ ┣ 📜StockValuation.vue
- ┃ ┃ ┃ ┣ 📜StockValuationChart.vue
- ┃ ┃ ┃ ┣ 📜StockValuationCharts.vue
- ┃ ┃ ┃ ┗ 📜StockValuationSingleChart.vue
+ ┃ ┃ ┃ ┣ 📂factories
+ ┃ ┃ ┃ ┣ 📂finance
+ ┃ ┃ ┃ ┃ ┣ 📜FinanceContentFactory.vue
+ ┃ ┃ ┃ ┃ ┣ 📜InformationFactory.vue
+ ┃ ┃ ┃ ┃ ┣ 📜StockFinance.vue
+ ┃ ┃ ┃ ┃ ┣ 📜StockFinanceBarChart.vue
+ ┃ ┃ ┃ ┃ ┗ 📜StockFinanceLineChart.vue
+ ┃ ┃ ┃ ┣ 📂indicator
+ ┃ ┃ ┃ ┃ ┣ 📜IndicatorContentFactory.vue
+ ┃ ┃ ┃ ┃ ┣ 📜StockIndicator.vue
+ ┃ ┃ ┃ ┃ ┣ 📜StockIndicatorBarChart.vue
+ ┃ ┃ ┃ ┃ ┣ 📜StockIndicatorChart.vue
+ ┃ ┃ ┃ ┃ ┣ 📜StockIndicatorDetail.vue
+ ┃ ┃ ┃ ┃ ┣ 📜StockIndicatorLineChart.vue
+ ┃ ┃ ┃ ┃ ┗ 📜StockPolarAreaChart.vue
+ ┃ ┃ ┃ ┣ 📂similar
+ ┃ ┃ ┃ ┃ ┣ 📜NewsContentsFactory.vue
+ ┃ ┃ ┃ ┃ ┣ 📜StockNews.vue
+ ┃ ┃ ┃ ┃ ┣ 📜StockSimilar.vue
+ ┃ ┃ ┃ ┃ ┗ 📜StockSimilarContents.vue
+ ┃ ┃ ┃ ┣ 📂stock
+ ┃ ┃ ┃ ┃ ┣ 📜Stock.vue
+ ┃ ┃ ┃ ┃ ┣ 📜StockBigChart.vue
+ ┃ ┃ ┃ ┃ ┣ 📜StockChartD3.vue
+ ┃ ┃ ┃ ┃ ┣ 📜StockChartD3LineBar.vue
+ ┃ ┃ ┃ ┃ ┗ 📜StockInfo.vue
+ ┃ ┃ ┃ ┣ 📂valuation
+ ┃ ┃ ┃ ┃ ┣ 📜StockScore.vue
+ ┃ ┃ ┃ ┃ ┣ 📜StockScoreBarChart.vue
+ ┃ ┃ ┃ ┃ ┣ 📜StockValuation.vue
+ ┃ ┃ ┃ ┃ ┣ 📜StockValuationChart.vue
+ ┃ ┃ ┃ ┃ ┣ 📜StockValuationSingleChart.vue
+ ┃ ┃ ┃ ┃ ┗ 📜ValuationBackgroundChart.vue
+ ┃ ┃ ┃ ┗ 📜StockDrawer.vue
  ┃ ┃ ┣ 📂home
  ┃ ┃ ┃ ┣ 📜HomeNav.vue
  ┃ ┃ ┃ ┣ 📜Market.vue
  ┃ ┃ ┃ ┣ 📜MarketChart.vue
  ┃ ┃ ┃ ┣ 📜MarketDesc.vue
  ┃ ┃ ┃ ┣ 📜MarketTrend.vue
+ ┃ ┃ ┃ ┣ 📜MarketTrendFactory.vue
  ┃ ┃ ┃ ┣ 📜StockRecommend.vue
  ┃ ┃ ┃ ┗ 📜StockRecommendContent.vue
  ┃ ┃ ┣ 📂rank
  ┃ ┃ ┃ ┣ 📜RankComponent.vue
  ┃ ┃ ┃ ┗ 📜RankContents.vue
  ┃ ┃ ┗ 📂vuetify
- ┃ ┃ ┃ ┗ 📜BtnBadge.vue
+ ┃ ┃ ┃ ┣ 📜BtnBadge.vue
+ ┃ ┃ ┃ ┗ 📜ProgressCircular.vue
  ┃ ┗ 📂pages
  ┃ ┃ ┣ 📜AppBar.vue
  ┃ ┃ ┣ 📜DetailV2.vue
@@ -210,7 +230,8 @@
  ┃ ┃ ┣ 📜MenuBar.vue
  ┃ ┃ ┣ 📜NavBar.vue
  ┃ ┃ ┣ 📜RankV2.vue
- ┃ ┃ ┗ 📜SideBar.vue
+ ┃ ┃ ┣ 📜SideBar.vue
+ ┃ ┃ ┗ 📜SnackBar.vue
  ┣ 📜App.vue
  ┣ 📜main.ts
  ┣ 📜shims-tsx.d.ts
@@ -218,6 +239,7 @@
  ┗ 📜shims-vuetify.d.ts
 
 📂@types      - ts로 재정의한 npm 라이브러리를 담고 있습니다.
+📂api         - api url과 요청 타입을 담고있습니다.
 📂assets      - 외부 파일을 담습니다.
 📂components  - 페이지에 그려질 컴포넌트들을 담고 있습니다. 
 📂mixins      - Vue의 mixins과 각종 유틸 함수들을 담고 있습니다.      

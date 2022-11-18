@@ -6,6 +6,7 @@
     min-height="162"
     rounded="xl"
     elevation="0"     
+    @click="[expand = !expand, menu = false]"
   >
     <div class="d-flex flex-warp align-center justify-start">
       <div class="">
@@ -72,8 +73,7 @@
         min-height="100"        
         :min-width="mobile ? '110' : '180'"
         class="d-flex align-center justify-center mr-3 mt-3 sparkline-sheet"
-        color="#252424"
-        @click="[expand = !expand, menu = false]"
+        color="#252424"        
       > 
         <v-sparkline            
           :min-width="mobile ? '110' : '180'"

@@ -51,7 +51,7 @@ import { Component, Vue } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 import { getStocks } from '@/store/payload'
 
-import StockSimilarContent from '@/v2/components/detail/StockSimilarContents.vue'
+import StockSimilarContent from '@/v2/components/detail/similar/StockSimilarContents.vue'
 import StockRecommendContnet from '@/v2/components/home/StockRecommendContent.vue'
 import BtnBadge from '../vuetify/BtnBadge.vue'
 

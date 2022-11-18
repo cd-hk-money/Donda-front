@@ -315,25 +315,6 @@
         </v-expand-transition>
       </v-sheet>
 
-            
-
-
-    <!-- 돈다 지수 -->
-    <!-- <strong>돈다</strong> 에서 자체적으로 계산한 주가 지수입니다. -->
-
-    <!-- EPS-ROE -->
-    <!-- <strong>EPS</strong>와 <strong>ROE</strong>를 활용한 적정 주가 계산 방법입니다. -->
-
-    <!-- S-RIM -->
-    <!-- <strong>사경인 회계사</strong>
-      <v-icon size="13" class="valuation-two-tootip">fa-solid fa-circle-question</v-icon>
-    </span>
-      에서 제시한 <strong>RIM 모델</strong>을 활용한 주가 계산 방법입니다. -->
-
-    <!-- PER 방법 -->
-
-      
-
   </v-card>
 </template>
 

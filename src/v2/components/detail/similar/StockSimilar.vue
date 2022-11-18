@@ -57,7 +57,7 @@ const MarketStoreModule = namespace('MarketStore')
 const StockStoreModule = namespace('StockStore')
 
 import { IStockModel, StockRecommendModel } from '@/models/stock'
-import BtnBadge from '../vuetify/BtnBadge.vue'
+import BtnBadge from '../../vuetify/BtnBadge.vue'
 import StockRecommendContent from '@/v2/components/home/StockRecommendContent.vue'
 
 @Component({

@@ -2,8 +2,8 @@
 import VueRouter from "vue-router";
 
 // 두번째 버전 
-import HomeV2 from '@/v2/pages/HomeV2.vue'
-import DetailV2 from '@/v2/pages/DetailV2.vue'
+import HomeV2 from '@/v2/pages/Home.vue'
+import DetailV2 from '@/v2/pages/Detail.vue'
 import RankV2 from '@/v2/pages/RankV2.vue'
 
 import goTo from "vuetify/lib/services/goto";

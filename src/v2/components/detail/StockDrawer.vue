@@ -55,8 +55,8 @@
 <script lang="ts">
 import { Component, Vue, Prop} from 'vue-property-decorator'
 import Stock from '@/v2/components/detail/stock/Stock.vue'
-import StockSimilar from '@/v2/components/detail/StockSimilar.vue'
-import StockNews from '@/v2/components/detail/StockNews.vue'
+import StockSimilar from '@/v2/components/detail/similar/StockSimilar.vue'
+import StockNews from '@/v2/components/detail/similar/StockNews.vue'
 import StockFinance from '@/v2/components/detail/finance/StockFinance.vue'
 import StockValuation from '@/v2/components/detail/valuation/StockValuation.vue'
 import StockIndicatorDetail from './indicator/StockIndicatorDetail.vue'
