@@ -13,10 +13,7 @@
       어떻게 적정 주가를 산출 했을까요?
     </v-card-subtitle>
 
-    
-
       <v-sheet class="d-flex flex-wrap align-center justify-space-between ml-4 mr-4 mb-4">
-
 
         <v-sheet 
           elevation="0"

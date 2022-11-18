@@ -1,8 +1,8 @@
 <template>
   <v-card 
-    class="ml-5 mt-5"
-    height="290"
+    class="ml-5 mt-5"    
     width="465"
+    height="288"
     @click="$emit('drawerChange', 2)"    
   >     
     <v-card-title>
@@ -37,12 +37,12 @@
           :sector="indicatorSectorChartData"
           :height="180"      
         />         
-      </div>
-    
+      </div>      
       <div class="text-center stockinfo-progress-circular" v-else>
-        <v-progress-circular indeterminate color="#00BCD4" />        
+        <v-progress-circular indeterminate color="#00BCD4" />            
       </div>
     </v-card-text>
+    
 
   </v-card>
 </template>
@@ -91,12 +91,17 @@ export default class StockIndicator extends Vue {
       roe: this.indicatorSector?.sector_roe[3],      
     }
   }
+    
+  get mobile () {
+    return this.$vuetify.breakpoint.name === 'xs'
+  }
   
   @StockStoreModule.State('indicatorLoaded') loaded!: boolean
   @StockStoreModule.State('indicatorSectorLoaded') sectorLoaded!: boolean
   @StockStoreModule.State('stockLoaded') stockLoaded!: boolean  
   @StockStoreModule.State('indicatorDailyLoaded') indicatorDailyLoaded!: boolean
   @StockStoreModule.State('stock') stock!: IStockModel
+
 
   @StockStoreModule.State('indicator') indicator!: ISimpleChartData
   @StockStoreModule.State('indicatorSector') indicatorSector!: IStockIndicatorSectorModel

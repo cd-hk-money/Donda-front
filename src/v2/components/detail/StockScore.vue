@@ -1,7 +1,7 @@
 <template>
   <v-card 
     class="ml-5 mr-5 mt-7"
-    :height="cardHeight"    
+    height="260"
     width="465"
     @click="$emit('drawerChange', 1)"
   >

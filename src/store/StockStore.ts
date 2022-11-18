@@ -1,17 +1,7 @@
 import { AsyncPayload } from '@/store/payload';
 import { Module, VuexModule, Action, Mutation } from "vuex-module-decorators";
-import axios from "axios";
 import { IStockModel, ISimpleChartData, IStockEvaluationModel, IStockIndicatorSectorModel, IStockIndicatorDailyModel, INewsModel } from "@/models/stock";
 import { IUpdateStateModel } from "@/models/payload";
-
-
-
-
-const HEADER = {
-  headers: {
-    'Content-Type': 'text/plain;charset=utf-8'
-  }
-}
 
 @Module({namespaced: true})
 export default class StockStore extends VuexModule {

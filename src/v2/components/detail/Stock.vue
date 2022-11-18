@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card :height="mobile ? '100%' : 787">
     <v-card-title> 주가 </v-card-title>
     <v-card-subtitle>
       <span>{{ stock.name }}의 주가 정보를 확인해보세요.</span>
@@ -64,7 +64,10 @@
       />        
       <!-- <StockChartD3 /> -->
       <!-- <StockChartD3LineBar /> -->
-    </div>  
+    </div> 
+    <div class="text-center stockinfo-progress-circular" v-else>
+      <v-progress-circular indeterminate color="#00BCD4" />        
+    </div> 
   </v-card>
 </template>
 
@@ -83,7 +86,7 @@ const StockStoreModule = namespace('StockStore')
   components: {
     StockBigChart,
     StockChartD3,
-    StockChartD3LineBar
+    StockChartD3LineBar,
   }
 })
 export default class Stock extends StoreMixin {
