@@ -1,9 +1,9 @@
 <template>
   <v-row :keys="componentKey">
     <v-col cols="12" xl="3" lg="4" md="4">        
-      <stock-info @drawerChange="drawerChange"/>           
-      <stock-score @drawerChange="drawerChange"/>     
-      <stock-indicator @drawerChange="drawerChange"/>    
+      <StockInfo @drawerChange="drawerChange"/>           
+      <StockScore @drawerChange="drawerChange"/>     
+      <StockIndicator @drawerChange="drawerChange"/>    
     </v-col>    
     <v-col cols="12" xl="9" lg="8" class="mb-5">
       <v-card 
@@ -90,7 +90,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator'
+import { Component } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 
 import { IMenu } from '@/v2/pages/MenuBar.vue'
@@ -106,7 +106,7 @@ import Stock from '@/v2/components/detail/Stock.vue'
 import StockValuation from '@/v2/components/detail/StockValuation.vue'
 import StockIndicatorDetail from '@/v2/components/detail/StockIndicatorDetail.vue'
 
-import { getStock, getStockEvaluation, getStockEvaluationDaily, getStockGraphAll, getStockGraphDefault, getStockNews, getStockStatement, getStockStatementAll } from '@/api/stocks'
+import { getStock, getStockEvaluation, getStockEvaluationDaily, getStockGraphAll, getStockGraphDefault, getStockIndicator, getStockIndicatorDaily, getStockIndicatorSector, getStockIndicatorSectorDaily, getStockNews, getStockSimilarContents, getStockStatement, getStockStatementAll, getStockVolume } from '@/store/payload'
 import StoreMixin from '@/mixins/StoreMixin.vue'
 
 const StockStoreModule = namespace('StockStore')
@@ -154,12 +154,8 @@ export default class DetailV2 extends StoreMixin {
       callback: () => this.drawerChange(4)
     }
   ]
-    
-  @StockStoreModule.Action('getSimilarContents') readonly getSimilarContent!: (code: string) => Promise<void>
-  @StockStoreModule.Action('getStockIndicator') readonly getStockIndicator!: (name: string) => Promise<void>
-  @StockStoreModule.Action('getStockIndicatorDaily') readonly getStockIndicatorDaily!: (stockcode: string) => Promise<void>
+      
   @StockStoreModule.Action('getIndicatorSector') readonly getIndicatorSector!: (code: string) => Promise<void>  
-  @StockStoreModule.Mutation('clearStore') readonly clearStore!: () => void
 
   get mobile () {
     return this.$vuetify.breakpoint.name === 'xs'
@@ -176,21 +172,23 @@ export default class DetailV2 extends StoreMixin {
   async fetchStock () {
     const code = this.$route.params.title
 
-    this.getAPI(getStockGraphAll(code))
-    this.getAPI(getStockGraphDefault(code))
-    this.getAPI(getStockEvaluation(code))
-    this.getAPI(getStockEvaluationDaily(code))       
-    this.getAPI(getStockGraphDefault(code))
-    this.statementTypes.forEach(statementType => this.getAPI(getStockStatementAll(code, statementType)))
-    this.getAPI(getStock(code))
-    this.getAPI(getStockStatement(code))
-    this.getAPI(getStockNews(code))
+    this.callRequest(getStockGraphAll(code))
+    this.callRequest(getStockGraphDefault(code))
+    this.callRequest(getStockEvaluation(code))
+    this.callRequest(getStockEvaluationDaily(code))       
+    this.callRequest(getStockGraphDefault(code))
+    this.callRequest(getStock(code))
+    this.callRequest(getStockStatement(code))
+    this.callRequest(getStockNews(code))
+    this.callRequest(getStockIndicator(code))
+    this.callRequest(getStockIndicatorDaily(code))
+    this.callRequest(getStockSimilarContents(code))
+    this.callRequest(getStockIndicatorSector(code))
+    this.callRequest(getStockIndicatorSectorDaily(code))
+    this.callRequest(getStockVolume(code))
 
-
-    await this.getStockIndicator(code)
-    await this.getStockIndicatorDaily(code) 
-    await this.getIndicatorSector(code) 
-    this.getSimilarContent(code)
+    this.statementTypes.forEach(statementType => this.callRequest(getStockStatementAll(code, statementType)))    
+    
 
   }
 

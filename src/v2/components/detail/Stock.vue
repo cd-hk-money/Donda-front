@@ -69,14 +69,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 import { IStockModel } from '@/models/stock'
 import StockBigChart from '@/v2/components/detail/StockBigChart.vue'
 import StockChartD3 from '@/v2/components/detail/stock/StockChartD3.vue'
 import StockChartD3LineBar from '@/v2/components/detail/stock/StockChartD3LineBar.vue'
 import StoreMixin from '@/mixins/StoreMixin.vue'
-import { getStockGraphAll } from '@/api/stocks'
 
 const StockStoreModule = namespace('StockStore')
 
@@ -101,7 +100,6 @@ export default class Stock extends StoreMixin {
   @StockStoreModule.State('stockGraphDefault') stockGraphDefault!: any
   @StockStoreModule.State('stockGraphAllLoaded') loaded!: boolean
   @StockStoreModule.State('stockGraphVolumeLoaded') volumeLoaded!: boolean  
-  @StockStoreModule.Action('getStockGraphVolume') getStockGraphVolume!: (name: string) => Promise<void>
     
   get lastDate () {
     const labels = Object.keys(this.stockGraphDefault)
@@ -158,9 +156,6 @@ export default class Stock extends StoreMixin {
   }
 
   async mounted () {    
-    const code = this.$route.params.title        
-    this.getAPI(getStockGraphAll(code))
-    await this.getStockGraphVolume(code)
     this.picked = this.Picked
   }  
 }

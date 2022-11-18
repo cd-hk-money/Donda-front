@@ -17,7 +17,7 @@
     extends: Line,
     mixins: [reactiveProp]
   })
-  export default class StockScoreBarChart extends Vue {
+  export default class StockScoreLineChart extends Vue {
   
     @Prop() type!: string  
     @Prop() sector!: number[]
@@ -79,7 +79,7 @@
 
     }
 
-    createChartData() {
+    createChartData() {      
       return {
         labels: this.labels,
         datasets: [
@@ -114,7 +114,9 @@
     renderChart!: (chartData: unknown, options: unknown) => unknown
         
     mounted () {
-      this.renderChart(this.createChartData(), this.chartOptions)
+      // console.log(this.labels, 'labels')
+      // console.log('mounted!')
+      // this.renderChart(this.createChartData(), this.chartOptions)
     }
   }
   </script>

@@ -260,13 +260,3 @@ export default class Landing extends Vue {
 }
   
 </script>
-<style>
-  .market {
-    position: relative;
-  }
-  .market-name {
-    font-weight: bold;
-    color: white;
-    font-size: 30px;
-  }
-</style>

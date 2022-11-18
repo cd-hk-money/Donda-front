@@ -49,7 +49,7 @@ import { mobileHeight } from '@/mixins/tools'
 import { IStockModel, StockRecommendModel } from '@/models/stock'
 import { Component, Vue } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
-import { getStocks } from '@/api/stocks'
+import { getStocks } from '@/store/payload'
 
 import StockSimilarContent from '@/v2/components/detail/StockSimilarContents.vue'
 import StockRecommendContnet from '@/v2/components/home/StockRecommendContent.vue'
@@ -90,12 +90,12 @@ export default class StockRecommend extends StockMixin {
 
   async reload () {
     const recommendCodes = (await this.getRecommend()).map(stock => stock.code)
-    this.getAPI(getStocks(recommendCodes))
+    this.callRequest(getStocks(recommendCodes))
   }
 
   async mounted () {    
     const recommendCodes = (await this.getRecommend()).map(stock => stock.code)
-    if(!this.recommendStocks.length) this.getAPI(getStocks(recommendCodes))
+    if(!this.recommendStocks.length) this.callRequest(getStocks(recommendCodes))
     
   }
 }

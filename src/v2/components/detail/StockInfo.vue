@@ -132,7 +132,6 @@ import { namespace } from 'vuex-class'
 import { IUpdateStateModel } from '@/models/payload';
 import { IStockModel } from '@/models/stock'
 import { IInterestGroup, IInterestGroupItem } from '@/models/interest'
-import { getStock } from '@/api/stocks'
 import StoreMixin from '@/mixins/StoreMixin.vue';
 
 const StockStoreModule = namespace('StockStore')
@@ -149,10 +148,8 @@ export default class StockInfo extends StoreMixin {
       
   // StockStore
   @StockStoreModule.State('stock') stock!: IStockModel
-  @StockStoreModule.State('stockLoaded') loaded!: boolean
-  @StockStoreModule.Action('getStock') getStock!: (name: string) => Promise<void>
-  
-
+  @StockStoreModule.State('stockLoaded') loaded!: boolean  
+    
   // InterestStore
   @InterestStoreModule.State('interestGroups') interestGroups!: IInterestGroup[]
   @InterestStoreModule.State('snackBar') snackBar!: boolean
@@ -180,11 +177,6 @@ export default class StockInfo extends StoreMixin {
     this.$emit('drawerChange', 0)
   }
         
-  async mounted () {          
-    const code = this.$route.params.title
-
-    this.getAPI(getStock(code))    
-  }  
 }
 </script>
 <style scoped>

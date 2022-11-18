@@ -71,20 +71,11 @@ export default class StockSimilar extends Vue {
   
   @MarketStoreModule.State('recommend') recommend!: StockRecommendModel[]
   @MarketStoreModule.State('recommedLoaded') loaded!: boolean
-  @MarketStoreModule.Action('getRecommend') readonly getRecommend!: () => Promise<void>
-
   @StockStoreModule.State('stock') stock!: IStockModel
   @StockStoreModule.State('similarContents') similarContents!: IStockModel[]
-  @StockStoreModule.Action('getSimilarContents') readonly getSimilarContent!: (code: string) => Promise<void>
 
   get width (): string | number { 
     return this.$vuetify.breakpoint.name === 'xs' ? 465 : '60%'
-  }
-
-  async created () {
-    const code = this.$route.params.title
-    await this.getSimilarContent(code)    
-    console.log(this.similarContents)
   }
 
 }

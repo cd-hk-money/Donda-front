@@ -311,8 +311,6 @@ import FinanceContentFactory from '@/v2/components/detail/finance/FinanceContent
 import FinanceInformationFactory from '@/v2/components/detail/finance/InformationFactory.vue'
 import { ISimpleChartData, IStockModel } from '@/models/stock'
 import StoreMixin from '@/mixins/StoreMixin.vue'
-import { getStockStatementAll } from '@/api/stocks'
-
 const StockStoreModule = namespace('StockStore')
 
 @Component({

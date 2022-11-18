@@ -77,3 +77,59 @@ export interface IStockGraph {
     [code: string]: number
   }
 }
+
+export interface IStockIndicator {
+  [date: string]: {
+    type: string
+    eps: number
+    bps: number
+    roe: number
+  }
+}
+
+export interface IStockIndicatorDaily {
+  [date: string]: {
+    PER: number
+    PBR: number
+    PSR: number
+  }
+}
+
+export interface IStockIndicatorSector {
+  date: string[]
+  sector_bps: number[]
+  sector_eps: number[]
+  sector_roe: number[]
+}
+
+export interface IStockIndicatorSectorDaily {
+  [date: string]: {
+    per: number
+    pbr: number
+    psr: number
+  }
+}
+
+export interface IStockGraphVolume {
+  close: {
+    date: string[]
+    value: number[]
+  }
+  origin: {
+    [date: string] : number
+  }
+}
+
+export type ResponseType = 
+  IStock | 
+  IStockSimilar[] | 
+  IStockNews[] | 
+  IStockStatement | 
+  IStockEvaluationDaily | 
+  StockStatementAll | 
+  IStockGraph | 
+  IStockIndicator |
+  IStockIndicatorDaily |
+  IStockIndicatorSector |
+  IStockIndicatorSectorDaily |
+  IStockGraphVolume

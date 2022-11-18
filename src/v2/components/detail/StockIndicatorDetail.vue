@@ -207,7 +207,7 @@
     
           <v-expand-transition>
             <v-card v-if="expandPsr">
-              <stock-indicator-line-chart 
+              <StockIndicatorBarChart 
                 type="PSR"
                 :chartData="indicatorDaily.PSR"   
                 :sector="indicatorSectorDaily.PSR"
@@ -269,7 +269,7 @@
     
           <v-expand-transition>
             <v-card v-if="expandPer">
-              <stock-indicator-line-chart 
+              <StockIndicatorBarChart 
                 type="PSR"
                 :chartData="indicatorDaily.PER"   
                 :sector="indicatorSectorDaily.PER"
@@ -331,7 +331,7 @@
     
           <v-expand-transition>
             <v-card v-if="expandPbr">
-              <stock-indicator-line-chart 
+              <StockIndicatorBarChart 
                 type="PSR"
                 :chartData="indicatorDaily.PBR"   
                 :sector="indicatorSectorDaily.PBR"
@@ -381,24 +381,22 @@ import { ISimpleChartData, IStockIndicatorDailyModel, IStockIndicatorSectorModel
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class'
 import StockIndicatorBarChart from '@/v2/components/detail/StockIndicatorBarChart.vue'
-import StockIndicatorLineChart from '@/v2/components/detail/StockIndicatorLineChart.vue'
 import IndicatorContentFactory from '@/v2/components/detail/indicator/IndicatorContentFactory.vue'
 import BtnBadge from '@/v2/components/vuetify/BtnBadge.vue'
 import InformationFactory from '@/v2/components/detail/finance/InformationFactory.vue';
+import StoreMixin from '@/mixins/StoreMixin.vue';
 
 const StockStoreModule = namespace('StockStore')
-const MarketStoreModule = namespace('MarketStore')
 
 @Component({
   components: {
     BtnBadge,
     InformationFactory,
     IndicatorContentFactory,
-    StockIndicatorBarChart,
-    StockIndicatorLineChart    
+    StockIndicatorBarChart,    
   }
 })
-export default class StockIndicatorDetail extends Vue {
+export default class StockIndicatorDetail extends StoreMixin {
 
   @StockStoreModule.State('stock') stock!: IStockModel
   @StockStoreModule.State('indicator') indicators!: ISimpleChartData  
@@ -406,15 +404,8 @@ export default class StockIndicatorDetail extends Vue {
   @StockStoreModule.State('indicatorSector') indicatorSector!: IStockIndicatorSectorModel
   @StockStoreModule.State('indicatorSectorDaily') indicatorSectorDaily!: IStockIndicatorDailyModel  
   @StockStoreModule.State('indicatorLoaded') indicatorLoaded!: boolean
-  @StockStoreModule.State('indicatorSectorLoaded') indicatorSectorLoaded!: boolean
-  @StockStoreModule.State('indicatorDailyChartLabel') labels! :string[]
-
-  @StockStoreModule.Action('getStockIndicator') readonly getStockIndicator!: (name: string) => Promise<void>
-  @StockStoreModule.Action('getStockIndicatorDaily') readonly getStockIndicatorDaily!: (stockcode: string) => Promise<void>
-  @StockStoreModule.Action('getIndicatorSector') readonly getIndicatorSector!: (code: string) => Promise<void>  
-
-  @MarketStoreModule.State('codeTitleMapping') codeTitleMapping!: { [name: string]: string }
-  
+  @StockStoreModule.State('indicatorSectorLoaded') indicatorSectorLoaded!: boolean  
+        
   expandEps = false
   expandBps = false
   expandRoe = false  

@@ -68,10 +68,9 @@
              </div> -->
           </v-sheet>
 
-          <v-sheet color="rgb(40, 40, 40)" elevation="0" height="80" class="d-flex justify-center align-center text-h7">            
-            지금
+          <v-sheet color="rgb(40, 40, 40)" elevation="0" height="80" class="text-h7 d-flex flex-column justify-center align-center"> 
             <span class="ml-1 mr-1 font-weight-bold">{{ stock.name }}</span>
-             에 투자 하는것을  {{ scorePer.isHighVal ? '추천드리지 않습니다..' : '추천드립니다.'}}
+             에 투자 하는것을  {{ scorePer.isHighVal ? '추천드리지 않습니다.' : '추천드립니다.'}}
           </v-sheet>          
         </v-sheet>
 
@@ -86,10 +85,7 @@
             <StockValuationChart />
           </v-card>
         </v-dialog>
-            
-          
-        
-        
+
       </v-sheet>
 
       <v-divider />

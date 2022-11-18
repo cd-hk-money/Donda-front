@@ -344,7 +344,7 @@
 </template>
 
 <script lang="ts">
-import { getStock } from '@/api/stocks'
+import { getStock } from '@/store/payload'
 import StoreMixin from '@/mixins/StoreMixin.vue'
 import { IUserAlram, IUserInterestGroupItem } from '@/models/interest'
 import { IUpdateStateModel } from '@/models/payload'
@@ -352,8 +352,8 @@ import { IStockModel, StockSimpleModel } from '@/models/stock'
 import { Component, Vue, Watch } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 
-const StockStoreModule = namespace('StockStore')
 const InterestStoreModule = namespace('InterestStore')
+const MarketStoreModule = namespace('MarketStore')
 
 @Component({
   
@@ -372,9 +372,9 @@ export default class NavBar extends StoreMixin {
   @InterestStoreModule.Mutation('removeInterestGroupItem') readonly removeInterestGroupItem!: ({groupTitle, itemTitle}: {groupTitle: string, itemTitle: string}) => void  
   @InterestStoreModule.Getter('computedInterestStore') computedInterestStore!: any
     
-  @StockStoreModule.Action('getDailySimpleRanks') getDailySimpleRanks!: () => Promise<void>
-  @StockStoreModule.State('dailySimpleRanksLoaded') dailySimpleRanksLoaded!: boolean
-  @StockStoreModule.State('dailySimpleRanks') dailySimpleRank!: any
+  @MarketStoreModule.Action('getDailySimpleRanks') getDailySimpleRanks!: () => Promise<void>
+  @MarketStoreModule.State('dailySimpleRanksLoaded') dailySimpleRanksLoaded!: boolean
+  @MarketStoreModule.State('dailySimpleRanks') dailySimpleRank!: any
 
   
   bookmark: boolean | null = false
@@ -444,7 +444,7 @@ export default class NavBar extends StoreMixin {
     this.isSearch = false
     if(this.$route.fullPath === item) return
 
-    this.getAPI(getStock(item))    
+    this.callRequest(getStock(item))    
     this.$router.push(`/detail/${this.codeTitleMapping[item]}`); 
     (document.activeElement as HTMLElement).blur()      
   }

@@ -24,6 +24,16 @@ export default class MarketStore extends VuexModule {
 	public searchTable!: StockSimpleModel[]
 	public codeTitleMapping: { [title: string]: string } = {}
 
+	
+	// 오늘의 간단 랭킹
+	public dailySimpleRanksLoaded = false
+	public dailySimpleRanks = {
+		marcap: [],
+		change_incr: [],
+		change_redu: [],
+		volume: []
+	}
+
 
 	// 주식 시장
 	public marketLoaded = false  
@@ -260,4 +270,22 @@ export default class MarketStore extends VuexModule {
 			console.log(e)
 		}
 	}
+
+	@Action
+  public async getDailySimpleRanks(): Promise<void> {    
+    try {
+      this.context.commit('updateState', {
+        dailySimpleRanksLoaded: true
+      })
+
+      const res = await axios.get(`/daily/rank`, HEADER)
+            
+      this.context.commit('updateState', {
+        dailySimpleRanks: res.data,
+        dailySimpleRanksLoaded: false
+      })      
+    } catch(e) {
+      console.log(e)
+    }
+  }  
 }

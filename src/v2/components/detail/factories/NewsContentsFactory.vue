@@ -8,15 +8,19 @@
       <v-list-item-title class="font-weight-bold news-list-item-title">
         {{ computedContnet.title }} 
       </v-list-item-title>
-      <v-divider></v-divider>
+      
+      <v-divider />
 
       <v-list-item-content class="news-card-content">
         {{ computedContnet.content }}
       </v-list-item-content>
+
       <v-list-item-action class="news-card-action mt-10 mr-3">
         {{ computedContnet.date}}
       </v-list-item-action>
+
     </v-list-item-content>
+
   </v-list-item>
 </template>
 

@@ -25,7 +25,7 @@
 </template>
 
 <script lang="ts">
-import { getStockNews } from '@/api/stocks'
+import { getStockNews } from '@/store/payload'
 import { IStockNews } from '@/api/types'
 import StoreMixin from '@/mixins/StoreMixin.vue'
 import { Component, Watch} from 'vue-property-decorator'

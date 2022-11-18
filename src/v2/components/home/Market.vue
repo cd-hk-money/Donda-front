@@ -53,7 +53,6 @@ import MarketDesc from '@/v2/components/home/MarketDesc.vue'
 import MarketChart from '@/v2/components/home/MarketChart.vue'
 
 import { IMarketRecentModel } from '@/models/market'
-import { mobileHeight } from '@/mixins/tools'
 
 import StoreMixin from '@/mixins/StoreMixin.vue'
 
@@ -66,8 +65,6 @@ const MarketStoreModule = namespace('MarketStore')
   }
 })
 export default class Market extends Vue {
-
-  store: StoreMixin = new StoreMixin()
   
   // 마켓 타입
   marketTypes = ['kospi', 'nasdaq', 'snp500', 'us10yt', 'us1yt', 'us5yt', 'usdkrw']

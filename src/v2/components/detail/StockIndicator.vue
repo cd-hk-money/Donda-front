@@ -52,7 +52,6 @@ import { Component, Vue } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 
 import StockIndicatorChart from '@/v2/components/detail/StockIndicatorChart.vue'
-import StockIndicatorBarChart from './StockIndicatorBarChart.vue'
 
 import { ISimpleChartData, IStockIndicatorSectorDailyModel, IStockIndicatorSectorModel, IStockModel } from '@/models/stock'
 import BtnBadge from '../vuetify/BtnBadge.vue'
@@ -62,7 +61,6 @@ const StockStoreModule = namespace('StockStore')
 @Component({
   components: {
     StockIndicatorChart,
-    StockIndicatorBarChart,
     BtnBadge
   }
 })
@@ -99,7 +97,6 @@ export default class StockIndicator extends Vue {
   @StockStoreModule.State('stockLoaded') stockLoaded!: boolean  
   @StockStoreModule.State('indicatorDailyLoaded') indicatorDailyLoaded!: boolean
   @StockStoreModule.State('stock') stock!: IStockModel
-
 
   @StockStoreModule.State('indicator') indicator!: ISimpleChartData
   @StockStoreModule.State('indicatorSector') indicatorSector!: IStockIndicatorSectorModel

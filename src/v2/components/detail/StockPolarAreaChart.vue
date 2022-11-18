@@ -107,7 +107,7 @@ export default class StockScoreBarChart extends Vue {
           ],
           fill: true,
           borderColor: [MAIN_COLOR, SUB_COLOR, '#943', '#6495ed'],        
-          backgroundColor: [transparentize(MAIN_COLOR, 0.3) ,transparentize(SUB_COLOR, 0.3), transparentize('#943', 0.3), transparentize('#6495ed', 0.3)],
+          backgroundColor: [transparentize(MAIN_COLOR, 0.8) ,transparentize(SUB_COLOR, 0.8), transparentize('#943', 0.8), transparentize('#6495ed', 0.8)],
           borderWidth: 5,
           radius: 4,
           pointStyple: 'rectRounded',
