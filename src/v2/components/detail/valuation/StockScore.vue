@@ -50,9 +50,8 @@ import { Component, Vue } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 
 import StockScoreBarChart from './StockScoreBarChart.vue'
-import StockChart from '@/v2/components/detail/StockChart.vue'
 import { IStockModel } from '@/models/stock'
-import BtnBadge from '../vuetify/BtnBadge.vue'
+import BtnBadge from '../../vuetify/BtnBadge.vue'
 import StoreMixin from '@/mixins/StoreMixin.vue'
 
 const StockStoreModule = namespace('StockStore')
@@ -66,7 +65,6 @@ type ScoreType = {
 @Component({
   components: {
     StockScoreBarChart,
-    StockChart,
     BtnBadge
   }
 })

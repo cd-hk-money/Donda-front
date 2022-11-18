@@ -95,16 +95,15 @@ import { namespace } from 'vuex-class'
 
 import { IMenu } from '@/v2/pages/MenuBar.vue'
 import StockInfo from '@/v2/components/detail/StockInfo.vue'
-import StockChart from '@/v2/components/detail/Stock.vue'
-import StockFinance from '@/v2/components/detail/StockFinance.vue'
-import StockScore from '@/v2/components/detail/StockScore.vue'
+import StockFinance from '@/v2/components/detail/finance/StockFinance.vue'
+import StockScore from '@/v2/components/detail/valuation/StockScore.vue'
 import StockDrawer from '@/v2/components/detail/StockDrawer.vue'
-import StockIndicator from '@/v2/components/detail/StockIndicator.vue'
+import StockIndicator from '@/v2/components/detail/indicator/StockIndicator.vue'
 import StockSimilar from '@/v2/components/detail/StockSimilar.vue'
 import StockNews from '@/v2/components/detail/StockNews.vue'
-import Stock from '@/v2/components/detail/Stock.vue'
-import StockValuation from '@/v2/components/detail/StockValuation.vue'
-import StockIndicatorDetail from '@/v2/components/detail/StockIndicatorDetail.vue'
+import Stock from '@/v2/components/detail/stock/Stock.vue'
+import StockValuation from '@/v2/components/detail/valuation/StockValuation.vue'
+import StockIndicatorDetail from '@/v2/components/detail/indicator/StockIndicatorDetail.vue'
 
 import { getStock, getStockEvaluation, getStockEvaluationDaily, getStockGraphAll, getStockGraphDefault, getStockIndicator, getStockIndicatorDaily, getStockIndicatorSector, getStockIndicatorSectorDaily, getStockNews, getStockSimilarContents, getStockStatement, getStockStatementAll, getStockVolume } from '@/store/payload'
 import StoreMixin from '@/mixins/StoreMixin.vue'
@@ -114,7 +113,6 @@ const StockStoreModule = namespace('StockStore')
 @Component({
   components: {
     StockInfo,
-    StockChart,
     StockFinance,
     StockScore,
     StockIndicator,

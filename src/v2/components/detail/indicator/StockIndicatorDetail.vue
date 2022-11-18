@@ -380,7 +380,7 @@
 import { ISimpleChartData, IStockIndicatorDailyModel, IStockIndicatorSectorModel, IStockModel } from '@/models/stock';
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class'
-import StockIndicatorBarChart from '@/v2/components/detail/StockIndicatorBarChart.vue'
+import StockIndicatorBarChart from '@/v2/components/detail/indicator/StockIndicatorBarChart.vue'
 import IndicatorContentFactory from '@/v2/components/detail/indicator/IndicatorContentFactory.vue'
 import BtnBadge from '@/v2/components/vuetify/BtnBadge.vue'
 import InformationFactory from '@/v2/components/detail/finance/InformationFactory.vue';

@@ -75,7 +75,7 @@
 import { Component } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 import { IStockModel } from '@/models/stock'
-import StockBigChart from '@/v2/components/detail/StockBigChart.vue'
+import StockBigChart from '@/v2/components/detail/stock/StockBigChart.vue'
 import StockChartD3 from '@/v2/components/detail/stock/StockChartD3.vue'
 import StockChartD3LineBar from '@/v2/components/detail/stock/StockChartD3LineBar.vue'
 import StoreMixin from '@/mixins/StoreMixin.vue'

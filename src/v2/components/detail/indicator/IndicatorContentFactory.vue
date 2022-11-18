@@ -63,7 +63,7 @@
 
 <script lang="ts">
   import { Component, Prop, Vue } from 'vue-property-decorator';
-  import StockIndicatorBarChart from '@/v2/components/detail/StockIndicatorBarChart.vue';
+  import StockIndicatorBarChart from '@/v2/components/detail/indicator/StockIndicatorBarChart.vue';
 
   @Component({
     components: {

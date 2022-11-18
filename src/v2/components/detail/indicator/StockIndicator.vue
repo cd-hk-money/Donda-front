@@ -51,10 +51,10 @@
 import { Component, Vue } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 
-import StockIndicatorChart from '@/v2/components/detail/StockIndicatorChart.vue'
+import StockIndicatorChart from '@/v2/components/detail/indicator/StockIndicatorChart.vue'
 
 import { ISimpleChartData, IStockIndicatorSectorDailyModel, IStockIndicatorSectorModel, IStockModel } from '@/models/stock'
-import BtnBadge from '../vuetify/BtnBadge.vue'
+import BtnBadge from '../../vuetify/BtnBadge.vue'
 
 const StockStoreModule = namespace('StockStore')
 

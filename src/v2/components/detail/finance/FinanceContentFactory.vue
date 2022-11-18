@@ -52,8 +52,8 @@
 
 <script lang="ts">    
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
-import StockFinanceBarChart from '@/v2/components/detail/StockFinanceBarChart.vue'
-import StockFinanceLineChart from '@/v2/components/detail/StockFinanceLineChart.vue'
+import StockFinanceBarChart from '@/v2/components/detail/finance/StockFinanceBarChart.vue'
+import StockFinanceLineChart from '@/v2/components/detail/finance/StockFinanceLineChart.vue'
 import { getFirstUpper } from '@/mixins/tools'
 import StoreMixin from '@/mixins/StoreMixin.vue';
 

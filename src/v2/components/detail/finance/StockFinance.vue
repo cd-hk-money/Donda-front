@@ -304,9 +304,9 @@
 import { Component, Vue } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 
-import BtnBadge from '../vuetify/BtnBadge.vue'
-import StockFinanceBarChart from '@/v2/components/detail/StockFinanceBarChart.vue'
-import StockFinanceLineChart from '@/v2/components/detail/StockFinanceLineChart.vue'
+import BtnBadge from '../../vuetify/BtnBadge.vue'
+import StockFinanceBarChart from '@/v2/components/detail/finance/StockFinanceBarChart.vue'
+import StockFinanceLineChart from '@/v2/components/detail/finance/StockFinanceLineChart.vue'
 import FinanceContentFactory from '@/v2/components/detail/finance/FinanceContentFactory.vue'
 import FinanceInformationFactory from '@/v2/components/detail/finance/InformationFactory.vue'
 import { ISimpleChartData, IStockModel } from '@/models/stock'
