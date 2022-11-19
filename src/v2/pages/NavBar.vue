@@ -191,8 +191,7 @@
                 v-model="email"
                 :not_space="true"
                 :rules="emailRules"
-                required
-                :counter="20"
+                required                
                 outlined 
                 label="이메일"
               />
