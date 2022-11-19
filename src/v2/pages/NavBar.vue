@@ -107,9 +107,10 @@
         right bottom        
         :position-y="100"            
         offset-y
-        v-model="bookmark"        
-        :min-width="250"
-        :close-on-content-click="false"                
+        v-model="bookmark"
+        :min-width="300"
+        :close-on-content-click="false"         
+        @blur="userBlur"    
       >
         <template v-slot:activator="{ on, attrs}">
           <div class="d-flex navbar__menu__btn">
@@ -122,16 +123,16 @@
           </div>
         </template>
         
-        <v-card v-if="logined">
+        <v-card v-if="user && bookmark && !loginState.loading">
           <v-list>
             <v-list-item>            
               <v-list-item-content>
-                <v-list-item-title v-text="'이준하'" />
-                <v-list-item-subtitle v-text="'ruddud1123@naver.com'" />
+                <v-list-item-title>{{ user.username }}</v-list-item-title>
+                <v-list-item-subtitle>{{ user.email }} </v-list-item-subtitle>
               </v-list-item-content>
 
               <v-list-item-action>
-                <v-btn outlined @click="[bookmark = false, logined = false]">Logout</v-btn>
+                <v-btn outlined @click="logout">로그아웃</v-btn>
               </v-list-item-action>
             </v-list-item>
           </v-list>
@@ -148,22 +149,83 @@
           </v-list>
         </v-card>
 
-        <v-card v-else>
-          <v-card-title class="text-h6 d-flex justify-center">LOGIN</v-card-title>                  
+        <v-card v-else-if="!isSignUp && bookmark">
+          <v-card-title class="text-h6 d-flex justify-center">로그인</v-card-title>                  
 
           <v-divider />
           
           <v-card-text>
-            <v-text-field outlined label="ID" v-model="userId" />
-            <v-text-field
-              outlined label="PASSWORD"               
-              :append-icon="showPassword? 'mdi-eye' : 'mdi-eye-off'"
-              :type="showPassword ? 'text' : 'password'"
-              @click:append="showPassword = !showPassword"
-              v-model="userPassword"
-            />          
-            <v-btn block outlined elevation="0"> Login </v-btn>            
-            <v-btn class="mt-2" block outlined elevation="0"> Sign in </v-btn>            
+            <v-form>
+              <v-text-field outlined label="아이디" v-model="loginUsername" />
+              <v-text-field
+                outlined label="패스워드"               
+                :append-icon="showPassword? 'mdi-eye' : 'mdi-eye-off'"
+                :type="showPassword ? 'text' : 'password'"
+                @click:append="showPassword = !showPassword"
+                v-model="loginPassword"
+                @keypress.enter="login"
+              />          
+            </v-form>
+            <v-btn block outlined elevation="0" @click="login"> 로그인 </v-btn>            
+            <v-btn class="mt-2" block outlined elevation="0" @click="isSignUp = true"> 회원가입 </v-btn>    
+          </v-card-text>
+        </v-card>
+
+        <v-card v-else-if="isSignUp && bookmark" >
+          <v-card-title class="text-h6 d-flex justify-center">회원가입</v-card-title>                  
+
+          <v-divider />
+
+          
+          <v-card-text>
+            <v-form ref="form" v-model="valid" lazy-validation v-if="!signUpState.loading">
+              <v-text-field 
+                v-model="username" 
+                outlined 
+                :not_space="true"
+                :counter="20"
+                label="사용자이름"
+                :rules="usernameRules"
+                required
+              />                          
+              <v-text-field 
+                v-model="email"
+                :not_space="true"
+                :rules="emailRules"
+                required
+                :counter="20"
+                outlined 
+                label="이메일"
+              />
+              <v-text-field 
+                v-model="nickname"
+                :counter="10"
+                outlined 
+                label="별명"
+              />
+              <v-text-field 
+                outlined label="패스워드"        
+                :not_space="true"       
+                :rules="passwordRules"
+                :append-icon="showPassword? 'mdi-eye' : 'mdi-eye-off'"
+                :type="showPassword ? 'text' : 'password'"
+                required
+                v-model="password" 
+                :counter="20"
+              />
+              <v-btn 
+                block
+                outlined 
+                elevation="0" 
+                @click="validate"
+                :disalbed="!valid"
+              > 회원 가입 </v-btn>            
+              <v-btn color="error" class="mt-2" block outlined elevation="0" @click="isSignUp = false"> 취소 </v-btn>
+              
+            </v-form>
+            <div class="text-center stockinfo-progress-circular" v-else>
+              <v-progress-circular indeterminate color="#00BCD4" />        
+            </div>
           </v-card-text>
         </v-card>
       </v-menu>
@@ -351,9 +413,11 @@ import { IUpdateStateModel } from '@/models/payload'
 import { IStockModel, StockSimpleModel } from '@/models/stock'
 import { Component, Vue, Watch } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
+import { StoreState, User } from '@/store/UserStore'
 
 const InterestStoreModule = namespace('InterestStore')
 const MarketStoreModule = namespace('MarketStore')
+const UserStoreModule = namespace('UserStore')
 
 @Component({
   
@@ -376,17 +440,113 @@ export default class NavBar extends StoreMixin {
   @MarketStoreModule.State('dailySimpleRanksLoaded') dailySimpleRanksLoaded!: boolean
   @MarketStoreModule.State('dailySimpleRanks') dailySimpleRank!: any
 
+  @UserStoreModule.State('signUpState') signUpState!: StoreState
+  @UserStoreModule.State('loginState') loginState!: StoreState
+  @UserStoreModule.State('user') user!: User
+  @UserStoreModule.Mutation('updateState') readonly updateUserState!: (payload: IUpdateStateModel) => void
+
+  @UserStoreModule.Action('trySignUp') trySignUp!: (payload: { username: string, nickname: string, email: string, password: string }) => Promise<void>
+  @UserStoreModule.Action('tryLogin') tryLogin!: (paylaod: { username: string, password: string}) => Promise<void>
+  @UserStoreModule.Action('tryLogout') tryLogout!: () => void
   
-  bookmark: boolean | null = false
+  bookmark: boolean | null = false    
   isAlarm: boolean | null = true
   isSearch: boolean | null = false
-  logined = true
   loading = false
   searchs = ''
   search: any = null
   items: string[] = []
 
-  userId: string | null = ''
+
+  // 로그인
+  loginUsername = ''
+  loginPassword = ''
+
+  logout () {
+    console.log('logout gogo')
+    this.tryLogout()
+    this.bookmark = false
+  }
+
+  async login () {
+    await this.tryLogin({
+      username: this.loginUsername,
+      password: this.loginPassword
+    })
+
+    const { loading, error, data} = this.loginState
+    data as { accessToken: string, grantType: string, refreshToken: string, refreshTokenExpirationTime: number }
+    if(error) {
+      this.updateState({
+        snackBarMessage: '로그인 실패: 잘못된 아이디와 비밀번호입니다.',
+        snackBar: true        
+      })
+    }
+
+    if(data) {
+      this.bookmark = false
+      this.updateState({
+        snackBarMessage: `환영합니다! ${this.loginUsername}님`,
+        snackBar: true        
+      })
+      this.loginPassword = ''
+      this.loginUsername = ''
+    }
+  }
+
+  userBlur () {
+    console.log('blur')
+  }
+  
+
+  // 회원가입
+  isSignUp = false
+  valid = true
+  email = ''
+  username = ''
+  nickname = ''
+  password = ''
+
+  usernameRules = [v => !!v || '사용자이름은 필수 입력 사항입니다.', v => (v && v.length <= 20) || '20글자보다 작아야 합니다.' , v => (v && !v.match(/[\s]/g) || '공백이 있으면 안됩니다.')]
+  passwordRules = [v => !!v || '비밀번호는 필수 입력 사항입니다.', v => (v && v.length <= 20) || '20글자보다 작아야 합니다.', v => (v && !v.match(/[\s]/g) || '공백이 있으면 안됩니다.')]
+  emailRules = [v => !!v || '이메일은 필수 입력 사항입니다.', v => /.+@.+\..+/.test(v) || '올바르지않은 이메일 형식입니다.', v => (v && !v.match(/[\s]/g) || '공백이 있으면 안됩니다.')]
+
+  validate (): boolean {
+    const valid = (this.$refs.form as NavBar).validate()
+    if(!valid) return valid
+    else {
+      this.signUp()
+    }
+    return valid        
+  }
+
+  async signUp() {
+    await this.trySignUp({
+      username: this.username,
+      password: this.password,
+      nickname: this.nickname,
+      email: this.email
+    })
+
+    const { loading, error, data} = this.signUpState
+
+    if(error) {
+      this.updateState({
+        snackBarMessage: '회원가입 실패: 중복된 사용자 이름',
+        snackBar: true
+      })      
+    }
+
+    if(data) {
+      this.updateState({
+        snackBarMessage: '회원가입 성공',
+        snackBar: true
+      })      
+      this.bookmark = false
+      this.isSignUp = false
+    }
+  }
+
   userPassword: string | null = ''
   showPassword: boolean | null = false
 
@@ -473,6 +633,16 @@ export default class NavBar extends StoreMixin {
 
       this.loading = false
     }, 500)    
+  }
+
+  created () {
+    const user = localStorage.getItem('user')
+    if(user) {
+      console.log(user)
+      const userData = JSON.parse(user)
+      this.updateUserState({ user: userData })
+
+    }
   }
 
   async mounted() {

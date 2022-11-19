@@ -15,6 +15,7 @@ const HEADER = {
 	}
 }
 
+const API = '/stock-service'
 
 @Module({namespaced: true})
 export default class MarketStore extends VuexModule {
@@ -78,7 +79,7 @@ export default class MarketStore extends VuexModule {
 			this.context.commit('updateState', {
 				marketLoaded: true
 			})
-			const res = await axios.get('/daily/trend', HEADER)
+			const res = await axios.get(`${API}/daily/trend`, HEADER)
 
 			const entries = Object.entries(res.data)
 
@@ -206,7 +207,7 @@ export default class MarketStore extends VuexModule {
 				marketValuationLoaded: true
 			})
 
-			const res = await axios.get('/daily/market', HEADER)
+			const res = await axios.get(`${API}/daily/market`, HEADER)
 			console.log(res.data)
 
 			this.context.commit('updateState', {
@@ -226,7 +227,7 @@ export default class MarketStore extends VuexModule {
 			this.context.commit('updateState', {
 				searchTableLoaded: true
 			})
-			const res = await axios.get('/krx-corps', HEADER)
+			const res = await axios.get(`${API}/krx-corps`, HEADER)
 			
 			this.context.commit('updateState', {
 				searchTable: Object.entries(res.data).map((stock: any) => ({
@@ -252,7 +253,7 @@ export default class MarketStore extends VuexModule {
 			this.context.commit('updateState', {
 				recommendLoaded : true
 			})
-			const res = await axios.get('/daily/recommand')
+			const res = await axios.get(`${API}/daily/recommand`)
 			
 			const recommend = Object.entries(res.data).map((recommend: any[]) => ({
 				code: recommend[0],
@@ -278,7 +279,7 @@ export default class MarketStore extends VuexModule {
         dailySimpleRanksLoaded: true
       })
 
-      const res = await axios.get(`/daily/rank`, HEADER)
+      const res = await axios.get(`${API}/daily/rank`, HEADER)
             
       this.context.commit('updateState', {
         dailySimpleRanks: res.data,

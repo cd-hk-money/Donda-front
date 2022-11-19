@@ -4,6 +4,8 @@ import Vuex from 'vuex'
 import StockStore from './StockStore'
 import MarketStore from './MarketStore'
 import InterestStore from './InterestStore'
+import UserStore from './UserStore'
+import axios from 'axios'
 
 Vue.use(Vuex)
 
@@ -11,6 +13,16 @@ export default new Vuex.Store({
   modules: {
     StockStore,
     MarketStore,
-    InterestStore
+    InterestStore,
+    UserStore
   }
 })
+
+const enhanceAccessToeken = () => {
+  const accessToken = localStorage.getItem('accessToken')
+  if (!accessToken) return
+  axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`
+  console.log('token..', accessToken)
+}
+
+enhanceAccessToeken()
