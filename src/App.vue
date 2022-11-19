@@ -17,7 +17,6 @@
   import { namespace } from 'vuex-class'
 
   import SideBar from '@/v2/pages/SideBar.vue'
-  import MenuBar from '@/v2/pages/MenuBar.vue'
   import NavBar from '@/v2/pages/NavBar.vue'
   import SnackBar from '@/v2/pages/SnackBar.vue'
   import Footer from '@/v2/pages/Footer.vue'
@@ -28,7 +27,6 @@
   @Component({
     components: {
       SideBar,
-      MenuBar,
       NavBar,
       SnackBar,
       Footer
@@ -56,6 +54,22 @@
 <style>
 html {
   scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar {
+  width: 0px;
+}
+
+.userMenu-active {
+  background-color: white;
+}
+
+.alram-type {
+  font-size: 14px;
+}
+
+.alram-value {
+  font-size: 14px;
 }
 
 .fade-enter {

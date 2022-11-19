@@ -9,6 +9,7 @@
       <v-app-bar-nav-icon @click="pushLink('/')" class="navbar__icon">
         <v-icon>home</v-icon>
       </v-app-bar-nav-icon>
+
       <v-toolbar-title @click="pushLink('/')" class="ml-5 navbar__title">DONDA</v-toolbar-title>
 
       <div v-if="!mobile">
@@ -99,7 +100,9 @@
         </div>    
       </div>
 
+
       <v-divider vertical inset class="mr-1" />
+
         
       <v-menu
         v-if="!isSearch"
@@ -148,21 +151,27 @@
           </v-list>
         </v-card>
 
+
         <v-card v-else-if="!isSignUp && bookmark">
           <v-card-title class="text-h6 d-flex justify-center">로그인</v-card-title>                  
-
-          <v-divider />
-          
+          <v-divider />          
           <v-card-text>
             <v-form>
-              <v-text-field outlined label="아이디" v-model="loginUsername" />
+              <v-text-field 
+                outlined 
+                label="아이디"
+                v-model="loginUsername" 
+                color="cyan"
+              />
               <v-text-field
-                outlined label="패스워드"               
+                outlined 
+                label="패스워드"               
                 :append-icon="showPassword? 'mdi-eye' : 'mdi-eye-off'"
                 :type="showPassword ? 'text' : 'password'"
                 @click:append="showPassword = !showPassword"
                 v-model="loginPassword"
                 @keypress.enter="login"
+                color="cyan"
               />          
             </v-form>
             <v-btn block outlined elevation="0" @click="login"> 로그인 </v-btn>            
@@ -170,12 +179,10 @@
           </v-card-text>
         </v-card>
 
+
         <v-card v-else-if="isSignUp && bookmark" >
           <v-card-title class="text-h6 d-flex justify-center">회원가입</v-card-title>                  
-
-          <v-divider />
-
-          
+          <v-divider />          
           <v-card-text>
             <v-form ref="form" v-model="valid" lazy-validation v-if="!signUpState.loading">
               <v-text-field 
@@ -186,6 +193,7 @@
                 label="사용자이름"
                 :rules="usernameRules"
                 required
+                color="cyan"
               />                          
               <v-text-field 
                 v-model="email"
@@ -194,12 +202,14 @@
                 required                
                 outlined 
                 label="이메일"
+                color="cyan"
               />
               <v-text-field 
                 v-model="nickname"
                 :counter="10"
                 outlined 
                 label="별명"
+                color="cyan"
               />
               <v-text-field 
                 outlined label="패스워드"        
@@ -210,16 +220,10 @@
                 required
                 v-model="password" 
                 :counter="20"
+                color="cyan"
               />
-              <v-btn 
-                block
-                outlined 
-                elevation="0" 
-                @click="validate"
-                :disalbed="!valid"
-              > 회원 가입 </v-btn>            
-              <v-btn color="error" class="mt-2" block outlined elevation="0" @click="isSignUp = false"> 취소 </v-btn>
-              
+              <v-btn block outlined elevation="0" @click="validate" :disalbed="!valid"> 회원 가입 </v-btn>            
+              <v-btn color="error" class="mt-2" block outlined elevation="0" @click="isSignUp = false"> 취소 </v-btn>              
             </v-form>
             <div class="text-center stockinfo-progress-circular" v-else>
               <v-progress-circular indeterminate color="#00BCD4" />        
@@ -227,6 +231,7 @@
           </v-card-text>
         </v-card>
       </v-menu>
+      
 
       <v-menu
         v-if="!isSearch"

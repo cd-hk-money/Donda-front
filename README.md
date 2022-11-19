@@ -222,12 +222,9 @@
  ┃ ┃ ┃ ┣ 📜BtnBadge.vue
  ┃ ┃ ┃ ┗ 📜ProgressCircular.vue
  ┃ ┗ 📂pages
- ┃ ┃ ┣ 📜AppBar.vue
  ┃ ┃ ┣ 📜Detail.vue
  ┃ ┃ ┣ 📜Footer.vue
  ┃ ┃ ┣ 📜Home.vue
- ┃ ┃ ┣ 📜InterestToggle.vue
- ┃ ┃ ┣ 📜MenuBar.vue
  ┃ ┃ ┣ 📜NavBar.vue
  ┃ ┃ ┣ 📜RankV2.vue
  ┃ ┃ ┣ 📜SideBar.vue

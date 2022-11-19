@@ -93,7 +93,6 @@
 import { Component } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 
-import { IMenu } from '@/v2/pages/MenuBar.vue'
 import StockInfo from '@/v2/components/detail/stock/StockInfo.vue'
 import StockFinance from '@/v2/components/detail/finance/StockFinance.vue'
 import StockScore from '@/v2/components/detail/valuation/StockScore.vue'
@@ -109,6 +108,18 @@ import { getStock, getStockEvaluation, getStockEvaluationDaily, getStockGraphAll
 import StoreMixin from '@/mixins/StoreMixin.vue'
 
 const StockStoreModule = namespace('StockStore')
+
+interface IMenu {
+  icon?: string,
+  tooltip?: string,
+  color?: string
+  link?: boolean 
+  to?: string 
+  callback?: () => void ,
+  tile?: boolean 
+  enable?: boolean
+  title?: string 
+}
 
 @Component({
   components: {
@@ -186,8 +197,7 @@ export default class DetailV2 extends StoreMixin {
     this.callRequest(getStockVolume(code))
 
     this.statementTypes.forEach(statementType => this.callRequest(getStockStatementAll(code, statementType)))    
-    
-
+  
   }
 
   mounted () {    

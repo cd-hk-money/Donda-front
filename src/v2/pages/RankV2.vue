@@ -106,7 +106,6 @@ import { mobileHeight } from '@/mixins/tools'
 
 import RankComponent from '@/v2/components/rank/RankComponent.vue'
 
-const StockStoreModule = namespace('StockStore')
 const MarketStoreModule = namespace('MarketStore')
 
 @Component({
@@ -132,7 +131,7 @@ export default class RankV2 extends Vue {
   rankTitle = ['시가총액', '상승률', '하락률', '거래량']
 
   // 초기 라디오 값
-  radioValue: any = '시가총액'
+  radioValue = 1
 
   @MarketStoreModule.State('dailySimpleRanks') dailySimpleRanks!: IMarketRank
   @MarketStoreModule.State('dailySimpleRanksLoaded') loaded!: boolean

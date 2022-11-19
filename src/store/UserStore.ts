@@ -29,15 +29,15 @@ export default class UserStore extends VuexModule {
   public user = null
 
   public signUpState: StoreState = {
-    data: '' as any,
-    error: null as any,
-    loading: false as boolean
+    data: '',
+    error: null,
+    loading: false
   }
 
   public loginState: StoreState = {
-    data: '' as any,
-    error: null as any,
-    loading: false as boolean
+    data: '',
+    error: null,
+    loading: false
   }
 
   @Mutation
@@ -120,7 +120,6 @@ export default class UserStore extends VuexModule {
         }
       })
       
-      localStorage.accessToken = token.accessToken      
       localStorage.setItem('accessToken', token.accessToken)
       localStorage.setItem('user', JSON.stringify(user))
       axios.defaults.headers.common['Authorization'] = `Bearer ${token.accessToken}`;
