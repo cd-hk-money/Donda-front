@@ -7,7 +7,7 @@
       </transition>  
       <SnackBar />
     </v-main>
-    <Footer v-if="mobile" />
+    <!-- <Footer v-if="mobile" /> -->
   </v-app>
 </template>
 

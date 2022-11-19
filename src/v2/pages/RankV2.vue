@@ -107,6 +107,7 @@ import { mobileHeight } from '@/mixins/tools'
 import RankComponent from '@/v2/components/rank/RankComponent.vue'
 
 const StockStoreModule = namespace('StockStore')
+const MarketStoreModule = namespace('MarketStore')
 
 @Component({
   components: {
@@ -133,9 +134,9 @@ export default class RankV2 extends Vue {
   // 초기 라디오 값
   radioValue: any = '시가총액'
 
-  @StockStoreModule.State('dailySimpleRanks') dailySimpleRanks!: IMarketRank
-  @StockStoreModule.State('dailySimpleRanksLoaded') loaded!: boolean
-  @StockStoreModule.Action('getDailySimpleRanks') readonly getDailySimpleRanks!: () => Promise<void>
+  @MarketStoreModule.State('dailySimpleRanks') dailySimpleRanks!: IMarketRank
+  @MarketStoreModule.State('dailySimpleRanksLoaded') loaded!: boolean
+  @MarketStoreModule.Action('getDailySimpleRanks') readonly getDailySimpleRanks!: () => Promise<void>
 
 
   toTop() {
@@ -161,6 +162,7 @@ export default class RankV2 extends Vue {
   }
 
   mounted () {
+    console.log('error')
     window.addEventListener('scroll', this.handleScroll)
   }
 }

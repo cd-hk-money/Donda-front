@@ -17,7 +17,7 @@ const routes = [
   {
     path: "/detail/:title",
     name: "detail",
-    component: DetailV2
+    component: DetailV2,    
   },
   {
     path: "/rank",
