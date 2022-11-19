@@ -1,16 +1,15 @@
 import { Module, VuexModule, Mutation, Action } from "vuex-module-decorators";
-import { IUserAccount } from "@/models/user";
-import { IInterestGroup } from "@/models/interest"
-import InterestStore from './InterestStore'
 import { IUpdateStateModel } from "@/models/payload";
 
-import axios, { AxiosRequestConfig } from 'axios'
+import axios from 'axios'
 
-const HEADER: AxiosRequestConfig = {
-  headers: {
-    'Content-Type': 'text/plain;charset=utf-8'
-  }  
-}
+
+/*
+  api-gateway 사용시 /web-service
+  단독 사용시 /
+*/
+const API = '/web-service'
+
 export interface User {
   username?: string | null
   email?: string | null

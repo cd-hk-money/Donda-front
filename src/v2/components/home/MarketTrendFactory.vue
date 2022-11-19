@@ -11,11 +11,11 @@
     <div class="d-flex flex-warp align-center justify-start">
       <div class="">
         <v-card-title class="d-flex align-center">
-          <div class="market-title text-h5 font-weight-bold">
+          <div class="market-title text-h6 font-weight-bold">
             <img v-if="contry === 'korea'" src="@/assets/koreaflag.png" alt="ss" class="flag mr-3" /> 
             <img v-else src="@/assets/usaflag.png" alt="ss" class="flag mr-3" />             
-            {{ title }}       
-            <v-icon :color="market.trendIconColor" small class="ml-2">{{ market.trendIcon }}</v-icon>         
+            {{ title === 'USD/KRW' ? '환율' :  title }}       
+            <v-icon :color="market.trendIconColor" small class="ml-1">{{ market.trendIcon }}</v-icon>         
           </div>
           <div class="mt-1">
             <span class="text-h5">
@@ -71,12 +71,12 @@
       <v-card       
         elevation="0"
         min-height="100"        
-        :min-width="mobile ? '110' : '180'"
+        :min-width="mobile ? '105' : '180'"
         class="d-flex align-center justify-center mr-3 mt-3 sparkline-sheet"
         color="#252424"        
       > 
         <v-sparkline            
-          :min-width="mobile ? '110' : '180'"
+          :min-width="mobile ? '105' : '180'"
           color="cyan"
           :line-width="4"            
           :value="market.sparkLineDatas"
@@ -268,7 +268,7 @@
 
 <style scoped>
 .market-title {
-  width: 150px;
+  width: 150px;  
   display: flex;
   align-items: center;
 }

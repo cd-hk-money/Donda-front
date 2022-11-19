@@ -21,13 +21,12 @@
           height="50px"                                          
         >
           <v-carousel-item
-            class="navbar__carousel__itme"
             v-for="(carouselContent, i) in carouselContents"          
             :key="i"
           >
             <v-card 
               @click="pushLink(`/detail/${carouselContent.code}`)"                        
-              width="400" height="66%" class="navbar__carousel__card"
+              width="auto" height="66%" class="navbar__carousel__card"
             >
               <span class="text-h7"> {{ carouselContent.title }} </span>            
               <span class="navbar__carousel__card__code"> {{ carouselContent.code }} </span>            
