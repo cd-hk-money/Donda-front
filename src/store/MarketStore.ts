@@ -15,7 +15,7 @@ const HEADER = {
 	}
 }
 
-const API = ''
+const API = process.env.VUE_APP_STOCK_API
 
 @Module({namespaced: true})
 export default class MarketStore extends VuexModule {

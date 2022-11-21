@@ -5,8 +5,7 @@
     class="ml-5 mr-5 mb-5 mt-5"
     min-height="162"
     rounded="xl"
-    elevation="0"     
-    @click="[expand = !expand, menu = false]"
+    elevation="0"         
   >
     <div class="d-flex flex-warp align-center justify-start">
       <div class="">
@@ -74,6 +73,7 @@
         :min-width="mobile ? '105' : '180'"
         class="d-flex align-center justify-center mr-3 mt-3 sparkline-sheet"
         color="#252424"        
+        @click="[expand = !expand, menu = false]"
       > 
         <v-sparkline            
           :min-width="mobile ? '105' : '180'"
@@ -291,7 +291,12 @@
 .sparkline-sheet {
   position: absolute;
   right: 5px;
-  top: 33px;
+  top: 40px;
+  transition: outline .5s ease-in;
+}
+
+.sparkline-sheet:hover {
+  outline: 2px double #fff;
 }
 
 .chart-chip-group-active {

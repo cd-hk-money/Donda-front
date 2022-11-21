@@ -78,7 +78,7 @@ export default class UserStore extends VuexModule {
     this.context.commit('loading', 'signUpState')
 
     try {          
-      const res = await axios.post('/web-service/auth/signUp', payload)
+      const res = await axios.post(`${API}/auth/signUp`, payload)
 
       this.context.commit('success', { state: 'signUpState', data: res.data })
     } catch (e) {      
@@ -97,7 +97,8 @@ export default class UserStore extends VuexModule {
     console.log(payload)
 
     try {
-      const res = await axios.post('/web-service/auth/login', payload)
+
+      const res = await axios.post(`${API}/auth/login`, payload)
       
       
       this.context.commit('success', { state: 'loginState', data: res.data })    

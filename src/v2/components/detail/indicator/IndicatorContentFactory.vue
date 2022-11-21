@@ -38,7 +38,7 @@
           :type="upperType"
           :chartData="chartData"
           :sector="sectorData"
-          :height="100"
+          :height="mobile ? 250 : 100"
         />
         <v-divider />
   
@@ -52,12 +52,8 @@
           </div>
         </v-card-text>
       </v-card>
-
-
       
     </v-expand-transition>
-
-
   </v-sheet>
 </template>
 
@@ -81,6 +77,10 @@
     @Prop() tooltipMessage!: boolean
     
     expand = false
+
+    get mobile () {
+      return this.$vuetify.breakpoint.name === 'xs'
+    }
 
     get upperType () { 
       return this.indicatorType.toUpperCase()

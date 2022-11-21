@@ -87,7 +87,7 @@ export default class StockValuationSingleChart extends Vue {
           },
           ticks: {
             display: true,
-            maxTicksLimit: 15,
+            maxTicksLimit: 5,
             padding: 10,
             fontStyle: 'normal',          
             maxRotation: 0,            

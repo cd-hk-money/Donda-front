@@ -1,8 +1,9 @@
 <template>
     <v-sheet
     outlined
-    max-height="40"
-    :class="['ml-2 pt-3 pb-3 pr-3 pl-3 mt-3 d-flex align-center', addinationalClass]"
+    :max-height="mobile ? 'auto' : 40"
+    :width="mobile ? '100%' : 'auto'"
+    :class="['ml-1 pt-3 pb-3 pr-3 pl-3 mt-3', addinationalClass,]"
     rounded="lg"    
     :color="color"
   >
@@ -18,6 +19,10 @@
   export default class  extends Vue {
     @Prop({default: 'blue-grey lighten-1'}) color!: string  
     @Prop({default: ''}) addinationalClass!: string
+
+    get mobile () {
+      return this.$vuetify.breakpoint.name === 'xs'
+    }
   }
 </script>
 

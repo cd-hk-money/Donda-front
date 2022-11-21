@@ -85,7 +85,6 @@ export default class StockScoreBarChart extends Vue {
           borderWidth: 4,
           radius: 4,
           tension: .4,               
-          barThickness: 130,
           minBarLength: 60
         },
         {
@@ -106,6 +105,7 @@ export default class StockScoreBarChart extends Vue {
   renderChart!: (chartData: unknown, options: unknown) => unknown
   
   mounted () {
+    console.log(this.chartData, this.sector, '.....')
     this.renderChart(this.createChartData(), this.chartOptions)
   }
 }

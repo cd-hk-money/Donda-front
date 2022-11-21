@@ -7,6 +7,7 @@
     </v-col>    
     <v-col cols="12" xl="9" lg="8" class="mb-5">
       <v-card 
+        ref="mainContents"
         :width="mobile ? '465' : '97%'"
         :height="mobile ? '100%' : 'auto'"
         class="ml-5 mt-5 mr-5" 
@@ -176,6 +177,7 @@ export default class DetailV2 extends StoreMixin {
 
   drawerChange (val: number | null) {        
     this.drawer = val
+    setTimeout(() => window.scrollTo(0, 900), 100)
   }
 
   async fetchStock () {

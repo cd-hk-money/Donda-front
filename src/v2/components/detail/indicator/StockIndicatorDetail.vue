@@ -1,7 +1,7 @@
 <template>
   <div class="cover">
     <v-card     
-      class="stock-indicator-detail"    
+    class="stock-indicator-detail"    
       elevation="0"    
       :height="mobile ? '100%' : 787"
     >    
@@ -12,10 +12,7 @@
       <v-card-subtitle>
         {{ stock.name }}의 보조지표를 확인해보세요.
       </v-card-subtitle>
-  
-      <div class="more"> 각 항목을 클릭하면, 더 많은 정보를 볼 수 있습니다. </div> 
-  
-  
+            
       <div v-if="!indicatorLoaded && !indicatorSectorLoaded">
   
         <!-- EPS -->
@@ -222,26 +219,16 @@
                 </div>
     
                 <v-divider class="mt-2" />
-    
-                <v-sheet 
-                  outlined 
-                  class="pt-3 pb-3 pr-3 pl-3 mt-3 d-flex align-center indicator-detail-card" 
-                  rounded="lg" 
-                  color="blue-grey lighten-1"
-                >
-                  <v-icon class="mr-1">mdi-information</v-icon>
+                    
+                <InformationFactory>
                   <strong>PSR</strong> 의 수치가 낮을수록 저평가된 기업입니다. 
-                </v-sheet>
-    
-                <v-sheet 
-                  outlined 
-                  class="pt-3 pb-3 pr-3 pl-3 mt-3 d-flex align-center indicator-detail-card" 
-                  rounded="lg" 
-                  color="blue-grey lighten-1"
-                >
-                  <v-icon class="mr-1">mdi-information</v-icon>
+                </InformationFactory>
+
+                <InformationFactory>
                   다른 주식과 비교해서, <strong class="ml-1">PER</strong>은 같은데, <strong class="ml-1">PSR</strong>이 낮은 주식은 <strong>순이익률</strong>이 낮다고 판단되므로, 매수에 신중을 요할 필요가 있습니다.
-                </v-sheet>
+                </InformationFactory>
+    
+
               </v-card-text>              
             </v-card>
           </v-expand-transition>
@@ -284,26 +271,15 @@
                 </div>
     
                 <v-divider class="mt-2" />
-    
-                <v-sheet 
-                  outlined 
-                  class="pt-3 pb-3 pr-3 pl-3 mt-3 d-flex align-center indicator-detail-card" 
-                  rounded="lg" 
-                  color="blue-grey lighten-1"
-                >
-                  <v-icon class="mr-1">mdi-information</v-icon>
+                    
+                <InformationFactory>
                   일반적으로 <strong>PER</strong> 의 수치가 낮을수록 저평가된 기업입니다. 
-                </v-sheet>
-    
-                <v-sheet 
-                  outlined 
-                  class="pt-3 pb-3 pr-3 pl-3 mt-3 d-flex align-center indicator-detail-card" 
-                  rounded="lg" 
-                  color="blue-grey lighten-1"
-                >
-                  <v-icon class="mr-1">mdi-information</v-icon>
+                </InformationFactory>                
+
+                <InformationFactory>
                   산업 특성상<strong class="ml-1">PER</strong>이 높은 군이 있고, 낮은 군이 존재하므로, 동종 업계와의 비교를 요합니다.
-                </v-sheet>
+                </InformationFactory>                
+                    
               </v-card-text>  
             </v-card>
           </v-expand-transition>
@@ -346,26 +322,14 @@
                 </div>
     
                 <v-divider class="mt-2" />
-    
-                <v-sheet 
-                  outlined 
-                  class="pt-3 pb-3 pr-3 pl-3 mt-3 d-flex align-center indicator-detail-card" 
-                  rounded="lg" 
-                  color="blue-grey lighten-1"
-                >
-                  <v-icon class="mr-1">mdi-information</v-icon>
+
+                <InformationFactory>                  
                   일반적으로 <strong class="ml-1">PBR</strong>이 섹터 평균보나 낮거나. <strong class="ml-1">0.7</strong>보다 낮다면, 투자를 고려해 볼 만 합니다.
-                </v-sheet>
-    
-                <v-sheet 
-                  outlined 
-                  class="pt-3 pb-3 pr-3 pl-3 mt-3 d-flex align-center indicator-detail-card" 
-                  rounded="lg" 
-                  color="blue-grey lighten-1"
-                >
-                  <v-icon class="mr-1">mdi-information</v-icon>
+                </InformationFactory>
+
+                <InformationFactory>
                   <strong>PBR</strong>이 <strong>1.5</strong>보다 높다면, 투자를 권장하지 않습니다.
-                </v-sheet>
+                </InformationFactory>                    
               </v-card-text>  
             </v-card>
           </v-expand-transition>
@@ -484,16 +448,6 @@ export default class StockIndicatorDetail extends StoreMixin {
 </script>
 
 <style scoped>
-
-.more {
-  position: absolute;
-  right: 5px;  
-  top: 60px;
-  font-size: 12px;
-  opacity: .8;
-  color: grey !important;
-}
-
 strong {  
   letter-spacing: .5px;
 }

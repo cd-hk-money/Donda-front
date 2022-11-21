@@ -81,10 +81,13 @@ const indicatorDailyParser = (response: AxiosResponse<IStockIndicator>) => {
 }
 
 const indicatorSectorDailyParser = (response: AxiosResponse<IStockIndicatorSectorDaily>) => {
-  return Object
-    .values(response.data)
-    .map(arr => arr[0])
-    .reduce(reducer, { PBR: [], PER: [], PSR: [] }) 
+  const result = Object
+  .values(response.data)
+  .map(arr => arr[0])
+  .reduce(reducer, { PBR: [], PER: [], PSR: [] }) 
+
+  console.log(result)
+  return result
 }
 
 const getStocksAsync = (codes: string[]) => async () => await axios.all(codes.map(code => axios.get<IStock>(`/stock/${code}`), HEADER)) 

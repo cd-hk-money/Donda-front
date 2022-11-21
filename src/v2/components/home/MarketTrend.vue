@@ -68,7 +68,8 @@
     
     createComputedMarketContent(marketType: string): ComputedMarket {
       const {changes, close} = this.marketRecents[marketType]
-      const {changeValue, color} = this.getChangeValue(changes, close)    
+      console.log(this.marketRecents)
+      const {changeValue, color} = this.getChangeValue(changes, close, marketType)    
       const closes = this.marketChart[marketType].values.slice(-12, ).map((value: MarketModel) => value.close)
       return {
         ...this.marketRecents[marketType],        
@@ -90,8 +91,10 @@
       }
     }
 
-    getChangeValue(changes: number, close: number): { changeValue: string; color: string } {
-      const changeValue = (changes * close)
+    getChangeValue(changes: number, close: number, marketType: string): { changeValue: string, color: string } {
+      const changeValue = marketType === 'nasdaq' ? (changes / 1000 * close) : (changes / 100 * close)
+      
+      
       return {
         changeValue: (changeValue > 0 ? '+' : '') + changeValue.toFixed(2),
         color: changeValue > 0 ? 'red--text' : 'blue--text'

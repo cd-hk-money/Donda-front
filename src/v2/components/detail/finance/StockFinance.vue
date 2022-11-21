@@ -61,7 +61,7 @@
             실질적으로 주주들에게 떨어지는 금액이므로, 신중하게 살펴볼 필요가 있습니다.
           </FinanceInformationFactory>
           <FinanceInformationFactory color="secondary">
-            <div class="font-weight-bold">부채비율</div>
+            <span class="font-weight-bold">부채비율</span>
             <BtnBadge>
               <template v-slot:text>
                 <div><strong class="text-h6 font-weight-bold">부채비율</strong></div>

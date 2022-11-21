@@ -18,7 +18,8 @@
         <v-sheet 
           elevation="0"
           class="mt-3"          
-          color="rgb(40, 40, 40)" width="32%" height="270" rounded="lg"
+          color="rgb(40, 40, 40)" height="270" rounded="lg"
+          :width="mobile ? 460 : '32%'"
         >
           <v-card-subtitle class="cyan--text">
             <v-icon class="mr-1">mdi-account-question</v-icon>
@@ -41,7 +42,8 @@
 
         <v-sheet
           elevation="0"          
-          width="32%" height="270" rounded="lg"
+          :width="mobile ? 460 : '32%'"
+          height="270" rounded="lg"
           class="d-flex flex-column justify-space-between mt-3"
         >
           <v-sheet color="rgb(40, 40, 40)" elevation="0" height="80" class="d-flex justify-center align-center text-h7">            
@@ -71,7 +73,7 @@
           </v-sheet>          
         </v-sheet>
 
-        <v-sheet color="rgb(40, 40, 40)" elevation="0" height="270" @click.stop="dialog = true" class="OpendialogClass mt-3" width="32%">           
+        <v-sheet color="rgb(40, 40, 40)" elevation="0" height="270" @click.stop="dialog = true" class="OpendialogClass mt-3" :width="mobile ? 460 : '32%'">           
           <v-card-subtitle>다른 주가 분석 방법과 비교해보세요.</v-card-subtitle>
           <StockPolarAreaChart :height="mobile ? 200 : 200" :width="400"/>
         </v-sheet>                  
@@ -188,12 +190,11 @@
   
         <v-expand-transition>
           <v-card v-if="expandEpsRoe">
-            <stock-valuation-single-chart            
-              
+            <stock-valuation-single-chart                          
               label="EPS-ROE"
               :dates="dates"
               :chartData="chartDatas.epsroe"
-              :height="100"
+              :height="mobile? 250 : 100"
             />
           </v-card>        
         </v-expand-transition>
@@ -248,7 +249,7 @@
               label="S-RIM"
               :dates="dates"
               :chartData="chartDatas.srim"
-              :height="100"
+              :height="mobile? 250 : 100"
             />
   
             <v-divider />
@@ -298,12 +299,11 @@
   
         <v-expand-transition>
           <v-card v-if="expandPer">
-            <stock-valuation-single-chart            
-              
+            <stock-valuation-single-chart                          
               label="PER"
               :dates="stockEvaluationDaily.date"
               :chartData="stockEvaluationDaily.value"
-              :height="100"
+              :height="mobile? 250 : 100"
             />
   
             <v-divider />
