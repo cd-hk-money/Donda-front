@@ -99,7 +99,7 @@
             영업이익은 일반적으로 많으면 많을수록 좋습니다.
           </FinanceInformationFactory>     
           <FinanceInformationFactory color="secondary">
-            <div class="font-weight-bold">영업이익률</div>
+            <span class="font-weight-bold">영업이익률</span>
             <BtnBadge>
               <template v-slot:text>
                 <div><strong class="text-h6 font-weight-bold">영업이익률</strong></div>
@@ -134,7 +134,7 @@
             매출액은 일반적으로 많으면 많을수록 좋습니다.
           </FinanceInformationFactory>             
           <FinanceInformationFactory color="secondary">
-            <div class="font-weight-bold">영업이익률</div>
+            <span class="font-weight-bold">영업이익률</span>
             <BtnBadge>
               <template v-slot:text>
                 <div><strong class="text-h6 font-weight-bold">영업이익률</strong></div>
@@ -151,7 +151,7 @@
             에 계산되는 값입니다.
           </FinanceInformationFactory>
           <FinanceInformationFactory color="secondary">
-            <div class="font-weight-bold">매출총이익률</div>
+            <span class="font-weight-bold">매출총이익률</span>
             <BtnBadge>
               <template v-slot:text>
                 <div><strong class="text-h6 font-weight-bold">영업이익률</strong></div>
@@ -186,7 +186,7 @@
             부채총계는 일반적으로 적으면 적을수록 좋습니다.
           </FinanceInformationFactory>
           <FinanceInformationFactory color="secondary">
-            <div class="font-weight-bold">부채비율</div>        
+            <span class="font-weight-bold">부채비율</span>        
             <BtnBadge>
               <template v-slot:text>
                 <div><strong class="text-h6 font-weight-bold">부채비율</strong></div>
@@ -226,7 +226,7 @@
             매출총이익은 많으면 많을수록 좋습니다.
           </FinanceInformationFactory>
           <FinanceInformationFactory color="secondary">
-            <div class="font-weight-bold">매출총이익률</div>
+            <span class="font-weight-bold">매출총이익률</span>
             <BtnBadge>
               <template v-slot:text>
                 <div><strong class="text-h6 font-weight-bold">매출총이익률</strong></div>
@@ -262,7 +262,7 @@
             당기순이익은 많으면 많을수록 좋습니다.
           </FinanceInformationFactory>
           <FinanceInformationFactory color="secondary">
-            <div class="font-weight-bold">ROE</div>
+            <span class="font-weight-bold">ROE</span>
             <BtnBadge>
               <template v-slot:text>
                 <div><strong class="text-h6 font-weight-bold">ROE</strong></div>
