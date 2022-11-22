@@ -14,6 +14,7 @@ import {
   getStockIndicatorSectorDailyUrl, 
   getStockIndicatorSectorUrl,
   getStockVolumeUrl,
+  getStockDondaUrl,
   HEADER,
 } from '@/api/stocks'
 
@@ -44,8 +45,8 @@ export type AsyncPayload<T extends ResponseType = any> = {
 
 export const reducer = (acc: { PBR: { type: string; eps: number; bps: number; roe: number }[]; PER: { type: string; eps: number; bps: number; roe: number }[]; PSR: { type: string; eps: number; bps: number; roe: number }[] }, cur: IStockIndicator) => {
   acc.PBR.push(cur.PBR)
-  acc.PER.push(cur.PBR)
-  acc.PSR.push(cur.PBR)
+  acc.PER.push(cur.PER)
+  acc.PSR.push(cur.PSR)
   return acc    
 }
 
@@ -81,16 +82,23 @@ const indicatorDailyParser = (response: AxiosResponse<IStockIndicator>) => {
 }
 
 const indicatorSectorDailyParser = (response: AxiosResponse<IStockIndicatorSectorDaily>) => {
-  const result = Object
-  .values(response.data)
-  .map(arr => arr[0])
-  .reduce(reducer, { PBR: [], PER: [], PSR: [] }) 
-
-  console.log(result)
-  return result
+  const computedByArray = Object.values(response.data).map(arr => arr[0])
+  const value = computedByArray.reduce((acc, cur) => {
+    acc.PBR.push(cur.pbr)
+    acc.PER.push(cur.per)
+    acc.PSR.push(cur.psr)
+    return acc
+  }, {
+   PBR: [], PER: [], PSR: []
+  })
+  
+  return {
+    value,
+    date: Object.keys(response.data)
+  }
 }
 
-const getStocksAsync = (codes: string[]) => async () => await axios.all(codes.map(code => axios.get<IStock>(`/stock/${code}`), HEADER)) 
+const getStocksAsync = (codes: string[]) => async () => await axios.all(codes.map(code => axios.get<IStock>(`${process.env.VUE_APP_STOCK_API}/stock/${code}`), HEADER)) 
 
 export const getStock                      = (code: string) => createStoreActionPayload('stock'                , createAxiosGetRequestCallback<IStock>(getStockUrl(code)))    
 export const getStockGraphDefault          = (code: string) => createStoreActionPayload('stockGraphDefault'    , createAxiosGetRequestCallback<IStockGraph>(getStockGraphDefaultUrl(code)), (response: AxiosResponse<IStockGraph>) => response.data.origin)
@@ -106,5 +114,6 @@ export const getStockIndicatorSector       = (code: string) => createStoreAction
 export const getStockIndicatorSectorDaily  = (code: string) => createStoreActionPayload('indicatorSectorDaily' , createAxiosGetRequestCallback<IStockIndicatorSectorDaily>(getStockIndicatorSectorDailyUrl(code)), indicatorSectorDailyParser)
 export const getStockVolume                = (code: string) => createStoreActionPayload('stockGraphVolume'     , createAxiosGetRequestCallback<IStockGraphVolume>(getStockVolumeUrl(code)), (response: AxiosResponse<StockStatementAll>) => response.data.origin)
 export const getStockStatementAll          = (code: string, statementType: string) => createStoreActionPayload(statementType, createAxiosGetRequestCallback(getStockStatementAllUrl(code, statementType)), (response: AxiosResponse<StockStatementAll>) => response.data.origin)
+export const getStockDonda                 = (code: string) => createStoreActionPayload('stockDonda'           , createAxiosGetRequestCallback<IStockEvaluationDaily>(getStockDondaUrl(code)))
 
 export const getStocks = (codes: string[]) => createStoreActionPayload<IStock>('recommendStocks', getStocksAsync(codes), (reses: AxiosResponse[]) => reses.map(response => response.data))

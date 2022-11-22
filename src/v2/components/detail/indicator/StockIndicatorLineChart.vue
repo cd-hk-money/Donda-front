@@ -4,7 +4,7 @@
   import Chart from 'chart.js'
   import { mixins, Line  } from 'vue-chartjs-typescript'
   import { transparentize } from '@/mixins/tools'
-  import { IStockModel } from '@/models/stock'
+  import { IStockEvaluationModel, IStockIndicatorDailyModel, IStockModel } from '@/models/stock'
   import { namespace } from 'vuex-class'
   
   const { reactiveProp } = mixins
@@ -22,9 +22,12 @@
     @Prop() type!: string  
     @Prop() sector!: number[]
     @StockStoreModule.State('stock') stock!: IStockModel
-    @StockStoreModule.State('indicatorDailyChartLabel') labels!: string[]
-  
-    chartData!: number[] | undefined
+    @StockStoreModule.State('indicatorDaily') indicatorDaily!: IStockIndicatorDailyModel
+    @StockStoreModule.State('stockEvaluationDaily') stockEvaluationDaily!: IStockEvaluationModel
+    // @StockStoreModule.State('indicatorDailyChartLabel') labels!: string[]
+    
+    
+    @Prop() chartData!: number[] | undefined
     chartOptions: Chart.ChartOptions = {
       maintainAspectRatio: true,
       responsive: true,
@@ -41,7 +44,7 @@
           ticks: {
             fontSize: 17,
             maxRotation: 0,
-            maxTicksLimit: 9,    
+            maxTicksLimit: 3,    
             padding: -10,          
           },
           scaleLabel: {
@@ -81,7 +84,7 @@
 
     createChartData() {      
       return {
-        labels: this.labels,
+        labels: this.stockEvaluationDaily.date.slice(0, 120),
         datasets: [
           {
             type: 'line',
@@ -115,8 +118,7 @@
         
     mounted () {
       // console.log(this.labels, 'labels')
-      // console.log('mounted!')
-      // this.renderChart(this.createChartData(), this.chartOptions)
+      this.renderChart(this.createChartData(), this.chartOptions)
     }
   }
   </script>

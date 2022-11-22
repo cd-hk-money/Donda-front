@@ -38,12 +38,13 @@
   const MarketStoreModule = namespace('MarketStore')
 
   export interface ComputedMarket extends IMarketRecentValueModel {
-    changeValue: string
+    changeValue: string | number
     color: string
     sparkLineDatas: number[]
     type?: string
     trendIcon?: string
     trendIconColor?: string
+    changes: number
   }
 
   @Component({
@@ -66,14 +67,14 @@
     expandKospi = false
     selectionChipGroup = 0
     
-    createComputedMarketContent(marketType: string): ComputedMarket {
+    createComputedMarketContent(marketType: string): any {
       const {changes, close} = this.marketRecents[marketType]
       console.log(this.marketRecents)
       const {changeValue, color} = this.getChangeValue(changes, close, marketType)    
       const closes = this.marketChart[marketType].values.slice(-12, ).map((value: MarketModel) => value.close)
       return {
         ...this.marketRecents[marketType],        
-        changeValue,
+        changes,
         color,
         sparkLineDatas: closes,
         type: marketType,
@@ -92,7 +93,7 @@
     }
 
     getChangeValue(changes: number, close: number, marketType: string): { changeValue: string, color: string } {
-      const changeValue = marketType === 'nasdaq' ? (changes / 1000 * close) : (changes / 100 * close)
+      const changeValue = marketType === 'nasdaq' ? (changes / 100 * close) : (changes / 100 * close)
       
       
       return {

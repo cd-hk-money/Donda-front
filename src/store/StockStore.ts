@@ -85,6 +85,9 @@ export default class StockStore extends VuexModule {
   public indiacotrSetorDailyLoaded = false
   public indicatorSectorDaily!: IStockIndicatorDailyModel
 
+  public stockDonda = null
+  public stockDondaLoaded = false
+
 
   // 유사종목
   public similarContents: IStockModel[] = []
@@ -112,6 +115,7 @@ export default class StockStore extends VuexModule {
   public success({ state, data }: {state: string, data: unknown}) {
     this[state + 'Loaded'] = false
     this[state] = data 
+    console.log(state, data)
   }
 
   @Mutation

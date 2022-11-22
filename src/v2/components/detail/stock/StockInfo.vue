@@ -100,11 +100,11 @@
   
       <v-sheet elevation="0" height="120">                
         <v-card-title class="text-h5 font-weight-bold ml-5">
-          <span> {{ stock.close.toLocaleString()}} ₩ </span>
+          <span> ₩ {{ stock.close.toLocaleString()}}  </span>
         </v-card-title>
 
         <v-card-subtitle :class="['text-h6', 'font-weight-bold', 'ml-5', stock.changes > 0 ? 'red--text' : 'blue--text']">
-          <span>{{ prefixedValue.changes }}₩ ({{ prefixedValue.changes_ratio }}%)</span>                        
+          <span> ₩ {{ prefixedValue.changes }}  ({{ prefixedValue.changes_ratio }}%)</span>                        
         </v-card-subtitle>
 
         <v-chip class="stock-info-sector" small >

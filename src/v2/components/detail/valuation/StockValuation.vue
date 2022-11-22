@@ -127,8 +127,8 @@
         <v-expand-transition>
           <v-card v-if="expandDonda">
             <stock-valuation-single-chart                        
-              label="돈다 지수"
-              :dates="dates"
+              label="돈다지수"              
+              :dates="stockDonda.date"
               :chartData="chartDatas.donda"
               :height="mobile? 250 : 100"
             />
@@ -414,6 +414,8 @@ export default class StockValuation extends StoreMixin {
   @StockStoreModule.State('stockEvaluation') stockEvaluation!: any
   @StockStoreModule.State('stockEvaluationDaily') stockEvaluationDaily!: IStockEvaluationModel
   @StockStoreModule.State('stockGraphAll') stockGraphAll!: any
+  @StockStoreModule.State('stockDonda') stockDonda!: any
+  @StockStoreModule.State('stockDondaLoaded') stockDondaLoaded!: boolean
       
   get chartHeight (): number {
     return this.$vuetify.breakpoint.name === 'xs' ? 200 : 100
@@ -442,9 +444,9 @@ export default class StockValuation extends StoreMixin {
 
   get chartDatas () {
     return {
-      donda: this.closes?.map(k => Number(k) * 1.050),
+      donda: this.stockDonda.value,
       epsroe: this.stockEvaluation['proper-price'],
-      srim: this.stockEvaluation['S-rim']
+      srim: this.stockEvaluation['S-rim'],      
     }
   }
 
@@ -452,8 +454,12 @@ export default class StockValuation extends StoreMixin {
     return this.stockEvaluationDaily?.value.slice(-1)[0] || ''
   }
 
+  get stockDondaLast () {
+    return this.stockDonda?.value.slice(-1)[0] || ''
+  }
+
   get per (): ValuationContentType {
-    const isHighVal = this.stock.close > Number(this.stockEvaluationDailyLast)        
+    const isHighVal = this.stock.close > Number(this.stockDondaLast)        
     return {
       text: isHighVal ? '더 낮은 주가로 예측됩니다.' : '더 높은 주가로 예측됩니다.',
       colorClass : isHighVal ? 'sector' : '',
@@ -463,7 +469,7 @@ export default class StockValuation extends StoreMixin {
   }
 
   get scorePer () : ScoreType {    
-    const [close, valuation] = [this.stock.close, Number(Number(this.stockEvaluationDailyLast).toFixed())]
+    const [close, valuation] = [this.stock.close, Number(Number(this.stockDondaLast).toFixed())]
     const isHighVal = close > valuation
     const score = isHighVal ? ((close / valuation) * 100 - 100).toFixed() : ((valuation / close) * 100 - 100).toFixed() 
     const text = isHighVal ? '고평가': '저평가'

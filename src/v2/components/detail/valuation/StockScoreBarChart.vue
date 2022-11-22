@@ -26,9 +26,14 @@ export default class StockScoreBarChart extends Vue {
 
   @StockStoreModule.State('stock') stock!: IStockModel
   @StockStoreModule.State('stockEvaluationDaily') stockEvaluationDaily!: any
+  @StockStoreModule.State('stockDonda') stockDonda!: any
 
   get stockEvaluationDailyLast () {
     return this.stockEvaluationDaily?.value.slice(-1)[0] || ''
+  }
+
+  get stockDondaLast () {
+    return this.stockDonda?.value.slice(-1)[0] || ''
   }
 
   
@@ -96,7 +101,7 @@ export default class StockScoreBarChart extends Vue {
       datasets: [
         {
           type: 'bar',
-          data : [this.stock.close, Number(this.stockEvaluationDailyLast).toFixed()],
+          data : [this.stock.close, Number(this.stockDondaLast).toFixed()],
           fill: true,
           borderColor: [MAIN_COLOR, SUB_COLOR],        
           backgroundColor: [transparentize(MAIN_COLOR, 0.8) ,transparentize(SUB_COLOR, 0.8)],

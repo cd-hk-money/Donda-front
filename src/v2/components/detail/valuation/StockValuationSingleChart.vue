@@ -139,12 +139,12 @@ export default class StockValuationSingleChart extends Vue {
 
   mounted () {          
     this.close = 
-      this.label !== 'PER' 
+      (this.label === 'EPS-ROE') || (this.label === 'S-RIM')
       ? this.stockEvaluation?.date
           .map(k => Object.entries(this.stockGraphAll).filter((v, _) => (v[0] as string).substr(0, 7) === k)[0][1])
       : Object
           .values(this.stockGraphAll)
-          .slice(Object.values(this.stockGraphAll).length - this.dates.length, )
+          .slice(Object.values(this.stockGraphAll).length - this.dates.length)
             
     this.createChart()         
   }

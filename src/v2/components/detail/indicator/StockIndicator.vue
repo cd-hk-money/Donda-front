@@ -105,7 +105,7 @@ export default class StockIndicator extends Vue {
 
   @StockStoreModule.State('indicator') indicator!: ISimpleChartData
   @StockStoreModule.State('indicatorSector') indicatorSector!: IStockIndicatorSectorModel
-  @StockStoreModule.State('indicatorSectorLoaded') indicatorSectorLoaded!: boolean
+  @StockStoreModule.State('indicatorSectorDailyLoaded') indicatorSectorLoaded!: boolean
   @StockStoreModule.State('indicatorSectorDaily') indicatorSectorDaily!: IStockIndicatorSectorDailyModel
 
 

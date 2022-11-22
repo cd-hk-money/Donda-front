@@ -21,8 +21,8 @@
               {{ market.close }} 
             </span>
             <span :class="['market-changes', market.color]">
-              {{ market.changeValue }}
-              ({{ market.changes.toFixed(3)}} %)
+              {{ market.changes }}
+              ({{ per.toLocaleString() }}%)
             </span>
           </div>
         </v-card-title>
@@ -202,6 +202,20 @@
       return this.marketValuation[trendRange] > 0 ? 'red darken-3' : 'primary'
     }
 
+    get per () {
+      const close = this.market.close // 마지막 종가 
+      const changes = this.market.changes
+      console.log()
+
+      
+
+
+      const origin = this.market.close - changes
+
+      return (changes/(close-changes)) * 100
+    }
+
+
     getChipContent (trendRange: string) {
       return {
         contry: this.contry === 'korea' ? '한국' : '미국',
@@ -295,9 +309,7 @@
   transition: outline .5s ease-in;
 }
 
-.sparkline-sheet:hover {
-  outline: 2px double #fff;
-}
+
 
 .chart-chip-group-active {
   color: #00BCD4;

@@ -105,7 +105,7 @@ import Stock from '@/v2/components/detail/stock/Stock.vue'
 import StockValuation from '@/v2/components/detail/valuation/StockValuation.vue'
 import StockIndicatorDetail from '@/v2/components/detail/indicator/StockIndicatorDetail.vue'
 
-import { getStock, getStockEvaluation, getStockEvaluationDaily, getStockGraphAll, getStockGraphDefault, getStockIndicator, getStockIndicatorDaily, getStockIndicatorSector, getStockIndicatorSectorDaily, getStockNews, getStockSimilarContents, getStockStatement, getStockStatementAll, getStockVolume } from '@/store/payload'
+import { getStock, getStockDonda, getStockEvaluation, getStockEvaluationDaily, getStockGraphAll, getStockGraphDefault, getStockIndicator, getStockIndicatorDaily, getStockIndicatorSector, getStockIndicatorSectorDaily, getStockNews, getStockSimilarContents, getStockStatement, getStockStatementAll, getStockVolume } from '@/store/payload'
 import StoreMixin from '@/mixins/StoreMixin.vue'
 
 const StockStoreModule = namespace('StockStore')
@@ -197,6 +197,7 @@ export default class DetailV2 extends StoreMixin {
     this.callRequest(getStockIndicatorSector(code))
     this.callRequest(getStockIndicatorSectorDaily(code))
     this.callRequest(getStockVolume(code))
+    this.callRequest(getStockDonda(code))
 
     this.statementTypes.forEach(statementType => this.callRequest(getStockStatementAll(code, statementType)))    
   

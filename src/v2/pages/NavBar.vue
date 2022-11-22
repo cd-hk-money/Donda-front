@@ -34,9 +34,9 @@
 
               <v-divider vertical inset class="ml-1 mr-1"/>
 
-              <span class="ml-1"> {{ carouselContent.close.toLocaleString() }}₩</span>
+              <span class="ml-1"> ₩ {{ carouselContent.close.toLocaleString() }}</span>
               <span :class="carouselChangesClass(carouselContent.changes)">
-                {{ addPreFixer(carouselContent.changes) }}₩
+                ₩ {{ addPreFixer(carouselContent.changes) }}
                 <span class="ml-1">
                   ({{ addPreFixer(carouselContent.changes_ratio) }}%)
                 </span>

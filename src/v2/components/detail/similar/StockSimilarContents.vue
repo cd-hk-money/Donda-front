@@ -6,6 +6,7 @@
     elevation="0"  
     rounded="xl"   
     v-if="!recommendStocksLoaded"
+    @click="$router.push(`/detail/${content.code}`)"
   >    
     <v-list-item three-line>
       <v-list-item-content>
@@ -15,8 +16,7 @@
     
         <v-list-item-title class="text-h4 font-weight-bold m-1 ml-5">
           <span 
-            class="stock-title"
-            @click="$router.push(`/detail/${content.code}`)"
+            class="stock-title"            
           >{{ content.name }}</span>
           <v-tooltip right>
             <template v-slot:activator="{on}">
@@ -42,11 +42,11 @@
       height="104"
     >                
       <v-card-title class="text-h5 font-weight-bold ml-5">
-        <span> {{ content.close.toLocaleString()}} ₩ </span>          
+        <span> ₩ {{ content.close.toLocaleString()}} </span>          
       </v-card-title>
 
       <v-card-subtitle :class="['text-h6', 'font-weight-bold', 'ml-5', computedValues.trendColorClass]">
-        <span>{{ content.changes }}₩ ({{ content.changes_ratio }}%)</span>                        
+        <span> ₩ {{ content.changes }} ({{ content.changes_ratio }}%)</span>                        
       </v-card-subtitle>
 
       <v-chip class="stock-info-sector" small >
@@ -85,7 +85,7 @@ export default class StockSimilarContent extends Vue {
     const isHighVal = changes_ratio > 0
 
     return {
-      changeValue: (isHighVal ? '+' + changeValue : changeValue) + ' ₩',
+      changeValue: ' ₩' + (isHighVal ? '+' + changeValue : changeValue),
       changeRatio: (isHighVal ? '+' + changes_ratio : changes_ratio) + '%',
       trendColorClass: isHighVal ? 'red--text' : 'blue--text',
       trendIcon: isHighVal ? 'fa-solid fa-arrow-trend-up' : 'fa-solid fa-arrow-trend-down',

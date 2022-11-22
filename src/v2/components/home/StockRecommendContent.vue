@@ -4,10 +4,10 @@
     width="420"
     height="130"    
     outlined    
+    @click="$router.push(`/detail/${content.code}`)"
   >
     <v-card-title 
-      class="font-weight-bold text-h5 stock-similar-content-title" 
-      @click="$router.push(`/detail/${content.code}`)"
+      class="font-weight-bold text-h5 stock-similar-content-title"       
     >            
       {{ content.name }}
       <v-tooltip top>
@@ -46,14 +46,14 @@ export default class StockRecommendContnet extends Vue {
   @Prop({}) content!: IStockModel
 
   get close () {        
-    return (this.content.close).toLocaleString() + ' ₩'
+    return '₩ ' + (this.content.close).toLocaleString()
   }    
 
   get changeValue () {
     const { changes_ratio, close } = this.content
     const before = Number(((100 - changes_ratio)* 1/100 * close).toFixed())
     const changeValue = close - before
-    return (changeValue > 0 ? '+' + changeValue : changeValue) + ' ₩'
+    return '₩' + (changeValue > 0 ? '+' + changeValue : changeValue)
   }
 
   get changesRatio () {

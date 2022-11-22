@@ -11,7 +11,7 @@
     </v-card-subtitle>
     <v-card-text class="d-flex align-center flex-wrap justify-space-between">
       <div>
-        <template v-if="!loaded && !graphLoaded && !dailyLoaded">
+        <template v-if="!loaded && !graphLoaded && !dailyLoaded && !stockDondaLoaded">
           <StockScoreBarChart :height="mobile ? 130 : 150" :width="250"/>
         </template>
         <template v-else>
@@ -78,6 +78,8 @@ export default class StockScore extends StoreMixin {
   
   @StockStoreModule.State('stockEvaluationDaily') stockEvaluationDaily!: any
   @StockStoreModule.State('stockEvaluationDailyLoaded') dailyLoaded!: boolean
+  @StockStoreModule.State('stockDonda') stockDonda!: any
+  @StockStoreModule.State('stockDondaLoaded') stockDondaLoaded!: boolean
   @StockStoreModule.State('stock') stock!: IStockModel  
   
   
@@ -85,16 +87,22 @@ export default class StockScore extends StoreMixin {
     return this.stockEvaluationDaily?.value.slice(-1)[0] || ''
   }
 
+  get stockDondaLast () {
+    return this.stockDonda?.value.slice(-1)[0] || ''
+  }
+
   get mobile () { 
     return this.$vuetify.breakpoint.name === 'xs'
   }
+
+
 
   get cardHeight (): number { 
     return this.$vuetify.breakpoint.name === 'xs' ? 260 : 260 
   }  
 
   get scorePer () : ScoreType {    
-    const [close, valuation] = [this.stock.close, Number(Number(this.stockEvaluationDailyLast).toFixed())]
+    const [close, valuation] = [this.stock.close, Number(Number(this.stockDondaLast).toFixed())]
     const isHighVal = close > valuation
     const score = isHighVal ? ((close / valuation) * 100 - 100).toFixed() : ((valuation / close) * 100 - 100).toFixed() 
     const text = isHighVal ? '고평가': '저평가'

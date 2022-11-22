@@ -210,7 +210,7 @@ export default class RankComponent extends Vue {
       [i+1, ...content, this.bookmarked.includes(content[2])].reduce((acc, cur, index) => {
         const key = TABLE_TYPE[index]
         
-        if(moneyType.indexOf(key) > -1) acc[key] = cur.toLocaleString() + '₩'
+        if(moneyType.indexOf(key) > -1) acc[key] = '₩' + cur.toLocaleString()
         else if (key === 'changes_ratio') acc[key] = cur > 0 ? '+' + cur + '%' : cur + '%' 
         else acc[key] = cur        
         return acc    

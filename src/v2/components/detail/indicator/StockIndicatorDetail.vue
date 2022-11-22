@@ -13,7 +13,7 @@
         {{ stock.name }}의 보조지표를 확인해보세요.
       </v-card-subtitle>
             
-      <div v-if="!indicatorLoaded && !indicatorSectorLoaded">
+      <div v-if="!indicatorLoaded && !indicatorSectorLoaded && !indicatorSectorDailyLoaded">
   
         <!-- EPS -->
         <IndicatorContentFactory       
@@ -204,11 +204,11 @@
     
           <v-expand-transition>
             <v-card v-if="expandPsr">
-              <StockIndicatorBarChart 
+              <StockIndicatorLineChart 
                 type="PSR"
                 :chartData="indicatorDaily.PSR"   
-                :sector="indicatorSectorDaily.PSR"
-                :height="100"      
+                :sector="indicatorSectorDaily.value.PSR"
+                :height="mobile ? 200 : 100"      
               />
               <v-card-text :class="['grey--text mt-1', getStrongFontColorClass]">
                 <div>
@@ -256,11 +256,11 @@
     
           <v-expand-transition>
             <v-card v-if="expandPer">
-              <StockIndicatorBarChart 
+              <StockIndicatorLineChart 
                 type="PSR"
                 :chartData="indicatorDaily.PER"   
-                :sector="indicatorSectorDaily.PER"
-                :height="100"      
+                :sector="indicatorSectorDaily.value.PER"
+                :height="mobile ? 200 : 100"      
               />
               <v-card-text :class="['grey--text mt-1', getStrongFontColorClass]">
                 <div>
@@ -307,11 +307,11 @@
     
           <v-expand-transition>
             <v-card v-if="expandPbr">
-              <StockIndicatorBarChart 
+              <StockIndicatorLineChart 
                 type="PSR"
-                :chartData="indicatorDaily.PBR"   
-                :sector="indicatorSectorDaily.PBR"
-                :height="100"      
+                :chartData="indicatorDaily.PSR"   
+                :sector="indicatorSectorDaily.value.PSR"
+                :height="mobile ? 200 : 100"      
               />
               <v-card-text :class="['grey--text mt-1', getStrongFontColorClass]">
                 <div>
@@ -324,11 +324,11 @@
                 <v-divider class="mt-2" />
 
                 <InformationFactory>                  
-                  일반적으로 <strong class="ml-1">PBR</strong>이 섹터 평균보나 낮거나. <strong class="ml-1">0.7</strong>보다 낮다면, 투자를 고려해 볼 만 합니다.
+                  일반적으로 <strong class="ml-1">PSR</strong>이 섹터 평균보나 낮거나. <strong class="ml-1">0.7</strong>보다 낮다면, 투자를 고려해 볼 만 합니다.
                 </InformationFactory>
 
                 <InformationFactory>
-                  <strong>PBR</strong>이 <strong>1.5</strong>보다 높다면, 투자를 권장하지 않습니다.
+                  <strong>PSR</strong>이 <strong>1.5</strong>보다 높다면, 투자를 권장하지 않습니다.
                 </InformationFactory>                    
               </v-card-text>  
             </v-card>
@@ -345,6 +345,7 @@ import { ISimpleChartData, IStockIndicatorDailyModel, IStockIndicatorSectorModel
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class'
 import StockIndicatorBarChart from '@/v2/components/detail/indicator/StockIndicatorBarChart.vue'
+import StockIndicatorLineChart from '@/v2/components/detail/indicator/StockIndicatorLineChart.vue'
 import IndicatorContentFactory from '@/v2/components/detail/indicator/IndicatorContentFactory.vue'
 import BtnBadge from '@/v2/components/vuetify/BtnBadge.vue'
 import InformationFactory from '@/v2/components/detail/finance/InformationFactory.vue';
@@ -358,6 +359,7 @@ const StockStoreModule = namespace('StockStore')
     InformationFactory,
     IndicatorContentFactory,
     StockIndicatorBarChart,    
+    StockIndicatorLineChart
   }
 })
 export default class StockIndicatorDetail extends StoreMixin {
@@ -366,7 +368,8 @@ export default class StockIndicatorDetail extends StoreMixin {
   @StockStoreModule.State('indicator') indicators!: ISimpleChartData  
   @StockStoreModule.State('indicatorDaily') indicatorDaily!: IStockIndicatorDailyModel
   @StockStoreModule.State('indicatorSector') indicatorSector!: IStockIndicatorSectorModel
-  @StockStoreModule.State('indicatorSectorDaily') indicatorSectorDaily!: IStockIndicatorDailyModel  
+  @StockStoreModule.State('indicatorSectorDaily') indicatorSectorDaily!: any  
+  @StockStoreModule.State('indicatorSectorDailyLoaded') indicatorSectorDailyLoaded!: boolean
   @StockStoreModule.State('indicatorLoaded') indicatorLoaded!: boolean
   @StockStoreModule.State('indicatorSectorLoaded') indicatorSectorLoaded!: boolean  
         
@@ -424,7 +427,7 @@ export default class StockIndicatorDetail extends StoreMixin {
   getIncicatorDailyMean(indicatorType: string) {
     const length = this.indicatorDaily.PBR.length
     const origin = Number((this.indicatorDaily[indicatorType]?.reduce((acc: number, cur: number) => acc + cur, 0) / length).toFixed(1))
-    const sector = Number((this.indicatorSectorDaily[indicatorType]?.reduce((acc: number, cur: number) => acc + cur, 0) / length).toFixed(1))
+    const sector = Number((this.indicatorSectorDaily.value[indicatorType]?.reduce((acc: number, cur: number) => acc + cur, 0) / length).toFixed(1))
     const isHighVal = origin > sector
     return {
       origin,
@@ -443,6 +446,7 @@ export default class StockIndicatorDetail extends StoreMixin {
   get getStrongFontColorClass () {
     return this.$vuetify.theme.dark ? 'strong-white' : 'strong-black'
   }
+
   
 }
 </script>
