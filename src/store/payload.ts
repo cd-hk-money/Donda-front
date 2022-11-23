@@ -91,6 +91,8 @@ const indicatorSectorDailyParser = (response: AxiosResponse<IStockIndicatorSecto
   }, {
    PBR: [], PER: [], PSR: []
   })
+
+  console.log('e')
   
   return {
     value,
