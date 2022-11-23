@@ -4,8 +4,8 @@
       v-if="!isMobile"
       class="overflow-y-auto stock-news"
       elevation="0"
-      min-width="550"
-      max-height="835"  
+      min-width="30vw"
+      height="835"  
     >
       <v-card-title>주식 시장</v-card-title>  
       <v-card-subtitle>주식 시장 현황을 살펴보세요.</v-card-subtitle>        

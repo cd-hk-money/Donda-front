@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!marketLoaded && !marketValuationLoaded">    
+  <v-card-text v-if="!marketLoaded && !marketValuationLoaded">
     <MarketTrendFactory
       :market="computedMarket.kospi"
       :marketValuation="marketValuation[0]" 
@@ -23,7 +23,7 @@
       :marketValuation="marketValuation[2]"
       contry="usa"
     />      
-  </div>
+  </v-card-text>
 </template>
 
 <script lang="ts">

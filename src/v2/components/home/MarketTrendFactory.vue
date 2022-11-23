@@ -1,8 +1,7 @@
 <template>
   <v-card
-    :width="mobile ? '465' : '94%'"
     color="#252424"    
-    class="ml-5 mr-5 mb-5 mt-5"
+    class="ml-3 mr-3 mb-3 mt-3"
     min-height="162"
     rounded="xl"
     elevation="0"

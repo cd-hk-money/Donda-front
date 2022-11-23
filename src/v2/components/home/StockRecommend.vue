@@ -1,7 +1,7 @@
 <template>    
   <v-card
     class="align-center justify-center overflow-y-auto stock-news"
-    :width="isMobile ? 550 : '70vw'"
+    :width="isMobile ? 550 : '68vw'"
     height="835"
     elevation="0"
   >
@@ -32,8 +32,8 @@
 
     <v-divider />
 
-    <v-card-text v-if="!recommendStocksLoaded" class="d-flex flex-wrap justify-space-around">          
-      <StockSimilarContent
+    <v-card-text v-if="!recommendStocksLoaded" class="d-flex flex-wrap justify-center">          
+      <StockRecommendContnet
         v-for="(content, i) in recommendStocks"
         :key="i"
         :content="content"
@@ -53,7 +53,6 @@ import { mixins } from 'vue-class-component'
 import { namespace } from 'vuex-class'
 import { getStocks, getStockRecommend } from '@/store/payload'
 
-import StockSimilarContent from '@/v2/components/detail/similar/StockSimilarContents.vue'
 import StockRecommendContnet from '@/v2/components/home/StockRecommendContent.vue'
 import ProgressCircularVue from '../vuetify/ProgressCircular.vue'
 
@@ -64,7 +63,6 @@ const StockStoreModule = namespace('StockStore')
 
 @Component({  
   components: {
-    StockSimilarContent,
     StockRecommendContnet,
     ProgressCircularVue
   }

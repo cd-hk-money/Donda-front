@@ -21,7 +21,7 @@
     <v-divider />
     
     <v-card-text v-if="!loaded" class="d-flex flex-wrap justify-center">
-      <StockRecommendContent 
+      <StockSimiarContent 
         v-for="(content, i) in similarContents"
         :key="i"
         :content="content"        
@@ -58,12 +58,12 @@ const StockStoreModule = namespace('StockStore')
 
 import { IStockModel, StockRecommendModel } from '@/models/stock'
 import BtnBadge from '../../vuetify/BtnBadge.vue'
-import StockRecommendContent from '@/v2/components/home/StockRecommendContent.vue'
+import StockSimiarContent from '@/v2/components/detail/similar/StockSimiarContent.vue'
 
 @Component({
   components: {
     BtnBadge,
-    StockRecommendContent
+    StockSimiarContent
   }
 })
 export default class StockSimilar extends Vue {
