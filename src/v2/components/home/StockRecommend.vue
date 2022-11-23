@@ -1,7 +1,7 @@
 <template>    
   <v-card
     class="align-center justify-center overflow-y-auto stock-news"
-    width="98%"
+    :width="isMobile ? 550 : '70vw'"
     min-height="835"
     max-height="835"    
     elevation="0"
@@ -79,8 +79,8 @@ export default class StockRecommend extends StockMixin {
   @StockStoreModule.Action('getStocks') readonly getStocks!: (codes: string[]) => Promise<any>
 
     
-  get mobile () {    
-    return mobileHeight(this.$vuetify.breakpoint.name) < 500
+  get isMobile () {    
+    return this.$vuetify.breakpoint.name === 'xs'
   }
   
   colorClass (content) {

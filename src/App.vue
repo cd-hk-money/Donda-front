@@ -1,13 +1,20 @@
 <template>
-  <v-app>     
+  <v-app>  
+    
+    <!--  상단 네이게이션  -->
     <NavBar />
+
+    <!--  메인 뷰  -->
     <v-main>               
       <transition name="slide-fade" mode="out-in">
         <router-view :key="$route.fullPath"/>      
       </transition>  
+
+      <!--  스낵 바  -->
       <SnackBar />
     </v-main>
-    <!-- <Footer v-if="mobile" /> -->
+
+
   </v-app>
 </template>
 
@@ -19,7 +26,6 @@
   import SideBar from '@/v2/pages/SideBar.vue'
   import NavBar from '@/v2/pages/NavBar.vue'
   import SnackBar from '@/v2/pages/SnackBar.vue'
-  import Footer from '@/v2/pages/Footer.vue'
 
   const StockStoreModule = namespace('StockStore')
   const MarketStoreModule = namespace('MarketStore')
@@ -29,7 +35,6 @@
       SideBar,
       NavBar,
       SnackBar,
-      Footer
     }
   })
   export default class App extends Vue {
@@ -37,17 +42,13 @@
     @MarketStoreModule.Action('getTodayMarket') readonly getTodayMarket!: () => Promise<void>
     @MarketStoreModule.Action('getSearchTable') readonly getSearchTable!: () => Promise<void>    
     @StockStoreModule.Action('getDailySimpleRanks') readonly getDailySimpleRanks!: () => Promise<void>
-    @StockStoreModule.State('dailySimpleRanksloaded') rankLoaded!: boolean
-
-    get mobile () {
-      return this.$vuetify.breakpoint.name === 'xs'
-    }
-
-    async created () {
+    
+    async mounted () {
       await this.getDailySimpleRanks()  
       await this.getTodayMarket()  
       await this.getSearchTable()
     }
+
   }
 </script>
 

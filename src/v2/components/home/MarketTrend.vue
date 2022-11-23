@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!marketLoaded && !marketValuationLoaded">        
+  <div v-if="!marketLoaded && !marketValuationLoaded">    
     <MarketTrendFactory
       :market="computedMarket.kospi"
       :marketValuation="marketValuation[0]" 
@@ -34,6 +34,7 @@
 
   import MarketChart from '@/v2/components/home/MarketChart.vue'
   import MarketTrendFactory from '@/v2/components/home/MarketTrendFactory.vue'
+import DiviceMixin from '@/mixins/DiviceMixin.vue'
   
   const MarketStoreModule = namespace('MarketStore')
 
@@ -53,7 +54,7 @@
       MarketTrendFactory
     }
   })
-  export default class MarketTrend extends Vue {
+  export default class MarketTrend extends DiviceMixin {
         
     @MarketStoreModule.State('marketRecents') marketRecents!: IMarketRecentModel
     @MarketStoreModule.State('marketLoaded') marketLoaded!: boolean
@@ -70,7 +71,7 @@
     createComputedMarketContent(marketType: string): any {
       const {changes, close} = this.marketRecents[marketType]
       console.log(this.marketRecents)
-      const {changeValue, color} = this.getChangeValue(changes, close, marketType)    
+      const  color = this.getChangeValue(changes, close, marketType)    
       const closes = this.marketChart[marketType].values.slice(-12, ).map((value: MarketModel) => value.close)
       return {
         ...this.marketRecents[marketType],        

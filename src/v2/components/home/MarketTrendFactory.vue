@@ -5,7 +5,7 @@
     class="ml-5 mr-5 mb-5 mt-5"
     min-height="162"
     rounded="xl"
-    elevation="0"         
+    elevation="0"
   >
     <div class="d-flex flex-warp align-center justify-start">
       <div class="">
@@ -87,7 +87,7 @@
     </div>
 
     <v-expand-transition>        
-      <v-sheet color="#252424" :height="mobile ? '230' : '300'" width="100%" v-if="expand">
+      <v-sheet color="#252424" :height="mobile ? '230' : '250'" v-if="expand" :width="mobile ? '465' : '94%'">
         <v-divider class="ml-5 mr-5"/>            
           <v-chip-group 
             class="chart-chip-group"
