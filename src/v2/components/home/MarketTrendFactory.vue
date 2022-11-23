@@ -203,14 +203,8 @@
     }
 
     get per () {
-      const close = this.market.close // 마지막 종가 
+      const close = this.market.close
       const changes = this.market.changes
-      console.log()
-
-      
-
-
-      const origin = this.market.close - changes
 
       return (changes/(close-changes)) * 100
     }

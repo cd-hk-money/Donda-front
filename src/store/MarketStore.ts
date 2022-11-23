@@ -254,6 +254,8 @@ export default class MarketStore extends VuexModule {
 				recommendLoaded : true
 			})
 			const res = await axios.get(`${API}/daily/recommand`)
+
+			console.log(res.data)
 			
 			const recommend = Object.entries(res.data).map((recommend: any[]) => ({
 				code: recommend[0],

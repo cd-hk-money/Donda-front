@@ -1,6 +1,6 @@
 <template>
-  <div>
-
+  <div class="stockinfo-progress-circular">
+    <v-progress-circular indeterminate color="#00BCD4" />      
   </div>
 </template>
 

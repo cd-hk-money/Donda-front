@@ -120,6 +120,12 @@ export interface IStockGraphVolume {
   }
 }
 
+export interface IStockRecommend {
+  name: string
+  close: number
+  changes_ratio: number
+}
+
 export type ResponseType = 
   IStock | 
   IStockSimilar[] | 
@@ -132,4 +138,5 @@ export type ResponseType =
   IStockIndicatorDaily |
   IStockIndicatorSector |
   IStockIndicatorSectorDaily |
-  IStockGraphVolume
+  IStockGraphVolume |
+  IStockRecommend[]

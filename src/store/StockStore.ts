@@ -24,9 +24,14 @@ export default class StockStore extends VuexModule {
     stocks: 0,    
   }
 
+  
+
   // 추천 종목
   public recommendStocks: IStockModel[] = []
   public recommendStocksLoaded = false  
+
+  public recommendStockCodes: string[] = []
+  public recommendStockCodesLoaded = false
 
 
   // 주가 그래프 인덱스 저장

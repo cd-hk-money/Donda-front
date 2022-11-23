@@ -30,6 +30,6 @@
   export default class MarketTrendLayout extends DiviceMixin {}
 </script>
 
-<style scoped>
+<style>
 
 </style>

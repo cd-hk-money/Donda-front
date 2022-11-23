@@ -1,10 +1,10 @@
 <template>
   <v-card   
-    class="mb-1 mt-1 mr-1 ml-1"
-    :width="mobile ? '100%' : '380'"    
+    class="mb-3 mr-3 ml-3"
+    :width="isMobile ? '100%' : '380'"    
     color="#252424"
     elevation="0"  
-    rounded="xl"   
+    rounded="xl"
     v-if="!recommendStocksLoaded"
     @click="$router.push(`/detail/${content.code}`)"
   >    
@@ -61,22 +61,19 @@
 </template>
 
 <script lang="ts">
+import DiviceMixin from '@/mixins/DiviceMixin.vue'
 import { IStockModel } from '@/models/stock'
-import { Component, Vue, Prop } from 'vue-property-decorator' 
+import { Component, Prop } from 'vue-property-decorator' 
 import { namespace } from 'vuex-class'
 
 const StockStoreModule = namespace('StockStore')
 
 @Component
-export default class StockSimilarContent extends Vue {
+export default class StockSimilarContent extends DiviceMixin {
   
   @Prop() content!: IStockModel | undefined  
 
   @StockStoreModule.State('recommendStocksLoaded') recommendStocksLoaded!: boolean
-
-  get mobile () {
-    return this.$vuetify.breakpoint.name === 'xs'
-  }
 
   get computedValues () {
     const { changes_ratio, close } = this.content

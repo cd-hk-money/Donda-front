@@ -27,7 +27,8 @@ export const getStockIndicatorDailyUrl = (code: string) => `${API}/stock/${code}
 export const getStockVolumeUrl = (code: string) => `${API}/stock/${code}/years-volume`
 export const getStockIndicatorSectorUrl = (code: string) => `${API}/stock/${code}/sector`
 export const getStockIndicatorSectorDailyUrl = (code: string) => `${API}/stock/${code}/sector/daily`
-export const getStockDondaUrl= (code: string) => `${API}/stock/${code}/evaluation/donda`
+export const getStockDondaUrl = (code: string) => `${API}/stock/${code}/evaluation/donda`
 
+export const getStockRecommendUrl = () => `${API}/daily/recommand`
 
 

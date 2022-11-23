@@ -15,6 +15,7 @@ import {
   getStockIndicatorSectorUrl,
   getStockVolumeUrl,
   getStockDondaUrl,
+  getStockRecommendUrl,
   HEADER,
 } from '@/api/stocks'
 
@@ -31,7 +32,8 @@ import {
   IStockIndicatorDaily,
   IStockIndicatorSector,
   IStockIndicatorSectorDaily,
-  IStockGraphVolume
+  IStockGraphVolume,
+  IStockRecommend
 } from '@/api/types'
 
 import { convertChartData } from '@/mixins/tools'
@@ -117,5 +119,11 @@ export const getStockIndicatorSectorDaily  = (code: string) => createStoreAction
 export const getStockVolume                = (code: string) => createStoreActionPayload('stockGraphVolume'     , createAxiosGetRequestCallback<IStockGraphVolume>(getStockVolumeUrl(code)), (response: AxiosResponse<StockStatementAll>) => response.data.origin)
 export const getStockStatementAll          = (code: string, statementType: string) => createStoreActionPayload(statementType, createAxiosGetRequestCallback(getStockStatementAllUrl(code, statementType)), (response: AxiosResponse<StockStatementAll>) => response.data.origin)
 export const getStockDonda                 = (code: string) => createStoreActionPayload('stockDonda'           , createAxiosGetRequestCallback<IStockEvaluationDaily>(getStockDondaUrl(code)))
+
+export const getStockRecommend = () => createStoreActionPayload(
+  'recommendStockCodes', 
+  createAxiosGetRequestCallback<IStockRecommend[]>(getStockRecommendUrl()),
+  (response: AxiosResponse<IStockRecommend[]>) => Object.entries(response.data).map(recommend => recommend[0])
+)
 
 export const getStocks = (codes: string[]) => createStoreActionPayload<IStock>('recommendStocks', getStocksAsync(codes), (reses: AxiosResponse[]) => reses.map(response => response.data))

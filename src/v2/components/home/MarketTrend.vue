@@ -29,7 +29,7 @@
 <script lang="ts">
   import {  IMarketChartModel, IMarketRecentModel, IMarketRecentValueModel, IMarketValuationModel } from '@/models/market'
   import { MarketModel } from '@/models/market'
-  import { Component, Vue } from 'vue-property-decorator'
+  import { Component } from 'vue-property-decorator'
   import { namespace } from 'vuex-class'
 
   import MarketChart from '@/v2/components/home/MarketChart.vue'
@@ -70,8 +70,7 @@ import DiviceMixin from '@/mixins/DiviceMixin.vue'
     
     createComputedMarketContent(marketType: string): any {
       const {changes, close} = this.marketRecents[marketType]
-      console.log(this.marketRecents)
-      const  color = this.getChangeValue(changes, close, marketType)    
+      const {color} = this.getChangeValue(changes, close, marketType)    
       const closes = this.marketChart[marketType].values.slice(-12, ).map((value: MarketModel) => value.close)
       return {
         ...this.marketRecents[marketType],        
@@ -95,7 +94,6 @@ import DiviceMixin from '@/mixins/DiviceMixin.vue'
 
     getChangeValue(changes: number, close: number, marketType: string): { changeValue: string, color: string } {
       const changeValue = marketType === 'nasdaq' ? (changes / 100 * close) : (changes / 100 * close)
-      
       
       return {
         changeValue: (changeValue > 0 ? '+' : '') + changeValue.toFixed(2),

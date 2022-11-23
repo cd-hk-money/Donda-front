@@ -18,7 +18,7 @@ export default class StoreMixin extends Vue {
   @MarketStore.State('codeTitleMapping') codeTitleMapping!: CodeTitleMapping
   @MarketStore.State('marketLoaded') marketLoaded!: boolean
 
-  @StockStore.Action('callRequest') readonly callRequest!: (payload: AsyncPayload) => void
+  @StockStore.Action('callRequest') readonly callRequest!: (payload: AsyncPayload) => Promise<void>
   
 }
 </script>
