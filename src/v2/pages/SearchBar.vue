@@ -29,7 +29,7 @@
 
 <script lang="ts">
   import StoreMixin from '@/mixins/StoreMixin.vue';
-import { StockSimpleModel } from '@/models/stock';
+  import { StockSimpleModel } from '@/models/stock';
   import { getStock } from '@/store/payload';
   import { Component, Watch } from 'vue-property-decorator';
 
@@ -40,7 +40,6 @@ import { StockSimpleModel } from '@/models/stock';
     search: null | string = null
     loading = false
     items: string[] = []
-
 
     onBlur () {
       this.$emit('searchBarBlur')
@@ -58,11 +57,11 @@ import { StockSimpleModel } from '@/models/stock';
     @Watch("search")
     watchSearch(val: unknown) {
       if(!val) return
-      val && val !== this.searchTable && this.querySelections(val)
+      val && val !== this.searchTable && this.querySelections(val as string)
     }  
 
-    querySelections(val: any) {
-      let timeout=  0
+    querySelections(val: string) {
+      let timeout = 0
       this.loading = true
       window.clearTimeout(timeout)
 
