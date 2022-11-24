@@ -61,7 +61,7 @@
             </v-list-item-content>
 
             <v-list-item-action>
-              <v-btn outlined @click="logout">로그아웃</v-btn>
+              <v-btn outlined @click="[tryLogout(), bookmark = false]">로그아웃</v-btn>
             </v-list-item-action>
           </v-list-item>
         </v-list>
@@ -101,7 +101,7 @@
               color="cyan"
             />          
           </v-form>
-          <v-btn block outlined elevation="0" @click="login"> 로그인 </v-btn>            
+          <v-btn block outlined elevation="0" @click="[tryLogout(), bookmark = false]"> 로그인 </v-btn>            
           <v-btn class="mt-2" block outlined elevation="0" @click="isSignUp = true"> 회원가입 </v-btn>    
         </v-card-text>
       </v-card>
@@ -190,10 +190,7 @@
             active-class="white--text text--darken-1 font-weight-bold"  
             :value="true"                      
             append-icon='mdi-chevron-down'
-            @contextmenu.prevent="[
-              removeDialog = true,
-              dialogTitle = item.title
-            ]"
+            @contextmenu.prevent="dialogTitle = item.title"
           >
             <template v-slot:activator>
               <v-list-item-content>              
@@ -350,16 +347,16 @@
 
   @Component
   export default class NavBarMenus extends mixins(UserStoreMixin, StoreMixin) {
+
+
     bookmark: boolean | null = false   
 
-    // 로그인 변수
+    // 로그인 폼
     loginUsername = ''
-    loginPassword = ''
-
-    userPassword: string | null = ''
+    loginPassword = ''    
     showPassword: boolean | null = false
 
-    // 회원가입 변수
+    // 회원가입 폼
     isSignUp = false
     valid = true
     email = ''
@@ -367,14 +364,27 @@
     nickname = ''
     password = ''
 
-    usernameRules = [v => !!v || '사용자이름은 필수 입력 사항입니다.', v => (v && v.length <= 20) || '20글자보다 작아야 합니다.' , v => (v && !v.match(/[\s]/g) || '공백이 있으면 안됩니다.')]
-    passwordRules = [v => !!v || '비밀번호는 필수 입력 사항입니다.', v => (v && v.length <= 20) || '20글자보다 작아야 합니다.', v => (v && !v.match(/[\s]/g) || '공백이 있으면 안됩니다.')]
-    emailRules = [v => !!v || '이메일은 필수 입력 사항입니다.', v => /.+@.+\..+/.test(v) || '올바르지않은 이메일 형식입니다.', v => (v && !v.match(/[\s]/g) || '공백이 있으면 안됩니다.')]
+    // 회원가입 검증
+    usernameRules = [
+      (v: string) => !!v || '사용자이름은 필수 입력 사항입니다.',
+      (v: string) => (v && v.length <= 20) || '20글자보다 작아야 합니다.',
+      (v: string) => (v && !v.match(/[\s]/g) || '공백이 있으면 안됩니다.')
+    ]
 
-    removeDialog = false
-    dialogTitle: string | null = ''
+    passwordRules = [
+      (v: string) => !!v || '비밀번호는 필수 입력 사항입니다.', 
+      (v: string) => (v && v.length <= 20) || '20글자보다 작아야 합니다.', 
+      (v: string) => (v && !v.match(/[\s]/g) || '공백이 있으면 안됩니다.')
+    ]
+    emailRules = [
+      (v: string) => !!v || '이메일은 필수 입력 사항입니다.', 
+      (v: string) => /.+@.+\..+/.test(v) || '올바르지않은 이메일 형식입니다.', 
+      (v: string) => (v && !v.match(/[\s]/g) || '공백이 있으면 안됩니다.')
+    ]
+
+    // 관심종목 
+    dialogTitle: string | null = ''    
     isAlarm: boolean | null = true
-
     groupIcon = 'mdi-chevron-down'
     addGroupDialog = false
     groupName: string | null = ''
@@ -408,11 +418,6 @@
         this.signUp()
       }
       return valid        
-    }
-
-    logout () {
-      this.tryLogout()
-      this.bookmark = false
     }
 
     async login () {

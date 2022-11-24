@@ -37,20 +37,20 @@
             >
               <v-carousel-item>
                 <v-chip class="mt-1" :color="getChipColor('weeklyTrend2')">
-                  {{ marketValuation.market }}은(는) 2주동안 {{ Math.abs(marketValuation.weeklyTrend2) }}% 
-                  {{ (marketValuation.weeklyTrend2 > 0 ? '상승' : '하락') }} 하였습니다.                    
+                  {{ valuation.market }}은(는) 2주동안 {{ Math.abs(valuation.weeklyTrend2) }}% 
+                  {{ (valuation.weeklyTrend2 > 0 ? '상승' : '하락') }} 하였습니다.                    
                 </v-chip>
               </v-carousel-item>
               <v-carousel-item>
                 <v-chip class="mt-1" :color="getChipColor('weeklyTrend')">
-                  {{ marketValuation.market }}은(는) 1주동안 {{ Math.abs(marketValuation.weeklyTrend) }}% 
-                  {{ marketValuation.weeklyTrend > 0 ? '상승' : '하락' }} 하였습니다.                    
+                  {{ valuation.market }}은(는) 1주동안 {{ Math.abs(valuation.weeklyTrend) }}% 
+                  {{ valuation.weeklyTrend > 0 ? '상승' : '하락' }} 하였습니다.                    
                 </v-chip>
               </v-carousel-item>
               <v-carousel-item>
                 <v-chip class="mt-1" :color="getChipColor('monthlyTrend')">
-                  {{ marketValuation.market }} 한달 동안 {{ Math.abs(marketValuation.monthlyTrend) }}% 
-                  {{ marketValuation.monthlyTrend > 0 ? '상승' : '하락' }} 하였습니다.                    
+                  {{ valuation.market }} 한달 동안 {{ Math.abs(valuation.monthlyTrend) }}% 
+                  {{ valuation.monthlyTrend > 0 ? '상승' : '하락' }} 하였습니다.                    
                 </v-chip>
               </v-carousel-item>
 
@@ -69,13 +69,13 @@
       <v-card       
         elevation="0"
         min-height="100"        
-        :min-width="mobile ? '105' : '180'"
+        :min-width="isMobile ? '105' : '180'"
         class="d-flex align-center justify-center mr-3 mt-3 sparkline-sheet"
         color="#252424"        
         @click="[expand = !expand, menu = false]"
       > 
         <v-sparkline            
-          :min-width="mobile ? '105' : '180'"
+          :min-width="isMobile ? '105' : '180'"
           color="cyan"
           :line-width="4"            
           :value="market.sparkLineDatas"
@@ -86,7 +86,7 @@
     </div>
 
     <v-expand-transition>        
-      <v-sheet color="#252424" :height="mobile ? '230' : '250'" v-if="expand" :width="mobile ? '465' : '94%'">
+      <v-sheet color="#252424" :height="isMobile ? '230' : '250'" v-if="expand" :width="isMobile ? '465' : '94%'">
         <v-divider class="ml-5 mr-5"/>            
           <v-chip-group 
             class="chart-chip-group"
@@ -155,10 +155,11 @@
   import { Component, Prop, Vue } from 'vue-property-decorator';  
   import { ComputedMarket } from '@/v2/components/home/MarketTrend.vue';
   import MarketChart from '@/v2/components/home/MarketChart.vue'
-  import { IMarketChartModel } from '@/models/market'
-  import { namespace } from 'vuex-class'
+  import StoreMixin from '@/mixins/StoreMixin.vue';
+  import { IMarketValuationModel } from '@/models/market';
+  import { mixins } from 'vue-class-component';
+  import DiviceMixin from '@/mixins/DiviceMixin.vue';
   
-  const MarketStoreModule = namespace('MarketStore')
   const REQUEST_DATE = [10, 30, 120]
 
   @Component({
@@ -166,13 +167,11 @@
       MarketChart
     }
   })
-  export default class MarketTrendFactory extends Vue {
+  export default class MarketTrendFactory extends mixins(StoreMixin, DiviceMixin) {
 
     @Prop() market!: ComputedMarket
-    @Prop() marketValuation!: any
+    @Prop() valuation!: IMarketValuationModel
     @Prop() contry!: string
-
-    @MarketStoreModule.State('marketChart') marketChart!: IMarketChartModel
 
     expand = false
     menu = false
@@ -182,23 +181,20 @@
     rangePicked = []
 
     get title() {
-      return this.marketValuation.market
+      return this.valuation.market
     }
 
     get flag () {
       return this.contry === 'korea' ? '@/assets/koreaflag.png' : '@/assets/usaflag.png'
     }
     
-    get mobile () {
-      return this.$vuetify.breakpoint.name === 'xs'
-    }
-
+  
     get chipColor () {
-      return this.marketValuation.weeklyTrend2 > 0 ? 'red darken-3' : 'primary'
+      return this.valuation.weeklyTrend2 > 0 ? 'red darken-3' : 'primary'
     }
 
     getChipColor (trendRange: string) {
-      return this.marketValuation[trendRange] > 0 ? 'red darken-3' : 'primary'
+      return this.valuation[trendRange] > 0 ? 'red darken-3' : 'primary'
     }
 
     get per () {
@@ -212,16 +208,16 @@
     getChipContent (trendRange: string) {
       return {
         contry: this.contry === 'korea' ? '한국' : '미국',
-        trend: this.marketValuation[trendRange] > 0 ? '상승' : '하락',
-        textColor: this.marketValuation[trendRange] > 0 ? 'red--text' : 'blue--text'
+        trend: this.valuation[trendRange] > 0 ? '상승' : '하락',
+        textColor: this.valuation[trendRange] > 0 ? 'red--text' : 'blue--text'
       }
     }
 
     get chipContnet () {      
       return {
         contry: this.contry === 'korea' ? '한국' : '미국',
-        trend: this.marketValuation.weeklyTrend2 > 0 ? '상승' : '하락',
-        textColor: this.marketValuation.weeklyTrend2 > 0 ? 'red--text' : 'blue--text'
+        trend: this.valuation.weeklyTrend2 > 0 ? '상승' : '하락',
+        textColor: this.valuation.weeklyTrend2 > 0 ? 'red--text' : 'blue--text'
       }
     }
 

@@ -1,22 +1,20 @@
 <script lang="ts">
   import { AsyncPayload } from '@/store/payload';
-  import { StockSimpleModel } from '@/models/stock';
   import { Component, Vue } from 'vue-property-decorator';
   import { namespace } from 'vuex-class';
 
+  import {
+    CodeTitleMapping,
+    IDailySimpleRank,
+    IMarketRecentModel,
+    IMarketValuationModel,
+    IMarketChartModel
+  } from '@/models/market'
+
+  import { StockSimpleModel } from '@/models/stock'
+
   const MarketStoreModule = namespace('MarketStore')
   const StockStoreModule = namespace('StockStore')
-
-  type CodeTitleMapping = {
-    [title: string]: string
-  }
-
-  type IDailySimpleRank = {
-    marcap: (number | string)[]
-    change_incr: (number | string)[]
-    change_redu: (number | string)[] 
-    volume: (number | string)[]
-  }
 
   @Component
   export default class StoreMixin extends Vue {
@@ -26,9 +24,14 @@
     @MarketStoreModule.State('marketLoaded') marketLoaded!: boolean
     @MarketStoreModule.State('dailySimpleRanks') dailySimpleRanks!: IDailySimpleRank
     @MarketStoreModule.State('dailySimpleRanksLoaded') dailySimpleRanksLoaded!: boolean
+    @MarketStoreModule.State('marketRecents') marketRecents!: IMarketRecentModel    
+    @MarketStoreModule.State('marketValuation') marketValuation!: IMarketValuationModel[]
+    @MarketStoreModule.State('marketValuationLoaded') marketValuationLoaded!: boolean
+    @MarketStoreModule.State('marketChart') marketChart!: IMarketChartModel
     
+    @MarketStoreModule.Action('getMarketValuation') getMarketValuation!: () => Promise<void>
+    @MarketStoreModule.Action('getTodayMarket') getTodayMarket!: () => Promise<void>
 
-    @StockStoreModule.Action('callRequest') readonly callRequest!: (payload: AsyncPayload) => Promise<void>
-    
+    @StockStoreModule.Action('callRequest') readonly callRequest!: (payload: AsyncPayload) => Promise<void>    
   }
 </script>

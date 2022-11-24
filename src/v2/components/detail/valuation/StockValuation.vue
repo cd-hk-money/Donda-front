@@ -321,8 +321,6 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
-import { IValuationContent } from '@/models/market'
-
 import StockValuationChart from '@/v2/components/detail/valuation/StockValuationChart.vue'
 import StockValuationSingleChart from '@/v2/components/detail/valuation/StockValuationSingleChart.vue'
 import StockPolarAreaChart from '@/v2/components/detail/indicator/StockPolarAreaChart.vue'
@@ -383,7 +381,7 @@ export default class StockValuation extends StoreMixin {
     datas: [1, 2, 3, 4]
   }
 
-  valuations: IValuationContent[] = [
+  valuations= [
     {
       color: '#00BCD4',
       title: '현재 주가',

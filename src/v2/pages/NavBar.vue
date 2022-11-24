@@ -19,7 +19,7 @@
     <!-- 검색창 -->
     <SearchBar 
       v-if="isSearch"
-      @searchBarBlur="isSearch = false"      
+      @searchBarBlur="isSearch = false"
     />
 
     <!-- 우측 메뉴 -->
@@ -62,12 +62,12 @@ export default class NavBar extends mixins(StoreMixin, DiviceMixin, UserStoreMix
     if(this.$route.fullPath !== link) this.$router.push(link)
   }
 
-  pushDetail(item) {
+  pushDetail(code: string) {
     this.isSearch = false
-    if(this.$route.fullPath === item) return
+    if(this.$route.fullPath === code) return
 
-    this.callRequest(getStock(item))    
-    this.$router.push(`/detail/${this.codeTitleMapping[item]}`); 
+    this.callRequest(getStock(code))    
+    this.$router.push(`/detail/${this.codeTitleMapping[code]}`); 
     (document.activeElement as HTMLElement).blur()      
   }
 
@@ -76,8 +76,6 @@ export default class NavBar extends mixins(StoreMixin, DiviceMixin, UserStoreMix
                 .find((interest: IUserInterestGroupItem) => code === interest.code)
                 ?.alarm || false
   }
-
-
 
   created () {
     const user = localStorage.getItem('user')

@@ -3,11 +3,10 @@ import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators'
 import axios from 'axios'
 import * as _ from 'lodash'
 
-import { StockSimpleModel, StockRecommendModel} from '@/models/stock'
-import { IMarketChartModel, IMarketRecentModel, IMarketRecentValueModel } from '@/models/market'
 import { IUpdateStateModel } from '@/models/payload'
 import { division } from '@/mixins/tools'
-
+import { IMarketRecentValueModel } from '@/models/market'
+import { StockSimpleModel, IMarketChartModel, IMarketRecentModel, StockRecommendModel } from '@/models/stock'
 
 const HEADER = {
 	headers: {
