@@ -16,34 +16,11 @@
     
     <v-spacer />
 
-    <v-autocomplete                   
-      v-if="isSearch"        
-      class="navbar__autocomplete"        
-      v-model="searchs"            
-      :items="items"
-      :search-input.sync="search"
-      color="black"          
-      autofocus
-      hide-details
-      hide-no-data
-      solo-inverted
-      cache-items   
-      placeholder="종목명을 입력하세요."
-      validate-on-blur
-      item-text="name"
-      item-value="id"
-      @blur="isSearch = false"
-      @keypress.enter="pushDetail(search)"
-      @keydown.esc="isSearch = false"
-    >
-      <template v-slot:item="{ item }">        
-        <v-list-item-content>
-          <v-list-item-title v-text="item" />
-          <v-list-item-subtitle v-text="codeTitleMapping[item][0]" />
-        </v-list-item-content>
-      </template>
-    </v-autocomplete>    
-                
+    <SearchBar 
+      v-if="isSearch"
+      @searchBarBlur="isSearch = false"
+    />
+
     <div 
       v-if="!isSearch"
       class="d-flex navbar__menu__btn" @click="isSearch = !isSearch"
@@ -388,6 +365,7 @@ import StoreMixin from '@/mixins/StoreMixin.vue'
 import DiviceMixin from '@/mixins/DiviceMixin.vue'
 
 import HomeCarousel from '@/v2/pages/HomeCarousel.vue'
+import SearchBar from '@/v2/pages/SearchBar.vue'
 
 
 const InterestStoreModule = namespace('InterestStore')
@@ -396,7 +374,8 @@ const UserStoreModule = namespace('UserStore')
 
 @Component({
   components: {
-    HomeCarousel
+    HomeCarousel,
+    SearchBar
   }
 })
 export default class NavBar extends mixins(StoreMixin, DiviceMixin) {
@@ -563,25 +542,7 @@ export default class NavBar extends mixins(StoreMixin, DiviceMixin) {
                 ?.alarm || false
   }
 
-  @Watch("search")
-  watchSearch(val: unknown) {
-    if(!val) return
-    val && val !== this.searchTable && this.querySelections(val)
-  }  
 
-  querySelections(val: any) {
-    let timeout=  0
-    this.loading = true
-    window.clearTimeout(timeout)
-
-    setTimeout(() => {
-      this.items = this.searchTable.map((s: StockSimpleModel) => s.title).filter(e => {        
-        return ( e || '').toLowerCase().indexOf((val || '').toLowerCase()) > -1          
-      })
-
-      this.loading = false
-    }, 500)    
-  }
 
   created () {
     const user = localStorage.getItem('user')
