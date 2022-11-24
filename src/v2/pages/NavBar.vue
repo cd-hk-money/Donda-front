@@ -22,196 +22,20 @@
       @searchBarBlur="isSearch = false"      
     />
 
+    <!-- 우측 메뉴 -->
     <NavBarMenus 
       v-if="!isSearch"
       @toggleSearch="isSearch = !isSearch"
       @pushLink="pushLink"
-    />
-
-    
-
-          
-    <v-menu
-      v-if="!isSearch"
-      right bottom offset-y
-      :close-on-content-click="false"
-    >
-      <template v-slot:activator="{ on , attrs}">
-        <div class="d-flex navbar__menu__btn">
-          <v-btn icon v-on="on" v-bind="attrs" >
-            <v-icon>mdi-bookmark</v-icon>
-          </v-btn>
-          <div class="navbar__menu__btn__text" v-bind="attrs" v-on="on">            
-            Bookmark
-          </div>     
-        </div>
-      </template>
-
-      <v-card min-width="350">
-        <div class="d-flex justify-space-between">
-          <span class="ml-4 pt-2 pb-2 font-weight-bold">내 관심종목 그룹</span>          
-        </div>
-
-        <v-divider />
-
-        <v-list v-for="(item, i) in computedInterestStore" :key="i">
-          <v-list-group         
-            active-class="white--text text--darken-1 font-weight-bold"  
-            :value="true"                      
-            :append-icon="groupIcon"
-            @contextmenu.prevent="[
-              removeDialog = true,
-              dialogTitle = item.title
-            ]"
-          >
-            <template v-slot:activator>
-              <v-list-item-content>              
-                <v-list-item-title v-text="item.title" />
-                <div v-if="groupIcon === ''">          
-                  <v-icon>mdi-delete</v-icon>                      
-                </div>
-              </v-list-item-content>
-            </template> 
-  
-            <v-list-item
-              class="interest-item"
-              v-for="(child, i) in item.items" :key="i"                
-            >
-              <v-list-item-content class="interest-item-content" @click.left="pushDetail(child.title)">              
-                <v-list-item-title v-text="child.title" />
-                <v-list-item-subtitle v-text="child.subtitle" />
-              </v-list-item-content>
-  
-              <v-list-item-action class="v-list-item-action-close">
-                <div class="d-flex">
-                  <v-btn 
-                    @click="setUserInterestAlarm(child.subtitle)"
-                    class="mr-4" small icon                                       
-                  >
-                    <v-icon>{{ isAlarmed(child.subtitle) ? 'mdi-alarm-light' : 'mdi-alarm-light-outline' }}</v-icon>
-                  </v-btn>
-                  <v-btn 
-                    @click="removeInterestGroupItem({
-                      groupTitle: item.title,
-                      itemTitle: child.title
-                    })"
-                    small icon                      
-                  >
-                    <v-icon>fa-regular fa-x</v-icon>
-                  </v-btn>
-                </div>
-              </v-list-item-action>                    
-            </v-list-item>           
-          </v-list-group>
-        </v-list>  
-
-        <v-btn v-if="!addGroupDialog" block @click="addGroupDialog = true">
-          관심종목 그룹 추가
-          <v-icon>mdi-plus</v-icon>
-        </v-btn>  
-        
-        <v-text-field 
-          v-else 
-          class="ml-3 mr-3"
-          label="관심종목 그룹명"
-          v-model="groupName"
-          outlined autofocus clearable
-          @blur="addGroupDialog = false" 
-          @keydown.enter="[
-            addGroup({
-              title: groupName,
-              item: []
-            }), 
-            updateState({
-              snackBarMessage: '관심종목 그룹 추가 완료',
-              snackBar: true
-            }),
-            groupName = ''
-          ]"
-        />
-        
-        <v-divider />
-      </v-card>
-    </v-menu>
-
-    <v-menu 
-      v-if="!isSearch"
-      left bottom offset-y        
-      :close-on-content-click="false"
-    >
-      <template v-slot:activator="{ on, attrs }">
-        <div class="d-flex navbar__menu__btn">
-          <v-btn icon v-on="on" v-bind="attrs" @click="isAlarm = false">       
-            <v-badge v-if="isAlarm" color="error" overlap dot>
-              <v-icon>mdi-alarm-light</v-icon>
-            </v-badge> 
-            <v-icon v-else>mdi-alarm-light</v-icon>
-          </v-btn>            
-          <div class="navbar__menu__btn__text" v-bind="attrs" v-on="on">            
-            Alarm
-          </div>  
-        </div> 
-      </template>
-      
-      <v-card min-width="350">
-        <div class="d-flex justify-space-between">
-          <span class="ml-4 pt-2 pb-2">알림</span>
-          <v-btn
-            @click="alramItems = []" 
-            class="mr-4 pt-2 pb-2" icon              
-          >
-            <v-icon>mdi-trash-can</v-icon>
-          </v-btn>
-        </div>
-
-        <v-divider />
-
-        <v-list>
-          <v-list-item 
-            class="navbar__list__item"
-            v-for="(alram, i) in alramItems" :key="i"
-            @click="[  
-              alramItems.splice(i, 1),                          
-              pushLink(`/detail/${codeTitleMapping[alram.title]}`)
-            ]"                                      
-          >
-            <v-list-item-content>                
-              <span>
-                {{ alram.title }}
-              </span>
-              <v-list-item-subtitle>
-                {{ alramTypeObj[alram.type] }}
-              </v-list-item-subtitle>                
-            </v-list-item-content>
-
-            <v-list-item-action>
-              <div v-if="alram.rate" :class="alram.rate > 0 ? 'red--text' : 'blue--text'">
-                <span class="alram-type">
-                  {{ alramTypeObj[alram.type].split(' ')[0] }}
-                </span>
-                <span>
-                  {{ alram.origin.toLocaleString() }}₩
-                </span>
-                <span class="alram-value mr-1">
-                  {{ alram.value - alram.origin > 0 ? '+' : '' }}{{ alram.value - alram.origin }} ₩
-                  ({{ alram.rate > 0 ? '+' : '' }}{{ alram.rate }} %)
-                </span>
-              </div>
-            </v-list-item-action>
-          </v-list-item>
-        </v-list>          
-      </v-card>
-    </v-menu>
+    />              
   </v-app-bar>
 </template>
 
 <script lang="ts">
 import { getStock } from '@/store/payload'
-import { IUserAlram, IUserInterestGroupItem } from '@/models/interest'
-import { IUpdateStateModel } from '@/models/payload'
-import { Component, Watch } from 'vue-property-decorator'
-import { namespace } from 'vuex-class'
-import { StoreState, User } from '@/store/UserStore'
+import { IUserInterestGroupItem } from '@/models/interest'
+import { Component } from 'vue-property-decorator'
+
 import { mixins } from 'vue-class-component'
 
 import StoreMixin from '@/mixins/StoreMixin.vue'
@@ -220,10 +44,7 @@ import DiviceMixin from '@/mixins/DiviceMixin.vue'
 import HomeCarousel from '@/v2/pages/HomeCarousel.vue'
 import SearchBar from '@/v2/pages/SearchBar.vue'
 import NavBarMenus from '@/v2/pages/NavBarMenus.vue'
-
-
-const InterestStoreModule = namespace('InterestStore')
-const UserStoreModule = namespace('UserStore')
+import UserStoreMixin from '@/mixins/UserStoreMixin.vue'
 
 
 @Component({
@@ -233,61 +54,11 @@ const UserStoreModule = namespace('UserStore')
     NavBarMenus
   }
 })
-export default class NavBar extends mixins(StoreMixin, DiviceMixin) {
+export default class NavBar extends mixins(StoreMixin, DiviceMixin, UserStoreMixin) {
 
-  alramTypeObj = {
-    'close': '종가 변동',
-    'volume': '거래량 변동'
-  }
-    
-  @InterestStoreModule.State('userInterests') userInterests!: IUserInterestGroupItem[]
-  @InterestStoreModule.Mutation('addGroup') readonly addGroup!: (group: any) => void
-  @InterestStoreModule.Mutation('updateState') readonly updateState!: (payload: IUpdateStateModel) => void
-  @InterestStoreModule.Mutation('setUserInterestAlarm') setUserInterestAlarm!: (code: string) => void
-  @InterestStoreModule.Mutation('removeInterestGroupItem') readonly removeInterestGroupItem!: ({groupTitle, itemTitle}: {groupTitle: string, itemTitle: string}) => void  
-  @InterestStoreModule.Getter('computedInterestStore') computedInterestStore!: any
-      
-  @UserStoreModule.State('signUpState') signUpState!: StoreState
-  @UserStoreModule.State('loginState') loginState!: StoreState
-  @UserStoreModule.State('user') user!: User
-  @UserStoreModule.Mutation('updateState') readonly updateUserState!: (payload: IUpdateStateModel) => void
-
-  @UserStoreModule.Action('trySignUp') trySignUp!: (payload: { username: string, nickname: string, email: string, password: string }) => Promise<void>
-  @UserStoreModule.Action('tryLogin') tryLogin!: (paylaod: { username: string, password: string}) => Promise<void>
-  @UserStoreModule.Action('tryLogout') tryLogout!: () => void
-  
-  isAlarm: boolean | null = true
   isSearch: boolean | null = false
 
-
-  addGroupDialog = false
-  groupName: string | null = ''
-  groupIcon = 'mdi-chevron-down'
-  removeDialog = false
-  dialogTitle: string | null = ''
-
-  accountExpand = false
-  
-  alramItems: IUserAlram[] = [
-  {
-      title: '유니트론텍',
-      type: 'close',      
-      origin: 1600,
-      value: 2000,
-      rate: 30
-    },
-    {
-      title: '휴젤',
-      type: 'volume',
-      origin: 9000,
-      value: 5000,
-      rate: -40
-    }
-  ]
-  
-  
   pushLink(link: string) {
-    console.log('click', link)
     if(this.$route.fullPath !== link) this.$router.push(link)
   }
 
@@ -313,7 +84,6 @@ export default class NavBar extends mixins(StoreMixin, DiviceMixin) {
     if(user) {
       const userData = JSON.parse(user)
       this.updateUserState({ user: userData })
-
     }
   }
 }
