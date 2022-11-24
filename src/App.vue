@@ -27,7 +27,6 @@
   import NavBar from '@/v2/pages/NavBar.vue'
   import SnackBar from '@/v2/pages/SnackBar.vue'
 
-  const StockStoreModule = namespace('StockStore')
   const MarketStoreModule = namespace('MarketStore')
 
   @Component({
@@ -41,7 +40,7 @@
 
     @MarketStoreModule.Action('getTodayMarket') readonly getTodayMarket!: () => Promise<void>
     @MarketStoreModule.Action('getSearchTable') readonly getSearchTable!: () => Promise<void>    
-    @StockStoreModule.Action('getDailySimpleRanks') readonly getDailySimpleRanks!: () => Promise<void>
+    @MarketStoreModule.Action('getDailySimpleRanks') readonly getDailySimpleRanks!: () => Promise<void>
     
     async mounted () {
       await this.getDailySimpleRanks()  

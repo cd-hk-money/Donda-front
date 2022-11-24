@@ -94,8 +94,6 @@ export default class UserStore extends VuexModule {
 
     this.context.commit('loading', 'loginState')
 
-    console.log(payload)
-
     try {
 
       const res = await axios.post(`${API}/auth/login`, payload)

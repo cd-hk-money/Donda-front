@@ -1,24 +1,34 @@
 <script lang="ts">
-import { AsyncPayload } from '@/store/payload';
-import { StockSimpleModel } from '@/models/stock';
-import { Component, Vue } from 'vue-property-decorator';
-import { namespace } from 'vuex-class';
+  import { AsyncPayload } from '@/store/payload';
+  import { StockSimpleModel } from '@/models/stock';
+  import { Component, Vue } from 'vue-property-decorator';
+  import { namespace } from 'vuex-class';
 
-const MarketStore = namespace('MarketStore')
-const StockStore = namespace('StockStore')
+  const MarketStoreModule = namespace('MarketStore')
+  const StockStoreModule = namespace('StockStore')
 
-type CodeTitleMapping = {
-  [title: string]: string
-}
+  type CodeTitleMapping = {
+    [title: string]: string
+  }
 
-@Component
-export default class StoreMixin extends Vue {
-  @MarketStore.State('searchTableLoaded') searchTableLoaded!: boolean
-  @MarketStore.State('searchTable') searchTable!: StockSimpleModel[]
-  @MarketStore.State('codeTitleMapping') codeTitleMapping!: CodeTitleMapping
-  @MarketStore.State('marketLoaded') marketLoaded!: boolean
+  type IDailySimpleRank = {
+    marcap: (number | string)[]
+    change_incr: (number | string)[]
+    change_redu: (number | string)[] 
+    volume: (number | string)[]
+  }
 
-  @StockStore.Action('callRequest') readonly callRequest!: (payload: AsyncPayload) => Promise<void>
-  
-}
+  @Component
+  export default class StoreMixin extends Vue {
+    @MarketStoreModule.State('searchTableLoaded') searchTableLoaded!: boolean
+    @MarketStoreModule.State('searchTable') searchTable!: StockSimpleModel[]
+    @MarketStoreModule.State('codeTitleMapping') codeTitleMapping!: CodeTitleMapping
+    @MarketStoreModule.State('marketLoaded') marketLoaded!: boolean
+    @MarketStoreModule.State('dailySimpleRanks') dailySimpleRanks!: IDailySimpleRank
+    @MarketStoreModule.State('dailySimpleRanksLoaded') dailySimpleRanksLoaded!: boolean
+    
+
+    @StockStoreModule.Action('callRequest') readonly callRequest!: (payload: AsyncPayload) => Promise<void>
+    
+  }
 </script>
