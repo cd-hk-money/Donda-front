@@ -7,6 +7,7 @@ import { IUpdateStateModel } from '@/models/payload'
 import { division } from '@/mixins/tools'
 import { IMarketRecentValueModel } from '@/models/market'
 import { StockSimpleModel, IMarketChartModel, IMarketRecentModel, StockRecommendModel } from '@/models/stock'
+import { StoreState } from '@/store'
 
 const HEADER = {
 	headers: {
@@ -15,6 +16,7 @@ const HEADER = {
 }
 
 const API = process.env.VUE_APP_STOCK_API
+
 const marketMapping = {
 	'KOSPI': 'kospi',
 	'NASDAQ': 'nasdaq',
@@ -41,6 +43,8 @@ export default class MarketStore extends VuexModule {
 	public searchTableLoaded = false  
 	public searchTable!: StockSimpleModel[]
 	public codeTitleMapping: { [title: string]: string } = {}
+
+	public dailySimpleRank!: StoreState
 
 	
 	// 오늘의 간단 랭킹
@@ -114,9 +118,9 @@ export default class MarketStore extends VuexModule {
 			}
 			
 
-			const marketChart = Object.entries(res.data).reduce((acc, entry: (string | any)[]) => {
-					const types = ((entry[1] as any[]).map(v => Object.keys(v)[0]))          
-					const index = entry[1].map(s => Object.entries(s)[0])
+			const marketChart = Object.entries(res.data).reduce((acc, entry: [string, any]) => {
+					const types = ((entry[1] as (string | number)[]).map(v => Object.keys(v)[0]))          
+					const index = entry[1].map((s: { [s: string]: unknown } | ArrayLike<unknown>) => Object.entries(s)[0])
 					types.forEach(type => {
 						const mappingType = marketMapping[type]				
 						acc[mappingType].labels.push(entry[0])

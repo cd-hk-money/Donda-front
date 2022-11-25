@@ -1,6 +1,6 @@
 import { Module, VuexModule, Mutation, Action } from "vuex-module-decorators";
 import { IUpdateStateModel } from "@/models/payload";
-
+import { StoreState } from '@/store'
 import axios from 'axios'
 
 
@@ -13,12 +13,6 @@ const API = '/web-service'
 export interface User {
   username?: string | null
   email?: string | null
-}
-
-export type StoreState = {
-  data: any
-  error: any
-  loading: boolean
 }
 
 @Module({namespaced: true})

@@ -12,7 +12,7 @@
 
 </template>
 
-<script lang="ts">
+<script lang="ts">  
   import { Vue, Component } from 'vue-property-decorator'
 
   import MarketTrend from '@/v2/components/home/MarketTrend.vue'
