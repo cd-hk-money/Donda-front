@@ -45,6 +45,7 @@ export default class MarketStore extends VuexModule {
 	public codeTitleMapping: { [title: string]: string } = {}
 
 	public dailySimpleRank!: StoreState
+	public stockRecommend!: StoreState
 
 	
 	// 오늘의 간단 랭킹
