@@ -98,6 +98,22 @@ export default class MarketStore extends VuexModule {
 			})
 			const res = await axios.get(`${API}/daily/trend`, HEADER)
 			
+			const marketDefault: {
+				[marketType: string]: {
+					labels: string[],
+					values: Market[]
+				}
+			} = {
+				kospi: { labels: [], values: [] },
+				nasdaq: { labels: [], values: [] },
+				snp500: { labels: [], values: [] },
+				us1yt: { labels: [], values: [] },
+				us5yt: { labels: [], values: [] },
+				us10yt: { labels: [], values: [] },
+				usdkrw: { labels: [], values: [] }
+			}
+			
+
 			const marketChart = Object.entries(res.data).reduce((acc, entry: (string | any)[]) => {
 					const types = ((entry[1] as any[]).map(v => Object.keys(v)[0]))          
 					const index = entry[1].map(s => Object.entries(s)[0])
@@ -107,7 +123,7 @@ export default class MarketStore extends VuexModule {
 						acc[mappingType].values.push(index.find(entry => entry[0] === type)[1])
 					})
 					return acc          
-			}, {})
+			}, marketDefault)
 
 			const marketRecents = Object.values(marketMapping).reduce((acc, cur) => {
 				acc[cur] = {
