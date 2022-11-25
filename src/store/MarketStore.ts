@@ -15,6 +15,24 @@ const HEADER = {
 }
 
 const API = process.env.VUE_APP_STOCK_API
+const marketMapping = {
+	'KOSPI': 'kospi',
+	'NASDAQ': 'nasdaq',
+	'S&P500': 'snp500',
+	'US1YT': 'us1yt',
+	'US5YT': 'us5yt',
+	'US10YT': 'us10yt',
+	'USD/KRW': 'usdkrw'
+}
+
+interface Market {
+	changes: number
+	close: number
+	high: number
+	low: number
+	open: number
+	volume: number
+}
 
 @Module({namespaced: true})
 export default class MarketStore extends VuexModule {
@@ -79,113 +97,26 @@ export default class MarketStore extends VuexModule {
 				marketLoaded: true
 			})
 			const res = await axios.get(`${API}/daily/trend`, HEADER)
-
-			const entries = Object.entries(res.data)
-
-			const marketDefault = {
-				kospi: {
-					labels: [],
-					values: []
-				},
-				nasdaq: {
-					labels: [],
-					values: []
-				},
-				snp500: {
-					labels: [],
-					values: []
-				},
-				us10yt: {
-					labels: [],
-					values: []
-				},
-				us1yt: {
-					labels: [],
-					values: []
-				},
-				us5yt: {
-					labels: [],
-					values: []
-				},
-				usdkrw: {
-					labels: [],
-					values: []
-				}
-			}
-											
-			const marketChart = entries.reduce((acc, entry: (string | any)[]) => {
+			
+			const marketChart = Object.entries(res.data).reduce((acc, entry: (string | any)[]) => {
 					const types = ((entry[1] as any[]).map(v => Object.keys(v)[0]))          
 					const index = entry[1].map(s => Object.entries(s)[0])
-
-					if(types.find(v => v === 'KOSPI')) {
-						acc.kospi.labels.push(entry[0])              
-						acc.kospi.values.push(index.find(entry => entry[0] === 'KOSPI')[1])
-					}  
-					if(types.find(v => v === 'NASDAQ')) {
-						acc.nasdaq.labels.push(entry[0])              
-						acc.nasdaq.values.push(index.find(entry => entry[0] === 'NASDAQ')[1])
-					}  
-					if(types.find(v => v === 'S&P500')) {
-						acc.snp500.labels.push(entry[0])              
-						acc.snp500.values.push(index.find(entry => entry[0] === 'S&P500')[1])
-					}  
-					if(types.find(v => v === 'US10YT')) {
-						acc.us10yt.labels.push(entry[0])              
-						acc.us10yt.values.push(index.find(entry => entry[0] === 'US10YT')[1])
-					}  
-					if(types.find(v => v === 'US1YT')) {
-						acc.us1yt.labels.push(entry[0])              
-						acc.us1yt.values.push(index.find(entry => entry[0] === 'US1YT')[1])
-					}  
-					if(types.find(v => v === 'US5YT')) {
-						acc.us5yt.labels.push(entry[0])              
-						acc.us5yt.values.push(index.find(entry => entry[0] === 'US5YT')[1])
-					}  
-					if(types.find(v => v === 'USD/KRW')) {
-						acc.usdkrw.labels.push(entry[0])              
-						acc.usdkrw.values.push(index.find(entry => entry[0] === 'USD/KRW')[1])
-					}  
-
+					types.forEach(type => {
+						const mappingType = marketMapping[type]				
+						acc[mappingType].labels.push(entry[0])
+						acc[mappingType].values.push(index.find(entry => entry[0] === type)[1])
+					})
 					return acc          
-			}, marketDefault)
+			}, {})
 
-			const marketRecents = {
-				kospi: {
-					close: marketChart.kospi.values[marketChart.kospi.values.length - 1].close,
-					changes: marketChart.kospi.values[marketChart.kospi.values.length - 1].changes,  
-					recent: '몰라;'    
-				},
-				nasdaq: {
-					close: marketChart.nasdaq.values[marketChart.nasdaq.values.length - 1].close,
-					changes: marketChart.nasdaq.values[marketChart.nasdaq.values.length - 1].changes,  
-					recent: '몰라;'    
-				},
-				snp500: {
-					close: marketChart.snp500.values[marketChart.snp500.values.length - 1].close,
-					changes: marketChart.snp500.values[marketChart.snp500.values.length - 1].changes,  
-					recent: '몰라;'    
-				},
-				us10yt: {
-					close: marketChart.us10yt.values[marketChart.us10yt.values.length - 1].close,
-					changes: marketChart.us10yt.values[marketChart.us10yt.values.length - 1].changes,  
-					recent: '몰라;'    
-				},
-				us1yt: {
-					close: marketChart.us1yt.values[marketChart.us1yt.values.length - 1].close,
-					changes: marketChart.us1yt.values[marketChart.us1yt.values.length - 1].changes,  
-					recent: '몰라;'    
-				},
-				us5yt: {
-					close: marketChart.us5yt.values[marketChart.us5yt.values.length - 1].close,
-					changes: marketChart.us5yt.values[marketChart.us5yt.values.length - 1].changes,  
-					recent: '몰라;'    
-				},
-				usdkrw: {
-					close: marketChart.usdkrw.values[marketChart.usdkrw.values.length - 1].close,
-					changes: marketChart.usdkrw.values[marketChart.usdkrw.values.length - 1].changes,  
-					recent: '몰라;'    
+			const marketRecents = Object.values(marketMapping).reduce((acc, cur) => {
+				acc[cur] = {
+					close: marketChart[cur].values[marketChart[cur].values.length - 1].close,
+					changes: marketChart[cur].values[marketChart[cur].values.length - 1].changes,
+					recent: ''
 				}
-			}
+				return acc
+			}, {})
 			
 			this.context.commit('updateState', {
 				marketChart,
@@ -207,7 +138,6 @@ export default class MarketStore extends VuexModule {
 			})
 
 			const res = await axios.get(`${API}/daily/market`, HEADER)
-			console.log(res.data)
 
 			this.context.commit('updateState', {
 				marketValuationLoaded: false,
@@ -254,8 +184,6 @@ export default class MarketStore extends VuexModule {
 			})
 			const res = await axios.get(`${API}/daily/recommand`)
 
-			console.log(res.data)
-			
 			const recommend = Object.entries(res.data).map((recommend: any[]) => ({
 				code: recommend[0],
 				...recommend[1]
