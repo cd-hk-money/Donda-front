@@ -1,5 +1,4 @@
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators'
-import { IUpdateStateModel } from '@/models/payload'
 import { DailySimpleRankType, MarketType, MarketValuationType, SearchTableType } from '@/models/market'
 import { StoreState } from '@/store'
 import { AsyncPayload } from './payload'
@@ -31,15 +30,16 @@ export default class MarketStore extends VuexModule {
 	public marketValuation: StoreState = initialState<MarketValuationType>()
 	public searchTable: StoreState = initialState<SearchTableType>()
 	public dailySimpleRanks: StoreState = initialState<DailySimpleRankType>()
+
 	public requestDate = 20
 	
 
 	get marketRecents () {
+		const market = this.market.data
 		return Object.values(marketMapping).reduce((acc, cur) => {
 			acc[cur] = {
-				close: this.market.data[cur].values[this.market.data[cur].values.length - 1].close,
-				changes: this.market.data[cur].values[this.market.data[cur].values.length - 1].changes,
-				recent: ''
+				close: market[cur].values[market[cur].values.length - 1].close,
+				changes: market[cur].values[market[cur].values.length - 1].changes,
 			}
 			return acc
 		}, {}) ?? {}
@@ -66,13 +66,6 @@ export default class MarketStore extends VuexModule {
 	}
 
 	@Mutation
-	public updateState(payload: IUpdateStateModel) {    
-		Object.entries(payload).forEach((state) => {
-			this[state[0]] = state[1]
-		})        
-	}
-
-	@Mutation
   public loading(state: string) {    
     this[state].loading = true        
   }
@@ -94,8 +87,7 @@ export default class MarketStore extends VuexModule {
   @Action
   public async callRequestMarket(payload: AsyncPayload): Promise<void> {
     
-    const { state, asyncCallback, compute } = payload
-    
+    const { state, asyncCallback, compute } = payload    
     this.context.commit('loading', state)    
     try {
       const res = await asyncCallback()      
@@ -106,7 +98,5 @@ export default class MarketStore extends VuexModule {
     } catch (error) {
       this.context.commit('error', { state, error })
     }
-
-		
   }
 }

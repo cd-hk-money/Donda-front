@@ -1,29 +1,32 @@
 <template>
-  <v-card-text v-if="!market.loading && !marketValuation.loading">
-    <MarketTrendFactory
-      :computedMarket="computedMarket.kospi"
-      :valuation="marketValuation.data[0]" 
-      contry="korea"
-    />
-          
-    <MarketTrendFactory
-      :computedMarket="computedMarket.nasdaq"
-      :valuation="marketValuation.data[1]"
-      contry="usa"
-    />
-      
-    <MarketTrendFactory
-      :computedMarket="computedMarket.usdkrw"
-      :valuation="marketValuation.data[3]"
-      contry="korea"
-    />
-      
-    <MarketTrendFactory
-      :computedMarket="computedMarket.snp500"
-      :valuation="marketValuation.data[2]"
-      contry="usa"
-    />      
-  </v-card-text>
+  <div>
+    <v-card-text v-if="!market.loading && !marketValuation.loading">
+      <MarketTrendFactory
+        :computedMarket="computedMarket.kospi"
+        :valuation="marketValuation.data[0]" 
+        contry="korea"
+      />
+            
+      <MarketTrendFactory
+        :computedMarket="computedMarket.nasdaq"
+        :valuation="marketValuation.data[1]"
+        contry="usa"
+      />
+        
+      <MarketTrendFactory
+        :computedMarket="computedMarket.usdkrw"
+        :valuation="marketValuation.data[3]"
+        contry="korea"
+      />
+        
+      <MarketTrendFactory
+        :computedMarket="computedMarket.snp500"
+        :valuation="marketValuation.data[2]"
+        contry="usa"
+      />      
+    </v-card-text>
+    <ProgressCircular v-else/>
+  </div>
 </template>
 
 <script lang="ts">
@@ -33,6 +36,7 @@
   import MarketTrendFactory from '@/v2/components/home/MarketTrendFactory.vue'
   import StoreMixin from '@/mixins/StoreMixin.vue'
   import { getMarketValuation, getTodayMarket } from '@/store/payload'
+  import ProgressCircular from '@/v2/components/vuetify/ProgressCircular.vue'
   
   const marketTypes = ['kospi', 'nasdaq', 'usdkrw', 'snp500']
 
@@ -57,7 +61,8 @@
   @Component({
     components: {
       MarketChart,
-      MarketTrendFactory
+      MarketTrendFactory,
+      ProgressCircular
     }
   })
   export default class MarketTrend extends StoreMixin {
