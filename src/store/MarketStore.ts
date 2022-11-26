@@ -5,7 +5,7 @@ import * as _ from 'lodash'
 
 import { IUpdateStateModel } from '@/models/payload'
 import { division } from '@/mixins/tools'
-import { IMarketRecentValueModel, MarketType, MarketValuationType } from '@/models/market'
+import { IMarketRecentValueModel, MarketType, MarketValuationType, SearchTableType } from '@/models/market'
 import { StockSimpleModel, StockRecommendModel } from '@/models/stock'
 import { StoreState } from '@/store'
 import { AsyncPayload } from './payload'
@@ -39,12 +39,10 @@ const initialState = <T>(inital?: T) => ({
 export default class MarketStore extends VuexModule {
 
 	// 자동 완성을 위한 모든 종목의 종목명과 코드
-	public searchTableLoaded = false  
-	public searchTable!: StockSimpleModel[]
-	public codeTitleMapping: { [title: string]: string } = {}
 
 	public dailySimpleRank!: StoreState
 	public stockRecommend!: StoreState
+	
 
 	
 	// 오늘의 간단 랭킹
@@ -59,9 +57,29 @@ export default class MarketStore extends VuexModule {
 
 	// 주식 시장
 	public market: StoreState = initialState<MarketType>()
+	public marketValuation: StoreState = initialState<MarketValuationType>()
+	public searchTable: StoreState = initialState<SearchTableType>()
+
 	public requestDate = 20
 	public stockRequestDate = 20
-	public marketValuation: StoreState = initialState<MarketValuationType>()
+
+	get marketRecents () {
+		return Object.values(marketMapping).reduce((acc, cur) => {
+			acc[cur] = {
+				close: this.market.data[cur].values[this.market.data[cur].values.length - 1].close,
+				changes: this.market.data[cur].values[this.market.data[cur].values.length - 1].changes,
+				recent: ''
+			}
+			return acc
+		}, {}) ?? {}
+	}
+
+	get codeTitleMapping (): { [title: string]: string } {
+		return this.searchTable.data.reduce((acc: { [x: string]: string }, cur: { title: string | number; code: string }) => {
+			acc[cur.title] = cur.code
+			return acc
+		}, {})
+	}
 
 
 	// 종목 추천 정보
@@ -107,65 +125,6 @@ export default class MarketStore extends VuexModule {
 		this[state].error = error
   }
 	
-	get marketRecents () {
-		return Object.values(marketMapping).reduce((acc, cur) => {
-			acc[cur] = {
-				close: this.market.data[cur].values[this.market.data[cur].values.length - 1].close,
-				changes: this.market.data[cur].values[this.market.data[cur].values.length - 1].changes,
-				recent: ''
-			}
-			return acc
-		}, {}) ?? {}
-	}
-
-
-	// 시장 트렌드를 불러옵니다.
-	@Action
-	public async getMarketValuation(): Promise<void> {
-		try {
-			this.context.commit('updateState', {
-				marketValuationLoaded: true
-			})
-
-			const res = await axios.get(`${API}/daily/market`, HEADER)
-
-			console.log(res.data)
-
-			this.context.commit('updateState', {
-				marketValuationLoaded: false,
-				marketValuation: res.data
-			})
-		} catch(e)	 {
-			console.log(e)
-		}
-	}
-	
-
-	// 자동완성을 위한 기업명과 코드를 불러옵니다.
-	@Action
-	public async getSearchTable(): Promise<void> {
-		try {
-			this.context.commit('updateState', {
-				searchTableLoaded: true
-			})
-			const res = await axios.get(`${API}/krx-corps`, HEADER)
-			
-			this.context.commit('updateState', {
-				searchTable: Object.entries(res.data).map((stock: any) => ({
-					code: stock[0],
-					title: stock[1]
-				})),
-				codeTitleMapping: Object.keys(res.data).reduce((acc, k) => {
-					const v = res.data[k]
-					acc[v] = [...(acc[res.data] || []), k]
-					return acc
-				}, {}),
-				searchTableLoaded: false
-			})      
-		} catch (e) {
-			console.log(e)
-		}
-	}
 
 	// 추천 종목을 불러옵니다.
 	@Action
@@ -223,7 +182,7 @@ export default class MarketStore extends VuexModule {
       const data = compute(res)
 
       this.context.commit('success', { state, data })
-			console.log(this[state])
+			console.log(this[state], state)
 						
     } catch (error) {
       this.context.commit('error', { state, error })

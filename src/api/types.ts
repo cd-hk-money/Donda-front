@@ -131,7 +131,7 @@ export interface IStockRecommend {
 
 type MarketType = 'KOSPI' | 'NASDAQ' | 'S&P500' | 'US1YT' | 'US5YT' | 'US10YT' | 'USD/KRW'
 
-export type IMarketOrigin = {
+export type MarketResponse = {
   [date: string]: {
     [marketType in MarketType]: {
       changes: number
@@ -144,12 +144,16 @@ export type IMarketOrigin = {
   }[]
 }
 
-export type IMarketValuationOrigin = {
+export type MarketValuationResponse = {
   market: MarketType
   monthlyTrend: number
   weeklyTrend: number
   weeklyTrend2: number
 }[]
+
+export type SearchTableResponse = {
+ [code: string]: string 
+}
 
 export type ResponseType = 
   IStock | 
@@ -167,5 +171,6 @@ export type ResponseType =
   IStockRecommend[] | 
 
   
-  IMarketOrigin | 
-  IMarketValuationOrigin
+  MarketResponse | 
+  MarketValuationResponse | 
+  SearchTableResponse

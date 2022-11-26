@@ -21,7 +21,7 @@
     <template v-slot:item="{ item }">        
       <v-list-item-content>
         <v-list-item-title v-text="item" />
-        <v-list-item-subtitle v-text="codeTitleMapping[item][0]" />
+        <v-list-item-subtitle v-text="codeTitleMapping[item]" />
       </v-list-item-content>
     </template>
   </v-autocomplete>   
@@ -57,7 +57,7 @@
     @Watch("search")
     watchSearch(val: unknown) {
       if(!val) return
-      val && val !== this.searchTable && this.querySelections(val as string)
+      val && val !== this.searchTable.data && this.querySelections(val as string)
     }  
 
     querySelections(val: string) {
@@ -66,7 +66,7 @@
       window.clearTimeout(timeout)
 
       setTimeout(() => {
-        this.items = this.searchTable.map((s: StockSimpleModel) => s.title).filter(e => {        
+        this.items = this.searchTable.data.map((s: StockSimpleModel) => s.title).filter(e => {        
           return ( e || '').toLowerCase().indexOf((val || '').toLowerCase()) > -1          
         })
 

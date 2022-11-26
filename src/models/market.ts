@@ -1,4 +1,4 @@
-import { IMarketValuationOrigin } from "@/api/types"
+import { MarketValuationResponse } from "@/api/types"
 
 type MarketTypes = 'kospi' | 'nasdaq' | 'usdkrw' | 'snp500' | 'us1yt' | 'us5yt' | 'us10yt' | 'usdkrw'
 
@@ -72,11 +72,6 @@ export interface IMarketValuationModel {
 }
 
 
-
-
-
-
-
 export type MarketType = {
 	[marketType in MarketTypes]: {
 		labels: string[]
@@ -84,4 +79,9 @@ export type MarketType = {
 	}
 }
 
-export type MarketValuationType = IMarketValuationOrigin
+export type MarketValuationType = MarketValuationResponse
+
+export type SearchTableType = {
+	code: string
+	title: string
+}[]

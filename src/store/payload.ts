@@ -1,5 +1,5 @@
-import { IMarketValuationOrigin } from './../api/types';
-import { getTodayMarketUrl, getMarketValuationUrl } from './../api/stocks';
+import { MarketValuationResponse, SearchTableResponse } from './../api/types';
+import { getTodayMarketUrl, getMarketValuationUrl, getSearchTableUrl } from './../api/stocks';
 import {
   createAxiosGetRequestCallback,
   getStockUrl,  
@@ -36,7 +36,7 @@ import {
   IStockIndicatorSectorDaily,
   IStockGraphVolume,
   IStockRecommend,
-  IMarketOrigin
+  MarketResponse
 } from '@/api/types'
 
 import { convertChartData } from '@/mixins/tools'
@@ -113,7 +113,7 @@ const indicatorSectorDailyParser = (response: AxiosResponse<IStockIndicatorSecto
   }
 }
 
-const todayMarketParser = (response: AxiosResponse<IMarketOrigin>) => {
+const todayMarketParser = (response: AxiosResponse<MarketResponse>) => {
   const marketDefault: {
     [marketType: string]: {
       labels: string[],
@@ -141,10 +141,15 @@ const todayMarketParser = (response: AxiosResponse<IMarketOrigin>) => {
   }, marketDefault)
 }
 
+const searchTableParser = (response: AxiosResponse<SearchTableResponse>) => Object.entries(response.data).map(entry => {
+  return { code: entry[0], title: entry[1]}
+})
+
 const getStocksAsync = (codes: string[]) => async () => await axios.all(codes.map(code => axios.get<IStock>(`${process.env.VUE_APP_STOCK_API}/stock/${code}`), HEADER)) 
 
-export const getTodayMarket = () => createStoreActionPayload('market', createAxiosGetRequestCallback<IMarketOrigin>(getTodayMarketUrl()), todayMarketParser)
-export const getMarketValuation = () => createStoreActionPayload('marketValuation', createAxiosGetRequestCallback<IMarketValuationOrigin>(getMarketValuationUrl()))
+export const getTodayMarket = () => createStoreActionPayload('market', createAxiosGetRequestCallback<MarketResponse>(getTodayMarketUrl()), todayMarketParser)
+export const getMarketValuation = () => createStoreActionPayload('marketValuation', createAxiosGetRequestCallback<MarketValuationResponse>(getMarketValuationUrl()))
+export const getSearchTable = () => createStoreActionPayload('searchTable', createAxiosGetRequestCallback<SearchTableResponse>(getSearchTableUrl()), searchTableParser)
 
 export const getStock                      = (code: string) => createStoreActionPayload('stock'                , createAxiosGetRequestCallback<IStock>(getStockUrl(code)))    
 export const getStockGraphDefault          = (code: string) => createStoreActionPayload('stockGraphDefault'    , createAxiosGetRequestCallback<IStockGraph>(getStockGraphDefaultUrl(code)), (response: AxiosResponse<IStockGraph>) => response.data.origin)

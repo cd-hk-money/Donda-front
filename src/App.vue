@@ -20,12 +20,14 @@
 
 <script lang="ts">
 
-  import { Component, Vue } from 'vue-property-decorator'
+  import { Component } from 'vue-property-decorator'
   import { namespace } from 'vuex-class'
 
   import SideBar from '@/v2/pages/SideBar.vue'
   import NavBar from '@/v2/pages/NavBar.vue'
   import SnackBar from '@/v2/pages/SnackBar.vue'
+  import StoreMixin from '@/mixins/StoreMixin.vue'
+  import { getSearchTable } from '@/store/payload'
 
   const MarketStoreModule = namespace('MarketStore')
 
@@ -36,14 +38,14 @@
       SnackBar,
     }
   })
-  export default class App extends Vue {
-
-    @MarketStoreModule.Action('getSearchTable') readonly getSearchTable!: () => Promise<void>    
+  export default class App extends StoreMixin {
+    
     @MarketStoreModule.Action('getDailySimpleRanks') readonly getDailySimpleRanks!: () => Promise<void>
     
     async mounted () {
       await this.getDailySimpleRanks()  
-      await this.getSearchTable()
+      this.callRequestMarket(getSearchTable())
+
     }
 
   }
