@@ -27,9 +27,8 @@
   import NavBar from '@/v2/pages/NavBar.vue'
   import SnackBar from '@/v2/pages/SnackBar.vue'
   import StoreMixin from '@/mixins/StoreMixin.vue'
-  import { getSearchTable } from '@/store/payload'
+  import { getDailySimpleRanks, getSearchTable } from '@/store/payload'
 
-  const MarketStoreModule = namespace('MarketStore')
 
   @Component({
     components: {
@@ -39,13 +38,10 @@
     }
   })
   export default class App extends StoreMixin {
-    
-    @MarketStoreModule.Action('getDailySimpleRanks') readonly getDailySimpleRanks!: () => Promise<void>
-    
-    async mounted () {
-      await this.getDailySimpleRanks()  
+            
+    mounted () {
+      this.callRequestMarket(getDailySimpleRanks())
       this.callRequestMarket(getSearchTable())
-
     }
 
   }

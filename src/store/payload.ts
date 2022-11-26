@@ -1,5 +1,4 @@
-import { MarketValuationResponse, SearchTableResponse } from './../api/types';
-import { getTodayMarketUrl, getMarketValuationUrl, getSearchTableUrl } from './../api/stocks';
+import { DailySimpleRankResponse, MarketValuationResponse, SearchTableResponse } from './../api/types';
 import {
   createAxiosGetRequestCallback,
   getStockUrl,  
@@ -18,7 +17,11 @@ import {
   getStockVolumeUrl,
   getStockDondaUrl,
   getStockRecommendUrl,
+  getTodayMarketUrl,
+  getMarketValuationUrl,
+  getSearchTableUrl,
   HEADER,
+  getDailySimpleRanksUrl,
 } from '@/api/stocks'
 
 import {
@@ -150,6 +153,7 @@ const getStocksAsync = (codes: string[]) => async () => await axios.all(codes.ma
 export const getTodayMarket = () => createStoreActionPayload('market', createAxiosGetRequestCallback<MarketResponse>(getTodayMarketUrl()), todayMarketParser)
 export const getMarketValuation = () => createStoreActionPayload('marketValuation', createAxiosGetRequestCallback<MarketValuationResponse>(getMarketValuationUrl()))
 export const getSearchTable = () => createStoreActionPayload('searchTable', createAxiosGetRequestCallback<SearchTableResponse>(getSearchTableUrl()), searchTableParser)
+export const getDailySimpleRanks = () => createStoreActionPayload('dailySimpleRanks', createAxiosGetRequestCallback<DailySimpleRankResponse>(getDailySimpleRanksUrl()))
 
 export const getStock                      = (code: string) => createStoreActionPayload('stock'                , createAxiosGetRequestCallback<IStock>(getStockUrl(code)))    
 export const getStockGraphDefault          = (code: string) => createStoreActionPayload('stockGraphDefault'    , createAxiosGetRequestCallback<IStockGraph>(getStockGraphDefaultUrl(code)), (response: AxiosResponse<IStockGraph>) => response.data.origin)

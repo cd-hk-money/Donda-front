@@ -5,14 +5,13 @@
 
   import {
     CodeTitleMapping,
-    IDailySimpleRank,
+    DailySimpleRankType,
     IMarketRecentModel,
     MarketType,
     MarketValuationType,
 SearchTableType,
   } from '@/models/market'
 
-  import { StockSimpleModel } from '@/models/stock'
   import { StoreState } from '@/store';
 
   const MarketStoreModule = namespace('MarketStore')
@@ -21,8 +20,7 @@ SearchTableType,
   @Component
   export default class StoreMixin extends Vue {
     @MarketStoreModule.State('searchTable') searchTable!: StoreState<SearchTableType>
-    @MarketStoreModule.State('dailySimpleRanks') dailySimpleRanks!: IDailySimpleRank
-    @MarketStoreModule.State('dailySimpleRanksLoaded') dailySimpleRanksLoaded!: boolean
+    @MarketStoreModule.State('dailySimpleRanks') dailySimpleRanks!: StoreState<DailySimpleRankType>
     @MarketStoreModule.State('marketValuation') marketValuation!: StoreState<MarketValuationType>
     @MarketStoreModule.State('market') market!: StoreState<MarketType>
 

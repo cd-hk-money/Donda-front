@@ -5,8 +5,8 @@ import * as _ from 'lodash'
 
 import { IUpdateStateModel } from '@/models/payload'
 import { division } from '@/mixins/tools'
-import { IMarketRecentValueModel, MarketType, MarketValuationType, SearchTableType } from '@/models/market'
-import { StockSimpleModel, StockRecommendModel } from '@/models/stock'
+import { DailySimpleRankType, MarketType, MarketValuationType, SearchTableType } from '@/models/market'
+import { StockRecommendModel } from '@/models/stock'
 import { StoreState } from '@/store'
 import { AsyncPayload } from './payload'
 
@@ -47,21 +47,16 @@ export default class MarketStore extends VuexModule {
 	
 	// 오늘의 간단 랭킹
 	public dailySimpleRanksLoaded = false
-	public dailySimpleRanks = {
-		marcap: [],
-		change_incr: [],
-		change_redu: [],
-		volume: []
-	}
 
+
+	public requestDate = 20
 
 	// 주식 시장
 	public market: StoreState = initialState<MarketType>()
 	public marketValuation: StoreState = initialState<MarketValuationType>()
 	public searchTable: StoreState = initialState<SearchTableType>()
-
-	public requestDate = 20
-	public stockRequestDate = 20
+	public dailySimpleRanks: StoreState = initialState<DailySimpleRankType>()
+	
 
 	get marketRecents () {
 		return Object.values(marketMapping).reduce((acc, cur) => {
@@ -134,6 +129,7 @@ export default class MarketStore extends VuexModule {
 				recommendLoaded : true
 			})
 			const res = await axios.get(`${API}/daily/recommand`)
+			
 
 			const recommend = Object.entries(res.data).map((recommend: any[]) => ({
 				code: recommend[0],
@@ -152,24 +148,6 @@ export default class MarketStore extends VuexModule {
 		}
 	}
 
-	@Action
-  public async getDailySimpleRanks(): Promise<void> {    
-    try {
-      this.context.commit('updateState', {
-        dailySimpleRanksLoaded: true
-      })
-
-      const res = await axios.get(`${API}/daily/rank`, HEADER)
-            
-      this.context.commit('updateState', {
-        dailySimpleRanks: res.data,
-        dailySimpleRanksLoaded: false
-      })      
-    } catch(e) {
-      console.log(e)
-    }
-  }  
-
   // 비동기 로직을 실행합니다.
   @Action
   public async callRequestMarket(payload: AsyncPayload): Promise<void> {
@@ -182,7 +160,6 @@ export default class MarketStore extends VuexModule {
       const data = compute(res)
 
       this.context.commit('success', { state, data })
-			console.log(this[state], state)
 						
     } catch (error) {
       this.context.commit('error', { state, error })

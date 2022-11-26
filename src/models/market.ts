@@ -1,4 +1,4 @@
-import { MarketValuationResponse } from "@/api/types"
+import { DailySimpleRankResponse, MarketValuationResponse } from "@/api/types"
 
 type MarketTypes = 'kospi' | 'nasdaq' | 'usdkrw' | 'snp500' | 'us1yt' | 'us5yt' | 'us10yt' | 'usdkrw'
 
@@ -64,6 +64,8 @@ export interface IMarketChartModel {
 	}
 }
 
+// New..
+
 export interface IMarketValuationModel {
 	market: string
 	monthlyTrend: number
@@ -85,3 +87,5 @@ export type SearchTableType = {
 	code: string
 	title: string
 }[]
+
+export type DailySimpleRankType = DailySimpleRankResponse

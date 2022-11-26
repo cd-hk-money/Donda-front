@@ -130,6 +130,7 @@ export interface IStockRecommend {
 
 
 type MarketType = 'KOSPI' | 'NASDAQ' | 'S&P500' | 'US1YT' | 'US5YT' | 'US10YT' | 'USD/KRW'
+type RankType = 'change_incr' | 'change_redu' | 'marcap' | 'volume'
 
 export type MarketResponse = {
   [date: string]: {
@@ -155,6 +156,10 @@ export type SearchTableResponse = {
  [code: string]: string 
 }
 
+export type DailySimpleRankResponse = {
+  [rankType in RankType]: (number | string)[]  
+}
+
 export type ResponseType = 
   IStock | 
   IStockSimilar[] | 
@@ -173,4 +178,5 @@ export type ResponseType =
   
   MarketResponse | 
   MarketValuationResponse | 
-  SearchTableResponse
+  SearchTableResponse | 
+  DailySimpleRankResponse

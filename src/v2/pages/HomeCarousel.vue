@@ -55,7 +55,7 @@ import { Component } from 'vue-property-decorator';
     addPreFixer = (value: number): string => value > 0 ? '+' + value.toLocaleString() :value.toLocaleString() 
 
     get carouselContents(): IStockModel[] {
-      return this.dailySimpleRanks.marcap.slice(0, 10).map((stock: (number | string)) => ({
+      return this.dailySimpleRanks.data.marcap.slice(0, 10).map((stock: (number | string)) => ({
         code: stock[1],
         title: stock[2],
         close: stock[4],

@@ -12,7 +12,7 @@
     </v-app-bar-nav-icon>
 
     <!-- 좌측 크로셀 -->
-    <HomeCarousel v-if="!isMobile && !dailySimpleRanksLoaded"/>
+    <HomeCarousel v-if="!isMobile && !dailySimpleRanks.loading"/>
     
     <v-spacer />
 

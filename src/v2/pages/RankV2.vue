@@ -73,10 +73,10 @@
       interval="1000000"
       cycle
     >
-      <v-carousel-item v-for="(rankType, i) in Object.keys(dailySimpleRanks)" :key="i"> 
+      <v-carousel-item v-for="(rankType, i) in Object.keys(dailySimpleRanks.data)" :key="i"> 
         <rank-component        
           :title="rankTitle[i]"  
-          :contents="dailySimpleRanks[rankType].slice(0, amount)"
+          :contents="dailySimpleRanks.data[rankType].slice(0, amount)"
           @seeMore="changeAmount"
         />        
       </v-carousel-item>
@@ -99,21 +99,20 @@
 </template>
 
 <script lang="ts">
-import { IMarketRank } from '@/models/stock'
-import { Component, Vue } from 'vue-property-decorator'
-import { namespace } from 'vuex-class'
+import { Component } from 'vue-property-decorator'
 import { mobileHeight } from '@/mixins/tools'
 
 import RankComponent from '@/v2/components/rank/RankComponent.vue'
+import StoreMixin from '@/mixins/StoreMixin.vue'
+import { getDailySimpleRanks } from '@/store/payload'
 
-const MarketStoreModule = namespace('MarketStore')
 
 @Component({
   components: {
     RankComponent
   }
 })
-export default class RankV2 extends Vue {
+export default class RankV2 extends StoreMixin {
 
   // toTop 버튼 표시 유무
   btnShow = false
@@ -133,11 +132,7 @@ export default class RankV2 extends Vue {
   // 초기 라디오 값
   radioValue = 1
 
-  @MarketStoreModule.State('dailySimpleRanks') dailySimpleRanks!: IMarketRank
-  @MarketStoreModule.State('dailySimpleRanksLoaded') loaded!: boolean
-  @MarketStoreModule.Action('getDailySimpleRanks') readonly getDailySimpleRanks!: () => Promise<void>
-
-
+  
   toTop() {
     this.$vuetify.goTo('#scroll-target')
     this.btnShow = false
@@ -156,14 +151,13 @@ export default class RankV2 extends Vue {
     this.amount = amount
   }
 
-  created () {
-    this.getDailySimpleRanks()
-  }
-
   mounted () {
-    console.log('error')
     window.addEventListener('scroll', this.handleScroll)
+    if (!this.dailySimpleRanks.data) {
+      this.callRequestMarket(getDailySimpleRanks())
+    }
   }
+  
 }
 </script>
 
