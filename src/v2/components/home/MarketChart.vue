@@ -3,14 +3,13 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import Chart from 'chart.js'
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 import { mixins, Line } from 'vue-chartjs-typescript'
 
-import { transparentize, myCrossHair } from '@/mixins/tools'
-import { IMarketChartModel, MarketModel } from '@/models/market'
+import { transparentize } from '@/mixins/tools'
+import StoreMixin from '@/mixins/StoreMixin.vue'
 
 
 const { reactiveProp } = mixins
@@ -23,7 +22,7 @@ const REQUEST_DATE = [10, 30, 120]
   extends: Line,
   mixins: [reactiveProp],
 })
-export default class LineChart extends Vue {
+export default class LineChart extends StoreMixin {
   @Prop() type!: string
   @Prop() chartData!: null
   @Prop() fill!: boolean
@@ -34,7 +33,6 @@ export default class LineChart extends Vue {
 
   @Prop({default: function () { return {} }}) options!: object
 
-  @MarketStoreModule.State('market') market!: IMarketChartModel
   @MarketStoreModule.State('requestDate') requestDate!: number
   
   renderChart!: (chartData: any, options: any) => HTMLCanvasElement    
@@ -117,15 +115,15 @@ export default class LineChart extends Vue {
   }
   
   createChartData (count: number | number[]): Chart.ChartData {
-    const market = this.market[this.type]         
+    const market = this.market.data[this.type]         
     const isNumber = typeof count === 'number'  
     const labels = isNumber
       ? market.labels.slice(count * (-1)).map(label => label.substr(5))
       : market.labels.slice(count[0], count[1]).map(label => label.substr(5))
 
     const data = isNumber
-      ? market.values.slice(count * (-1)).map((value: MarketModel) => value.close)
-      : market.values.slice(count[0], count[1]).map((value: MarketModel) => value.close) 
+      ? market.values.slice(count * (-1)).map((value: { close: number }) => value.close)
+      : market.values.slice(count[0], count[1]).map((value: { close: number }) => value.close) 
     
     return {
       labels,      
@@ -183,7 +181,7 @@ export default class LineChart extends Vue {
   }
 
   correctionsDate(date) {
-    const labels = this.market[this.type].labels
+    const labels = this.market.data[this.type].labels
     const whileCondition = true
     let result
     let findDate = date

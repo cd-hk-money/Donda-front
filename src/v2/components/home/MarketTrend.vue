@@ -27,8 +27,6 @@
 </template>
 
 <script lang="ts">
-  import { IMarketRecentValueModel } from '@/models/market'
-  import { MarketModel } from '@/models/market'
   import { Component } from 'vue-property-decorator'
 
   import MarketChart from '@/v2/components/home/MarketChart.vue'
@@ -38,7 +36,9 @@
   
   const marketTypes = ['kospi', 'nasdaq', 'usdkrw', 'snp500']
 
-  export interface ComputedMarket extends IMarketRecentValueModel {
+  export interface ComputedMarket {
+    close?: number;
+    recent?: string;
     color: string
     sparkLineDatas: number[]
     type?: string
@@ -68,7 +68,7 @@
         ...this.marketRecents[marketType],        
         changes: this.marketRecents[marketType].changes,
         color: (changes / 100 * close) > 0 ? 'red--text' : 'blue--text',
-        sparkLineDatas: this.market.data[marketType].values.slice(-12, ).map((value: MarketModel) => value.close),
+        sparkLineDatas: this.market.data[marketType].values.slice(-12, ).map((value: { close: number }) => value.close),
         type: marketType,
         trendIcon: changes > 0 ? 'fa-solid fa-arrow-trend-up' : 'fa-solid fa-arrow-trend-down',
         trendIconColor: changes > 0 ? 'red' : 'blue'

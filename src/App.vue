@@ -21,7 +21,6 @@
 <script lang="ts">
 
   import { Component } from 'vue-property-decorator'
-  import { namespace } from 'vuex-class'
 
   import SideBar from '@/v2/pages/SideBar.vue'
   import NavBar from '@/v2/pages/NavBar.vue'

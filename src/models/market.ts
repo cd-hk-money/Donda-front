@@ -14,58 +14,13 @@ export interface StockRecommendModel extends SingleStock {
   changes_ratio: number
 }
 
-export interface IMarketRecentValueModel {
-	close?: number;
-	changes?: number;
-	recent?: string;
-}
 
-export type IMarketRecentModel = {
-	[marketType in MarketTypes]: IMarketRecentValueModel
-}
 
-export interface StockSimpleModel extends SingleStock { 
-	stock?: number 
-}
 
-export interface CodeTitleMapping {
-	[title: string]: string
-}
 
-export interface IDailySimpleRank {
-	marcap: (number | string)[]
-	change_incr: (number | string)[]
-	change_redu: (number | string)[] 
-	volume: (number | string)[]
-}
 
-export interface MarketModel {
-	type: MarketTypes,
-	open: number,
-	close: number,
-	high: number,
-	low: number,
-	changes: number,
-	volume: number
-}
 
-export interface IMarketChartModel {
-	kospi: {
-		labels: string[]
-		data: MarketModel[]
-	},
-	nasdaq: {
-		labels: string[]
-		data:  MarketModel[]  
-	},
-	snp500: {
-		labels: string[]
-		data:  MarketModel[]
-	}
-}
-
-// New..
-
+// state types
 export interface IMarketValuationModel {
 	market: string
 	monthlyTrend: number
@@ -77,7 +32,15 @@ export interface IMarketValuationModel {
 export type MarketType = {
 	[marketType in MarketTypes]: {
 		labels: string[]
-		values: MarketModel[]
+		values: {
+			type: MarketTypes
+			open: number
+			close: number
+			high: number
+			low: number
+			changes: number
+			volume: number
+		}[]
 	}
 }
 
@@ -89,3 +52,20 @@ export type SearchTableType = {
 }[]
 
 export type DailySimpleRankType = DailySimpleRankResponse
+
+
+
+
+
+// getters type 
+export type MarketRecentType = {
+	[marketType in MarketTypes]: {
+		close?: number
+		changes?: number
+		recent?: string
+	}
+}
+
+export interface CodeTitleMappingType {
+	[title: string]: string
+}

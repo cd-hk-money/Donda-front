@@ -29,7 +29,6 @@
 
 <script lang="ts">
   import StoreMixin from '@/mixins/StoreMixin.vue';
-  import { StockSimpleModel } from '@/models/stock';
   import { getStock } from '@/store/payload';
   import { Component, Watch } from 'vue-property-decorator';
 
@@ -66,7 +65,7 @@
       window.clearTimeout(timeout)
 
       setTimeout(() => {
-        this.items = this.searchTable.data.map((s: StockSimpleModel) => s.title).filter(e => {        
+        this.items = this.searchTable.data.map(s => s.title).filter(e => {        
           return ( e || '').toLowerCase().indexOf((val || '').toLowerCase()) > -1          
         })
 
