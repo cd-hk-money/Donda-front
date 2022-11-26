@@ -28,11 +28,11 @@ const marketMapping = {
 	'USD/KRW': 'usdkrw'
 }
 
-const initalState = {
-	data: null,
+const initalState = <T>(inital?: T) => ({
+	data: inital,
 	error: null,
 	loading: false
-}
+})
 
 interface Market {
 	changes: number
@@ -66,14 +66,13 @@ export default class MarketStore extends VuexModule {
 
 
 	// 주식 시장
-	public marketLoaded = false  
-	public market: StoreState = initalState
+	public market: StoreState = initalState<any>()
 	public requestDate = 20
 	public stockRequestDate = 20
 	public marketValuation!: IMarketRecentValueModel[]
 	public marketValuationLoaded = false
 
-	public marketv2: StoreState = initalState
+	public marketv2: StoreState<any> = initalState()
 
 
 	// 종목 추천 정보
@@ -233,9 +232,12 @@ export default class MarketStore extends VuexModule {
       const data = compute(res)
 
       this.context.commit('success', { state, data })
+			console.log(this[state])
 						
     } catch (error) {
       this.context.commit('error', { state, error })
     }
+
+		
   }
 }

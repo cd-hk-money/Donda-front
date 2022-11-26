@@ -8,7 +8,8 @@
     IDailySimpleRank,
     IMarketRecentModel,
     IMarketValuationModel,
-    IMarketChartModel
+    
+    MarketType,
   } from '@/models/market'
 
   import { StockSimpleModel } from '@/models/stock'
@@ -22,13 +23,12 @@ import { StoreState } from '@/store';
     @MarketStoreModule.State('searchTableLoaded') searchTableLoaded!: boolean
     @MarketStoreModule.State('searchTable') searchTable!: StockSimpleModel[]
     @MarketStoreModule.State('codeTitleMapping') codeTitleMapping!: CodeTitleMapping
-    @MarketStoreModule.State('marketLoaded') marketLoaded!: boolean
     @MarketStoreModule.State('dailySimpleRanks') dailySimpleRanks!: IDailySimpleRank
     @MarketStoreModule.State('dailySimpleRanksLoaded') dailySimpleRanksLoaded!: boolean
     @MarketStoreModule.Getter('marketRecents') marketRecents!: IMarketRecentModel    
     @MarketStoreModule.State('marketValuation') marketValuation!: IMarketValuationModel[]
     @MarketStoreModule.State('marketValuationLoaded') marketValuationLoaded!: boolean
-    @MarketStoreModule.State('market') market!: StoreState<any>
+    @MarketStoreModule.State('market') market!: StoreState<MarketType>
     
     @MarketStoreModule.Action('getMarketValuation') getMarketValuation!: () => Promise<void>
 

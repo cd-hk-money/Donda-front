@@ -1,4 +1,4 @@
-type MarketTypes = 'kospi' | 'nasdaq' | 'usdkrw' | 'snp500'
+type MarketTypes = 'kospi' | 'nasdaq' | 'usdkrw' | 'snp500' | 'us1yt' | 'us5yt' | 'us10yt' | 'usdkrw'
 
 export interface SingleStock {
 	title?: string
@@ -37,7 +37,7 @@ export interface IDailySimpleRank {
 	volume: (number | string)[]
 }
 
-export type MarketModel = {
+export interface MarketModel {
 	type: MarketTypes,
 	open: number,
 	close: number,
@@ -67,4 +67,17 @@ export interface IMarketValuationModel {
 	monthlyTrend: number
 	weeklyTrend: number
 	weeklyTrend2: number  
+}
+
+
+
+
+
+
+
+export type MarketType = {
+	[marketType in MarketTypes]: {
+		labels: string[]
+		values: MarketModel[]
+	}
 }
