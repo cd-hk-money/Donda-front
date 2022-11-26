@@ -1,3 +1,5 @@
+import { IMarketValuationOrigin } from "@/api/types"
+
 type MarketTypes = 'kospi' | 'nasdaq' | 'usdkrw' | 'snp500' | 'us1yt' | 'us5yt' | 'us10yt' | 'usdkrw'
 
 export interface SingleStock {
@@ -81,3 +83,5 @@ export type MarketType = {
 		values: MarketModel[]
 	}
 }
+
+export type MarketValuationType = IMarketValuationOrigin

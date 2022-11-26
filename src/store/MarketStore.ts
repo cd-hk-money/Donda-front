@@ -5,8 +5,8 @@ import * as _ from 'lodash'
 
 import { IUpdateStateModel } from '@/models/payload'
 import { division } from '@/mixins/tools'
-import { IMarketRecentValueModel } from '@/models/market'
-import { StockSimpleModel, IMarketChartModel, IMarketRecentModel, StockRecommendModel } from '@/models/stock'
+import { IMarketRecentValueModel, MarketType, MarketValuationType } from '@/models/market'
+import { StockSimpleModel, StockRecommendModel } from '@/models/stock'
 import { StoreState } from '@/store'
 import { AsyncPayload } from './payload'
 
@@ -28,20 +28,12 @@ const marketMapping = {
 	'USD/KRW': 'usdkrw'
 }
 
-const initalState = <T>(inital?: T) => ({
+const initialState = <T>(inital?: T) => ({
 	data: inital,
 	error: null,
 	loading: false
 })
 
-interface Market {
-	changes: number
-	close: number
-	high: number
-	low: number
-	open: number
-	volume: number
-}
 
 @Module({namespaced: true})
 export default class MarketStore extends VuexModule {
@@ -66,13 +58,10 @@ export default class MarketStore extends VuexModule {
 
 
 	// 주식 시장
-	public market: StoreState = initalState<any>()
+	public market: StoreState = initialState<MarketType>()
 	public requestDate = 20
 	public stockRequestDate = 20
-	public marketValuation!: IMarketRecentValueModel[]
-	public marketValuationLoaded = false
-
-	public marketv2: StoreState<any> = initalState()
+	public marketValuation: StoreState = initialState<MarketValuationType>()
 
 
 	// 종목 추천 정보
@@ -139,6 +128,8 @@ export default class MarketStore extends VuexModule {
 			})
 
 			const res = await axios.get(`${API}/daily/market`, HEADER)
+
+			console.log(res.data)
 
 			this.context.commit('updateState', {
 				marketValuationLoaded: false,

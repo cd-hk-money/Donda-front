@@ -1,26 +1,26 @@
 <template>
-  <v-card-text v-if="!market.loading && !marketValuationLoaded">
+  <v-card-text v-if="!market.loading && !marketValuation.loading">
     <MarketTrendFactory
       :computedMarket="computedMarket.kospi"
-      :valuation="marketValuation[0]" 
+      :valuation="marketValuation.data[0]" 
       contry="korea"
     />
           
     <MarketTrendFactory
       :computedMarket="computedMarket.nasdaq"
-      :valuation="marketValuation[1]"
+      :valuation="marketValuation.data[1]"
       contry="usa"
     />
       
     <MarketTrendFactory
       :computedMarket="computedMarket.usdkrw"
-      :valuation="marketValuation[3]"
+      :valuation="marketValuation.data[3]"
       contry="korea"
     />
       
     <MarketTrendFactory
       :computedMarket="computedMarket.snp500"
-      :valuation="marketValuation[2]"
+      :valuation="marketValuation.data[2]"
       contry="usa"
     />      
   </v-card-text>
@@ -34,7 +34,7 @@
   import MarketChart from '@/v2/components/home/MarketChart.vue'
   import MarketTrendFactory from '@/v2/components/home/MarketTrendFactory.vue'
   import StoreMixin from '@/mixins/StoreMixin.vue'
-import { getTodayMarket } from '@/store/payload'
+  import { getMarketValuation, getTodayMarket } from '@/store/payload'
   
   const marketTypes = ['kospi', 'nasdaq', 'usdkrw', 'snp500']
 
@@ -82,12 +82,11 @@ import { getTodayMarket } from '@/store/payload'
       },{})
     }
 
-    async mounted () {      
+     mounted () {      
       if(!this.market.data) {
         this.callRequestMarket(getTodayMarket())
-      }
-      
-      if(!this.marketValuation) await this.getMarketValuation()
+        this.callRequestMarket(getMarketValuation())
+      }      
     }
 
   }

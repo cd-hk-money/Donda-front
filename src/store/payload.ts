@@ -1,4 +1,5 @@
-import { getTodayMarketUrl } from './../api/stocks';
+import { IMarketValuationOrigin } from './../api/types';
+import { getTodayMarketUrl, getMarketValuationUrl } from './../api/stocks';
 import {
   createAxiosGetRequestCallback,
   getStockUrl,  
@@ -106,8 +107,6 @@ const indicatorSectorDailyParser = (response: AxiosResponse<IStockIndicatorSecto
    PBR: [], PER: [], PSR: []
   })
 
-  console.log('e')
-  
   return {
     value,
     date: Object.keys(response.data)
@@ -145,6 +144,7 @@ const todayMarketParser = (response: AxiosResponse<IMarketOrigin>) => {
 const getStocksAsync = (codes: string[]) => async () => await axios.all(codes.map(code => axios.get<IStock>(`${process.env.VUE_APP_STOCK_API}/stock/${code}`), HEADER)) 
 
 export const getTodayMarket = () => createStoreActionPayload('market', createAxiosGetRequestCallback<IMarketOrigin>(getTodayMarketUrl()), todayMarketParser)
+export const getMarketValuation = () => createStoreActionPayload('marketValuation', createAxiosGetRequestCallback<IMarketValuationOrigin>(getMarketValuationUrl()))
 
 export const getStock                      = (code: string) => createStoreActionPayload('stock'                , createAxiosGetRequestCallback<IStock>(getStockUrl(code)))    
 export const getStockGraphDefault          = (code: string) => createStoreActionPayload('stockGraphDefault'    , createAxiosGetRequestCallback<IStockGraph>(getStockGraphDefaultUrl(code)), (response: AxiosResponse<IStockGraph>) => response.data.origin)
