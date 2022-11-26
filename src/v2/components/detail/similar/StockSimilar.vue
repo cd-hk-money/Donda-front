@@ -53,10 +53,9 @@
 import { Component, Vue} from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 
-const MarketStoreModule = namespace('MarketStore')
 const StockStoreModule = namespace('StockStore')
 
-import { IStockModel, StockRecommendModel } from '@/models/stock'
+import { IStockModel } from '@/models/stock'
 import BtnBadge from '../../vuetify/BtnBadge.vue'
 import StockSimiarContent from '@/v2/components/detail/similar/StockSimiarContent.vue'
 
@@ -69,10 +68,9 @@ import StockSimiarContent from '@/v2/components/detail/similar/StockSimiarConten
 export default class StockSimilar extends Vue {
   overlay = false
   
-  @MarketStoreModule.State('recommend') recommend!: StockRecommendModel[]
-  @MarketStoreModule.State('recommedLoaded') loaded!: boolean
   @StockStoreModule.State('stock') stock!: IStockModel
   @StockStoreModule.State('similarContents') similarContents!: IStockModel[]
+  @StockStoreModule.State('similarContentsLoaded') loaded!: boolean
 
   get width (): string | number { 
     return this.$vuetify.breakpoint.name === 'xs' ? 465 : '60%'

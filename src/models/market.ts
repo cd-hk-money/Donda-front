@@ -18,16 +18,16 @@ export interface StockRecommendModel extends SingleStock {
 
 
 
+/**
+ * MarketStore의 State Type들
+ */
 
-
-// state types
 export interface IMarketValuationModel {
 	market: string
 	monthlyTrend: number
 	weeklyTrend: number
 	weeklyTrend2: number  
 }
-
 
 export type MarketType = {
 	[marketType in MarketTypes]: {
@@ -55,9 +55,10 @@ export type DailySimpleRankType = DailySimpleRankResponse
 
 
 
+/**
+ * MarketStore의 Getters Type들
+ */
 
-
-// getters type 
 export type MarketRecentType = {
 	[marketType in MarketTypes]: {
 		close?: number

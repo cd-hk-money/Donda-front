@@ -1,22 +1,9 @@
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators'
-
-import axios from 'axios'
-import * as _ from 'lodash'
-
 import { IUpdateStateModel } from '@/models/payload'
-import { division } from '@/mixins/tools'
 import { DailySimpleRankType, MarketType, MarketValuationType, SearchTableType } from '@/models/market'
-import { StockRecommendModel } from '@/models/stock'
 import { StoreState } from '@/store'
 import { AsyncPayload } from './payload'
 
-const HEADER = {
-	headers: {
-		'Content-Type': 'text/plain;charset=utf-8'
-	}
-}
-
-const API = process.env.VUE_APP_STOCK_API
 
 const marketMapping = {
 	'KOSPI': 'kospi',
@@ -38,24 +25,13 @@ const initialState = <T>(inital?: T) => ({
 @Module({namespaced: true})
 export default class MarketStore extends VuexModule {
 
-	// 자동 완성을 위한 모든 종목의 종목명과 코드
-
-	public dailySimpleRank!: StoreState
-	public stockRecommend!: StoreState
 	
-
-	
-	// 오늘의 간단 랭킹
-	public dailySimpleRanksLoaded = false
-
-
-	public requestDate = 20
-
 	// 주식 시장
 	public market: StoreState = initialState<MarketType>()
 	public marketValuation: StoreState = initialState<MarketValuationType>()
 	public searchTable: StoreState = initialState<SearchTableType>()
 	public dailySimpleRanks: StoreState = initialState<DailySimpleRankType>()
+	public requestDate = 20
 	
 
 	get marketRecents () {
@@ -77,15 +53,8 @@ export default class MarketStore extends VuexModule {
 	}
 
 
-	// 종목 추천 정보
-	public recommendLoaded = false
-	public recommend: StockRecommendModel[]
-	get recommendArray () {
-		return division(this.recommend, 2)
-	}
-
-
-	@Mutation updateRequestDate(payload: number) {    
+	@Mutation 
+	public updateRequestDate(payload: number) {    
 		if(payload < 2) {
 
 			if(payload * this.requestDate < 3) return      
@@ -120,33 +89,6 @@ export default class MarketStore extends VuexModule {
 		this[state].error = error
   }
 	
-
-	// 추천 종목을 불러옵니다.
-	@Action
-	public async getRecommend(): Promise<any> {
-		try {
-			this.context.commit('updateState', {
-				recommendLoaded : true
-			})
-			const res = await axios.get(`${API}/daily/recommand`)
-			
-
-			const recommend = Object.entries(res.data).map((recommend: any[]) => ({
-				code: recommend[0],
-				...recommend[1]
-			}))
-						
-			this.context.commit('updateState', {
-				recommend,
-				recommendLoaded : false,
-			})     
-			
-			return recommend
-			
-		} catch (e) {
-			console.log(e)
-		}
-	}
 
   // 비동기 로직을 실행합니다.
   @Action
