@@ -28,6 +28,12 @@ const marketMapping = {
 	'USD/KRW': 'usdkrw'
 }
 
+const initalState = {
+	data: null,
+	error: null,
+	loading: false
+}
+
 interface Market {
 	changes: number
 	close: number
@@ -61,11 +67,13 @@ export default class MarketStore extends VuexModule {
 
 	// 주식 시장
 	public marketLoaded = false  
-	public market!: IMarketChartModel
+	public market: StoreState = initalState
 	public requestDate = 20
 	public stockRequestDate = 20
 	public marketValuation!: IMarketRecentValueModel[]
 	public marketValuationLoaded = false
+
+	public marketv2: StoreState = initalState
 
 
 	// 종목 추천 정보
@@ -93,61 +101,33 @@ export default class MarketStore extends VuexModule {
 			this[state[0]] = state[1]
 		})        
 	}
+
+	@Mutation
+  public loading(state: string) {    
+    this[state].loading = true        
+  }
+
+  @Mutation
+  public success({ state, data }: {state: string, data: unknown}) {
+    this[state].loading = false
+    this[state].data = data 
+  }
+
+  @Mutation
+  public error({ state, error }: {state: string, error: unknown}) {
+    this[state].loading = false
+		this[state].error = error
+  }
 	
-	// 오늘의 주식 시장 정보들을불러옵니다.
-	@Action
-	public async getTodayMarket(): Promise<void> {
-		try {
-			this.context.commit('updateState', {
-				marketLoaded: true
-			})
-			const res = await axios.get(`${API}/daily/trend`, HEADER)
-			
-			const marketDefault: {
-				[marketType: string]: {
-					labels: string[],
-					values: Market[]
-				}
-			} = {
-				kospi: { labels: [], values: [] },
-				nasdaq: { labels: [], values: [] },
-				snp500: { labels: [], values: [] },
-				us1yt: { labels: [], values: [] },
-				us5yt: { labels: [], values: [] },
-				us10yt: { labels: [], values: [] },
-				usdkrw: { labels: [], values: [] }
-			}
-			
-
-			const market = Object.entries(res.data).reduce((acc, entry: [string, any]) => {
-					const types = ((entry[1] as (string | number)[]).map(v => Object.keys(v)[0]))          
-					const index = entry[1].map((s: { [s: string]: unknown } | ArrayLike<unknown>) => Object.entries(s)[0])
-					types.forEach(type => {
-						const mappingType = marketMapping[type]				
-						acc[mappingType].labels.push(entry[0])
-						acc[mappingType].values.push(index.find(entry => entry[0] === type)[1])
-					})
-					return acc          
-			}, marketDefault)
-			
-			this.context.commit('updateState', {
-				market,
-				marketLoaded: false
-			})
-		} catch (e) {    
-			console.log(e)
-		}
-	}  
-
 	get marketRecents () {
 		return Object.values(marketMapping).reduce((acc, cur) => {
 			acc[cur] = {
-				close: this.market[cur].values[this.market[cur].values.length - 1].close,
-				changes: this.market[cur].values[this.market[cur].values.length - 1].changes,
+				close: this.market.data[cur].values[this.market.data[cur].values.length - 1].close,
+				changes: this.market.data[cur].values[this.market.data[cur].values.length - 1].changes,
 				recent: ''
 			}
 			return acc
-		}, {})
+		}, {}) ?? {}
 	}
 
 
@@ -243,7 +223,7 @@ export default class MarketStore extends VuexModule {
 
   // 비동기 로직을 실행합니다.
   @Action
-  public async callRequest(payload: AsyncPayload): Promise<void> {
+  public async callRequestMarket(payload: AsyncPayload): Promise<void> {
     
     const { state, asyncCallback, compute } = payload
     
@@ -252,10 +232,10 @@ export default class MarketStore extends VuexModule {
       const res = await asyncCallback()      
       const data = compute(res)
 
-      this.context.commit('success', { state: state, data })
-
-    } catch (e) {
-      this.context.commit('error', state)
+      this.context.commit('success', { state, data })
+						
+    } catch (error) {
+      this.context.commit('error', { state, error })
     }
   }
 }

@@ -126,6 +126,24 @@ export interface IStockRecommend {
   changes_ratio: number
 }
 
+
+
+
+type MarketType = 'KOSPI' | 'NASDAQ' | 'S&P500' | 'US1YT' | 'US5YT' | 'US10YT' | 'USD/KRW'
+
+export interface IMarketOrigin {
+  [date: string]: {
+    [marketType in MarketType]: {
+      changes: number
+      close: number
+      high: number
+      low: number
+      open: number
+      volume: number
+    }
+  }[]
+}
+
 export type ResponseType = 
   IStock | 
   IStockSimilar[] | 
@@ -139,4 +157,7 @@ export type ResponseType =
   IStockIndicatorSector |
   IStockIndicatorSectorDaily |
   IStockGraphVolume |
-  IStockRecommend[]
+  IStockRecommend[] | 
+
+  
+  IMarketOrigin

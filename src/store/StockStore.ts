@@ -140,6 +140,7 @@ export default class StockStore extends VuexModule {
       const data = compute(res)
 
       this.context.commit('success', { state: state, data })
+      console.log(this[state])
 
     } catch (e) {
       this.context.commit('error', state)

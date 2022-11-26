@@ -9,8 +9,8 @@ import InterestStore from './InterestStore'
 import UserStore from './UserStore'
 import axios from 'axios'
 
-export interface StoreState {
-  data: any
+export interface StoreState<T = any> {
+  data: T
   error: any
   loading: boolean
 }

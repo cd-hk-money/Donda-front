@@ -22,10 +22,10 @@ export const createAxiosGetRequestCallback = <T extends ResponseType>(url: strin
 
 
 // 시장 트렌드
-export const getMarketValuactionUrl = () => `${API}/daily/market`
+export const getMarketValuationUrl = () => `${API}/daily/market`
 
 // 주식 시장
-export const getTodayMarket = () => `${API}/daily/trend`
+export const getTodayMarketUrl = () => `${API}/daily/trend`
 
 // 자동완성을 위한 기업명과 코드
 export const getSearchTableUrl = () => `${API}/krx-corps`

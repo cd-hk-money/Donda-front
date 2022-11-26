@@ -1,3 +1,4 @@
+import { getTodayMarketUrl } from './../api/stocks';
 import {
   createAxiosGetRequestCallback,
   getStockUrl,  
@@ -33,7 +34,8 @@ import {
   IStockIndicatorSector,
   IStockIndicatorSectorDaily,
   IStockGraphVolume,
-  IStockRecommend
+  IStockRecommend,
+  IMarketOrigin
 } from '@/api/types'
 
 import { convertChartData } from '@/mixins/tools'
@@ -50,6 +52,16 @@ export const reducer = (acc: { PBR: { type: string; eps: number; bps: number; ro
   acc.PER.push(cur.PER)
   acc.PSR.push(cur.PSR)
   return acc    
+}
+
+const marketMapping = {
+	'KOSPI': 'kospi',
+	'NASDAQ': 'nasdaq',
+	'S&P500': 'snp500',
+	'US1YT': 'us1yt',
+	'US5YT': 'us5yt',
+	'US10YT': 'us10yt',
+	'USD/KRW': 'usdkrw'
 }
 
 
@@ -102,7 +114,37 @@ const indicatorSectorDailyParser = (response: AxiosResponse<IStockIndicatorSecto
   }
 }
 
+const todayMarketParser = (response: AxiosResponse<IMarketOrigin>) => {
+  const marketDefault: {
+    [marketType: string]: {
+      labels: string[],
+      values: (string | number)[]
+    }
+  } = {
+    kospi: { labels: [], values: [] },
+    nasdaq: { labels: [], values: [] },
+    snp500: { labels: [], values: [] },
+    us1yt: { labels: [], values: [] },
+    us5yt: { labels: [], values: [] },
+    us10yt: { labels: [], values: [] },
+    usdkrw: { labels: [], values: [] }
+  }
+
+  return Object.entries(response.data).reduce((acc, entry: [string, any]) => {
+    const types = ((entry[1] as (string | number)[]).map(v => Object.keys(v)[0]))          
+    const index = entry[1].map((s: { [s: string]: unknown } | ArrayLike<unknown>) => Object.entries(s)[0])
+    types.forEach(type => {
+      const mappingType = marketMapping[type]				
+      acc[mappingType].labels.push(entry[0])
+      acc[mappingType].values.push(index.find(entry => entry[0] === type)[1])
+    })
+    return acc          
+  }, marketDefault)
+}
+
 const getStocksAsync = (codes: string[]) => async () => await axios.all(codes.map(code => axios.get<IStock>(`${process.env.VUE_APP_STOCK_API}/stock/${code}`), HEADER)) 
+
+export const getTodayMarket = () => createStoreActionPayload('market', createAxiosGetRequestCallback<IMarketOrigin>(getTodayMarketUrl()), todayMarketParser)
 
 export const getStock                      = (code: string) => createStoreActionPayload('stock'                , createAxiosGetRequestCallback<IStock>(getStockUrl(code)))    
 export const getStockGraphDefault          = (code: string) => createStoreActionPayload('stockGraphDefault'    , createAxiosGetRequestCallback<IStockGraph>(getStockGraphDefaultUrl(code)), (response: AxiosResponse<IStockGraph>) => response.data.origin)

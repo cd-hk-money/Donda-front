@@ -1,5 +1,5 @@
 <template>
-  <v-card-text v-if="!marketLoaded && !marketValuationLoaded">
+  <v-card-text v-if="!market.loading && !marketValuationLoaded">
     <MarketTrendFactory
       :computedMarket="computedMarket.kospi"
       :valuation="marketValuation[0]" 
@@ -34,6 +34,7 @@
   import MarketChart from '@/v2/components/home/MarketChart.vue'
   import MarketTrendFactory from '@/v2/components/home/MarketTrendFactory.vue'
   import StoreMixin from '@/mixins/StoreMixin.vue'
+import { getTodayMarket } from '@/store/payload'
   
   const marketTypes = ['kospi', 'nasdaq', 'usdkrw', 'snp500']
 
@@ -67,7 +68,7 @@
         ...this.marketRecents[marketType],        
         changes: this.marketRecents[marketType].changes,
         color: (changes / 100 * close) > 0 ? 'red--text' : 'blue--text',
-        sparkLineDatas: this.market[marketType].values.slice(-12, ).map((value: MarketModel) => value.close),
+        sparkLineDatas: this.market.data[marketType].values.slice(-12, ).map((value: MarketModel) => value.close),
         type: marketType,
         trendIcon: changes > 0 ? 'fa-solid fa-arrow-trend-up' : 'fa-solid fa-arrow-trend-down',
         trendIconColor: changes > 0 ? 'red' : 'blue'
@@ -81,9 +82,12 @@
       },{})
     }
 
-    async mounted () {
+    async mounted () {      
+      if(!this.market.data) {
+        this.callRequestMarket(getTodayMarket())
+      }
+      
       if(!this.marketValuation) await this.getMarketValuation()
-      if(!this.marketRecents) await this.getTodayMarket()     
     }
 
   }

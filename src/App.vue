@@ -38,13 +38,11 @@
   })
   export default class App extends Vue {
 
-    @MarketStoreModule.Action('getTodayMarket') readonly getTodayMarket!: () => Promise<void>
     @MarketStoreModule.Action('getSearchTable') readonly getSearchTable!: () => Promise<void>    
     @MarketStoreModule.Action('getDailySimpleRanks') readonly getDailySimpleRanks!: () => Promise<void>
     
     async mounted () {
       await this.getDailySimpleRanks()  
-      await this.getTodayMarket()  
       await this.getSearchTable()
     }
 

@@ -222,7 +222,7 @@
     }
 
     get dateLastDay () {
-      const labels = this.market[this.computedMarket.type].labels
+      const labels = this.market.data[this.computedMarket.type].labels
       return labels[labels.length-1]
     }
 

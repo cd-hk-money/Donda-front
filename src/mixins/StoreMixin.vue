@@ -12,6 +12,7 @@
   } from '@/models/market'
 
   import { StockSimpleModel } from '@/models/stock'
+import { StoreState } from '@/store';
 
   const MarketStoreModule = namespace('MarketStore')
   const StockStoreModule = namespace('StockStore')
@@ -27,11 +28,11 @@
     @MarketStoreModule.Getter('marketRecents') marketRecents!: IMarketRecentModel    
     @MarketStoreModule.State('marketValuation') marketValuation!: IMarketValuationModel[]
     @MarketStoreModule.State('marketValuationLoaded') marketValuationLoaded!: boolean
-    @MarketStoreModule.State('market') market!: IMarketChartModel
+    @MarketStoreModule.State('market') market!: StoreState<any>
     
     @MarketStoreModule.Action('getMarketValuation') getMarketValuation!: () => Promise<void>
-    @MarketStoreModule.Action('getTodayMarket') getTodayMarket!: () => Promise<void>
 
     @StockStoreModule.Action('callRequest') readonly callRequest!: (payload: AsyncPayload) => Promise<void>    
+    @MarketStoreModule.Action('callRequestMarket') readonly callRequestMarket!: (payload: AsyncPayload) => Promise<void>
   }
 </script>
