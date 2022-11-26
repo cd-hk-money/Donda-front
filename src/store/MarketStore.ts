@@ -8,6 +8,7 @@ import { division } from '@/mixins/tools'
 import { IMarketRecentValueModel } from '@/models/market'
 import { StockSimpleModel, IMarketChartModel, IMarketRecentModel, StockRecommendModel } from '@/models/stock'
 import { StoreState } from '@/store'
+import { AsyncPayload } from './payload'
 
 const HEADER = {
 	headers: {
@@ -251,4 +252,22 @@ export default class MarketStore extends VuexModule {
       console.log(e)
     }
   }  
+
+  // 비동기 로직을 실행합니다.
+  @Action
+  public async callRequest(payload: AsyncPayload): Promise<void> {
+    
+    const { state, asyncCallback, compute } = payload
+    
+    this.context.commit('loading', state)    
+    try {
+      const res = await asyncCallback()      
+      const data = compute(res)
+
+      this.context.commit('success', { state: state, data })
+
+    } catch (e) {
+      this.context.commit('error', state)
+    }
+  }
 }

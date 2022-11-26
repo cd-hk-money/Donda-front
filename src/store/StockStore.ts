@@ -120,7 +120,6 @@ export default class StockStore extends VuexModule {
   public success({ state, data }: {state: string, data: unknown}) {
     this[state + 'Loaded'] = false
     this[state] = data 
-    console.log(state, data)
   }
 
   @Mutation
