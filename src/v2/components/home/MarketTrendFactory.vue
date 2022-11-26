@@ -13,14 +13,14 @@
             <img v-if="contry === 'korea'" src="@/assets/koreaflag.png" alt="ss" class="flag mr-3" /> 
             <img v-else src="@/assets/usaflag.png" alt="ss" class="flag mr-3" />             
             {{ title === 'USD/KRW' ? '환율' :  title }}       
-            <v-icon :color="market.trendIconColor" small class="ml-1">{{ market.trendIcon }}</v-icon>         
+            <v-icon :color="computedMarket.trendIconColor" small class="ml-1">{{ computedMarket.trendIcon }}</v-icon>         
           </div>
           <div class="mt-1">
             <span class="text-h5">
-              {{ market.close }} 
+              {{ computedMarket.close }} 
             </span>
-            <span :class="['market-changes', market.color]">
-              {{ market.changes }}
+            <span :class="['market-changes', computedMarket.color]">
+              {{ computedMarket.changes }}
               ({{ per.toLocaleString() }}%)
             </span>
           </div>
@@ -78,7 +78,7 @@
           :min-width="isMobile ? '105' : '180'"
           color="cyan"
           :line-width="4"            
-          :value="market.sparkLineDatas"
+          :value="computedMarket.sparkLineDatas"
           auto-draw
           :smooth="16"          
         />                    
@@ -140,7 +140,7 @@
         <MarketChart          
           class="mt-9"
           :height="130"
-          :type="market.type"
+          :type="computedMarket.type"
           :fill="false"
           :count="selectionChipGroup"
           :range="rangePicked"
@@ -169,7 +169,7 @@
   })
   export default class MarketTrendFactory extends mixins(StoreMixin, DiviceMixin) {
 
-    @Prop() market!: ComputedMarket
+    @Prop() computedMarket!: ComputedMarket
     @Prop() valuation!: IMarketValuationModel
     @Prop() contry!: string
 
@@ -198,8 +198,8 @@
     }
 
     get per () {
-      const close = this.market.close
-      const changes = this.market.changes
+      const close = this.computedMarket.close
+      const changes = this.computedMarket.changes
 
       return (changes/(close-changes)) * 100
     }
@@ -222,7 +222,7 @@
     }
 
     get dateLastDay () {
-      const labels = this.marketChart[this.market.type].labels
+      const labels = this.market[this.computedMarket.type].labels
       return labels[labels.length-1]
     }
 

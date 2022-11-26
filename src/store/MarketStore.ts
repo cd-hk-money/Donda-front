@@ -61,8 +61,7 @@ export default class MarketStore extends VuexModule {
 
 	// 주식 시장
 	public marketLoaded = false  
-	public marketChart!: IMarketChartModel  
-	public marketRecents!: IMarketRecentModel
+	public market!: IMarketChartModel
 	public requestDate = 20
 	public stockRequestDate = 20
 	public marketValuation!: IMarketRecentValueModel[]
@@ -120,7 +119,7 @@ export default class MarketStore extends VuexModule {
 			}
 			
 
-			const marketChart = Object.entries(res.data).reduce((acc, entry: [string, any]) => {
+			const market = Object.entries(res.data).reduce((acc, entry: [string, any]) => {
 					const types = ((entry[1] as (string | number)[]).map(v => Object.keys(v)[0]))          
 					const index = entry[1].map((s: { [s: string]: unknown } | ArrayLike<unknown>) => Object.entries(s)[0])
 					types.forEach(type => {
@@ -130,19 +129,9 @@ export default class MarketStore extends VuexModule {
 					})
 					return acc          
 			}, marketDefault)
-
-			const marketRecents = Object.values(marketMapping).reduce((acc, cur) => {
-				acc[cur] = {
-					close: marketChart[cur].values[marketChart[cur].values.length - 1].close,
-					changes: marketChart[cur].values[marketChart[cur].values.length - 1].changes,
-					recent: ''
-				}
-				return acc
-			}, {})
 			
 			this.context.commit('updateState', {
-				marketChart,
-				marketRecents,
+				market,
 				marketLoaded: false
 			})
 		} catch (e) {    
@@ -150,14 +139,13 @@ export default class MarketStore extends VuexModule {
 		}
 	}  
 
-	get marketCharts () {
+	get marketRecents () {
 		return Object.values(marketMapping).reduce((acc, cur) => {
 			acc[cur] = {
-				close: this.marketChart[cur].values[this.marketChart[cur].values.length - 1].close,
-				changes: this.marketChart[cur].values[this.marketChart[cur].values.length - 1].changes,
+				close: this.market[cur].values[this.market[cur].values.length - 1].close,
+				changes: this.market[cur].values[this.market[cur].values.length - 1].changes,
 				recent: ''
 			}
-
 			return acc
 		}, {})
 	}

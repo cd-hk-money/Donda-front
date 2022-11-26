@@ -24,10 +24,10 @@
     @MarketStoreModule.State('marketLoaded') marketLoaded!: boolean
     @MarketStoreModule.State('dailySimpleRanks') dailySimpleRanks!: IDailySimpleRank
     @MarketStoreModule.State('dailySimpleRanksLoaded') dailySimpleRanksLoaded!: boolean
-    @MarketStoreModule.State('marketRecents') marketRecents!: IMarketRecentModel    
+    @MarketStoreModule.Getter('marketRecents') marketRecents!: IMarketRecentModel    
     @MarketStoreModule.State('marketValuation') marketValuation!: IMarketValuationModel[]
     @MarketStoreModule.State('marketValuationLoaded') marketValuationLoaded!: boolean
-    @MarketStoreModule.State('marketChart') marketChart!: IMarketChartModel
+    @MarketStoreModule.State('market') market!: IMarketChartModel
     
     @MarketStoreModule.Action('getMarketValuation') getMarketValuation!: () => Promise<void>
     @MarketStoreModule.Action('getTodayMarket') getTodayMarket!: () => Promise<void>

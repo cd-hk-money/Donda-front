@@ -34,7 +34,7 @@ export default class LineChart extends Vue {
 
   @Prop({default: function () { return {} }}) options!: object
 
-  @MarketStoreModule.State('marketChart') marketChart!: IMarketChartModel
+  @MarketStoreModule.State('market') market!: IMarketChartModel
   @MarketStoreModule.State('requestDate') requestDate!: number
   
   renderChart!: (chartData: any, options: any) => HTMLCanvasElement    
@@ -117,7 +117,7 @@ export default class LineChart extends Vue {
   }
   
   createChartData (count: number | number[]): Chart.ChartData {
-    const market = this.marketChart[this.type]         
+    const market = this.market[this.type]         
     const isNumber = typeof count === 'number'  
     const labels = isNumber
       ? market.labels.slice(count * (-1)).map(label => label.substr(5))
@@ -183,7 +183,7 @@ export default class LineChart extends Vue {
   }
 
   correctionsDate(date) {
-    const labels = this.marketChart[this.type].labels
+    const labels = this.market[this.type].labels
     const whileCondition = true
     let result
     let findDate = date

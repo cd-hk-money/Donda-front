@@ -1,25 +1,25 @@
 <template>
   <v-card-text v-if="!marketLoaded && !marketValuationLoaded">
     <MarketTrendFactory
-      :market="computedMarket.kospi"
+      :computedMarket="computedMarket.kospi"
       :valuation="marketValuation[0]" 
       contry="korea"
     />
           
     <MarketTrendFactory
-      :market="computedMarket.nasdaq"
+      :computedMarket="computedMarket.nasdaq"
       :valuation="marketValuation[1]"
       contry="usa"
     />
       
     <MarketTrendFactory
-      :market="computedMarket.usdkrw"
+      :computedMarket="computedMarket.usdkrw"
       :valuation="marketValuation[3]"
       contry="korea"
     />
       
     <MarketTrendFactory
-      :market="computedMarket.snp500"
+      :computedMarket="computedMarket.snp500"
       :valuation="marketValuation[2]"
       contry="usa"
     />      
@@ -67,7 +67,7 @@
         ...this.marketRecents[marketType],        
         changes: this.marketRecents[marketType].changes,
         color: (changes / 100 * close) > 0 ? 'red--text' : 'blue--text',
-        sparkLineDatas: this.marketChart[marketType].values.slice(-12, ).map((value: MarketModel) => value.close),
+        sparkLineDatas: this.market[marketType].values.slice(-12, ).map((value: MarketModel) => value.close),
         type: marketType,
         trendIcon: changes > 0 ? 'fa-solid fa-arrow-trend-up' : 'fa-solid fa-arrow-trend-down',
         trendIconColor: changes > 0 ? 'red' : 'blue'
