@@ -1,7 +1,8 @@
 <script lang="ts">
   import { Component, Vue } from 'vue-property-decorator'
   import { namespace } from 'vuex-class';
-  import { StoreState, User } from '@/store/UserStore'
+  import { User } from '@/store/UserStore'
+  import { StoreState } from '@/store'
   import { IUpdateStateModel } from '@/models/payload';
 import { IUserInterestGroupItem } from '@/models/interest';
 

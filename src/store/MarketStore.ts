@@ -149,6 +149,18 @@ export default class MarketStore extends VuexModule {
 		}
 	}  
 
+	get marketCharts () {
+		return Object.values(marketMapping).reduce((acc, cur) => {
+			acc[cur] = {
+				close: this.marketChart[cur].values[this.marketChart[cur].values.length - 1].close,
+				changes: this.marketChart[cur].values[this.marketChart[cur].values.length - 1].changes,
+				recent: ''
+			}
+
+			return acc
+		}, {})
+	}
+
 
 	// 시장 트렌드를 불러옵니다.
 	@Action

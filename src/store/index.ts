@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import Vue from 'vue'
 import Vuex from 'vuex'
 
@@ -7,9 +9,15 @@ import InterestStore from './InterestStore'
 import UserStore from './UserStore'
 import axios from 'axios'
 
+export interface StoreState {
+  data: any
+  error: any
+  loading: boolean
+}
+
 Vue.use(Vuex)
 
-export default new Vuex.Store({
+export default new Vuex.Store({ 
   modules: {
     StockStore,
     MarketStore,
@@ -22,7 +30,6 @@ const enhanceAccessToeken = () => {
   const accessToken = localStorage.getItem('accessToken')
   if (!accessToken) return
   axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`
-  console.log('token..', accessToken)
 }
 
 enhanceAccessToeken()
