@@ -1,12 +1,10 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
-import { namespace } from 'vuex-class'
 
 import Chart from 'chart.js'
 import { mixins, Bar } from 'vue-chartjs-typescript'
 
 import { numToKorean, transparentize } from '@/mixins/tools'
-import StoreMixin from '@/mixins/StoreMixin.vue'
 
 const { reactiveProp } = mixins
 const MAIN_COLOR = '#00BCD4'

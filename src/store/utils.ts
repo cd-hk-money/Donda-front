@@ -6,7 +6,7 @@ export interface StoreState<T = any> {
 }
 
 export const initialState = <T>(initial?: T): StoreState<T> => ({
-  data: initial,
+  data: initial || null,
   error: null,
   loading: false
 })

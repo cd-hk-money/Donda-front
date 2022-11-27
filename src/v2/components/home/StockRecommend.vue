@@ -32,9 +32,9 @@
 
     <v-divider />
 
-    <v-card-text v-if="!recommendStocksLoaded" class="d-flex flex-wrap justify-center">          
+    <v-card-text v-if="!recommendStocks.loading" class="d-flex flex-wrap justify-center">          
       <StockRecommendContnet
-        v-for="(content, i) in recommendStocks"
+        v-for="(content, i) in recommendStocks.data"
         :key="i"
         :content="content"
       />
@@ -47,10 +47,8 @@
 </template>
 
 <script lang="ts">
-import { IStockModel } from '@/models/stock'
 import { Component } from 'vue-property-decorator'
 import { mixins } from 'vue-class-component'
-import { namespace } from 'vuex-class'
 import { getStocks, getStockRecommend } from '@/store/payload'
 
 import StockRecommendContnet from '@/v2/components/home/StockRecommendContent.vue'
@@ -58,8 +56,8 @@ import ProgressCircularVue from '../vuetify/ProgressCircular.vue'
 
 import StoreMixin from '@/mixins/StoreMixin.vue'
 import DiviceMixin from '@/mixins/DiviceMixin.vue'
+import StockStoreMixin from '@/mixins/StockStoreMixin.vue'
 
-const StockStoreModule = namespace('StockStore')
 
 @Component({  
   components: {
@@ -67,21 +65,19 @@ const StockStoreModule = namespace('StockStore')
     ProgressCircularVue
   }
 })
-export default class StockRecommend extends mixins(DiviceMixin, StoreMixin) {
+export default class StockRecommend extends mixins(DiviceMixin, StoreMixin, StockStoreMixin) {
                 
-  @StockStoreModule.State('recommendStockCodes') recommendStockCodes!: string[] 
-  @StockStoreModule.State('recommendStocks') recommendStocks!: IStockModel[]
-  @StockStoreModule.State('recommendStocksLoaded') recommendStocksLoaded!: boolean  
+  
 
   reload () {    
-    this.callRequest(getStocks(this.recommendStockCodes))
+    this.callRequest(getStocks(this.recommendStockCodes.data))
   }
 
   async mounted () {    
     await this.callRequest(getStockRecommend())
     
-    if(this.recommendStocks.length === 0) {
-      this.callRequest(getStocks(this.recommendStockCodes))        
+    if(!this.recommendStocks.data) {
+      this.callRequest(getStocks(this.recommendStockCodes.data))        
     }
   }
 }

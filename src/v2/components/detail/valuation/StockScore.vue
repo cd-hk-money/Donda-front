@@ -11,7 +11,7 @@
     </v-card-subtitle>
     <v-card-text class="d-flex align-center flex-wrap justify-space-between">
       <div>
-        <template v-if="!loaded && !graphLoaded && !dailyLoaded && !stockDondaLoaded">
+        <template v-if="!stock.loading && !stockGraphDefault.loading && !stockEvaluationDaily.loading">
           <StockScoreBarChart :height="mobile ? 130 : 150" :width="250"/>
         </template>
         <template v-else>
@@ -21,7 +21,7 @@
         </template>
       </div>
       <div>
-        <template v-if="!loaded && !graphLoaded && !dailyLoaded">
+        <template v-if="!stock.loading && !stockGraphDefault.loading && !stockEvaluationDaily.loading">
           <div class="text-h4">
             <span :class="scorePer.colorClass">
               {{ scorePer.score }} 
@@ -46,13 +46,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 
 import StockScoreBarChart from './StockScoreBarChart.vue'
-import { IStockModel } from '@/models/stock'
 import BtnBadge from '../../vuetify/BtnBadge.vue'
-import StoreMixin from '@/mixins/StoreMixin.vue'
+import StockStoreMixin from '@/mixins/StockStoreMixin.vue'
 
 const StockStoreModule = namespace('StockStore')
 
@@ -68,7 +67,7 @@ type ScoreType = {
     BtnBadge
   }
 })
-export default class StockScore extends StoreMixin {
+export default class StockScore extends StockStoreMixin {
 
   overlay = false
   carousel = 0
@@ -76,19 +75,16 @@ export default class StockScore extends StoreMixin {
   @StockStoreModule.State('stockLoaded') loaded!: boolean
   @StockStoreModule.State('stockGraphDefaultLoaded') graphLoaded!: boolean
   
-  @StockStoreModule.State('stockEvaluationDaily') stockEvaluationDaily!: any
   @StockStoreModule.State('stockEvaluationDailyLoaded') dailyLoaded!: boolean
-  @StockStoreModule.State('stockDonda') stockDonda!: any
   @StockStoreModule.State('stockDondaLoaded') stockDondaLoaded!: boolean
-  @StockStoreModule.State('stock') stock!: IStockModel  
   
   
   get stockEvaluationDailyLast () {
-    return this.stockEvaluationDaily?.value.slice(-1)[0] || ''
+    return this.stockEvaluationDaily.data?.value.slice(-1)[0] || ''
   }
 
   get stockDondaLast () {
-    return this.stockDonda?.value.slice(-1)[0] || ''
+    return this.stockDonda.data?.value.slice(-1)[0] || ''
   }
 
   get mobile () { 
@@ -102,7 +98,7 @@ export default class StockScore extends StoreMixin {
   }  
 
   get scorePer () : ScoreType {    
-    const [close, valuation] = [this.stock.close, Number(Number(this.stockDondaLast).toFixed())]
+    const [close, valuation] = [this.stock.data.close, Number(Number(this.stockDondaLast).toFixed())]
     const isHighVal = close > valuation
     const score = isHighVal ? ((close / valuation) * 100 - 100).toFixed() : ((valuation / close) * 100 - 100).toFixed() 
     const text = isHighVal ? '고평가': '저평가'

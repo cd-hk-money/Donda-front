@@ -1,15 +1,13 @@
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator'
-import { namespace } from 'vuex-class'
+import { Component, Prop } from 'vue-property-decorator'
 
 import Chart from 'chart.js'
 import { mixins, Bar } from 'vue-chartjs-typescript'
 
 import { transparentize } from '@/mixins/tools'
-import { IStockModel } from '@/models/stock'
+import StockStoreMixin from '@/mixins/StockStoreMixin.vue'
 
 const { reactiveProp } = mixins
-const StockStoreModule = namespace('StockStore')
 
 const MAIN_COLOR = '#00BCD4'
 const SUB_COLOR = 'rgb(255, 99, 132)'
@@ -18,22 +16,18 @@ const SUB_COLOR = 'rgb(255, 99, 132)'
   extends: Bar,
   mixins: [reactiveProp]
 })
-export default class StockScoreBarChart extends Vue {
+export default class StockScoreBarChart extends StockStoreMixin {
 
   chartOptions: Chart.ChartOptions = {}
 
   @Prop() chartData!: null
 
-  @StockStoreModule.State('stock') stock!: IStockModel
-  @StockStoreModule.State('stockEvaluationDaily') stockEvaluationDaily!: any
-  @StockStoreModule.State('stockDonda') stockDonda!: any
-
   get stockEvaluationDailyLast () {
-    return this.stockEvaluationDaily?.value.slice(-1)[0] || ''
+    return this.stockEvaluationDaily.data?.value.slice(-1)[0] || ''
   }
 
   get stockDondaLast () {
-    return this.stockDonda?.value.slice(-1)[0] || ''
+    return this.stockDonda.data?.value.slice(-1)[0] || ''
   }
 
   
@@ -101,7 +95,7 @@ export default class StockScoreBarChart extends Vue {
       datasets: [
         {
           type: 'bar',
-          data : [this.stock.close, Number(this.stockDondaLast).toFixed()],
+          data : [this.stock.data.close, Number(this.stockDondaLast).toFixed()],
           fill: true,
           borderColor: [MAIN_COLOR, SUB_COLOR],        
           backgroundColor: [transparentize(MAIN_COLOR, 0.8) ,transparentize(SUB_COLOR, 0.8)],

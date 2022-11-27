@@ -10,8 +10,8 @@
       유사 종목
       <BtnBadge>
         <div><strong class="text-h6 cyan--text font-weight-bold">유사종목</strong></div>
-        <span class="font-weight-bold cyan--text">{{ stock.sector }} </span> 에 속하는 기업들에서
-        <span class="font-weight-bold cyan--text">{{ stock.name }}</span> 과 유사한 기업을 추천해줍니다.        
+        <span class="font-weight-bold cyan--text">{{ stock.data.sector }} </span> 에 속하는 기업들에서
+        <span class="font-weight-bold cyan--text">{{ stock.data.name }}</span> 과 유사한 기업을 추천해줍니다.        
       </BtnBadge>
     </v-card-title>      
     <v-card-subtitle>
@@ -20,9 +20,9 @@
 
     <v-divider />
     
-    <v-card-text v-if="!loaded" class="d-flex flex-wrap justify-center">
+    <v-card-text v-if="!similarContents.loading" class="d-flex flex-wrap justify-center">
       <StockSimiarContent 
-        v-for="(content, i) in similarContents"
+        v-for="(content, i) in similarContents.data"
         :key="i"
         :content="content"        
       />
@@ -50,14 +50,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue} from 'vue-property-decorator'
+import { Component} from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 
 const StockStoreModule = namespace('StockStore')
 
-import { IStockModel } from '@/models/stock'
 import BtnBadge from '../../vuetify/BtnBadge.vue'
 import StockSimiarContent from '@/v2/components/detail/similar/StockSimiarContent.vue'
+import StockStoreMixin from '@/mixins/StockStoreMixin.vue'
 
 @Component({
   components: {
@@ -65,11 +65,9 @@ import StockSimiarContent from '@/v2/components/detail/similar/StockSimiarConten
     StockSimiarContent
   }
 })
-export default class StockSimilar extends Vue {
+export default class StockSimilar extends StockStoreMixin {
   overlay = false
   
-  @StockStoreModule.State('stock') stock!: IStockModel
-  @StockStoreModule.State('similarContents') similarContents!: IStockModel[]
   @StockStoreModule.State('similarContentsLoaded') loaded!: boolean
 
   get width (): string | number { 

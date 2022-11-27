@@ -19,17 +19,17 @@
       </BtnBadge>               
     </v-card-title>    
     <v-card-subtitle>
-      {{ stock.name }}의 재무제표를 확인해보세요.
+      {{ stock.data.name }}의 재무제표를 확인해보세요.
     </v-card-subtitle>
 
     <div v-if="!mobile" class="more"> 각 항목을 클릭하면, 더 많은 정보를 볼 수 있습니다. </div> 
 
-    <div v-if="!loaded">
+    <div v-if="!statement.loading">
       <FinanceContentFactory
         indicatorType="asset"
-        :loaded="assetLoaded"
+        :loaded="asset.loading"
         typeKorean="자산총계"        
-        :lineChartData="asset"
+        :lineChartData="asset.data"
       >
         <template v-slot:description>                  
           현금, 매출채권, 제품, 공장 등 기업이 보유하고 있는 모든 자산입니다.
@@ -46,8 +46,8 @@
       <FinanceContentFactory
         indicatorType="equity"
         typeKorean="자기자본"        
-        :loaded="equityLoaded"
-        :lineChartData="equity" 
+        :loaded="equity.loading"
+        :lineChartData="equity.data" 
       >
         <template v-slot:description>
           사업주 회사에 주주들이 스스로 납입한 자본입니다.
@@ -74,7 +74,7 @@
 
                 <v-divider class="mt-2 mb-2"/>
 
-                현재 {{ stock.name }} 의 <strong class="cyan--text">부채비율</strong>은 
+                현재 {{ stock.data.name }} 의 <strong class="cyan--text">부채비율</strong>은 
                 <strong class="cyan--text"> {{ debtRatio }} </strong>입니다.
               </template>
             </BtnBadge>
@@ -88,8 +88,8 @@
       <FinanceContentFactory
         indicatorType="ebitda"
         typeKorean="영업이익"        
-        :lineChartData="ebitda"
-        :loaded="ebitdaLoaded"
+        :lineChartData="ebitda.data"
+        :loaded="ebitda.loading"
       >
         <template v-slot:description>
           순수하게 영업을 통해 벌어들인 이익을 뜻합니다.
@@ -109,7 +109,7 @@
 
                 <v-divider class="mt-2 mb-2"/>
 
-                현재 {{ stock.name }} 의 <strong class="cyan--text">영업이익률</strong>은
+                현재 {{ stock.data.name }} 의 <strong class="cyan--text">영업이익률</strong>은
                 <strong class="cyan--text"> {{ ofm }} </strong>입니다.
               </template>
             </BtnBadge>
@@ -123,8 +123,8 @@
       <FinanceContentFactory
         indicatorType="revenue"
         typeKorean="매출액"        
-        :lineChartData="revenue"
-        :loaded="revenueLoaded"
+        :lineChartData="revenue.data"
+        :loaded="revenue.loading"
       >
         <template v-slot:description>
           기업이 영업활동을 통해 얻은 총 수익을 뜻합니다.
@@ -144,7 +144,7 @@
 
                 <v-divider class="mt-2 mb-2"/>
 
-                현재 {{ stock.name }} 의 <strong class="cyan--text">영업이익률</strong>은
+                현재 {{ stock.data.name }} 의 <strong class="cyan--text">영업이익률</strong>은
                 <strong class="cyan--text"> {{ ofm }} </strong>입니다.
               </template>
             </BtnBadge>
@@ -161,7 +161,7 @@
 
                 <v-divider class="mt-2 mb-2"/>
 
-                현재 {{ stock.name }} 의 <strong class="cyan--text">영업이익률</strong>은
+                현재 {{ stock.data.name }} 의 <strong class="cyan--text">영업이익률</strong>은
                 <strong class="cyan--text"> {{ gpm }} </strong>입니다.
               </template>
             </BtnBadge>
@@ -175,8 +175,8 @@
       <FinanceContentFactory
         indicatorType="liability"
         typeKorean="부채총계"     
-        :loaded="liabilityLoaded"
-        :lineChartData="liability"
+        :loaded="liability.loading"
+        :lineChartData="liability.data"
       >
         <template v-slot:description>          
           기업이 가지고있는 빚의 총합을 말합니다.
@@ -199,7 +199,7 @@
 
                 <v-divider class="mt-2 mb-2"/>
 
-                현재 {{ stock.name }} 의 <strong class="cyan--text">부채비율</strong>은 
+                현재 {{ stock.data.name }} 의 <strong class="cyan--text">부채비율</strong>은 
                 <strong class="cyan--text"> {{ debtRatio }} </strong>입니다.
               </template>
             </BtnBadge>
@@ -215,8 +215,8 @@
       <FinanceContentFactory
         indicatorType="gross_margin"
         typeKorean="매출총이익"        
-        :lineChartData="grossMargin"
-        v-if="grossMarginLoaded"
+        :lineChartData="grossMargin.data"
+        v-if="grossMargin.loading"
       >
         <template v-slot:description>
           매출에서 매출 원가를 뺀 값으로, 이익이라고 생각되는 모든 것이 매출총이익이 됩니다.
@@ -236,7 +236,7 @@
 
                 <v-divider class="mt-2 mb-2"/>
 
-                현재 {{ stock.name }} 의 <strong class="cyan--text">매출총이익률</strong>은
+                현재 {{ stock.data.name }} 의 <strong class="cyan--text">매출총이익률</strong>은
                 <strong class="cyan--text"> {{ ofm }} </strong>입니다.
               </template>
             </BtnBadge>
@@ -250,8 +250,8 @@
       <FinanceContentFactory
         indicatorType="profit"
         typeKorean="당기순이익"        
-        :lineChartData="profit"
-        :loaded="profitLoaded"
+        :lineChartData="profit.data"
+        :loaded="profit.loading"
       >
         <template v-slot:description>
           일정기간동안의 기업의 순이익을 뜻합니다. <br>
@@ -280,8 +280,8 @@
       <FinanceContentFactory
         indicatorType="current_asset"
         typeKorean="유동자산"        
-        :lineChartData="currentAsset"
-        :loaded="currentAssetLoaded"
+        :lineChartData="currentAsset.data"
+        :loaded="currentAsset.loading"
       >
         <template v-slot:description>
           기업이 바로 현금으로 사용 가능한 자산을 의미합니다. 매각하여 현금으로 바꿀 수 있는 부동산 등의 자금은 유동자산으로 취급하지 않습니다.
@@ -301,7 +301,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 
 import BtnBadge from '../../vuetify/BtnBadge.vue'
@@ -309,8 +309,9 @@ import StockFinanceBarChart from '@/v2/components/detail/finance/StockFinanceBar
 import StockFinanceLineChart from '@/v2/components/detail/finance/StockFinanceLineChart.vue'
 import FinanceContentFactory from '@/v2/components/detail/finance/FinanceContentFactory.vue'
 import FinanceInformationFactory from '@/v2/components/detail/finance/InformationFactory.vue'
-import { ISimpleChartData, IStockModel } from '@/models/stock'
 import StoreMixin from '@/mixins/StoreMixin.vue'
+import StockStoreMixin from '@/mixins/StockStoreMixin.vue'
+import { mixins } from 'vue-class-component'
 const StockStoreModule = namespace('StockStore')
 
 @Component({
@@ -322,7 +323,7 @@ const StockStoreModule = namespace('StockStore')
     FinanceInformationFactory
   }
 })
-export default class StockFinance extends StoreMixin {
+export default class StockFinance extends mixins(StockStoreMixin, StoreMixin) {
 
   types = [
     '자산총계',              // asset
@@ -339,15 +340,15 @@ export default class StockFinance extends StoreMixin {
   ]
 
   get debtRatio () {
-    return (this.statement.liability.value[0] / this.statement.equity.value[0] * 100).toFixed(1) + '%'
+    return (this.statement.data.liability.value[0] / this.statement.data.equity.value[0] * 100).toFixed(1) + '%'
   }
 
   get ofm () {
-    return (this.statement.ebitda.value[0] / this.statement.revenue.value[0] * 100).toFixed(1) + '%'
+    return (this.statement.data.ebitda.value[0] / this.statement.data.revenue.value[0] * 100).toFixed(1) + '%'
   }
 
   get gpm () {
-    return (this.statement['gross_margin'].value[0] / this.statement.revenue.value[0] * 100).toFixed(1) + '%'
+    return (this.statement.data['gross_margin'].value[0] / this.statement.data.revenue.value[0] * 100).toFixed(1) + '%'
   }
 
   get mobile () {
@@ -358,39 +359,26 @@ export default class StockFinance extends StoreMixin {
     return this.codeTitleMapping[this.$route.params.title]
   }
 
-      
-  @StockStoreModule.State('stock') stock!: IStockModel
-  @StockStoreModule.State('statement') statement!: ISimpleChartData
-
   statementTypes = ["asset", "equity", "equity_non", "liability", "current_asset", "profit", "profit_non",
     "revenue", "cash", "ebitda","gross_margin"
   ]
 
-  @StockStoreModule.State('statementLoaded') loaded!: boolean    
-
 
   @StockStoreModule.State('asset') asset!: any
-  @StockStoreModule.State('assetLoaded') assetLoaded!: boolean
   @StockStoreModule.State('equity') equity!: any
-  @StockStoreModule.State('equityLoaded') equityLoaded!: boolean
   @StockStoreModule.State('equityNon') equityNon!: any
-  @StockStoreModule.State('equityNonLoaded') equityNonLoaded!: boolean
   @StockStoreModule.State('liability') liability!: any
-  @StockStoreModule.State('liabilityLoaded') liabilityLoaded!: boolean
   @StockStoreModule.State('currentAsset') currentAsset!: any
-  @StockStoreModule.State('currentAssetLoaded') currentAssetLoaded!: boolean
   @StockStoreModule.State('profit') profit!: any
-  @StockStoreModule.State('profitLoaded') profitLoaded!: boolean
   @StockStoreModule.State('profitNon') profitNon!: any
-  @StockStoreModule.State('profitNonLoaded') profitNonLoaded!: boolean
   @StockStoreModule.State('revenue') revenue!: any
-  @StockStoreModule.State('revenueLoaded') revenueLoaded!: boolean
   @StockStoreModule.State('cash') cash!: any
-  @StockStoreModule.State('cashLoaded') cashLoaded!: boolean
   @StockStoreModule.State('ebitda') ebitda!: any
-  @StockStoreModule.State('ebitdaLoaded') ebitdaLoaded!: boolean
   @StockStoreModule.State('grossMargin') grossMargin!: any
-  @StockStoreModule.State('grossMarginLoaded') grossMarginLoaded!: boolean          
+
+  mounted () {
+    console.log(this.asset)
+  }
 
 }
 

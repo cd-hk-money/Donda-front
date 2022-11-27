@@ -8,10 +8,9 @@ import { mixins, Line } from 'vue-chartjs-typescript'
 import { transparentize,  meanStockData, maxStockData, minStockData} from '@/mixins/tools'
 
 import Chart from 'chart.js'
-import { namespace } from 'vuex-class'
+import StockStoreMixin from '@/mixins/StockStoreMixin.vue'
 
 const { reactiveProp } = mixins
-const StockStoreModule = namespace('StockStore')
 const MAIN_COLOR = '#00BCD4'
 const zoomScale = 1
 
@@ -20,12 +19,13 @@ const zoomScale = 1
   extends: Line,
   mixins: [reactiveProp]
 })
-export default class StockBigChart extends Vue {
+export default class StockBigChart extends StockStoreMixin {
 
   // datas
   chart!: Chart  
   chartOptions: Chart.ChartOptions = {}
   yLabel: string
+  count = 20
 
   // props
   @Prop({default: false}) fill!: boolean | undefined  
@@ -34,26 +34,17 @@ export default class StockBigChart extends Vue {
   @Prop({default: false}) volume!: boolean | undefined
   @Prop() height: number | string
 
-
-
-  @StockStoreModule.State('stockGraphLength') count!: number
-  @StockStoreModule.State('stockGraphDefault') stockGraphDefault!: any
-  @StockStoreModule.State('stockGraphAll') stockGraphAll!: any
-  @StockStoreModule.State('stockGraphVolumeFlag') volumeFlag!: boolean
-  @StockStoreModule.State('stockGraphVolume') stockGraphVolume!: boolean    
-
-
   @Watch('volume')
   watchVolume() {
     this.renderingChart()
   }
 
   getChartLabels () {
-    return Object.keys(this.stockGraphAll)
+    return Object.keys(this.stockGraphAll.data)
   }  
   
   getChartDatas (): number[] {
-    return Object.values(this.stockGraphAll)
+    return Object.values(this.stockGraphAll.data)
   }
 
   getLabel () {
@@ -346,7 +337,7 @@ export default class StockBigChart extends Vue {
     return {
       label: '거래량',
       type: 'bar',
-      data: Object.values(this.stockGraphVolume),
+      data: Object.values(this.stockGraphVolume.data),
       fill: true,
       yAxisID: 'volume',
       backgroundColor: transparentize(MAIN_COLOR, 0.8),            

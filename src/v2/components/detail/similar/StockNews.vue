@@ -12,10 +12,10 @@
 
     <v-divider />
     
-    <v-card-text v-if="!loaded">
+    <v-card-text v-if="!newes.loading">
       <v-list two-line>
         <NewsContentsFactory 
-          v-for="(news, i) in newses"
+          v-for="(news, i) in newes.data"
           :key="i"
           :news=news 
         />      
@@ -25,25 +25,17 @@
 </template>
 
 <script lang="ts">
-import { NewsType } from '@/models/stock'
-import StoreMixin from '@/mixins/StoreMixin.vue'
-import { Component} from 'vue-property-decorator'
-import { namespace } from 'vuex-class'
+import { Component } from 'vue-property-decorator'
 import NewsContentsFactory from './NewsContentsFactory.vue'
+import StockStoreMixin from '@/mixins/StockStoreMixin.vue'
 
-const StockStoreModule = namespace('StockStore')
 
 @Component({
   components: {
     NewsContentsFactory
   }
 })
-export default class StockNews extends StoreMixin {
-
-  @StockStoreModule.State('newsLoaded') loaded!: boolean
-  @StockStoreModule.State('news') newses: NewsType[]
-  
-}
+export default class StockNews extends StockStoreMixin {}
 </script>
 
 <style style="scss">

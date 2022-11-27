@@ -2,7 +2,7 @@
   <v-card :height="mobile ? '100%' : 787">
     <v-card-title> 주가 </v-card-title>
     <v-card-subtitle>
-      <span>{{ stock.name }}의 주가 정보를 확인해보세요.</span>
+      <span>{{ stock.data.name }}의 주가 정보를 확인해보세요.</span>
     </v-card-subtitle>
     
     <v-divider />
@@ -56,8 +56,8 @@
         </v-card>
       </v-menu>
     </v-card>
-    <div v-if="!loaded && !volumeLoaded">
-      <stock-big-chart   
+    <div v-if="!stockGraphAll.loading && !stockGraphVolume.loading">
+      <StockBigChart   
         :gradient="gradientEnable"
         :volume="volumeEnable"
         :height="chartHeight"
@@ -74,11 +74,10 @@
 <script lang="ts">
 import { Component } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
-import { IStockModel } from '@/models/stock'
 import StockBigChart from '@/v2/components/detail/stock/StockBigChart.vue'
 import StockChartD3 from '@/v2/components/detail/stock/StockChartD3.vue'
 import StockChartD3LineBar from '@/v2/components/detail/stock/StockChartD3LineBar.vue'
-import StoreMixin from '@/mixins/StoreMixin.vue'
+import StockStoreMixin from '@/mixins/StockStoreMixin.vue'
 
 const StockStoreModule = namespace('StockStore')
 
@@ -89,7 +88,7 @@ const StockStoreModule = namespace('StockStore')
     StockChartD3LineBar,
   }
 })
-export default class Stock extends StoreMixin {
+export default class Stock extends StockStoreMixin {
   
   count = 33
   dateOverlay = false
@@ -99,13 +98,11 @@ export default class Stock extends StoreMixin {
   picked = []
   rangePicked = []
   
-  @StockStoreModule.State('stock') stock!: IStockModel
-  @StockStoreModule.State('stockGraphDefault') stockGraphDefault!: any
   @StockStoreModule.State('stockGraphAllLoaded') loaded!: boolean
   @StockStoreModule.State('stockGraphVolumeLoaded') volumeLoaded!: boolean  
     
   get lastDate () {
-    const labels = Object.keys(this.stockGraphDefault)
+    const labels = Object.keys(this.stockGraphDefault.data)
     return labels[labels.length - 1]
   }
 

@@ -10,10 +10,10 @@
       </v-card-title>
   
       <v-card-subtitle>
-        {{ stock.name }}의 보조지표를 확인해보세요.
+        {{ stock.data.name }}의 보조지표를 확인해보세요.
       </v-card-subtitle>
             
-      <div v-if="!indicatorLoaded && !indicatorSectorLoaded && !indicatorSectorDailyLoaded">
+      <div v-if="!indicator.loading && !indicatorSector.loading && !indicatorSectorDaily.loading">
   
         <!-- EPS -->
         <IndicatorContentFactory       
@@ -21,8 +21,8 @@
           :iconColor="epsMean.iconColor"
           :icon="epsMean.icon"
           :tooltipMessage="epsMean.text"
-          :chartData="indicators.eps"
-          :sectorData="indicatorSector.sector_eps"
+          :chartData="indicator.data.eps"
+          :sectorData="indicatorSector.data.sector_eps"
         >
           <template v-slot:title>
             <strong>E</strong>arnings <strong>P</strong>er <strong>S</strong>hare |  주당 순이익
@@ -54,7 +54,7 @@
           </template>
   
           <template v-slot:compareSector>
-            <strong>{{ stock.name }}</strong>의 1년 <strong>EPS 평균값은</strong> <strong>{{ epsMean.origin.toLocaleString() }}</strong>으로,
+            <strong>{{ stock.data.name }}</strong>의 1년 <strong>EPS 평균값은</strong> <strong>{{ epsMean.origin.toLocaleString() }}</strong>으로,
             <strong class="sector">동종 업계 1년 평균 {{ epsMean.sector.toLocaleString() }}</strong> 보다  
             <strong :class="epsMean.colorClass">{{ epsMean.text }}</strong>
             <v-icon :color="epsMean.iconColor" size="20" class="ml-2">{{ epsMean.icon}}</v-icon>
@@ -79,8 +79,8 @@
           :iconColor="bpsMean.iconColor"
           :icon="bpsMean.icon"
           :tooltipMessage="bpsMean.text"
-          :chartData="indicators.bps"
-          :sectorData="indicatorSector.sector_bps"
+          :chartData="indicator.data.bps"
+          :sectorData="indicatorSector.data.sector_bps"
         >
           <template v-slot:title>
             <strong>E</strong>arnings <strong>P</strong>er <strong>S</strong>hare |  주당 순이익
@@ -103,7 +103,7 @@
           </template>
   
           <template v-slot:compareSector>
-            <strong>{{ stock.name }}</strong>의 1년 <strong>BPS 평균값은</strong> <strong>{{ bpsMean.origin.toLocaleString() }}</strong>으로,
+            <strong>{{ stock.data.name }}</strong>의 1년 <strong>BPS 평균값은</strong> <strong>{{ bpsMean.origin.toLocaleString() }}</strong>으로,
             <strong class="sector">동종 업계 1년 평균 {{ bpsMean.sector.toLocaleString() }}</strong> 보다  
             <strong :class="bpsMean.colorClass">{{ bpsMean.text }}</strong>
             <v-icon :color="bpsMean.iconColor" size="20" class="ml-2">{{ bpsMean.icon}}</v-icon>        
@@ -132,8 +132,8 @@
           :iconColor="roeMean.iconColor"
           :icon="roeMean.icon"
           :tooltipMessage="roeMean.text"
-          :chartData="indicators.roe"
-          :sectorData="indicatorSector.sector_roe"
+          :chartData="indicator.data.roe"
+          :sectorData="indicatorSector.data.sector_roe"
         >
            <template v-slot:title>
             <strong>R</strong>eturn <strong>O</strong>n <strong>E</strong>quity | 자기자본이익률
@@ -169,7 +169,7 @@
           </template>
   
           <template v-slot:compareSector>
-            <strong>{{ stock.name }}</strong>의 1년 <strong>ROE 평균값은</strong> <strong>{{ roeMean.origin.toLocaleString() }}</strong>으로,
+            <strong>{{ stock.data.name }}</strong>의 1년 <strong>ROE 평균값은</strong> <strong>{{ roeMean.origin.toLocaleString() }}</strong>으로,
               <strong class="sector">동종 업계 1년 평균 {{ roeMean.sector.toLocaleString() }}</strong> 보다  
               <strong :class="roeMean.colorClass">{{ roeMean.text }}</strong>
               <v-icon :color="roeMean.iconColor" size="20" class="ml-2">{{ roeMean.icon}}</v-icon>
@@ -206,13 +206,13 @@
             <v-card v-if="expandPsr">
               <StockIndicatorLineChart 
                 type="PSR"
-                :chartData="indicatorDaily.PSR"   
-                :sector="indicatorSectorDaily.value.PSR"
+                :chartData="indicatorDaily.data.PSR"   
+                :sector="indicatorSectorDaily.data.value.PSR"
                 :height="mobile ? 200 : 100"      
               />
               <v-card-text :class="['grey--text mt-1', getStrongFontColorClass]">
                 <div>
-                  <strong>{{ stock.name }}</strong>의 1년 <strong>PSR</strong>평균값은 <strong>{{ psrMean.origin.toLocaleString() }}</strong>으로,
+                  <strong>{{ stock.data.name }}</strong>의 1년 <strong>PSR</strong>평균값은 <strong>{{ psrMean.origin.toLocaleString() }}</strong>으로,
                   <strong class="sector">동종 업계 1년 평균 {{ psrMean.sector.toLocaleString() }}</strong> 보다  
                   <strong :class="psrMean.colorClass">{{ psrMean.text }}</strong>
                   <v-icon :color="psrMean.iconColor" size="20" class="ml-2">{{ psrMean.icon}}</v-icon>
@@ -258,13 +258,13 @@
             <v-card v-if="expandPer">
               <StockIndicatorLineChart 
                 type="PSR"
-                :chartData="indicatorDaily.PER"   
-                :sector="indicatorSectorDaily.value.PER"
+                :chartData="indicatorDaily.data.PER"   
+                :sector="indicatorSectorDaily.data.value.PER"
                 :height="mobile ? 200 : 100"      
               />
               <v-card-text :class="['grey--text mt-1', getStrongFontColorClass]">
                 <div>
-                  <strong>{{ stock.name }}</strong>의 1년 <strong>PER</strong>평균값은 <strong>{{ perMean.origin.toLocaleString() }}</strong>으로,
+                  <strong>{{ stock.data.name }}</strong>의 1년 <strong>PER</strong>평균값은 <strong>{{ perMean.origin.toLocaleString() }}</strong>으로,
                   <strong class="sector">동종 업계 1년 평균 {{ perMean.sector.toLocaleString() }}</strong> 보다  
                   <strong :class="perMean.colorClass">{{ perMean.text }}</strong>
                   <v-icon :color="perMean.iconColor" size="20" class="ml-2">{{ perMean.icon}}</v-icon>
@@ -309,13 +309,13 @@
             <v-card v-if="expandPbr">
               <StockIndicatorLineChart 
                 type="PSR"
-                :chartData="indicatorDaily.PSR"   
-                :sector="indicatorSectorDaily.value.PSR"
+                :chartData="indicatorDaily.data.PSR"   
+                :sector="indicatorSectorDaily.data.value.PSR"
                 :height="mobile ? 200 : 100"      
               />
               <v-card-text :class="['grey--text mt-1', getStrongFontColorClass]">
                 <div>
-                  <strong>{{ stock.name }}</strong>의 1년 <strong>PBR</strong>평균값은 <strong>{{ pbrMean.origin.toLocaleString() }}</strong>으로,
+                  <strong>{{ stock.data.name }}</strong>의 1년 <strong>PBR</strong>평균값은 <strong>{{ pbrMean.origin.toLocaleString() }}</strong>으로,
                   <strong class="sector">동종 업계 1년 평균 {{ pbrMean.sector.toLocaleString() }}</strong> 보다  
                   <strong :class="pbrMean.colorClass">{{ pbrMean.text }}</strong>
                   <v-icon :color="pbrMean.iconColor" size="20" class="ml-2">{{ pbrMean.icon}}</v-icon>
@@ -341,17 +341,13 @@
 </template>
 
 <script lang="ts">
-import { ISimpleChartData, IStockIndicatorDailyModel, IStockIndicatorSectorModel, IStockModel } from '@/models/stock';
-import { Component, Vue } from 'vue-property-decorator';
-import { namespace } from 'vuex-class'
+import { Component } from 'vue-property-decorator';
 import StockIndicatorBarChart from '@/v2/components/detail/indicator/StockIndicatorBarChart.vue'
 import StockIndicatorLineChart from '@/v2/components/detail/indicator/StockIndicatorLineChart.vue'
 import IndicatorContentFactory from '@/v2/components/detail/indicator/IndicatorContentFactory.vue'
 import BtnBadge from '@/v2/components/vuetify/BtnBadge.vue'
 import InformationFactory from '@/v2/components/detail/finance/InformationFactory.vue';
-import StoreMixin from '@/mixins/StoreMixin.vue';
-
-const StockStoreModule = namespace('StockStore')
+import StockStoreMixin from '@/mixins/StockStoreMixin.vue';
 
 @Component({
   components: {
@@ -362,16 +358,7 @@ const StockStoreModule = namespace('StockStore')
     StockIndicatorLineChart
   }
 })
-export default class StockIndicatorDetail extends StoreMixin {
-
-  @StockStoreModule.State('stock') stock!: IStockModel
-  @StockStoreModule.State('indicator') indicators!: ISimpleChartData  
-  @StockStoreModule.State('indicatorDaily') indicatorDaily!: IStockIndicatorDailyModel
-  @StockStoreModule.State('indicatorSector') indicatorSector!: IStockIndicatorSectorModel
-  @StockStoreModule.State('indicatorSectorDaily') indicatorSectorDaily!: any  
-  @StockStoreModule.State('indicatorSectorDailyLoaded') indicatorSectorDailyLoaded!: boolean
-  @StockStoreModule.State('indicatorLoaded') indicatorLoaded!: boolean
-  @StockStoreModule.State('indicatorSectorLoaded') indicatorSectorLoaded!: boolean  
+export default class StockIndicatorDetail extends StockStoreMixin {
         
   expandEps = false
   expandBps = false
@@ -411,8 +398,8 @@ export default class StockIndicatorDetail extends StoreMixin {
   
 
   getIndicatorMean(indicatorType: string) {        
-    const origin = Number((this.indicators[indicatorType]?.value.reduce((acc: number, cur: number) => acc + cur, 0) / 4).toFixed(1))
-    const sector = Number((this.indicatorSector[`sector_${indicatorType}`]?.reduce((acc: number, cur: number) => acc + cur, 0) / 4).toFixed(1))
+    const origin = Number((this.indicator.data[indicatorType]?.value.reduce((acc: number, cur: number) => acc + cur, 0) / 4).toFixed(1))
+    const sector = Number((this.indicatorSector.data[`sector_${indicatorType}`]?.reduce((acc: number, cur: number) => acc + cur, 0) / 4).toFixed(1))
     const isHighVal = origin > sector
     return {
       origin,
@@ -425,9 +412,9 @@ export default class StockIndicatorDetail extends StoreMixin {
   }
 
   getIncicatorDailyMean(indicatorType: string) {
-    const length = this.indicatorDaily.PBR.length
-    const origin = Number((this.indicatorDaily[indicatorType]?.reduce((acc: number, cur: number) => acc + cur, 0) / length).toFixed(1))
-    const sector = Number((this.indicatorSectorDaily.value[indicatorType]?.reduce((acc: number, cur: number) => acc + cur, 0) / length).toFixed(1))
+    const length = this.indicatorDaily.data.PBR.length
+    const origin = Number((this.indicatorDaily.data[indicatorType]?.reduce((acc: number, cur: number) => acc + cur, 0) / length).toFixed(1))
+    const sector = Number((this.indicatorSectorDaily.data.value[indicatorType]?.reduce((acc: number, cur: number) => acc + cur, 0) / length).toFixed(1))
     const isHighVal = origin > sector
     return {
       origin,

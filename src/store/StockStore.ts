@@ -12,99 +12,34 @@ export default class StockStore extends VuexModule {
   public stockLoaded = false
 
   public stock = initialState<stockTypes.StockType>()
-  // public stockGraphVolume = initialState<stockTypes.VolumeType>()
-  // public stockGraphDefault = initialState<stockTypes.GraphDefaultType>()
-  // public stockGraphAll = initialState<stockTypes.GraphAllType>()
-  // public stockEvaluation = initialState<stockTypes.EvaluationType>()
-  // public stockEvaluationDaily = initialState<stockTypes.EvaluationDailyType>()
-  // public similarContents = initialState<stockTypes.SimilarType>()
-  // public news = initialState<stockTypes.NewsType>()
-  // public statement = initialState<stockTypes.StatementType>()
-  // public statementAll = initialState<stockTypes.StatementAllType>()
-  // public indicator = initialState<stockTypes.IndicatorType>()
-  // public indicatorSector = initialState<stockTypes.IndicatorSectorType>()
-  // public indicatorDaily = initialState<stockTypes.IndicatorDailyType>()
-  // public stockDonda = initialState<stockTypes.DondaType>()
-  // public recommendStocks = initialState<stockTypes.StocksType>()
+  public stockGraphVolume = initialState<stockTypes.VolumeType>()
+  public stockGraphDefault = initialState<stockTypes.GraphDefaultType>()
+  public stockGraphAll = initialState<stockTypes.GraphAllType>()
+  public stockEvaluation = initialState<stockTypes.EvaluationType>()
+  public stockEvaluationDaily = initialState<stockTypes.EvaluationDailyType>()
+  public similarContents = initialState<stockTypes.SimilarType>()
+  public news = initialState<stockTypes.NewsType>()
+  public statement = initialState<stockTypes.StatementType>()
+  public statementAll = initialState<stockTypes.StatementAllType>()
+  public indicator = initialState<stockTypes.IndicatorType>()
+  public indicatorSector = initialState<stockTypes.IndicatorSectorType>()
+  public indicatorDaily = initialState<stockTypes.IndicatorDailyType>()
+  public indicatorSectorDaily = initialState<stockTypes.IndicatorSectorDailyType>()
+  public stockDonda = initialState<stockTypes.DondaType>()
+  public recommendStocks = initialState<stockTypes.StocksType>()
+  public recommendStockCodes = initialState()
 
-
-  
-
-  // 추천 종목  
-  public recommendStocks: IStockModel[] = []
-  public recommendStocksLoaded = false  
-
-  public recommendStockCodes: string[] = []
-  public recommendStockCodesLoaded = false
-
-
-  // 주가 그래프 인덱스 저장
-  public stockGraphLength = 20
-
-
-  // 종목 하나의 2주 그래프정보
-  public stockGraphDefaultLoaded = false
-  public stockGraphDefault = {}
-
-
-  // 종목 하나의 5년치 그래프정보
-  public stockGraphAll = {}
-  public stockGraphAllLoaded = false
-
-
-  // 종목 하나의 분기 적정주가
-  public stockEvaluation = {}
-  public stockEvaluationLoaded = false
-
-  // 종목 하나의 일간 적정주가
-  public stockEvaluationDaily: IStockEvaluationModel = {
-    value: [],
-    date: []
-  }
-  public stockEvaluationDailyLoaded = false
-
-
-  // 거래량
-  public stockGraphVolume = {}
-  public stockGraphVolumeLoaded = false    
-  public stockGraphVolumeFlag = false
-
-
-  // 종목 하나의 재무제표
-  public statementLoaded = false
-  public statement: ISimpleChartData = {}
-  
-
-  // 종목 하나의 5년치 재무제표
-  public statementAllLoaded = false
-  public statementAll: ISimpleChartData = {}  
-
-  
-  // 종목 하나의 4분기 보조지표
-  public indicatorLoaded = false
-  public indicatorDailyLoaded = false
-  public indicator: ISimpleChartData = {}
-  public indicatorDaily: IStockIndicatorDailyModel
-
-
-  // 종목 하나의 관련섹터 보조지표
-  public indicatorSectorLoaded = false
-  public indicatorSector: IStockIndicatorSectorModel
-  public indiacotrSetorDailyLoaded = false
-  public indicatorSectorDaily!: IStockIndicatorDailyModel
-
-  public stockDonda = null
-  public stockDondaLoaded = false
-
-
-  // 유사종목
-  public similarContents: IStockModel[] = []
-  public similarContentsLoaded = false
-
-
-  // 뉴스
-  public newsLoaded = false
-  public news: INewsModel[] = []
+  asset = initialState()
+  equity = initialState()
+  equityNon = initialState()
+  liability = initialState()
+  currentAsset = initialState()
+  profit = initialState()
+  profitNon = initialState()
+  revenue = initialState()
+  cash = initialState()
+  ebitda = initialState()
+  grossMargin = initialState()
 
   // Mutations  
   @Mutation
@@ -114,20 +49,21 @@ export default class StockStore extends VuexModule {
     })        
   }
 
-  @Mutation
+	@Mutation
   public loading(state: string) {    
-    this[state + 'Loaded'] = true        
+    this[state].loading = true        
   }
 
   @Mutation
   public success({ state, data }: {state: string, data: unknown}) {
-    this[state + 'Loaded'] = false
-    this[state] = data 
+    this[state].loading = false
+    this[state].data = data 
   }
 
   @Mutation
-  public error(state: string) {
-    this[state + 'Loaded'] = false
+  public error({ state, error }: {state: string, error: unknown}) {
+    this[state].loading = false
+		this[state].error = error
   }
 
   // Actions

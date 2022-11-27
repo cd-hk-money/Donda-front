@@ -1,5 +1,4 @@
-import { IStockIndicatorDailyResponse } from './../api/types';
-import { IStockEvaluationDailyResponse, IStockEvaluationResponse, IStockNewsResponse, IStockResponse, IStockSimilarResponse } from "@/api/types"
+import { IStockIndicatorSectorResponse, IStockEvaluationDailyResponse, IStockEvaluationResponse, IStockNewsResponse, IStockResponse, IStockSimilarResponse } from "@/api/types"
 
 export interface SingleStock {
   title?: string
@@ -196,9 +195,12 @@ export type NewsType = IStockNewsResponse
 export type StatementType = IDateValue
 export type StatementAllType = ISimpleStock
 export type IndicatorType = IDateValue
-export type IndicatorSectorType = IStockIndicatorDailyResponse
+export type IndicatorSectorType = IStockIndicatorSectorResponse
 export type IndicatorDailyType = ISectorDaily
-export type IndicatorSectorDailyType = ISectorDaily
+export type IndicatorSectorDailyType = {
+  value: ISectorDaily,
+  date: string[]
+}
 export type DondaType = IStockEvaluationDailyResponse
 export type StocksType = IStockResponse[]
 

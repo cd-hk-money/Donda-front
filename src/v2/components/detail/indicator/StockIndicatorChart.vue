@@ -5,13 +5,11 @@ import { Component, Prop } from 'vue-property-decorator'
 import { mixins, Radar } from 'vue-chartjs-typescript'
 
 import { transparentize } from '@/mixins/tools'
-import { IStockModel } from '@/models/stock'
-import { namespace } from 'vuex-class'
+import StockStoreMixin from '@/mixins/StockStoreMixin.vue'
 
 const { reactiveProp } = mixins
 const MAIN_COLOR = '#00BCD4'
 const SUB_COLOR = 'rgb(255, 99, 132)'
-const StockStoreModule = namespace('StockStore')
 const LABEL_INDEX = ['EPS', 'BPS', 'ROE']
 
 interface ISector {
@@ -24,12 +22,11 @@ interface ISector {
   extends: Radar,
   mixins: [reactiveProp],
 })
-export default class StockIndicatorChart extends Vue {
+export default class StockIndicatorChart extends StockStoreMixin {
   
   @Prop({default: {}}) chartData!: ISector
   @Prop() sector!: ISector
 
-  @StockStoreModule.State('stock') stock!: IStockModel
 
   chartOptions: Chart.ChartOptions = {
     responsive: true,
@@ -78,7 +75,7 @@ export default class StockIndicatorChart extends Vue {
       labels: ['EPS', 'BPS', 'ROE'],
       datasets: [ 
         { 
-          label: this.stock.name,
+          label: this.stock.data.name,
           data: [
             this.chartData.eps?.toFixed(),
             (this.chartData.bps / 20)?.toFixed(),

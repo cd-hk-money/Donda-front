@@ -29,10 +29,10 @@
 
     <v-card-text>
       <div 
-        v-if="!loaded && !stockLoaded && !sectorLoaded && !indicatorSectorLoaded && !indicatorDailyLoaded"        
+        v-if="!indicator.loading && !stock.loading && !indicatorSector.loading && !indicatorSectorDaily.loading"        
         class="d-flex justify-center align-center ml-3"
       >
-        <stock-indicator-chart                       
+        <StockIndicatorChart
           :chartData="indicatorChartData"
           :sector="indicatorSectorChartData"
           :height="180"      
@@ -48,15 +48,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
-import { namespace } from 'vuex-class'
+import { Component } from 'vue-property-decorator'
 
 import StockIndicatorChart from '@/v2/components/detail/indicator/StockIndicatorChart.vue'
 
-import { ISimpleChartData, IStockIndicatorSectorDailyModel, IStockIndicatorSectorModel, IStockModel } from '@/models/stock'
 import BtnBadge from '../../vuetify/BtnBadge.vue'
-
-const StockStoreModule = namespace('StockStore')
+import StockStoreMixin from '@/mixins/StockStoreMixin.vue'
 
 @Component({
   components: {
@@ -64,7 +61,8 @@ const StockStoreModule = namespace('StockStore')
     BtnBadge
   }
 })
-export default class StockIndicator extends Vue {
+export default class StockIndicator extends StockStoreMixin {
+
 
   overlay = false
 
@@ -73,22 +71,22 @@ export default class StockIndicator extends Vue {
   }
 
   get indicatorScore () {    
-    return this.indicatorSector
+    return this.indicatorSector.data
   }
 
   get indicatorChartData () {
     return {
-      eps: this.indicator.eps?.value[0],
-      bps: this.indicator.bps?.value[0],
-      roe: this.indicator.roe?.value[0]
+      eps: this.indicator.data.eps?.value[0],
+      bps: this.indicator.data.bps?.value[0],
+      roe: this.indicator.data.roe?.value[0]
     }
   }
 
   get indicatorSectorChartData () {
     return {
-      eps: this.indicatorSector?.sector_eps[3],                                
-      bps: this.indicatorSector?.sector_bps[3],
-      roe: this.indicatorSector?.sector_roe[3],      
+      eps: this.indicatorSector.data?.sector_eps[3],                                
+      bps: this.indicatorSector.data?.sector_bps[3],
+      roe: this.indicatorSector.data?.sector_roe[3],      
     }
   }
     
@@ -96,17 +94,7 @@ export default class StockIndicator extends Vue {
     return this.$vuetify.breakpoint.name === 'xs'
   }
   
-  @StockStoreModule.State('indicatorLoaded') loaded!: boolean
-  @StockStoreModule.State('indicatorSectorLoaded') sectorLoaded!: boolean
-  @StockStoreModule.State('stockLoaded') stockLoaded!: boolean  
-  @StockStoreModule.State('indicatorDailyLoaded') indicatorDailyLoaded!: boolean
-  @StockStoreModule.State('stock') stock!: IStockModel
 
-
-  @StockStoreModule.State('indicator') indicator!: ISimpleChartData
-  @StockStoreModule.State('indicatorSector') indicatorSector!: IStockIndicatorSectorModel
-  @StockStoreModule.State('indicatorSectorDailyLoaded') indicatorSectorLoaded!: boolean
-  @StockStoreModule.State('indicatorSectorDaily') indicatorSectorDaily!: IStockIndicatorSectorDailyModel
 
 
   // methods
