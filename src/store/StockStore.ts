@@ -1,6 +1,5 @@
 import { AsyncPayload } from '@/store/payload';
 import { Module, VuexModule, Action, Mutation } from "vuex-module-decorators";
-import { IStockModel, ISimpleChartData, IStockEvaluationModel, IStockIndicatorSectorModel, IStockIndicatorDailyModel, INewsModel } from "@/models/stock";
 import { IUpdateStateModel } from "@/models/payload";
 import { initialState } from './utils';
 import * as stockTypes from '@/models/stock'

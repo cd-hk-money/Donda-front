@@ -9,10 +9,7 @@ export interface SingleStock {
 	market?: string
 }
 
-export interface StockRecommendModel extends SingleStock {  
-  close: number
-  changes_ratio: number
-}
+
 
 
 
