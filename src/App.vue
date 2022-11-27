@@ -1,49 +1,42 @@
 <template>
-  <v-app>  
-    
+  <v-app>
     <!--  상단 네이게이션  -->
     <NavBar />
 
     <!--  메인 뷰  -->
-    <v-main>               
+    <v-main>
       <transition name="slide-fade" mode="out-in">
-        <router-view :key="$route.fullPath"/>      
-      </transition>  
+        <router-view :key="$route.fullPath" />
+      </transition>
 
       <!--  스낵 바  -->
       <SnackBar />
     </v-main>
-
-
   </v-app>
 </template>
 
 <script lang="ts">
+import { Component } from "vue-property-decorator";
 
-  import { Component } from 'vue-property-decorator'
+import SideBar from "@/v2/pages/SideBar.vue";
+import NavBar from "@/v2/pages/NavBar.vue";
+import SnackBar from "@/v2/pages/SnackBar.vue";
+import StoreMixin from "@/mixins/StoreMixin.vue";
+import { getDailySimpleRanks, getSearchTable } from "@/store/payload";
 
-  import SideBar from '@/v2/pages/SideBar.vue'
-  import NavBar from '@/v2/pages/NavBar.vue'
-  import SnackBar from '@/v2/pages/SnackBar.vue'
-  import StoreMixin from '@/mixins/StoreMixin.vue'
-  import { getDailySimpleRanks, getSearchTable } from '@/store/payload'
-
-
-  @Component({
-    components: {
-      SideBar,
-      NavBar,
-      SnackBar,
-    }
-  })
-  export default class App extends StoreMixin {
-            
-    mounted () {
-      this.callRequestMarket(getDailySimpleRanks())
-      this.callRequestMarket(getSearchTable())
-    }
-
+@Component({
+  components: {
+    SideBar,
+    NavBar,
+    SnackBar,
+  },
+})
+export default class App extends StoreMixin {
+  mounted() {
+    this.callRequestMarket(getDailySimpleRanks());
+    this.callRequestMarket(getSearchTable());
   }
+}
 </script>
 
 <style>
@@ -111,5 +104,4 @@ body {
   right: 50%;
   position: absolute;
 }
-
 </style>

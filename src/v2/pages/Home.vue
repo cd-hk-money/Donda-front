@@ -13,18 +13,27 @@
 </template>
 
 <script lang="ts">  
-  import { Vue, Component } from 'vue-property-decorator'
+import { Component } from 'vue-property-decorator'
 
-  import MarketTrend from '@/v2/components/home/MarketTrend.vue'
-  import StockRecommend from '@/v2/components/home/StockRecommend.vue'
-  import MarketTrendLayout from '@/v2/components/home/MarketTrendLayout.vue';
+import MarketTrend from '@/v2/components/home/MarketTrend.vue'
+import StockRecommend from '@/v2/components/home/StockRecommend.vue'
+import MarketTrendLayout from '@/v2/components/home/MarketTrendLayout.vue';
+import StoreMixin from '@/mixins/StoreMixin.vue';
+import { getMarketValuation, getTodayMarket } from '@/store/payload';
 
-  @Component({
-    components: {
-      MarketTrend,
-      StockRecommend,
-      MarketTrendLayout
+@Component({
+  components: {
+    MarketTrend,
+    StockRecommend,
+    MarketTrendLayout
+  }
+})
+export default class HomeV2 extends StoreMixin {
+  mounted () {
+    if (!this.market.data) {
+      this.callRequestMarket(getTodayMarket());
+      this.callRequestMarket(getMarketValuation());
     }
-  })
-  export default class HomeV2 extends Vue {}
+  }
+}
 </script>
