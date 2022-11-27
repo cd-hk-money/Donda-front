@@ -5,14 +5,14 @@
     width="465"    
     elevation="0"    
   >    
-    <template v-if="!loaded">
+    <template v-if="!stock.loading">
       <v-list-item three-line>  
         <v-list-item-content>
           <div class="mb-4">
-            {{ stock.market }} 
+            {{ stockData.market }} 
           </div>
           <v-list-item-title class="text-h4 font-weight-bold m-1 ml-5">
-            <span>{{ stock.name }}</span>                 
+            <span>{{ stockData.name }}</span>                 
             <v-tooltip right>
               <template v-slot:activator="{on}">
                 <v-icon v-on="on" size="30" class="ml-5" :color="prefixedValue.trendIconColor">
@@ -24,7 +24,7 @@
             </v-tooltip>
           </v-list-item-title>
           <v-list-item-subtitle class="text-h5 mb-1 ml-5">
-            {{ stock.code }}
+            {{ stockData.code }}
           </v-list-item-subtitle>
         </v-list-item-content>
   
@@ -59,13 +59,13 @@
                     addInterestGroupItem({
                       title: group.title,
                       item: {
-                        title: stock.name,
-                        code: stock.code
+                        title: stockData.name,
+                        code: stockData.code
                       }
                     }),
                     dialog = false,                    
                     updateState({
-                      snackBarMessage: `${stock.name}이(가) ${group.title}에 추가되었습니다.`,
+                      snackBarMessage: `${stockData.name}이(가) ${group.title}에 추가되었습니다.`,
                       snackBar: true
                     }),                                     
                   ]"
@@ -100,19 +100,19 @@
   
       <v-sheet elevation="0" height="120">                
         <v-card-title class="text-h5 font-weight-bold ml-5">
-          <span> ₩ {{ stock.close.toLocaleString()}}  </span>
+          <span> ₩ {{ stockData.close.toLocaleString()}}  </span>
         </v-card-title>
 
-        <v-card-subtitle :class="['text-h6', 'font-weight-bold', 'ml-5', stock.changes > 0 ? 'red--text' : 'blue--text']">
+        <v-card-subtitle :class="['text-h6', 'font-weight-bold', 'ml-5', stockData.changes > 0 ? 'red--text' : 'blue--text']">
           <span> ₩ {{ prefixedValue.changes }}  ({{ prefixedValue.changes_ratio }}%)</span>                        
         </v-card-subtitle>
 
         <v-chip class="stock-info-sector" small >
-          {{ stock.sector }}
+          {{ stockData.sector }}
         </v-chip>
         
         <div class="stock-info-date">
-          {{ stock.date }}
+          {{ stockData.date }}
         </div>
       </v-sheet>
     </template>
@@ -126,29 +126,29 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 
 import { IUpdateStateModel } from '@/models/payload';
-import { IStockModel } from '@/models/stock'
 import { IInterestGroup, IInterestGroupItem } from '@/models/interest'
-import StoreMixin from '@/mixins/StoreMixin.vue';
+import StockStoreMixin from '@/mixins/StockStoreMixin.vue';
 
-const StockStoreModule = namespace('StockStore')
 const InterestStoreModule = namespace('InterestStore')
 
 @Component
-export default class StockInfo extends StoreMixin {
+export default class StockInfo extends StockStoreMixin {
 
   dialog = false
 
   get isBookmarked () {
-    return this.bookmarked.find((v: string) => v === this.stock.name)
+    return this.bookmarked.find((v: string) => v === this.stock.data.name)
   }
-      
-  // StockStore
-  @StockStoreModule.State('stock') stock!: IStockModel
-  @StockStoreModule.State('stockLoaded') loaded!: boolean  
+
+  get stockData () { 
+    console.log(this.stock.data)
+    return this.stock.data
+   }
+
     
   // InterestStore
   @InterestStoreModule.State('interestGroups') interestGroups!: IInterestGroup[]
@@ -164,12 +164,12 @@ export default class StockInfo extends StoreMixin {
   
   get prefixedValue () {
     return {
-      changes: (this.stock.changes > 0 ? '+': '') + this.stock.changes.toLocaleString(),
-      changes_ratio: (this.stock.changes_ratio > 0 ? '+' : '') + this.stock.changes_ratio.toLocaleString(),
-      trendIcon: this.stock.changes > 0 ? 'fa-solid fa-arrow-trend-up' : 'fa-solid fa-arrow-trend-down',
-      trendText: this.stock.changes > 0 ? '상승' : '하락',
-      trendTextColor: this.stock.changes > 0 ? 'red--text' : 'blue--text',
-      trendIconColor: this.stock.changes > 0 ? 'red' : 'blue'
+      changes: (this.stock.data.changes > 0 ? '+': '') + this.stock.data.changes.toLocaleString(),
+      changes_ratio: (this.stock.data.changes_ratio > 0 ? '+' : '') + this.stock.data.changes_ratio.toLocaleString(),
+      trendIcon: this.stock.data.changes > 0 ? 'fa-solid fa-arrow-trend-up' : 'fa-solid fa-arrow-trend-down',
+      trendText: this.stock.data.changes > 0 ? '상승' : '하락',
+      trendTextColor: this.stock.data.changes > 0 ? 'red--text' : 'blue--text',
+      trendIconColor: this.stock.data.changes > 0 ? 'red' : 'blue'
     }
   }
   

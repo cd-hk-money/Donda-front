@@ -41,19 +41,19 @@ import ProgressCircular from "@/v2/components/vuetify/ProgressCircular.vue";
 export interface ComputedMarket {
   close?: number;
   recent?: string;
-  color: string;
-  sparkLineDatas: number[];
+  color?: string;
+  sparkLineDatas?: number[];
   type?: string;
   trendIcon?: string;
   trendIconColor?: string;
-  changes: number;
+  changes?: number;
 }
 
 interface IMarket {
-  kospi?: ComputedMarket;
-  nasdaq?: ComputedMarket;
-  usdkrw?: ComputedMarket;
-  snp500?: ComputedMarket;
+  kospi?: ComputedMarket
+  nasdaq?: ComputedMarket
+  usdkrw?: ComputedMarket
+  snp500?: ComputedMarket
 }
 
 const marketTypes = ["kospi", "nasdaq", "usdkrw", "snp500"];
@@ -85,10 +85,17 @@ export default class MarketTrend extends StoreMixin {
   }
 
   get computedMarket(): IMarket {
+    if(this.market.loading) return {
+      kospi: {},
+      nasdaq: {},
+      usdkrw: {},
+      snp500: {}
+    }
     return marketTypes.reduce((acc, cur) => {
       acc[cur] = this.createComputedMarketContent(cur);
       return acc;
     }, {});
   }
+
 }
 </script>

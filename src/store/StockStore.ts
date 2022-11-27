@@ -2,31 +2,35 @@ import { AsyncPayload } from '@/store/payload';
 import { Module, VuexModule, Action, Mutation } from "vuex-module-decorators";
 import { IStockModel, ISimpleChartData, IStockEvaluationModel, IStockIndicatorSectorModel, IStockIndicatorDailyModel, INewsModel } from "@/models/stock";
 import { IUpdateStateModel } from "@/models/payload";
+import { initialState } from './utils';
+import * as stockTypes from '@/models/stock'
 
 @Module({namespaced: true})
 export default class StockStore extends VuexModule {
 
   // 개별 종목 간단정보
   public stockLoaded = false
-  public stock: IStockModel = {
-    date: '',
-    code: '',
-    name: '',
-    market: '',
-    close: 0,
-    changes: 0,
-    changes_ratio: 0,
-    open: 0,
-    high: 0,
-    low: 0,
-    amount: 0,
-    marcap: 0,
-    stocks: 0,    
-  }
+
+  public stock = initialState<stockTypes.StockType>()
+  // public stockGraphVolume = initialState<stockTypes.VolumeType>()
+  // public stockGraphDefault = initialState<stockTypes.GraphDefaultType>()
+  // public stockGraphAll = initialState<stockTypes.GraphAllType>()
+  // public stockEvaluation = initialState<stockTypes.EvaluationType>()
+  // public stockEvaluationDaily = initialState<stockTypes.EvaluationDailyType>()
+  // public similarContents = initialState<stockTypes.SimilarType>()
+  // public news = initialState<stockTypes.NewsType>()
+  // public statement = initialState<stockTypes.StatementType>()
+  // public statementAll = initialState<stockTypes.StatementAllType>()
+  // public indicator = initialState<stockTypes.IndicatorType>()
+  // public indicatorSector = initialState<stockTypes.IndicatorSectorType>()
+  // public indicatorDaily = initialState<stockTypes.IndicatorDailyType>()
+  // public stockDonda = initialState<stockTypes.DondaType>()
+  // public recommendStocks = initialState<stockTypes.StocksType>()
+
 
   
 
-  // 추천 종목
+  // 추천 종목  
   public recommendStocks: IStockModel[] = []
   public recommendStocksLoaded = false  
 
@@ -81,7 +85,6 @@ export default class StockStore extends VuexModule {
   public indicatorDailyLoaded = false
   public indicator: ISimpleChartData = {}
   public indicatorDaily: IStockIndicatorDailyModel
-  public indicatorTypes: string[] = []
 
 
   // 종목 하나의 관련섹터 보조지표
@@ -140,7 +143,6 @@ export default class StockStore extends VuexModule {
       const data = compute(res)
 
       this.context.commit('success', { state: state, data })
-      console.log(this[state])
 
     } catch (e) {
       this.context.commit('error', state)

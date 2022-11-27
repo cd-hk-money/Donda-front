@@ -28,7 +28,7 @@ import { getMarketValuation, getTodayMarket } from '@/store/payload';
     MarketTrendLayout
   }
 })
-export default class HomeV2 extends StoreMixin {
+export default class Home extends StoreMixin {
   mounted () {
     if (!this.market.data) {
       this.callRequestMarket(getTodayMarket());

@@ -25,10 +25,9 @@
 </template>
 
 <script lang="ts">
-import { getStockNews } from '@/store/payload'
-import { IStockNews } from '@/api/types'
+import { NewsType } from '@/models/stock'
 import StoreMixin from '@/mixins/StoreMixin.vue'
-import { Component, Watch} from 'vue-property-decorator'
+import { Component} from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 import NewsContentsFactory from './NewsContentsFactory.vue'
 
@@ -42,7 +41,7 @@ const StockStoreModule = namespace('StockStore')
 export default class StockNews extends StoreMixin {
 
   @StockStoreModule.State('newsLoaded') loaded!: boolean
-  @StockStoreModule.State('news') newses: IStockNews[]
+  @StockStoreModule.State('news') newses: NewsType[]
   
 }
 </script>

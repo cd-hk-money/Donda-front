@@ -1,4 +1,4 @@
-export interface IStock {
+export interface IStockResponse {
   amount: number
   changes: number
   close: number
@@ -16,9 +16,10 @@ export interface IStock {
   sector: string
   stocks: number
   volume: number
+  changes_ratio?: number
 }
 
-export interface IStockSimilar {
+export interface IStockSimilarResponse {
   changes: number
   changes_ratio: number
   close: number
@@ -28,7 +29,7 @@ export interface IStockSimilar {
   name: string
 }
 
-export interface IStockNews {
+export interface IStockNewsResponse {
   subject: string
   summary: string
   url: string
@@ -49,16 +50,16 @@ export type StockStatementElement = {
   revenue: number 
 }
 
-export interface IStockStatement {
+export interface IStockStatementResponse {
   [date: string]: StockStatementElement
 }
 
-export interface IStockEvaluationDaily {
+export interface IStockEvaluationDailyResponse {
   date: string[]
   value: number[]
 }
 
-export interface StockStatementAll {
+export interface StockStatementAllResponse {
   close: {
     date: string[]
     value: number[]
@@ -68,7 +69,7 @@ export interface StockStatementAll {
   }
 }
 
-export interface IStockGraph {
+export interface IStockGraphResponse {
   close: {
     date: string[],
     values: number[]
@@ -78,7 +79,7 @@ export interface IStockGraph {
   }
 }
 
-export interface IStockIndicator {
+export interface IStockIndicatorResponse {
   [date: string]: {
     type: string
     eps: number
@@ -87,7 +88,7 @@ export interface IStockIndicator {
   }
 }
 
-export interface IStockIndicatorDaily {
+export interface IStockIndicatorDailyResponse {
   [date: string]: {
     PER: number
     PBR: number
@@ -95,14 +96,14 @@ export interface IStockIndicatorDaily {
   }
 }
 
-export interface IStockIndicatorSector {
+export interface IStockIndicatorSectorResponse {
   date: string[]
   sector_bps: number[]
   sector_eps: number[]
   sector_roe: number[]
 }
 
-export interface IStockIndicatorSectorDaily {
+export interface IStockIndicatorSectorDailyResponse {
   [date: string]: {
     per: number
     pbr: number
@@ -110,7 +111,7 @@ export interface IStockIndicatorSectorDaily {
   }
 }
 
-export interface IStockGraphVolume {
+export interface IStockGraphVolumeResponse {
   close: {
     date: string[]
     value: number[]
@@ -120,10 +121,16 @@ export interface IStockGraphVolume {
   }
 }
 
-export interface IStockRecommend {
+export interface IStockRecommendResponse {
   name: string
   close: number
   changes_ratio: number
+}
+
+export interface IStockEvaluationResponse {
+  date: string[]
+  ['S-rim']: number[]
+  ['proper-price']: number[]
 }
 
 
@@ -160,20 +167,23 @@ export type DailySimpleRankResponse = {
   [rankType in RankType]: (number | string)[]  
 }
 
+
+
 export type ResponseType = 
-  IStock | 
-  IStockSimilar[] | 
-  IStockNews[] | 
-  IStockStatement | 
-  IStockEvaluationDaily | 
-  StockStatementAll | 
-  IStockGraph | 
-  IStockIndicator |
-  IStockIndicatorDaily |
-  IStockIndicatorSector |
-  IStockIndicatorSectorDaily |
-  IStockGraphVolume |
-  IStockRecommend[] | 
+  IStockResponse | 
+  IStockSimilarResponse[] | 
+  IStockNewsResponse[] | 
+  IStockStatementResponse | 
+  IStockEvaluationDailyResponse | 
+  StockStatementAllResponse | 
+  IStockGraphResponse | 
+  IStockIndicatorResponse |
+  IStockIndicatorDailyResponse |
+  IStockIndicatorSectorResponse |
+  IStockIndicatorSectorDailyResponse |
+  IStockGraphVolumeResponse |
+  IStockRecommendResponse[] | 
+  IStockEvaluationResponse |
 
   
   MarketResponse | 

@@ -111,8 +111,8 @@ import {
 } from "@/store/payload";
 import { mixins } from "vue-class-component";
 
-import StoreMixin from "@/mixins/StoreMixin.vue";
 import DiviceMixin from "@/mixins/DiviceMixin.vue";
+import StockStoreMixin from "@/mixins/StockStoreMixin.vue";
 
 const statementTypes = [
   "asset",
@@ -154,7 +154,7 @@ interface IMenu {
     StockIndicatorDetail,
   },
 })
-export default class DetailV2 extends mixins(StoreMixin, DiviceMixin) {
+export default class Detail extends mixins(StockStoreMixin, DiviceMixin) {
 
   // Datas
   drawer = 0;

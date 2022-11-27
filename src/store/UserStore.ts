@@ -1,6 +1,6 @@
 import { Module, VuexModule, Mutation, Action } from "vuex-module-decorators";
 import { IUpdateStateModel } from "@/models/payload";
-import { StoreState } from '@/store'
+import { StoreState } from '@/store/utils'
 import axios from 'axios'
 
 

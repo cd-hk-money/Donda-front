@@ -2,6 +2,7 @@
 import { AsyncPayload } from '@/store/payload';
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
+import { StoreState } from '@/store/utils';
 
 import {
   CodeTitleMappingType,
@@ -12,7 +13,7 @@ import {
   SearchTableType,
 } from '@/models/market'
 
-import { StoreState } from '@/store';
+
 
 const MarketStoreModule = namespace('MarketStore')
 const StockStoreModule = namespace('StockStore')

@@ -1,6 +1,6 @@
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators'
 import { DailySimpleRankType, MarketType, MarketValuationType, SearchTableType } from '@/models/market'
-import { StoreState } from '@/store'
+import { initialState } from './utils' 
 import { AsyncPayload } from './payload'
 
 
@@ -14,22 +14,15 @@ const marketMapping = {
 	'USD/KRW': 'usdkrw'
 }
 
-const initialState = <T>(inital?: T) => ({
-	data: inital,
-	error: null,
-	loading: false
-})
-
-
 @Module({namespaced: true})
 export default class MarketStore extends VuexModule {
 
 	
 	// 주식 시장
-	public market: StoreState = initialState<MarketType>()
-	public marketValuation: StoreState = initialState<MarketValuationType>()
-	public searchTable: StoreState = initialState<SearchTableType>()
-	public dailySimpleRanks: StoreState = initialState<DailySimpleRankType>()
+	public market = initialState<MarketType>()
+	public marketValuation = initialState<MarketValuationType>()
+	public searchTable = initialState<SearchTableType>()
+	public dailySimpleRanks = initialState<DailySimpleRankType>()
 
 	public requestDate = 20
 	
