@@ -1,9 +1,8 @@
 <template>
   <v-card 
-    class="ml-5 mr-5 mt-7"
-    height="260"
-    width="465"
-    @click="$emit('drawerChange', 1)"
+    height="270"
+    @click="$emit('drawerChange', 1)"    
+    class="mt-3"
   >
     <v-card-title> 적정주가 </v-card-title>
     <v-card-subtitle>

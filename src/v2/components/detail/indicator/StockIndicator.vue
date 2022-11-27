@@ -1,9 +1,8 @@
 <template>
   <v-card 
-    class="ml-5 mt-5"    
-    width="465"
-    height="288"
+    min-height="290"
     @click="$emit('drawerChange', 2)"    
+    class="mt-3"
   >     
     <v-card-title>
       보조 지표       
@@ -93,9 +92,6 @@ export default class StockIndicator extends StockStoreMixin {
   get mobile () {
     return this.$vuetify.breakpoint.name === 'xs'
   }
-  
-
-
 
   // methods
   drawerChange () {

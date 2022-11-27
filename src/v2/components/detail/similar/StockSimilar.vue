@@ -51,9 +51,6 @@
 
 <script lang="ts">
 import { Component} from 'vue-property-decorator'
-import { namespace } from 'vuex-class'
-
-const StockStoreModule = namespace('StockStore')
 
 import BtnBadge from '../../vuetify/BtnBadge.vue'
 import StockSimiarContent from '@/v2/components/detail/similar/StockSimiarContent.vue'
@@ -68,7 +65,6 @@ import StockStoreMixin from '@/mixins/StockStoreMixin.vue'
 export default class StockSimilar extends StockStoreMixin {
   overlay = false
   
-  @StockStoreModule.State('similarContentsLoaded') loaded!: boolean
 
   get width (): string | number { 
     return this.$vuetify.breakpoint.name === 'xs' ? 465 : '60%'

@@ -9,12 +9,6 @@ export interface SingleStock {
 	market?: string
 }
 
-
-
-
-
-
-
 /**
  * MarketStore의 State Type들
  */

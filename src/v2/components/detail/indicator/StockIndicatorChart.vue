@@ -1,5 +1,4 @@
 <script lang="ts">
-import Vue from 'vue'
 import Chart from 'chart.js'
 import { Component, Prop } from 'vue-property-decorator'
 import { mixins, Radar } from 'vue-chartjs-typescript'

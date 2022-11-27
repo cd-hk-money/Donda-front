@@ -1,8 +1,6 @@
 <template>
   <v-card 
-    :class="['ml-5 mr-5', mobile ? 'mt-5 mr-15' : 'mt-5']"    
-    height="240"
-    width="465"    
+    min-height="250"
     elevation="0"    
   >    
     <template v-if="!stock.loading">
@@ -132,11 +130,13 @@ import { namespace } from 'vuex-class'
 import { IUpdateStateModel } from '@/models/payload';
 import { IInterestGroup, IInterestGroupItem } from '@/models/interest'
 import StockStoreMixin from '@/mixins/StockStoreMixin.vue';
+import DiviceMixin from '@/mixins/DiviceMixin.vue';
+import { mixins } from 'vue-class-component';
 
 const InterestStoreModule = namespace('InterestStore')
 
 @Component
-export default class StockInfo extends StockStoreMixin {
+export default class StockInfo extends mixins(StockStoreMixin, DiviceMixin) {
 
   dialog = false
 
@@ -145,7 +145,6 @@ export default class StockInfo extends StockStoreMixin {
   }
 
   get stockData () { 
-    console.log(this.stock.data)
     return this.stock.data
    }
 
@@ -158,9 +157,7 @@ export default class StockInfo extends StockStoreMixin {
   @InterestStoreModule.Mutation('removeInterestGroupItem') removeInterestGroupItem!: (itemTitle: string) => void
   @InterestStoreModule.Mutation('updateState') updateState!: (payload: IUpdateStateModel) => void
 
-  get mobile () { 
-    return this.$vuetify.breakpoint.name === 'xs' 
-  }
+  
   
   get prefixedValue () {
     return {
@@ -193,7 +190,7 @@ export default class StockInfo extends StockStoreMixin {
 
 .stock-info-date {
   position: absolute;
-  bottom: -5px;
+  bottom: 5px;
   right: 13px;
   opacity: .5;
 }
