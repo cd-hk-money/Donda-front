@@ -293,10 +293,9 @@ function crosshairPoint(chart, mousemove) {
         y2Start + ((y2End - y2Start) / (width / segments) * (coorX - x._gridLineItems[i].tx1)), 
         5, angle * 0, angle * 360, false
       )
-      ctx.fill()
+      ctx.fill() 
       ctx.stroke()
       ctx.closePath()
-      console.log('arc.')
     }
   }
 

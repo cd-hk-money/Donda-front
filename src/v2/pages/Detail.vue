@@ -87,7 +87,6 @@ import { Component } from "vue-property-decorator"
 import StockInfo from "@/v2/components/detail/stock/StockInfo.vue"
 import StockFinance from "@/v2/components/detail/finance/StockFinance.vue"
 import StockScore from "@/v2/components/detail/valuation/StockScore.vue"
-import StockDrawer from "@/v2/components/detail/StockDrawer.vue"
 import StockIndicator from "@/v2/components/detail/indicator/StockIndicator.vue"
 import StockSimilar from "@/v2/components/detail/similar/StockSimilar.vue"
 import StockNews from "@/v2/components/detail/similar/StockNews.vue"
@@ -151,7 +150,6 @@ interface IMenu {
     StockIndicator,
     StockSimilar,
     StockNews,
-    StockDrawer,
     Stock,
     StockValuation,
     StockIndicatorDetail,
