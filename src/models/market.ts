@@ -21,17 +21,17 @@ export interface IMarketValuationModel {
 }
 
 export type MarketType = {
-	[marketType in MarketTypes]: {
-		labels: string[]
-		values: {
-			type: MarketTypes
-			open: number
-			close: number
-			high: number
-			low: number
-			changes: number
-			volume: number
-		}[]
+	[marketType in MarketTypes]?: {
+		labels?: string[]
+		values?: {
+			type?: MarketTypes
+			open?: number
+			close?: number
+			high?: number
+			low?: number
+			changes?: number
+			volume?: number
+		}[] | []
 	}
 }
 

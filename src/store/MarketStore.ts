@@ -23,21 +23,8 @@ export default class MarketStore extends VuexModule {
 	public marketValuation = initialState<MarketValuationType>()
 	public searchTable = initialState<SearchTableType>()
 	public dailySimpleRanks = initialState<DailySimpleRankType>()
-
 	public requestDate = 20
 	
-
-	get marketRecents () {
-		const market = this.market.data
-		return Object.values(marketMapping).reduce((acc, cur) => {
-			acc[cur] = {
-				close: market[cur].values[market[cur].values.length - 1].close,
-				changes: market[cur].values[market[cur].values.length - 1].changes,
-			}
-			return acc
-		}, {}) ?? {}
-	}
-
 	get codeTitleMapping (): { [title: string]: string } {
 		return this.searchTable.data.reduce((acc: { [x: string]: string }, cur: { title: string | number; code: string }) => {
 			acc[cur.title] = cur.code

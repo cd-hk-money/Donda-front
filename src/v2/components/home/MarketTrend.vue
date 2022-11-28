@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card-text v-if="!market.loading && !marketValuation.loading">      
+    <v-card-text v-if="!market.loading && market.data && !marketValuation.loading">      
       <MarketTrendFactory
         :computedMarket="computedMarket.kospi"
         :valuation="marketValuation.data[0]"
@@ -58,6 +58,16 @@ interface IMarket {
 
 const marketTypes = ["kospi", "nasdaq", "usdkrw", "snp500"];
 
+const marketMapping = {
+	'KOSPI': 'kospi',
+	'NASDAQ': 'nasdaq',
+	'S&P500': 'snp500',
+	'US1YT': 'us1yt',
+	'US5YT': 'us5yt',
+	'US10YT': 'us10yt',
+	'USD/KRW': 'usdkrw'
+}
+
 @Component({
   components: {
     MarketChart,
@@ -66,6 +76,20 @@ const marketTypes = ["kospi", "nasdaq", "usdkrw", "snp500"];
   },
 })
 export default class MarketTrend extends StoreMixin {
+
+  get marketRecents () {
+		const market = this.market.data
+
+		return Object.values(marketMapping)?.reduce((acc, cur) => {
+			acc[cur] = {
+				close: market[cur].values.at(-1).close || 0,
+				changes: market[cur].values.at(-1).changes || 0,
+			}
+			return acc
+		}, {
+      kospi: {}
+    })    
+  }
 
   createComputedMarketContent(marketType: string): ComputedMarket {
     const { changes, close } = this.marketRecents[marketType];

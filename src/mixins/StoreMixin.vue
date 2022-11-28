@@ -7,7 +7,6 @@ import { StoreState } from '@/store/utils';
 import {
   CodeTitleMappingType,
   DailySimpleRankType,
-  MarketRecentType,
   MarketType,
   MarketValuationType,
   SearchTableType,
@@ -26,7 +25,6 @@ export default class StoreMixin extends Vue {
   @MarketStoreModule.State('market') market!: StoreState<MarketType>
 
   @MarketStoreModule.Getter('codeTitleMapping') codeTitleMapping!: CodeTitleMappingType
-  @MarketStoreModule.Getter('marketRecents') marketRecents!: MarketRecentType    
   
   @MarketStoreModule.Action('callRequestMarket') readonly callRequestMarket!: (payload: AsyncPayload) => Promise<void>
   @StockStoreModule.Action('callRequest') readonly callRequest!: (payload: AsyncPayload) => Promise<void>    
