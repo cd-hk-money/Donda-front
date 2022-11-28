@@ -146,7 +146,7 @@ export default class StockInfo extends mixins(StockStoreMixin, DiviceMixin) {
 
   get stockData () { 
     return this.stock.data
-   }
+  }
 
     
   // InterestStore

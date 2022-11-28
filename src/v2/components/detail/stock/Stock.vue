@@ -1,8 +1,8 @@
 <template>
-  <v-card :height="mobile ? '100%' : 787">
+  <v-card :height="isMobile ? '100%' : 787">
     <v-card-title> 주가 </v-card-title>
     <v-card-subtitle>
-      <span>{{ stock.data.name }}의 주가 정보를 확인해보세요.</span>
+      {{ stock.data.name }}의 주가 정보를 확인해보세요.
     </v-card-subtitle>
 
     <v-divider />
@@ -50,7 +50,7 @@
             >
               취소
             </v-btn>
-            <v-btn plain @click="selectDate"> 결정 </v-btn>
+            <v-btn plain @click="[menu = false, rangePicked = picked]"> 결정 </v-btn>
           </v-date-picker>
         </v-card>
       </v-menu>
@@ -59,10 +59,8 @@
       <StockBigChart
         :gradient="gradientEnable"
         :volume="volumeEnable"
-        :height="chartHeight"
+        :height="isMobile ? 230 : 140"
       />
-      <!-- <StockChartD3 /> -->
-      <!-- <StockChartD3LineBar /> -->
     </div>
     <div class="text-center stockinfo-progress-circular" v-else>
       <v-progress-circular indeterminate color="#00BCD4" />
@@ -73,18 +71,16 @@
 <script lang="ts">
 import { Component } from "vue-property-decorator";
 import StockBigChart from "@/v2/components/detail/stock/StockBigChart.vue";
-import StockChartD3 from "@/v2/components/detail/stock/StockChartD3.vue";
-import StockChartD3LineBar from "@/v2/components/detail/stock/StockChartD3LineBar.vue";
 import StockStoreMixin from "@/mixins/StockStoreMixin.vue";
+import { mixins } from "vue-class-component";
+import DiviceMixin from "@/mixins/DiviceMixin.vue";
 
 @Component({
   components: {
     StockBigChart,
-    StockChartD3,
-    StockChartD3LineBar,
   },
 })
-export default class Stock extends StockStoreMixin {
+export default class Stock extends mixins(StockStoreMixin, DiviceMixin) {
   count = 33;
   dateOverlay = false;
   gradientEnable = false;
@@ -96,18 +92,6 @@ export default class Stock extends StockStoreMixin {
   get lastDate() {
     const labels = Object.keys(this.stockGraphDefault.data);
     return labels[labels.length - 1];
-  }
-
-  get mobile() {
-    return this.$vuetify.breakpoint.name === "xs";
-  }
-
-  get height() {
-    return this.mobile ? 500 : 787;
-  }
-
-  get chartHeight() {
-    return this.$vuetify.breakpoint.name === "xs" ? 230 : 140;
   }
 
   get Picked() {
@@ -148,7 +132,7 @@ export default class Stock extends StockStoreMixin {
     this.rangePicked = this.picked;
   }
 
-  async mounted() {
+  mounted() {
     this.picked = this.Picked;
   }
 }
