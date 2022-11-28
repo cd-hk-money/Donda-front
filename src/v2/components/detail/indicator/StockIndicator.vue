@@ -28,7 +28,13 @@
 
     <v-card-text>
       <div 
-        v-if="!indicator.loading && !stock.loading && !indicatorSector.loading && !indicatorSectorDaily.loading"        
+        v-if="!indicator.loading 
+          && indicator.data
+          && !indicatorSector.loading 
+          && indicatorSector.data
+          && !indicatorSectorDaily.loading
+          && indicatorSectorDaily.data
+        "        
         class="d-flex justify-center align-center ml-3"
       >
         <StockIndicatorChart

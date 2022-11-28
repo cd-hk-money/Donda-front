@@ -1,7 +1,7 @@
 <template>
   <v-card :height="isMobile ? '100%' : 787">
     <v-card-title> 주가 </v-card-title>
-    <v-card-subtitle>
+    <v-card-subtitle v-if="stock.data">
       {{ stock.data.name }}의 주가 정보를 확인해보세요.
     </v-card-subtitle>
 
@@ -55,7 +55,11 @@
         </v-card>
       </v-menu>
     </v-card>
-    <div v-if="!stockGraphAll.loading && !stockGraphVolume.loading">
+    <div v-if="!stockGraphAll.loading 
+      && !stockGraphVolume.loading
+      && stockGraphVolume.data
+      && stockGraphAll.data
+    ">
       <StockBigChart
         :gradient="gradientEnable"
         :volume="volumeEnable"
@@ -104,9 +108,6 @@ export default class Stock extends mixins(StockStoreMixin, DiviceMixin) {
     ];
   }
 
-  set Picked(val) {
-    this.picked = val;
-  }
 
   allowedDates(arg: string) {
     const current = new Date(arg).getTime();
@@ -132,9 +133,7 @@ export default class Stock extends mixins(StockStoreMixin, DiviceMixin) {
     this.rangePicked = this.picked;
   }
 
-  mounted() {
-    this.picked = this.Picked;
-  }
+  
 }
 </script>
 

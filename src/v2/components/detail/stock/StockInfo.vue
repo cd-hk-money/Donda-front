@@ -3,7 +3,7 @@
     min-height="250"
     elevation="0"    
   >    
-    <template v-if="!stock.loading">
+    <template v-if="!stock.loading && stock.data">
       <v-list-item three-line>  
         <v-list-item-content>
           <div class="mb-4">

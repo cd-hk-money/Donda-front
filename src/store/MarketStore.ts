@@ -52,14 +52,14 @@ export default class MarketStore extends VuexModule {
 
   @Mutation
   public success({ state, data }: {state: string, data: unknown}) {
-    this[state].loading = false
     this[state].data = data 
+    this[state].loading = false
   }
 
   @Mutation
   public error({ state, error }: {state: string, error: unknown}) {
-    this[state].loading = false
 		this[state].error = error
+    this[state].loading = false
   }
 	
 

@@ -10,7 +10,7 @@
     </v-card-subtitle>
     <v-card-text class="d-flex align-center flex-wrap justify-space-between">
       <div>
-        <template v-if="!stock.loading && !stockGraphDefault.loading && !stockEvaluationDaily.loading">
+        <template v-if="!stock.loading && !stockGraphDefault.loading && stockGraphDefault.data && stock.data">
           <StockScoreBarChart :height="mobile ? 130 : 150" :width="250"/>
         </template>
         <template v-else>
@@ -20,7 +20,7 @@
         </template>
       </div>
       <div>
-        <template v-if="!stock.loading && !stockGraphDefault.loading && !stockEvaluationDaily.loading">
+        <template v-if="!stockGraphDefault.loading && !stockEvaluationDaily.loading && stock.data">
           <div class="text-h4">
             <span :class="scorePer.colorClass">
               {{ scorePer.score }} 

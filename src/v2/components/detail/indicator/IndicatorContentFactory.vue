@@ -69,7 +69,6 @@
   export default class  extends Vue {
     @Prop() indicatorType!: string    
     @Prop({default: true}) quarter!: boolean
-    @Prop({default: {}}) data!: any
     @Prop() iconColor!: string
     @Prop() icon: string
     @Prop() chartData!: any
