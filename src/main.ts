@@ -18,6 +18,9 @@ Vue.use(MathJax)
 Vue.use(kiContext)
 Vue.config.productionTip = false
 Vue.use(VueRouter)
+Vue.directive('font-size', (el, binding) => {
+  el.style.fontSize = binding.value + 'px'
+})
 
 new Vue({
   store,
