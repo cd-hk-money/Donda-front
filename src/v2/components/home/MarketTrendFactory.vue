@@ -9,7 +9,7 @@
     <div class="d-flex flex-warp align-center justify-start">
       <div>
         <v-card-title class="d-flex align-center">
-          <div class="market-title text-h6 font-weight-bold">
+          <div class="market-title text-h6 font-weight-bold d-flex align-center">
             <img
               v-if="contry === 'korea'"
               src="@/assets/koreaflag.png"
@@ -103,7 +103,7 @@
       >
         <v-divider class="ml-5 mr-5" />
         <v-chip-group
-          class="chart-chip-group"
+          class="chart-chip-group d-flex"
           :active-class="chipGroupActiveClass"
           mandatory
           @click="chipGroupActiveClass = 'cyan--text text--accent-4'"
@@ -286,9 +286,7 @@ export default class MarketTrendFactory extends mixins(StoreMixin, DiviceMixin) 
 
 <style scoped>
 .market-title {
-  width: 150px;
-  display: flex;
-  align-items: center;
+  width: 150px;  
 }
 
 

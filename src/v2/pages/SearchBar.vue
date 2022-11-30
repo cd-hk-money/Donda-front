@@ -65,9 +65,9 @@
       window.clearTimeout(timeout)
 
       setTimeout(() => {
-        this.items = this.searchTable.data.map(s => s.title).filter(e => {        
-          return ( e || '').toLowerCase().indexOf((val || '').toLowerCase()) > -1          
-        })
+        this.items = this.searchTable.data
+          .map(s => s.title)
+          .filter(e => ( e || '').toLowerCase().indexOf((val || '').toLowerCase()) > -1)
 
         this.loading = false
       }, 500)    

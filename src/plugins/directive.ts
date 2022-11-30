@@ -1,7 +1,5 @@
 import Vue from 'vue';
 
-
-
 const applyDirectives = () => {
 
   // font-size

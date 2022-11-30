@@ -62,7 +62,7 @@
       </v-menu>
     </v-card>
     <v-carousel
-      :class="[mobile ? 'mt-15 mr-5' : 'ml-5']"
+      :class="[isMobile ? 'mt-15 mr-5' : 'ml-5']"
       v-model="model"
       mandatory
       :show-arrows="false"
@@ -105,6 +105,8 @@ import { mobileHeight } from '@/mixins/tools'
 import RankComponent from '@/v2/components/rank/RankComponent.vue'
 import StoreMixin from '@/mixins/StoreMixin.vue'
 import { getDailySimpleRanks } from '@/store/payload'
+import { mixins } from 'vue-class-component'
+import DiviceMixin from '@/mixins/DiviceMixin.vue'
 
 
 @Component({
@@ -112,7 +114,7 @@ import { getDailySimpleRanks } from '@/store/payload'
     RankComponent
   }
 })
-export default class RankV2 extends StoreMixin {
+export default class RankV2 extends mixins(StoreMixin, DiviceMixin) {
 
   // toTop 버튼 표시 유무
   btnShow = false
@@ -143,10 +145,6 @@ export default class RankV2 extends StoreMixin {
     this.btnShow = scrollTop > 1500 ? true : false
   }
  
-  get mobile () {
-    return mobileHeight(this.$vuetify.breakpoint.name) < 500
-  }
-
   changeAmount (amount) {
     this.amount = amount
   }

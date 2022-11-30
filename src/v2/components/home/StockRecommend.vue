@@ -1,14 +1,15 @@
 <template>    
   <v-card
     class="align-center justify-center overflow-y-auto stock-news"
-    :width="isMobile ? 550 : '68vw'"
+    :width="isMobile ? 550 : '68vw'"    
     height="835"
     elevation="0"
   >
     <v-card-title>
       추천 종목      
-      <v-tooltip left>
-        <template v-slot:activator="{on, attrs}">
+      <v-tooltip left>        
+        <template v-slot:activator="{on}">
+          {{on}}
           <v-btn 
             icon 
             absolute 
@@ -16,10 +17,9 @@
             top 
             large
             v-on="on"
-            v-bind="attrs"
             @click="reload"
           >
-            <v-icon>mdi-reload</v-icon>
+            <v-icon>mdi-reload</v-icon>                        
           </v-btn>      
         </template>
         <span> 추천종목을 새로 로드합니다.</span>
@@ -30,9 +30,8 @@
       DONDA가 상대적으로 기업가치가 저평가되어있는 종목들을 추천해줍니다.
     </v-card-subtitle>
 
-    <v-divider />
 
-    <v-card-text v-if="!recommendStocks.loading" class="d-flex flex-wrap justify-center">          
+    <v-card-text v-if="!recommendStocks.loading" class="d-flex flex-wrap justify-space-between">          
       <StockRecommendContnet
         v-for="(content, i) in recommendStocks.data"
         :key="i"
@@ -57,18 +56,17 @@ import ProgressCircularVue from '../vuetify/ProgressCircular.vue'
 import StoreMixin from '@/mixins/StoreMixin.vue'
 import DiviceMixin from '@/mixins/DiviceMixin.vue'
 import StockStoreMixin from '@/mixins/StockStoreMixin.vue'
-
+import BtnTooltip from '@/v2/components/vuetify/BtnTooltip.vue'
 
 @Component({  
   components: {
     StockRecommendContnet,
-    ProgressCircularVue
+    ProgressCircularVue,
+    BtnTooltip
   }
 })
 export default class StockRecommend extends mixins(DiviceMixin, StoreMixin, StockStoreMixin) {
-                
-  
-
+                  
   reload () {    
     this.callRequest(getStocks(this.recommendStockCodes.data))
   }
@@ -79,6 +77,8 @@ export default class StockRecommend extends mixins(DiviceMixin, StoreMixin, Stoc
     if(!this.recommendStocks.data) {
       this.callRequest(getStocks(this.recommendStockCodes.data))        
     }
+
+    console.log(this)
   }
 }
 </script>

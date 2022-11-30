@@ -13,11 +13,11 @@
             <span>{{ stockData.name }}</span>                 
             <v-tooltip right>
               <template v-slot:activator="{on}">
-                <v-icon v-on="on" size="30" class="ml-5" :color="prefixedValue.trendIconColor">
-                  {{ prefixedValue.trendIcon }}
+                <v-icon v-on="on" size="30" class="ml-5" :color="computed.trendIconColor">
+                  {{ computed.trendIcon }}
                 </v-icon>
               </template>
-              <span :class="['font-weight-bold', prefixedValue.trendTextColor ]">{{ prefixedValue.trendText }}</span> 
+              <span :class="['font-weight-bold', computed.trendTextColor ]">{{ computed.trendText }}</span> 
               <span> 추세입니다.</span>
             </v-tooltip>
           </v-list-item-title>
@@ -102,7 +102,7 @@
         </v-card-title>
 
         <v-card-subtitle :class="['text-h6', 'font-weight-bold', 'ml-5', stockData.changes > 0 ? 'red--text' : 'blue--text']">
-          <span> ₩ {{ prefixedValue.changes }}  ({{ prefixedValue.changes_ratio }}%)</span>                        
+          <span> ₩ {{ computed.changes }}  ({{ computed.changes_ratio }}%)</span>                        
         </v-card-subtitle>
 
         <v-chip class="stock-info-sector" small >
@@ -159,7 +159,7 @@ export default class StockInfo extends mixins(StockStoreMixin, DiviceMixin) {
 
   
   
-  get prefixedValue () {
+  get computed () {
     return {
       changes: (this.stock.data.changes > 0 ? '+': '') + this.stock.data.changes.toLocaleString(),
       changes_ratio: (this.stock.data.changes_ratio > 0 ? '+' : '') + this.stock.data.changes_ratio.toLocaleString(),

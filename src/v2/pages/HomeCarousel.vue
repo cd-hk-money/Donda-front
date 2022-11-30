@@ -20,13 +20,13 @@
           <span class="text-h7"> {{ carouselContent.title }} </span>            
           <span class="navbar__carousel__card__code"> {{ carouselContent.code }} </span>            
   
-          <v-divider vertical inset class="ml-1 mr-1"/>
+          <v-divider vertical inset class="ml-1 mr-1" />
   
-          <span class="ml-1"> ₩ {{ carouselContent.close.toLocaleString() }}</span>
-          <span :class="carouselChangesClass(carouselContent.changes)">
-            ₩ {{ addPreFixer(carouselContent.changes) }}
+          <span class="ml-1"> {{ carouselContent.close }}</span>
+          <span :class="carouselContent.changesClass">
+             {{ carouselContent.preFixer }}{{ carouselContent.changes}}
             <span class="ml-1">
-              ({{ addPreFixer(carouselContent.changes_ratio) }}%)
+              ({{ carouselContent.preFixer }}{{ carouselContent.changes_ratio }}%)
             </span>
           </span>              
         </v-card>
@@ -37,7 +37,7 @@
 
 <script lang="ts">
   import StoreMixin from '@/mixins/StoreMixin.vue';
-import { IStockModel } from '@/models/stock';
+import { priceFormatter } from '@/mixins/tools';
 import { Component } from 'vue-property-decorator';
 
   @Component
@@ -54,11 +54,13 @@ import { Component } from 'vue-property-decorator';
 
     addPreFixer = (value: number): string => value > 0 ? '+' + value.toLocaleString() :value.toLocaleString() 
 
-    get carouselContents(): IStockModel[] {
+    get carouselContents() {
       return this.dailySimpleRanks.data?.marcap.slice(0, 10).map((stock: (number | string)) => ({
         code: stock[1],
         title: stock[2],
-        close: stock[4],
+        close: priceFormatter.format(stock[4]),
+        changesClass: stock[5] > 0 ? 'red--text': 'blue--text',
+        preFixer: stock[5] > 0 ? '+' : '',
         changes: stock[5],
         changes_ratio: stock[6]      
       }))    

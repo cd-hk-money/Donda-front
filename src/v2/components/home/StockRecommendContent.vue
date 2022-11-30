@@ -2,15 +2,14 @@
   <v-card   
     class="mb-3 mr-3 ml-3"
     :width="isMobile ? '100%' : '380'"    
-    color="#252424"
+    color="secondary"
     elevation="0"
     rounded="xl"
-    v-if="!recommendStocksLoaded"
     @click="$router.push(`/detail/${content.code}`)"
   >    
     <v-list-item three-line>
       <v-list-item-content>
-        <div class="mb-4">
+        <div class="mb-5">
           {{ content.market }}
         </div>
     
@@ -18,11 +17,11 @@
           <span class="stock-title">{{ content.name }}</span>
           <v-tooltip right>
             <template v-slot:activator="{on}">
-              <v-icon v-on="on" size="30" class="ml-5" :color="computedValues.trendIconColor">
-                {{ computedValues.trendIcon }}
+              <v-icon v-on="on" size="30" class="ml-5" :color="computed.trendIconColor">
+                {{ computed.trendIcon }}
               </v-icon>
             </template>
-            <span :class="['font-weight-bold', computedValues.trendColorClass ]">{{ computedValues.trendText }}</span> 
+            <span :class="['font-weight-bold', computed.trendColorClass ]">{{ computed.trendText }}</span> 
             <span> 추세입니다.</span>
           </v-tooltip>
         </v-list-item-title>
@@ -40,11 +39,18 @@
       height="104"
     >                
       <v-card-title class="text-h5 font-weight-bold ml-5">
-        <span> ₩ {{ content.close.toLocaleString()}} </span>          
+        <span> 
+          
+          {{ computed.close }}
+         </span>          
       </v-card-title>
 
-      <v-card-subtitle :class="['text-h6', 'font-weight-bold', 'ml-5', computedValues.trendColorClass]">
-        <span> ₩ {{ content.changes }} ({{ content.changes_ratio }}%)</span>                        
+      <v-card-subtitle :class="['text-h6', 'font-weight-bold', 'ml-5', computed.trendColorClass]">
+        <span>
+          {{ computed.preFixer }} 
+          {{ computed.changes }} 
+          ({{ content.changes_ratio }}%)
+        </span>                        
       </v-card-subtitle>
 
       <v-chip class="stock-info-sector" small >
@@ -62,30 +68,25 @@
 import DiviceMixin from '@/mixins/DiviceMixin.vue'
 import { IStockModel } from '@/models/stock'
 import { Component, Prop } from 'vue-property-decorator' 
-import { namespace } from 'vuex-class'
-
-const StockStoreModule = namespace('StockStore')
+import { priceFormatter } from '@/mixins/tools'
 
 @Component
 export default class StockRecommendContent extends DiviceMixin {
   
   @Prop() content!: IStockModel | undefined  
 
-  @StockStoreModule.State('recommendStocksLoaded') recommendStocksLoaded!: boolean
-
-  get computedValues () {
-    const { changes_ratio, close } = this.content
-    const before = Number(((100 - changes_ratio)* 1/100 * close).toFixed())
-    const changeValue = close - before
+  get computed () {
+    const { changes_ratio } = this.content
     const isHighVal = changes_ratio > 0
 
     return {
-      changeValue: ' ₩' + (isHighVal ? '+' + changeValue : changeValue),
-      changeRatio: (isHighVal ? '+' + changes_ratio : changes_ratio) + '%',
       trendColorClass: isHighVal ? 'red--text' : 'blue--text',
       trendIcon: isHighVal ? 'fa-solid fa-arrow-trend-up' : 'fa-solid fa-arrow-trend-down',
       trendIconColor: isHighVal ? 'red' : 'blue',
-      trendText: isHighVal ? '상승' : '하락'
+      trendText: isHighVal ? '상승' : '하락',
+      preFixer: this.content.changes > 0 ? '+' : '',
+      close: priceFormatter.format(this.content.close),
+      changes: this.content.changes
     }
   }
 

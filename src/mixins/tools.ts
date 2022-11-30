@@ -1,12 +1,7 @@
 import colorLib, { Color } from '@kurkle/color';
 import { ISimpleChartData } from '@/models/stock';
 
-// 가격을 정규화 합니다.
-export function priceNormalization(price: number | string): string {
-  return typeof price === 'number' ? 
-    price.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") :
-    price.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
-}
+
 
 // 모바일 여부를 판별합니다.
 export function isMobile(): boolean | any {    
@@ -44,19 +39,19 @@ export function convertChartData(keys: string[], value: any[], label: string[]):
 
 export function meanStockData(arg: number[]): number {
   if(arg.length === 0 ) return
-  return arg.reduce((acc, cur, index) => acc + cur) / arg.length ?? 0
+  return arg.reduce((acc, cur) => acc + cur) / arg.length ?? 0
 }
 
 export function maxStockData(arg: number[] | number): number {
   if(typeof arg === 'number') return 
   if(arg.length === 0 ) return
-  return arg.reduce((acc, cur, index) => acc < cur ? cur : acc ) ?? 0
+  return arg.reduce((acc, cur) => acc < cur ? cur : acc ) ?? 0
 }
 
 export function minStockData(arg: number[] | number): number {
   if(typeof arg === 'number') return 
   if(arg.length === 0 ) return
-  return arg.reduce((acc, cur, index) => acc > cur ? cur : acc )
+  return arg.reduce((acc, cur) => acc > cur ? cur : acc )
 }
 
 export function mobileHeight(type: string): number {
@@ -311,6 +306,21 @@ export function numToKorean(number: number) {
   else number
 }
 
-export function getFirstUpper(str: string) {
-  return str.replace(/\b[a-z]/g, char => char.toUpperCase());
-}
+export const getFirstUpper = (str: string): string => str.replace(/\b[a-z]/g, char => char.toUpperCase());
+
+export const priceFormatter = new Intl.NumberFormat('ko', {
+  style: 'currency',
+  currency: 'krw',
+})
+
+export const priceCompactFormatter = new Intl.NumberFormat('ko', {
+  style: 'currency',
+  currency: 'krw',
+  notation: 'compact'
+})
+
+export const useFormatter = () => ({
+  priceFormatter,
+  priceCompactFormatter
+})
+
