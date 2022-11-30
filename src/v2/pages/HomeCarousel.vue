@@ -46,14 +46,7 @@ import { Component } from 'vue-property-decorator';
     pushLink(link: string) {
       if(this.$route.fullPath !== link) this.$router.push(link)
     }
-
-    carouselChangesClass = (changes: number): string => {
-      if(!changes) return ''
-      return changes > 0 ? 'red--text' : 'blue--text'    
-    }
-
-    addPreFixer = (value: number): string => value > 0 ? '+' + value.toLocaleString() :value.toLocaleString() 
-
+    
     get carouselContents() {
       return this.dailySimpleRanks.data?.marcap.slice(0, 10).map((stock: (number | string)) => ({
         code: stock[1],

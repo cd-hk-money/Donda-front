@@ -76,8 +76,6 @@ export default class StockRecommend extends mixins(DiviceMixin, StoreMixin, Stoc
     if(!this.recommendStocks.data) {
       this.callRequest(getStocks(this.recommendStockCodes.data))        
     }
-
-    console.log(this)
   }
 }
 </script>

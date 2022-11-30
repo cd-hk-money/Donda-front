@@ -5,7 +5,7 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 import { mixins, Line } from 'vue-chartjs-typescript'
-import { transparentize,  meanStockData, maxStockData, minStockData} from '@/mixins/tools'
+import { transparentize,  meanStockData, maxStockData, minStockData, priceFormatter} from '@/mixins/tools'
 
 import Chart from 'chart.js'
 import StockStoreMixin from '@/mixins/StockStoreMixin.vue'
@@ -95,7 +95,7 @@ export default class StockBigChart extends StockStoreMixin {
       ctx.fillStyle = 'white'
       ctx.textBaseline = 'middle'
       ctx.textAlign = 'center'
-      ctx.fillText(startingPoint.toLocaleString() + '₩', left / 2, y.getPixelForValue(startingPoint))                                    
+      ctx.fillText(priceFormatter.format(startingPoint as number), left / 2, y.getPixelForValue(startingPoint))                                    
 
     }
   }
@@ -171,7 +171,7 @@ export default class StockBigChart extends StockStoreMixin {
       const valuePerPixel = (maxTick - minTick) / (bottom - top) 
           
       const text = minTick + valuePerPixel * (bottom - lineY)
-      ctx.fillText(text.toLocaleString().split('.')[0] + '₩', left / 2, lineY)
+      ctx.fillText(priceFormatter.format(text), left / 2, lineY)
 
 
       // x virtual value
@@ -229,7 +229,7 @@ export default class StockBigChart extends StockStoreMixin {
         yAxes: [{
           ticks: {
             display: true,
-            callback: function(value: string) {return value.toLocaleString() + '₩'},
+            callback: v => priceFormatter.format(v as number),
             fontSize: 17,    
             maxTicksLimit: 2
           },
@@ -248,15 +248,17 @@ export default class StockBigChart extends StockStoreMixin {
     tooltips: {
         enabled: true,
         intersect: false,
-        titleFontSize: 20,
+        titleFontSize: 25,
         titleFontColor: MAIN_COLOR,
-        bodyFontSize: 20,
+        bodyFontSize: 30,
         cornerRadius: 10,
         displayColors: false,
+        bodyAlign: 'center',
         callbacks: {
           label: (tooltipItem) => {
             this.yLabel = tooltipItem.label
-            return (tooltipItem.yLabel as string).toLocaleString()                                    
+            return priceFormatter.format(tooltipItem.yLabel as number) 
+            
           },        
         }
       },

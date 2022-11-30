@@ -108,11 +108,6 @@ export default class StockRecommendContent extends DiviceMixin {
   padding-top: 15px;
  }
 
- .s {
-  color: #252424;
-
- }
-
  .stock-similar-content-title:hover {
     cursor: pointer;
  }

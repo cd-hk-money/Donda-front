@@ -63,7 +63,7 @@
       <StockBigChart
         :gradient="gradientEnable"
         :volume="volumeEnable"
-        :height="isMobile ? 230 : 140"
+        :height="isMobile ? 230 : 130"
       />
     </div>
     <div class="text-center stockinfo-progress-circular" v-else>
