@@ -43,7 +43,7 @@ import {
   MarketResponse
 } from '@/api/types'
 
-import { convertChartData } from '@/mixins/tools'
+import { convertChartData, priceFormatter } from '@/mixins/tools'
 import axios, { AxiosResponse } from 'axios'
 
 export type AsyncPayload<T extends ResponseType = any> = {
@@ -161,9 +161,8 @@ export const getStockRecommend = () => createStoreActionPayload(
   (response: AxiosResponse<IStockRecommendResponse[]>) => Object.entries(response.data).map(recommend => recommend[0])
 )
 
-// const createGetRequest = (state, url, callback):  => 
-
-export const getStock                      = (code: string) => createStoreActionPayload('stock'                , createAxiosGetRequestCallback<IStockResponse>(getStockUrl(code)))    
+export const getStock = (code: string) => createStoreActionPayload('stock', createAxiosGetRequestCallback<IStockResponse>(getStockUrl(code))
+)    
 export const getStockGraphDefault          = (code: string) => createStoreActionPayload('stockGraphDefault'    , createAxiosGetRequestCallback<IStockGraphResponse>(getStockGraphDefaultUrl(code)), (response: AxiosResponse<IStockGraphResponse>) => response.data.origin)
 export const getStockGraphAll              = (code: string) => createStoreActionPayload('stockGraphAll'        , createAxiosGetRequestCallback<IStockGraphResponse>(getStockGraphAllUrl(code)), (response: AxiosResponse<IStockGraphResponse>) => response.data.origin)
 export const getStockEvaluation            = (code: string) => createStoreActionPayload('stockEvaluation'      , createAxiosGetRequestCallback<IStockEvaluationResponse>(getStockEvaluationUrl(code)))

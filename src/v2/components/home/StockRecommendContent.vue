@@ -5,29 +5,29 @@
     color="secondary"
     elevation="0"
     rounded="xl"
-    @click="$router.push(`/detail/${content.code}`)"
+    @click="$router.push(`/detail/${stockData.code}`)"
   >    
     <v-list-item three-line>
       <v-list-item-content>
         <div class="mb-5">
-          {{ content.market }}
+          {{ stockData.market }}
         </div>
     
         <v-list-item-title class="text-h4 font-weight-bold m-1 ml-5">
-          <span class="stock-title">{{ content.name }}</span>
+          <span class="stock-title">{{ stockData.name }}</span>
           <v-tooltip right>
             <template v-slot:activator="{on}">
-              <v-icon v-on="on" size="30" class="ml-5" :color="computed.trendIconColor">
-                {{ computed.trendIcon }}
+              <v-icon v-on="on" size="30" class="ml-5" :color="stockData.trendIconColor">
+                {{ stockData.trendIcon }}
               </v-icon>
             </template>
-            <span :class="['font-weight-bold', computed.trendColorClass ]">{{ computed.trendText }}</span> 
+            <span :class="['font-weight-bold', stockData.trendColorClass ]">{{ stockData.trendText }}</span> 
             <span> 추세입니다.</span>
           </v-tooltip>
         </v-list-item-title>
 
         <v-list-item-subtitle class="text-h5 mb-1 ml-5">
-          {{ content.code }}
+          {{ stockData.code }}
         </v-list-item-subtitle>
       </v-list-item-content>
     </v-list-item>
@@ -41,24 +41,24 @@
       <v-card-title class="text-h5 font-weight-bold ml-5">
         <span> 
           
-          {{ computed.close }}
+          {{ stockData.close }}
          </span>          
       </v-card-title>
 
-      <v-card-subtitle :class="['text-h6', 'font-weight-bold', 'ml-5', computed.trendColorClass]">
+      <v-card-subtitle :class="['text-h6', 'font-weight-bold', 'ml-5', stockData.trendColorClass]">
         <span>
-          {{ computed.preFixer }} 
-          {{ computed.changes }} 
-          ({{ content.changes_ratio }}%)
+          {{ stockData.preFixer }} 
+          {{ stockData.changes }} 
+          ({{ stockData.changes_ratio }}%)
         </span>                        
       </v-card-subtitle>
 
       <v-chip class="stock-info-sector" small >
-        {{ content.sector }}
+        {{ stockData.sector }}
       </v-chip>
       
       <div class="stock-info-date">
-        {{ content.date }}
+        {{ stockData.date }}
       </div>
     </v-sheet>
   </v-card>
@@ -75,11 +75,12 @@ export default class StockRecommendContent extends DiviceMixin {
   
   @Prop() content!: IStockModel | undefined  
 
-  get computed () {
+  get stockData () {
     const { changes_ratio } = this.content
     const isHighVal = changes_ratio > 0
 
     return {
+      ...this.content,
       trendColorClass: isHighVal ? 'red--text' : 'blue--text',
       trendIcon: isHighVal ? 'fa-solid fa-arrow-trend-up' : 'fa-solid fa-arrow-trend-down',
       trendIconColor: isHighVal ? 'red' : 'blue',

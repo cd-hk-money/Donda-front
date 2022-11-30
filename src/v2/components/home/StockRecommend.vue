@@ -9,7 +9,6 @@
       추천 종목      
       <v-tooltip left>        
         <template v-slot:activator="{on}">
-          {{on}}
           <v-btn 
             icon 
             absolute 

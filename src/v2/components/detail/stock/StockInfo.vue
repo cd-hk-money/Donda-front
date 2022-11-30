@@ -13,11 +13,11 @@
             <span>{{ stockData.name }}</span>                 
             <v-tooltip right>
               <template v-slot:activator="{on}">
-                <v-icon v-on="on" size="30" class="ml-5" :color="computed.trendIconColor">
-                  {{ computed.trendIcon }}
+                <v-icon v-on="on" size="30" class="ml-5" :color="stockData.trendIconColor">
+                  {{ stockData.trendIcon }}
                 </v-icon>
               </template>
-              <span :class="['font-weight-bold', computed.trendTextColor ]">{{ computed.trendText }}</span> 
+              <span :class="['font-weight-bold', stockData.trendTextColor ]">{{ stockData.trendText }}</span> 
               <span> 추세입니다.</span>
             </v-tooltip>
           </v-list-item-title>
@@ -98,11 +98,12 @@
   
       <v-sheet elevation="0" height="120">                
         <v-card-title class="text-h5 font-weight-bold ml-5">
-          <span> ₩ {{ stockData.close.toLocaleString()}}  </span>
+          <span> {{ stockData.close }}  </span>
         </v-card-title>
 
-        <v-card-subtitle :class="['text-h6', 'font-weight-bold', 'ml-5', stockData.changes > 0 ? 'red--text' : 'blue--text']">
-          <span> ₩ {{ computed.changes }}  ({{ computed.changes_ratio }}%)</span>                        
+        <v-card-subtitle :class="['text-h6', 'font-weight-bold', 'ml-5', stockData.changesColorClass]">
+          {{ stockData.prefixer }}{{ stockData.changes }}  
+          ({{ stockData.changes_ratio }}%)
         </v-card-subtitle>
 
         <v-chip class="stock-info-sector" small >
@@ -132,6 +133,7 @@ import { IInterestGroup, IInterestGroupItem } from '@/models/interest'
 import StockStoreMixin from '@/mixins/StockStoreMixin.vue';
 import DiviceMixin from '@/mixins/DiviceMixin.vue';
 import { mixins } from 'vue-class-component';
+import { priceFormatter } from '@/mixins/tools';
 
 const InterestStoreModule = namespace('InterestStore')
 
@@ -144,11 +146,6 @@ export default class StockInfo extends mixins(StockStoreMixin, DiviceMixin) {
     return this.bookmarked.find((v: string) => v === this.stock.data.name)
   }
 
-  get stockData () { 
-    return this.stock.data
-  }
-
-    
   // InterestStore
   @InterestStoreModule.State('interestGroups') interestGroups!: IInterestGroup[]
   @InterestStoreModule.State('snackBar') snackBar!: boolean
@@ -159,10 +156,13 @@ export default class StockInfo extends mixins(StockStoreMixin, DiviceMixin) {
 
   
   
-  get computed () {
+  get stockData () {
     return {
-      changes: (this.stock.data.changes > 0 ? '+': '') + this.stock.data.changes.toLocaleString(),
-      changes_ratio: (this.stock.data.changes_ratio > 0 ? '+' : '') + this.stock.data.changes_ratio.toLocaleString(),
+      ...this.stock.data,
+      close: priceFormatter.format(this.stock.data.close),
+      changesColorClass: this.stock.data.changes > 0 ? 'red--text': 'blue--text',
+      prefixer: this.stock.data.close ? '+' : '',
+      changes_ratio: (this.stock.data.changes_ratio > 0 ? '+' : '') + this.stock.data.changes_ratio,
       trendIcon: this.stock.data.changes > 0 ? 'fa-solid fa-arrow-trend-up' : 'fa-solid fa-arrow-trend-down',
       trendText: this.stock.data.changes > 0 ? '상승' : '하락',
       trendTextColor: this.stock.data.changes > 0 ? 'red--text' : 'blue--text',
@@ -172,6 +172,10 @@ export default class StockInfo extends mixins(StockStoreMixin, DiviceMixin) {
   
   drawerChange () {
     this.$emit('drawerChange', 0)
+  }
+
+  mounted () {
+    console.log(this.stock)
   }
         
 }
