@@ -6,6 +6,7 @@ import VueRouter from 'vue-router'
 import router from './routes'
 import MathJax, { initMathJax, renderByMathjax } from 'mathjax-vue'
 import kiContext from '@kiyoaki_w/vue-context'
+import applyDirectives from './plugins/directive'
 
 function onMathJaxReady() {
   const el = document.getElementById('elementId')
@@ -18,9 +19,9 @@ Vue.use(MathJax)
 Vue.use(kiContext)
 Vue.config.productionTip = false
 Vue.use(VueRouter)
-Vue.directive('font-size', (el, binding) => {
-  el.style.fontSize = binding.value + 'px'
-})
+applyDirectives()
+
+
 
 new Vue({
   store,

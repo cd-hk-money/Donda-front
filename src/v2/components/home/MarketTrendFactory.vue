@@ -26,7 +26,7 @@
             <span class="text-h5">
               {{ computedMarket.close }}
             </span>
-            <span :class="['market-changes', computedMarket.color]">
+            <span :class="computedMarket.color" v-font-size="14">
               {{ computedMarket.changes }}
               ({{ per.toLocaleString() }}%)
             </span>
@@ -291,9 +291,7 @@ export default class MarketTrendFactory extends mixins(StoreMixin, DiviceMixin) 
   align-items: center;
 }
 
-.market-changes {
-  font-size: 14px;
-}
+
 .flag {
   height: 18px;
 }
